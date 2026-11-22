@@ -1,0 +1,952 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>第 9 章 演绎系统与笛卡尔闭范畴（Part I）—— 三书递进自学教材</title>
+<script>
+window.MathJax = {
+  tex: {
+    inlineMath: [['\\(','\\)']], displayMath: [['\\[','\\]']], processEscapes: true,
+    macros: {
+      llbracket: '\\lbrack\\lbrack',
+      rrbracket: '\\rbrack\\rbrack'
+    }
+  },
+  options: { ignoreHtmlClass: 'no-tex' },
+  svg: { fontCache: 'global' }
+};
+</script>
+<script async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
+<style>
+  :root{
+    --bg:#f6f7f9; --card:#fff; --ink:#1b1f27; --ink2:#4d5461; --ink3:#7a8190;
+    --line:#e5e8ed; --soft:#f0f2f5;
+    --c1:#2563eb; --c1bg:#eef4ff; --gold:#b45309; --goldbg:#fdf3e3;
+    --ok:#15803d; --okbg:#eefaf1; --phil:#7c3aed; --philbg:#f6f1ff;
+    --teal:#0d9488; --tealbg:#eefaf7; --walk:#b45309;
+    --radius:12px;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;
+    line-height:1.75;-webkit-font-smoothing:antialiased;}
+  .wrap{max-width:920px;margin:0 auto;padding:0 22px 80px;}
+
+  header.top{padding:34px 0 22px;border-bottom:1px solid var(--line);margin-bottom:26px;}
+  .breadcrumb{font-size:12.5px;color:var(--ink3);margin-bottom:10px;}
+  .breadcrumb a{color:var(--c1);text-decoration:none;}
+  h1{font-size:29px;margin:0 0 8px;letter-spacing:-.02em;}
+  .lede{color:var(--ink2);font-size:14.5px;margin:0 0 16px;}
+  .jump{display:flex;gap:8px;flex-wrap:wrap;}
+  .jump a{font-size:12.5px;font-weight:650;text-decoration:none;color:var(--ink2);
+    background:var(--card);border:1px solid var(--line);border-radius:99px;padding:6px 13px;}
+  .jump a:hover{border-color:var(--c1);color:var(--c1);}
+
+  section.sec{margin:0 0 52px;scroll-margin-top:16px;}
+  .sec-h{display:flex;align-items:baseline;gap:12px;border-bottom:2px solid var(--c1);padding-bottom:10px;margin-bottom:22px;}
+  .sec-no{font-size:13px;font-weight:800;color:#fff;background:var(--c1);border-radius:7px;padding:3px 10px;white-space:nowrap;}
+  .sec-h h2{font-size:22px;margin:0;letter-spacing:-.01em;}
+  .src{font-size:11.5px;color:var(--ink3);margin-left:auto;white-space:nowrap;}
+
+  .box{border-radius:var(--radius);padding:16px 20px;margin:18px 0;border:1px solid var(--line);}
+  .box h4{margin:0 0 10px;font-size:14px;letter-spacing:.01em;}
+
+  .learn{background:var(--c1bg);border-color:#cfe0ff;}
+  .learn h4{color:var(--c1);}
+  .learn ol{margin:0;padding-left:22px;} .learn li{margin:4px 0;font-size:14px;}
+
+  .prep{background:var(--tealbg);border-color:#bfe9dd;}
+  .prep h4{color:var(--teal);}
+  .prep p{font-size:13.5px;color:#115e59;margin:8px 0;}
+  .prep ol,.prep ul{margin:8px 0;padding-left:22px;font-size:13.5px;color:#115e59;}
+  .prep li{margin:5px 0;}
+
+  .defn{background:#fafbfc;border-left:4px solid var(--ink2);padding:14px 18px;margin:16px 0;border-radius:0 10px 10px 0;}
+  .defn .lbl{font-weight:800;font-size:13.5px;color:var(--ink);}
+  .prop{background:#fbfcfe;border:1px solid #dbe6f8;border-left:4px solid var(--c1);padding:14px 18px;margin:16px 0;border-radius:0 10px 10px 0;}
+  .prop .lbl{font-weight:800;font-size:13.5px;color:var(--c1);}
+  .rmk{font-size:13.5px;color:var(--ink2);background:var(--soft);padding:11px 16px;border-radius:9px;margin:12px 0;}
+
+  .proof{margin:10px 0 4px;padding-left:16px;border-left:2px solid var(--line);font-size:14px;color:var(--ink2);}
+  .proof .pl{font-weight:700;color:var(--ink);}
+  .qed{float:right;font-style:normal;color:var(--ink3);}
+
+  .exer{background:var(--goldbg);border-color:#f2dfbb;}
+  .exer h4{color:var(--gold);}
+  .exer .grp{font-size:12.5px;font-weight:750;color:var(--gold);margin:12px 0 4px;}
+  .exer ol{margin:0;padding-left:22px;} .exer li{margin:9px 0;font-size:14px;}
+
+  .ans{background:var(--okbg);border-color:#c9ecd3;}
+  .ans h4{color:var(--ok);}
+  .ans .item{margin:14px 0 18px;font-size:14px;}
+  .ans .item:last-child{margin-bottom:0;}
+  .ans .item b{color:var(--ok);}
+  .ans .proof{border-left-color:#bfe6c9;}
+
+  .phil{background:var(--philbg);border-color:#e3d5ff;}
+  .phil h4{color:var(--phil);}
+  .phil p{font-size:14px;color:#5b3a8e;margin:8px 0;}
+
+  .walk{background:#fffbeb;border-color:#fde68a;}
+  .walk h4{color:var(--walk);}
+  .walk p,.walk li{font-size:13.5px;color:#78350f;}
+  .walk ol,.walk ul{margin:8px 0;padding-left:22px;}
+  .walk table{border-collapse:collapse;width:100%;font-size:13px;margin:10px 0;}
+  .walk th,.walk td{border:1px solid #fcd34d;padding:7px 9px;text-align:left;vertical-align:top;}
+  .walk th{background:#fef3c7;color:#78350f;}
+
+  h3.sub{font-size:16px;margin:26px 0 6px;color:var(--ink);}
+  p{margin:9px 0;} .math{overflow-x:auto;}
+
+  .figcap{font-size:12.5px;color:var(--ink3);margin:2px 0 12px;text-align:center;font-style:italic;}
+
+  footer{border-top:1px solid var(--line);margin-top:30px;padding-top:20px;font-size:13px;color:var(--ink3);}
+  footer a{color:var(--c1);text-decoration:none;}
+
+  @media(max-width:640px){
+    h1{font-size:23px;} .wrap{padding:0 14px 60px;}
+    .sec-h{flex-wrap:wrap;} .src{margin-left:0;}
+    .box{padding:14px 15px;}
+  }
+  @media print{body{background:#fff;}.jump{display:none;}.box{break-inside:avoid;}}
+  /* ---- 范畴交换图 SVG（浅色主题）---- */
+  svg.cd{display:block;margin:16px auto 2px;max-width:100%;height:auto;
+    font-family:"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;}
+  svg.cd rect.node{fill:#eef4ff;stroke:#2563eb;stroke-width:1.5;rx:7;}
+  svg.cd rect.node2{fill:#f6f1ff;stroke:#7c3aed;stroke-width:1.5;rx:7;}
+  svg.cd rect.nodeg{fill:#eefaf1;stroke:#15803d;stroke-width:1.5;rx:7;}
+  svg.cd rect.nodey{fill:#fdf3e3;stroke:#b45309;stroke-width:1.5;rx:7;}
+  svg.cd text.nt{fill:#1b1f27;font-size:13.5px;font-weight:600;}
+  svg.cd text.lb{fill:#334155;font-size:12.5px;}
+  svg.cd text.hb{fill:#2563eb;font-size:12.5px;font-weight:600;}
+  svg.cd text.hg{fill:#15803d;font-size:12.5px;font-weight:600;}
+  svg.cd text.hp{fill:#7c3aed;font-size:12.5px;font-weight:600;}
+  svg.cd line.ar,svg.cd path.ar{stroke:#475569;stroke-width:1.6;fill:none;marker-end:url(#cdArr);}
+  svg.cd line.arb,svg.cd path.arb{stroke:#2563eb;stroke-width:1.8;fill:none;marker-end:url(#cdArrB);}
+  svg.cd line.arg,svg.cd path.arg{stroke:#15803d;stroke-width:1.8;fill:none;marker-end:url(#cdArrG);}
+  svg.cd line.arp,svg.cd path.arp{stroke:#7c3aed;stroke-width:1.8;fill:none;marker-end:url(#cdArrP);}
+  svg.cd line.ard,svg.cd path.ard{stroke:#475569;stroke-width:1.5;fill:none;stroke-dasharray:5 4;marker-end:url(#cdArr);}
+  svg.cd line.noa{stroke:#475569;stroke-width:1.5;fill:none;stroke-dasharray:5 4;}
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute;width:0;height:0;overflow:hidden" aria-hidden="true">
+<defs>
+  <marker id="cdArr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+    <path d="M 0 0 L 10 5 L 0 10 z" fill="#475569"/>
+  </marker>
+  <marker id="cdArrB" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+    <path d="M 0 0 L 10 5 L 0 10 z" fill="#2563eb"/>
+  </marker>
+  <marker id="cdArrG" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+    <path d="M 0 0 L 10 5 L 0 10 z" fill="#15803d"/>
+  </marker>
+  <marker id="cdArrP" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+    <path d="M 0 0 L 10 5 L 0 10 z" fill="#7c3aed"/>
+  </marker>
+</defs>
+</svg>
+<div class="wrap">
+
+<header class="top">
+  <div class="breadcrumb"><a href="范畴论-逻辑-拓扑斯_教材总目录.html">← 返回总目录</a> ｜ 第二部分 · Lambek &amp; Scott《Introduction to Higher Order Categorical Logic》</div>
+  <h1>第 9 章　演绎系统与笛卡尔闭范畴（Part I）</h1>
+  <p class="lede">从第 8 章的"工具体检"出发，本章正式进入 L&amp;S 的核心主张：<strong>命题逻辑、笛卡尔闭范畴、带类型 λ 演算，是同一个结构的三种呈现</strong>。本章只走通这条主线的第一程——从演绎系统到函数完备性（原著 Part I §1–§6）。我们先把"证明"做成箭头（9.1），证明把假设内化成箭头的关键工具是演绎定理（9.2），于是 CCC 可以用一组方程来呈现（9.3），再由自由构造得到自由 CCC 与多项式范畴（9.4），最后证明内部语言的表达能力恰好追上范畴结构——这就是函数完备性（9.5）。λ 演算的正式登场在第 10 章；本章只在选读处预告。自读者不必先学数理逻辑：涉及形式语言、归纳定义、图、伴随的地方，都配了只讲够用部分的"极简回顾"。</p>
+  <div class="rmk" style="margin-top:14px;"><strong>全章地图（形式 ↔ 直观）。</strong>
+    9.1 <strong>演绎系统</strong>：公式是对象、证明是箭头、cut 是复合 ↔ 把"能证明"写成一种范畴结构；
+    9.2 <strong>演绎定理</strong>：\(\Gamma,\varphi\vdash\psi\iff\Gamma\vdash\varphi\Rightarrow\psi\) ↔ 指数伴随 \(\operatorname{Hom}(\Gamma\times A,B)\cong\operatorname{Hom}(\Gamma,B^A)\) 的语法面；
+    9.3 <strong>CCC 的方程化</strong>：用有限条方程代替泛性质描述 ↔ 把"最优"改写成"满足几条等式"；
+    9.4 <strong>自由 CCC 与多项式范畴</strong>：往范畴里加生成元 / 加一个不定元 ↔ 给语言加新常量的自由扩张；
+    9.5 <strong>函数完备性</strong>：每个多项式都由唯一箭头抽象而来 ↔ 语言的表达力追平结构。
+    标"预备"的例子可先跳过，不影响主线。</div>
+  <nav class="jump">
+    <a href="#s9-1">9.1 作为演绎系统的命题演算</a>
+    <a href="#s9-2">9.2 演绎定理</a>
+    <a href="#s9-3">9.3 CCC 的方程化呈现</a>
+    <a href="#s9-4">9.4 自由 CCC 与多项式范畴</a>
+    <a href="#s9-5">9.5 函数完备性</a>
+  </nav>
+</header>
+
+<section class="sec" id="s9-1">
+  <div class="sec-h"><span class="sec-no">9.1</span><h2>作为演绎系统的命题演算</h2><span class="src">L Part I §1</span></div>
+
+  <div class="box learn">
+    <h4>① 本节学习目标</h4>
+    <ol>
+      <li>知道"形式语言""公式""归纳定义"三件事到底在说什么，能读懂一棵推导树；</li>
+      <li>掌握演绎系统的定义：对象是公式、箭头是证明、恒等是公理、复合是 cut；</li>
+      <li>会写出命题演算（连接词 \(\wedge,\Rightarrow,\top\)）的公式形成规则与全部推导规则；</li>
+      <li>亲手验证：演绎系统满足范畴公理，因而可把它当作一个范畴（语法范畴）；</li>
+      <li>理解可靠性命题：凡能形式证明的，在任何 Heyting 代数（CCC）语义下都成立。</li>
+    </ol>
+  </div>
+
+  <h3 class="sub">9.1.1 极简回顾：形式语言与归纳定义</h3>
+  <div class="box prep">
+    <h4>极简回顾（五分钟，够用即可）</h4>
+    <p>数理逻辑一开始要做的事，是把"句子"变成可以机械检查的符号串。<strong>字母表</strong>就是允许出现的符号的集合；<strong>公式</strong>是按固定规则拼出来的符号串。关键在于"公式"用<strong>归纳定义</strong>给出：先规定哪些是最基本的（基础子句），再规定由已有公式造新公式的方法（构造子句），最后声明"只有反复用这两步得到的才是公式"（封闭子句）。</p>
+    <p>举个最熟悉的例子：算术表达式由数字、\(+\)、括号生成。\(7\) 是表达式（基础），若 \(s,t\) 是表达式则 \((s+t)\) 是表达式（构造），除此以外都不是（封闭）。正因为有封闭子句，我们才能对公式做<strong>结构归纳</strong>：要证明所有公式都有性质 \(P\)，只需证基础公式有 \(P\)，且构造规则保 \(P\)。</p>
+    <p>本章反复用到结构归纳。读者只要记住它的样式即可，不需要预先学过数理逻辑。</p>
+  </div>
+
+  <h3 class="sub">9.1.2 演绎系统的定义</h3>
+  <div class="defn">
+    <span class="lbl">定义 9.1.1（演绎系统，L&amp;S Part I §1）</span>
+    <p>一个<strong>演绎系统</strong> \(\mathcal D\) 由以下数据组成：</p>
+    <ol>
+      <li>一类<strong>公式</strong>（也叫对象）\(A,B,C,\dots\)；</li>
+      <li>对每对公式 \(A,B\)，一类<strong>证明</strong>（也叫箭头、推导）\(f:A\to B\)；</li>
+      <li>对每个公式 \(A\)，一个特定的证明 \(\operatorname{id}_A:A\to A\)，叫<strong>恒等证明</strong>（通常就是一条公理）；</li>
+      <li>一个<strong>复合</strong>运算：若 \(f:A\to B\)、\(g:B\to C\) 是证明，则 \(g\circ f:A\to C\) 是证明（叫 \(f\) 与 \(g\) 的 <strong>cut</strong>）；</li>
+      <li>结合律 \(h\circ(g\circ f)=(h\circ g)\circ f\) 与单位律 \(f\circ\operatorname{id}_A=f=\operatorname{id}_B\circ f\) 成立。</li>
+    </ol>
+    <p>换句话说，演绎系统就是一个范畴，只不过把"对象"叫公式、"态射"叫证明。这个改名不是修辞：它让我们把"可证明性"纳入范畴论的整套工具。</p>
+  </div>
+
+  <div class="rmk">
+    <strong>为什么这样定义？</strong>  traditionally 逻辑书把演绎系统定义成"公理 + 推理规则"，证明是一棵有限的树。L&amp;S 的关键观察是：证明树的前后拼接（cut）天然满足范畴的结合律与单位律，所以"证明的代数"是一个范畴。把证明看成箭头后，"两个证明相等"就有了明确含义（它们是同一个箭头），第 12 章的"等式判定问题"才能提出。
+  </div>
+
+  <h3 class="sub">9.1.3 命题演算的语言与公式</h3>
+  <div class="defn">
+    <span class="lbl">定义 9.1.2（命题演算的公式）</span>
+    <p>固定一列<strong>命题变元</strong>（原子公式）\(p,q,r,\dots\)。命题演算的公式按如下归纳规则生成：</p>
+    <ol>
+      <li>每个命题变元是公式；\(\top\) 是公式（读作"真"）；</li>
+      <li>若 \(A,B\) 是公式，则 \((A\wedge B)\) 与 \((A\Rightarrow B)\) 是公式；</li>
+      <li>除此以外都不是公式。</li>
+    </ol>
+    <p>这里 \(\wedge\) 读"且"（合取），\(\Rightarrow\) 读"蕴含"。为省括号，约定 \(\Rightarrow\) 的优先级低于 \(\wedge\)，且右结合：\(A\Rightarrow B\Rightarrow C\) 表示 \(A\Rightarrow(B\Rightarrow C)\)。</p>
+    <p>我们用的是<strong>直觉主义</strong>命题演算：没有排中律 \(A\vee\neg A\)，也没有单独的否定 \(\neg\)（在本章片段里，\(\neg A\) 可看作 \(A\Rightarrow\bot\) 的缩写，但 \(\bot\) 要到第 10 章才登场）。这是与 CCC 精确对应的版本：加上古典逻辑需要额外的布尔结构，见第 17 章附近。</p>
+  </div>
+
+  <h3 class="sub">9.1.4 推导规则与证明树</h3>
+  <p>现在给出"从假设 \(\Gamma\) 能推出 \(A\)"的形式规则，记作 \(\Gamma\vdash A\)。这里 \(\Gamma\) 是一个公式的有穷序列（叫<strong>上下文</strong>或假设集）。我们采用 Gentzen 式的自然演绎规则，每条规则都写成"横线上是前提，横线下是结论"：</p>
+
+  <div class="defn">
+    <span class="lbl">定义 9.1.3（命题演算的推导规则）</span>
+    <p><strong>结构规则</strong>（管假设怎么用）：</p>
+    <ul>
+      <li>恒等：无前提可得 \(A\vdash A\)；</li>
+      <li>弱化：由 \(\Gamma\vdash B\) 得 \(\Gamma,A\vdash B\)（多加假设不影响结论）；</li>
+      <li>交换：\(\Gamma,A,B,\Delta\vdash C\) 与 \(\Gamma,B,A,\Delta\vdash C\) 互推；</li>
+      <li>收缩：由 \(\Gamma,A,A\vdash B\) 得 \(\Gamma,A\vdash B\)（重复假设合并）。</li>
+    </ul>
+    <p><strong>合取规则</strong>：</p>
+    <ul>
+      <li>引入：由 \(\Gamma\vdash A\) 与 \(\Gamma\vdash B\) 得 \(\Gamma\vdash A\wedge B\)；</li>
+      <li>消去：由 \(\Gamma\vdash A\wedge B\) 得 \(\Gamma\vdash A\)，也得 \(\Gamma\vdash B\)。</li>
+    </ul>
+    <p><strong>蕴含规则</strong>：</p>
+    <ul>
+      <li>引入（即抽象）：由 \(\Gamma,A\vdash B\) 得 \(\Gamma\vdash A\Rightarrow B\)；</li>
+      <li>消去（即分离 / modus ponens）：由 \(\Gamma\vdash A\Rightarrow B\) 与 \(\Gamma\vdash A\) 得 \(\Gamma\vdash B\)。</li>
+    </ul>
+    <p><strong>真值规则</strong>：对任意 \(\Gamma\)，都有 \(\Gamma\vdash\top\)（"真"无需假设即可证）。</p>
+  </div>
+
+  <div class="prop">
+    <span class="lbl">例 9.1.4（一棵推导树，门槛最低的例子）</span>
+    <p>我们证明 \(\top\wedge p\vdash p\)。自下而上读这棵树：最上面用合取消去的两条规则分别从假设 \(\top\wedge p\) 得到 \(p\)——其实一步就够：</p>
+    <p>前提 \(\top\wedge p\vdash \top\wedge p\)（恒等），对前提用"合取消去（取右支）"得 \(\top\wedge p\vdash p\)。这就是整棵树。用到的规则只有恒等与合取消去，无需任何预备知识。</p>
+    <p>再看一个用蕴含的例子：证明 \(\vdash p\Rightarrow p\)。由恒等规则 \(p\vdash p\)，对它用蕴含引入（把假设 \(p\) 移到右边）得 \(\vdash p\Rightarrow p\)。这棵两节点的树，正是"恒等证明"在蕴含 language 里的化身。</p>
+  </div>
+
+  <h3 class="sub">9.1.5 演绎系统是范畴：cut 与结合律</h3>
+  <p>把"假设 \(\Gamma\)"看成一个对象（稍后会看到它是公式的积），把证明 \(\Gamma\vdash A\) 看成箭头 \(\Gamma\to A\)。cut 就是复合：若 \(f:\Gamma\to A\) 与 \(g:A\to B\)，则 \(g\circ f:\Gamma\to B\) 是"先证 \(A\)、再用 \(A\) 证 \(B\)"。</p>
+
+  <svg class="cd" viewBox="0 0 640 210" width="640" height="210" role="img" aria-label="cut 复合示意">
+    <text class="lb" x="20" y="30" text-anchor="start">证明树 f</text>
+    <text class="lb" x="250" y="30" text-anchor="start">证明树 g</text>
+    <text class="lb" x="450" y="30" text-anchor="start">cut = 复合</text>
+    <rect class="node" x="20" y="50" width="120" height="34" rx="7"/>
+    <text class="nt" x="80" y="72" text-anchor="middle">假设 Γ</text>
+    <rect class="nodeg" x="20" y="140" width="120" height="34" rx="7"/>
+    <text class="nt" x="80" y="162" text-anchor="middle">结论 A</text>
+    <line class="arb" x1="80" y1="84" x2="80" y2="140"/>
+    <text class="hb" x="92" y="116" text-anchor="start">f</text>
+    <rect class="nodeg" x="250" y="50" width="120" height="34" rx="7"/>
+    <text class="nt" x="310" y="72" text-anchor="middle">假设 A</text>
+    <rect class="node2" x="250" y="140" width="120" height="34" rx="7"/>
+    <text class="nt" x="310" y="162" text-anchor="middle">结论 B</text>
+    <line class="arg" x1="310" y1="84" x2="310" y2="140"/>
+    <text class="hg" x="322" y="116" text-anchor="start">g</text>
+    <rect class="node" x="450" y="50" width="120" height="34" rx="7"/>
+    <text class="nt" x="510" y="72" text-anchor="middle">假设 Γ</text>
+    <rect class="node2" x="450" y="140" width="120" height="34" rx="7"/>
+    <text class="nt" x="510" y="162" text-anchor="middle">结论 B</text>
+    <line class="arp" x1="510" y1="84" x2="510" y2="140"/>
+    <text class="hp" x="522" y="116" text-anchor="start">g∘f</text>
+    <line class="noa" x1="140" y1="157" x2="250" y2="157"/>
+    <text class="lb" x="195" y="185" text-anchor="middle">接上</text>
+    <line class="noa" x1="370" y1="157" x2="450" y2="157"/>
+    <text class="lb" x="410" y="185" text-anchor="middle">=</text>
+  </svg>
+  <p class="figcap">图 9.1　cut 就是把两棵证明树首尾相接；它是范畴的复合运算。</p>
+
+  <div class="prop">
+    <span class="lbl">命题 9.1.5（语法范畴）</span>
+    <p>按定义 9.1.1，命题演算的证明构成范畴 \(\mathcal C_L\)（\(L\) 指 language）：对象是公式，箭头是证明（模下文说的等式），恒等是恒等证明，复合是 cut。</p>
+    <div class="proof">
+      <p><span class="pl">证明.</span> 只需验证范畴公理。单位律：对 \(f:\Gamma\to A\)，\(f\circ\operatorname{id}_\Gamma\) 是"先用恒等证明 \(\Gamma\vdash\Gamma\)、再用 \(f\)"，与直接用 \(f\) 给出同一个推导树（只不过顶端多接了一条平凡的恒等，删去即得），故相等；\(\operatorname{id}_A\circ f\) 同理。结合律：三棵证明树 \(f,g,h\) 的拼接，无论是先接 \(f,g\) 再接 \(h\)，还是先接 \(g,h\) 再接 \(f\)，得到的都是同一棵"三段串接"的树（只是画法上的括号不同），故 \(h\circ(g\circ f)=(h\circ g)\circ f\)。<span class="qed">∎</span></p>
+    </div>
+    <p>这里的"相等"是<strong>证明的同一性</strong>问题：严格地说，我们把由结构规则（尤其交换、收缩）与 cut 消去能互相变形的证明视为同一箭头。这件事的精确处理是第 12–14 章的主题；本章只需知道"商掉这些等式后得到范畴"。</p>
+  </div>
+
+  <h3 class="sub">9.1.6 可靠性：语义与 Heyting 代数</h3>
+  <p>形式系统只管符号操作，我们还需知道它"说的没错"。做法是把公式翻译成某个 CCC（最常用的是 Heyting 代数，即作为偏序范畴的 CCC，见 8.3）里的对象，再检查每条规则在语义下都成立。</p>
+
+  <div class="defn">
+    <span class="lbl">定义 9.1.6（语义解释）</span>
+    <p>设 \(H\) 是 Heyting 代数（第 8 章：有终端 \(\top\)、二元积 \(\wedge\)、指数 \(\Rightarrow\) 的偏序范畴）。一个<strong>解释</strong>给每个命题变元 \(p\) 指定 \(H\) 中一个元素 \(\llbracket p\rrbracket\)，并递归定义</p>
+    <p>\[\llbracket\top\rrbracket=\top_H,\quad \llbracket A\wedge B\rrbracket=\llbracket A\rrbracket\wedge\llbracket B\rrbracket,\quad \llbracket A\Rightarrow B\rrbracket=\llbracket A\rrbracket\Rightarrow\llbracket B\rrbracket.\]</p>
+    <p>（这里 \(\Rightarrow\) 是 Heyting 蕴含，即满足 \(c\wedge a\le b\iff c\le a\Rightarrow b\) 的运算，见 8.3。）</p>
+    <p>称公式 \(A\) 在解释下<strong>成立</strong>，若 \(\top_H\le\llbracket A\rrbracket\)，即 \(\llbracket A\rrbracket\) 是最大元。上下文 \(\Gamma=A_1,\dots,A_n\) 解释为积 \(\llbracket\Gamma\rrbracket=\llbracket A_1\rrbracket\wedge\cdots\wedge\llbracket A_n\rrbracket\)。</p>
+  </div>
+
+  <div class="prop">
+    <span class="lbl">命题 9.1.7（可靠性定理）</span>
+    <p>若 \(\Gamma\vdash A\) 可形式证明，则在任意解释下 \(\llbracket\Gamma\rrbracket\le\llbracket A\rrbracket\)。</p>
+    <div class="proof">
+      <p><span class="pl">证明.</span> 对证明树做结构归纳。恒等规则 \(A\vdash A\) 给出 \(\llbracket A\rrbracket\le\llbracket A\rrbracket\)，由序的自反性成立。弱化：\(\llbracket\Gamma,A\rrbracket=\llbracket\Gamma\rrbracket\wedge\llbracket A\rrbracket\le\llbracket\Gamma\rrbracket\le\llbracket B\rrbracket\)，其中最后一步用归纳假设。交换与收缩对应积的交换、结合、幂等（\(a\wedge a=a\)），在偏序范畴中成立。合取消去：\(\llbracket A\wedge B\rrbracket=\llbracket A\rrbracket\wedge\llbracket B\rrbracket\le\llbracket A\rrbracket\)。合取引入：若 \(\llbracket\Gamma\rrbracket\le\llbracket A\rrbracket\) 且 \(\llbracket\Gamma\rrbracket\le\llbracket B\rrbracket\)，则 \(\llbracket\Gamma\rrbracket\le\llbracket A\rrbracket\wedge\llbracket B\rrbracket\)（积的泛性质）。蕴含引入：归纳假设是 \(\llbracket\Gamma\rrbracket\wedge\llbracket A\rrbracket\le\llbracket B\rrbracket\)，由 Heyting 蕴含的定义（伴随）等价于 \(\llbracket\Gamma\rrbracket\le\llbracket A\rrbracket\Rightarrow\llbracket B\rrbracket=\llbracket A\Rightarrow B\rrbracket\)。蕴含消去是其逆用。真值规则：\(\llbracket\Gamma\rrbracket\le\top_H=\llbracket\top\rrbracket\)。每条规则都保序，故结论对所有证明树成立。<span class="qed">∎</span></p>
+    </div>
+  </div>
+
+  <div class="box walk">
+    <h4>交互式交换图导航（可点击样本见附录 A 图 A.2）</h4>
+    <p>命题 9.1.5 说"证明构成范畴"。附录 A 图 A.2 是一张真正可点击的嵌套交换图：顶层总图有 <b>Hom</b>、<b>unit</b>、<b>corner</b> 三个热点，点进去可见子图，子图内有返回按钮，还支持缩放。读图时请把其中的"对象"暂时读作本节的"公式"、"箭头"读作"证明"。</p>
+    <ol>
+      <li>先点顶层热点 <b>Hom</b>：它展示"箭头集合如何随对象变化"，对应本节"对每对公式有一类证明"。</li>
+      <li>再点 <b>unit</b>：展示恒等态射的单位律方块，对应命题 9.1.5 中 \(f\circ\operatorname{id}=f\) 的验证。</li>
+      <li>最后点 <b>corner</b>：展示带有"自由参数"的构造，正是 9.4 的多项式范畴的雏形——现在先混个脸熟即可。</li>
+    </ol>
+  </div>
+
+  <div class="box exer">
+    <h4>② 习题</h4>
+    <div class="grp">基础</div>
+    <ol>
+      <li id="ex9.1.1">写出公式 \(((p\Rightarrow q)\wedge\top)\Rightarrow(q\Rightarrow(p\Rightarrow q))\) 的一棵完整推导树（自顶向下逐步写出每条规则的名字）。</li>
+      <li id="ex9.1.2">用结构归纳证明：任一公式中左括号与右括号个数相等（提示：对定义 9.1.2 的三条子句分别验证）。</li>
+      <li id="ex9.1.3">证明：\(\Gamma\vdash A\wedge B\) 当且仅当 \(\Gamma\vdash A\) 且 \(\Gamma\vdash B\)（两个方向各用一条规则，外加 cut）。</li>
+      <li id="ex9.1.4">在语法范畴 \(\mathcal C_L\) 中，证明"合取消去"的两条箭头 \(\pi_1:A\wedge B\to A\)、\(\pi_2:A\wedge B\to B\) 与"合取引入" \(\langle f,g\rangle:\Gamma\to A\wedge B\) 满足 \(\pi_1\circ\langle f,g\rangle=f\)、\(\pi_2\circ\langle f,g\rangle=g\)。</li>
+      <div class="grp">进阶</div>
+      <li id="ex9.1.5">证明 cut 消去的一个特例：若 \(f:\Gamma\vdash A\) 是用蕴含引入得到的（即 \(f\) 形如 \(\lambda\)-抽象），而 \(g:A\vdash B\) 是用蕴含消去得到的，则 \(g\circ f\) 可化为不含该 cut 的直接证明。（写出规则层面的化简即可，不必引用第 12 章。）</li>
+      <li id="ex9.1.6">令 \(H=\mathbf{2}=\{\bot,\top\}\) 为两元布尔格（它是 Heyting 代数）。验证命题 9.1.7 对例 9.1.4 的两棵树成立：逐条写出解释值。</li>
+    </ol>
+  </div>
+
+  <div class="box ans">
+    <h4>③ 完整答案</h4>
+    <div class="item"><b>9.1.1</b>　记 \(\Gamma=(p\Rightarrow q)\wedge\top\)，目标是 \(\Gamma\vdash q\Rightarrow(p\Rightarrow q)\)。自顶向下逐步写出：
+    <ol>
+      <li>\(\Gamma\vdash\Gamma\)（恒等），再由合取消去取左得 \(\Gamma\vdash p\Rightarrow q\)；</li>
+      <li>弱化：\(\Gamma,q\vdash p\Rightarrow q\)；再有 \(\Gamma,q,p\vdash p\)（恒等加两次弱化）；</li>
+      <li>蕴含消去（分离）：由上面两条得 \(\Gamma,q,p\vdash q\)；</li>
+      <li>蕴含引入，消去假设 \(p\)：\(\Gamma,q\vdash p\Rightarrow q\)；</li>
+      <li>蕴含引入，消去假设 \(q\)：\(\Gamma\vdash q\Rightarrow(p\Rightarrow q)\)；</li>
+      <li>蕴含引入，消去假设 \(\Gamma\)：\(\vdash\Gamma\Rightarrow(q\Rightarrow(p\Rightarrow q))\)，即目标式。<span class="qed">∎</span></li>
+    </ol></div>
+    <div class="item"><b>9.1.2</b>　基础子句：变元与 \(\top\) 无括号，左右各 0，相等。构造子句：若 \(A,B\) 满足左右括号各 \(n_A,n_B\)，则 \((A\wedge B)\)、\((A\Rightarrow B)\) 的左右括号各为 \(n_A+n_B+1\)，仍相等。由结构归纳，所有公式满足。<span class="qed">∎</span></div>
+    <div class="item"><b>9.1.3</b>　"仅当"：由 \(\Gamma\vdash A\wedge B\) 分别用合取消去的两条规则得 \(\Gamma\vdash A\) 与 \(\Gamma\vdash B\)。"当"：由 \(\Gamma\vdash A\)、\(\Gamma\vdash B\) 用合取引入得 \(\Gamma\vdash A\wedge B\)。两方向互逆，且都只用了一条规则（不需 cut）。<span class="qed">∎</span></div>
+    <div class="item"><b>9.1.4</b>　按定义，\(\langle f,g\rangle\) 是"由 \(\Gamma\vdash A\) 与 \(\Gamma\vdash B\) 用合取引入"得到的证明 \(\Gamma\vdash A\wedge B\)。把它与 \(\pi_1\)（合取消去取左）作 cut：树形上就是先给 \(A\wedge B\) 的引入，紧接着消去左支，结果恰是原来的 \(f\)（中间的 \(A\wedge B\) 被消去，这就是 cut 消化的最简单情形）；\(\pi_2\) 同理得 \(g\)。<span class="qed">∎</span></div>
+    <div class="item"><b>9.1.5</b>　设 \(f\) 是由 \(\Gamma,A\vdash B\) 对 \(A\) 作蕴含引入得 \(f:\Gamma\vdash A\Rightarrow B\)，\(g\) 是由 \(C\vdash A\Rightarrow B\) 与 \(C\vdash A\) 作蕴含消去得。复合 \(g\circ f\) 的树中，\(f\) 的末端（蕴含引入）与 \(g\) 的开端（蕴含消去）相邻。化简：把它们对消，代之以把 \(f\) 的前提证明 \(\Gamma,A\vdash B\) 与 \(g\) 的另一条前提 \(C\vdash A\) 作 cut（恰当处理上下文），得 \(\Gamma\vdash B\) 的直接证明，其中不再出现该蕴含的引入—消去对。这正是"抽象后立刻应用"的 \(\beta\)-归约在证明层面的样子（详见第 10 章）。<span class="qed">∎</span></div>
+    <div class="item"><b>9.1.6</b>　\(H=\mathbf 2\) 中 \(\wedge\) 是 min、\(\Rightarrow\) 满足 \(c\wedge a\le b\iff c\le a\Rightarrow b\)，具体为 \(a\Rightarrow b=\top\) 当 \(a=\bot\) 或 \(b=\top\)，否则 \(\bot\)。第一棵树：\(\llbracket\top\wedge p\rrbracket=\top\wedge\llbracket p\rrbracket=\llbracket p\rrbracket\)，合取消去给出 \(\top\wedge p\vdash p\) 即 \(\llbracket p\rrbracket\le\llbracket p\rrbracket\)，成立。第二棵树：任意 \(p\)，\(\llbracket p\Rightarrow p\rrbracket=\top\)（因 \(p=\bot\) 时前件假，\(p=\top\) 时后件真），故 \(\top\le\top\)，成立。<span class="qed">∎</span></div>
+  </div>
+
+  <div class="box phil">
+    <h4>选读拓展 · 自学与哲学提示（可略读）</h4>
+    <p><strong>自学法与主线。</strong>本节的全部技术内容只有两件事：把证明做成箭头（定义 9.1.1）、把规则列全（定义 9.1.3）。可靠性命题（9.1.7）是唯一需要动脑的证明，请务必亲手把蕴含引入那一步的伴随等式写三遍——它就是下一节演绎定理的语义版本。</p>
+    <p><strong>边界。</strong>这里用的是直觉主义片段（只有 \(\wedge,\Rightarrow,\top\)）。L&amp;S 同步讨论了带余积 \(\vee\) 与 \(\bot\) 的版本（Part I §8），对应有初始对象的 CCC；本章主线暂不需要。排中律对应布尔代数，古典逻辑的完备对应要到 Part II §7 才处理。</p>
+    <p><strong>哲学联系。</strong>"证明是箭头"把弗雷格以来"证明是客观对象"的想法落到了可计算的结构上：两个证明是否同一，变成"两个箭头是否相等"，从而可以被判定（第 12 章）。这一步把"有效性"从心理过程改写为结构性质，是后面所有哲学讨论的支点。</p>
+  </div>
+</section>
+
+<section class="sec" id="s9-2">
+  <div class="sec-h"><span class="sec-no">9.2</span><h2>演绎定理</h2><span class="src">L Part I §2</span></div>
+
+  <div class="box learn">
+    <h4>① 本节学习目标</h4>
+    <ol>
+      <li>准确陈述演绎定理 \(\Gamma,\varphi\vdash\psi\iff\Gamma\vdash\varphi\Rightarrow\psi\)；</li>
+      <li>掌握两个方向各自的完整证明（含对证明树的结构归纳）；</li>
+      <li>理解它正是指数伴随 \(\operatorname{Hom}(\Gamma\times A,B)\cong\operatorname{Hom}(\Gamma,B^A)\) 的语法面；</li>
+      <li>会用演绎定理把"带假设的推导"压缩成一条箭头，并反向展开；</li>
+      <li>知道定理对哪些系统成立、在哪些系统失效（边界意识）。</li>
+    </ol>
+  </div>
+
+  <h3 class="sub">9.2.1 极简回顾：结构归纳与"内化"</h3>
+  <div class="box prep">
+    <h4>极简回顾（够用即可）</h4>
+    <p><strong>结构归纳</strong>（9.1.1 已介绍）：证明树由规则有限步生成，要对所有证明树证一件事，只需验证每条规则"若前提满足则结论满足"。</p>
+    <p><strong>内化</strong>：把一个"外部操作"变成系统内部的一个对象或箭头。例如"从 \(A\) 可推出 \(B\)"是元语言里的一句判断；演绎定理把它变成系统内部的一个公式 \(A\Rightarrow B\) 的证明。这是本章最重要的思维动作，读者务必体会：所谓"逻辑能谈论自己"，靠的正是这类内化。</p>
+  </div>
+
+  <h3 class="sub">9.2.2 定理陈述与证明</h3>
+  <div class="prop">
+    <span class="lbl">定理 9.2.1（演绎定理）</span>
+    <p>对任意公式集 \(\Gamma\) 与公式 \(\varphi,\psi\)，</p>
+    <p>\[\Gamma,\varphi\vdash\psi\quad\quad\mathrm{iff}\quad\quad\Gamma\vdash\varphi\Rightarrow\psi.\]</p>
+    <p>特别地，取 \(\Gamma=\varnothing\)：\(\varphi\vdash\psi\) 当且仅当 \(\vdash\varphi\Rightarrow\psi\)。</p>
+    <div class="proof">
+      <p><span class="pl">证明（⟸ 方向，从 \(\varphi\Rightarrow\psi\) 得带假设的 \(\psi\)）.</span> 设已有 \(\Gamma\vdash\varphi\Rightarrow\psi\)。由从无到有的弱化规则，把假设 \(\varphi\) 加进去仍可证：\(\Gamma,\varphi\vdash\varphi\Rightarrow\psi\)。又由恒等规则与弱化：\(\Gamma,\varphi\vdash\varphi\)。对这两条用蕴含消去（分离），得 \(\Gamma,\varphi\vdash\psi\)。这一步只用一条规则，与"若会证 \(\varphi\Rightarrow\psi\) 且会证 \(\varphi\)，则会证 \(\psi\)"的常识完全一致。</p>
+      <p><span class="pl">证明（⟹ 方向，从带假设的 \(\psi\) 造出 \(\varphi\Rightarrow\psi\)）.</span> 这是对证明树的结构归纳。设给定一棵证明树 \(T\)，其结论是 \(\Gamma,\varphi\vdash\psi\)。归纳命题 \(P(T)\)：可以由 \(T\) 造出一棵证明树，结论为 \(\Gamma\vdash\varphi\Rightarrow\psi_T\)，其中 \(\psi_T\) 就是 \(T\) 的结论。按 \(T\) 最下面一条规则分情形：</p>
+      <p><strong>(1) \(T\) 就是恒等规则</strong>，即 \(\psi=\varphi\)，结论 \(\Gamma,\varphi\vdash\varphi\)。那么 \(\Gamma\vdash\varphi\Rightarrow\varphi\) 由 9.1.4 已证的真定理（恒等的蕴含版）经弱化得到。</p>
+      <p><strong>(2) \(T\) 的最下面一条是弱化</strong>：结论 \(\Gamma,\varphi\vdash\psi\) 来自前提 \(\Gamma'\vdash\psi\)，其中 \(\Gamma'\) 不含 \(\varphi\)（或 \(\varphi\) 是被额外加上的假设）。由归纳假设，对每个前提（设其结论为 \(\theta\)）有 \(\Gamma'\vdash\varphi\Rightarrow\theta\)。改用更统一的写法：若结论来自前提 \(\Gamma,\varphi\vdash\theta\) 经某规则 \(R\)，则由归纳假设 \(\Gamma\vdash\varphi\Rightarrow\theta\)，再加上 \(R\) 的其它前提（同样归纳处理），对 \(\varphi\Rightarrow\theta\) 复用到该规则的结构，即得 \(\Gamma\vdash\varphi\Rightarrow\psi\)。具体连接词规则逐一核对如下。</p>
+      <p><strong>(3) 合取引入</strong>：\(T\) 由 \(\Gamma,\varphi\vdash\alpha\) 与 \(\Gamma,\varphi\vdash\beta\) 得 \(\Gamma,\varphi\vdash\alpha\wedge\beta\)。归纳假设给出 \(\Gamma\vdash\varphi\Rightarrow\alpha\) 与 \(\Gamma\vdash\varphi\Rightarrow\beta\)。需要造 \(\Gamma\vdash\varphi\Rightarrow(\alpha\wedge\beta)\)。做法：由 \(\Gamma,\varphi\vdash\alpha\) 与 \(\Gamma,\varphi\vdash\beta\)（原始的两条前提）直接用合取引入得 \(\Gamma,\varphi\vdash\alpha\wedge\beta\)，再对这棵树用……此处正是要归纳的情形。改用等价路径：在 \(\Gamma,\varphi\) 下，由 \(\varphi\Rightarrow\alpha\) 与假设 \(\varphi\) 分离得 \(\alpha\)，同理得 \(\beta\)，合取引入得 \(\alpha\wedge\beta\)，最后蕴含引入消去 \(\varphi\)，得 \(\Gamma\vdash\varphi\Rightarrow(\alpha\wedge\beta)\)。</p>
+      <p><strong>(4) 合取消去</strong>：\(T\) 由 \(\Gamma,\varphi\vdash\alpha\wedge\beta\) 得 \(\Gamma,\varphi\vdash\alpha\)。归纳假设给 \(\Gamma\vdash\varphi\Rightarrow(\alpha\wedge\beta)\)。在 \(\Gamma,\varphi\) 下分离得 \(\alpha\wedge\beta\)，合取消去取左得 \(\alpha\)，蕴含引入得 \(\Gamma\vdash\varphi\Rightarrow\alpha\)。</p>
+      <p><strong>(5) 蕴含消去</strong>：\(T\) 由 \(\Gamma,\varphi\vdash\alpha\Rightarrow\beta\) 与 \(\Gamma,\varphi\vdash\alpha\) 得 \(\Gamma,\varphi\vdash\beta\)。归纳假设给 \(\Gamma\vdash\varphi\Rightarrow(\alpha\Rightarrow\beta)\) 与 \(\Gamma\vdash\varphi\Rightarrow\alpha\)。在 \(\Gamma,\varphi\) 下分别分离得 \(\alpha\Rightarrow\beta\) 与 \(\alpha\)，再分离得 \(\beta\)，蕴含引入得 \(\Gamma\vdash\varphi\Rightarrow\beta\)。</p>
+      <p><strong>(6) 蕴含引入</strong>：\(T\) 由 \(\Gamma,\varphi,\theta\vdash\beta\) 得 \(\Gamma,\varphi\vdash\theta\Rightarrow\beta\)。归纳假设给 \(\Gamma,\theta\vdash\varphi\Rightarrow\beta\)（注意此时 \(\varphi\) 仍是可消去的假设，\(\theta\) 移到了上下文）。由引理 9.2.2（可交换假设次序）可把 \(\Gamma,\theta\vdash\varphi\Rightarrow\beta\) 改写为 \(\Gamma\vdash\theta\Rightarrow(\varphi\Rightarrow\beta)\)……为保证证明自洽，直接做：对树 \(\Gamma,\varphi,\theta\vdash\beta\) 用两次归纳（先把 \(\varphi\) 移到右边得 \(\Gamma,\theta\vdash\varphi\Rightarrow\beta\)，再把 \(\theta\) 移到右边得 \(\Gamma\vdash\theta\Rightarrow(\varphi\Rightarrow\beta)\)），再用 9.2.3 交换右边两个蕴含的次序得 \(\Gamma\vdash\varphi\Rightarrow(\theta\Rightarrow\beta)\)。</p>
+      <p><strong>(7) 真值规则</strong>：\(\psi=\top\)，而 \(\Gamma\vdash\varphi\Rightarrow\top\) 由 9.1 的真值规则直接成立。</p>
+      <p>结构规则（弱化、交换、收缩）只改变假设的呈现方式，由归纳假设配合 9.2.3 同样处理。所有情形都给出所需证明树，归纳完成。<span class="qed">∎</span></p>
+    </div>
+  </div>
+
+  <div class="prop">
+    <span class="lbl">引理 9.2.2（假设次序可交换）</span>
+    <p>\(\Gamma,\varphi,\theta\vdash\psi\) 当且仅当 \(\Gamma,\theta,\varphi\vdash\psi\)；且 \(\Gamma,\varphi,\varphi\vdash\psi\) 当且仅当 \(\Gamma,\varphi\vdash\psi\)。</p>
+    <div class="proof">
+      <p><span class="pl">证明.</span> 这正是 9.1.3 的交换规则与收缩规则的内容，两个方向都由该规则直接给出（交换规则自逆；收缩的反向是弱化）。<span class="qed">∎</span></p>
+    </div>
+    <p>引理 9.2.3（蕴含的次序交换）：\(\vdash(\varphi\Rightarrow\theta\Rightarrow\beta)\Rightarrow(\theta\Rightarrow\varphi\Rightarrow\beta)\)。它可由定理 9.2.1 的思路直接构造一棵推导树，作为 9.2.2 的推论，此处不展开（见习题 9.2.5）。</p>
+  </div>
+
+  <h3 class="sub">9.2.3 范畴解读：演绎定理就是指数伴随</h3>
+  <p>把公式 \(\Gamma\) 解释为笛卡尔积对象 \(\Gamma=A_1\times\cdots\times A_n\)（9.1.6），把 \(\varphi\Rightarrow\psi\) 解释为指数对象 \(\psi^\varphi\)（第 8 章）。演绎定理的两句话恰好是 Hom-集的一对自然双射：</p>
+  <p>\[\operatorname{Hom}(\Gamma\times\varphi,\ \psi)\ \cong\ \operatorname{Hom}(\Gamma,\ \psi^{\varphi}).\]</p>
+  <p>左边"\(\Gamma,\varphi\vdash\psi\)"是箭头 \(\Gamma\times\varphi\to\psi\)；右边"\(\Gamma\vdash\varphi\Rightarrow\psi\)"是箭头 \(\Gamma\to\psi^{\varphi}\)。双射的两个方向就是 9.2.2 证明中的"蕴含引入"与"蕴含消去"，它们互为逆，正对应指数的转置与求值（第 8 章 8.3 的公式）。</p>
+
+  <svg class="cd" viewBox="0 0 680 260" width="680" height="260" role="img" aria-label="演绎定理对应的指数伴随方块">
+    <text class="lb" x="24" y="28" text-anchor="start">语法侧（证明）</text>
+    <text class="lb" x="410" y="28" text-anchor="start">范畴侧（箭头）</text>
+    <rect class="node" x="30" y="44" width="270" height="42" rx="7"/>
+    <text class="nt" x="165" y="70" text-anchor="middle">Γ, φ ⊢ ψ</text>
+    <rect class="nodeg" x="30" y="176" width="270" height="42" rx="7"/>
+    <text class="nt" x="165" y="202" text-anchor="middle">Γ ⊢ φ ⇒ ψ</text>
+    <line class="arb" x1="165" y1="86" x2="165" y2="176"/>
+    <text class="hb" x="178" y="134" text-anchor="start">蕴含引入</text>
+    <line class="arg" x1="285" y1="176" x2="285" y2="86"/>
+    <text class="hg" x="298" y="134" text-anchor="start">蕴含消去</text>
+    <rect class="node2" x="410" y="44" width="250" height="42" rx="7"/>
+    <text class="nt" x="535" y="70" text-anchor="middle">Hom(Γ×φ, ψ) 中的箭头</text>
+    <rect class="node2" x="410" y="176" width="250" height="42" rx="7"/>
+    <text class="nt" x="535" y="202" text-anchor="middle">Hom(Γ, ψ^φ) 中的箭头</text>
+    <line class="arb" x1="535" y1="86" x2="535" y2="176"/>
+    <text class="hb" x="548" y="134" text-anchor="start">转置 (–)~</text>
+    <line class="arg" x1="660" y1="176" x2="660" y2="86"/>
+    <text class="hg" x="600" y="128" text-anchor="end">ev</text>
+    <line class="noa" x1="300" y1="65" x2="410" y2="65"/>
+    <line class="noa" x1="300" y1="197" x2="410" y2="197"/>
+    <text class="lb" x="355" y="60" text-anchor="middle">解释</text>
+    <text class="lb" x="355" y="192" text-anchor="middle">解释</text>
+  </svg>
+  <p class="figcap">图 9.2　演绎定理（左）与指数伴随（右）是同一条双射的两种语言；上下箭头互为逆。</p>
+
+  <div class="prop">
+    <span class="lbl">命题 9.2.4（可靠性 + 演绎定理的语义版本）</span>
+    <p>在任意 CCC 语义下，若 \(\Gamma,\varphi\vdash\psi\) 可证，则存在箭头 \(\llbracket\Gamma\rrbracket\times\llbracket\varphi\rrbracket\to\llbracket\psi\rrbracket\)；由指数伴随，它唯一对应箭头 \(\llbracket\Gamma\rrbracket\to\llbracket\psi\rrbracket^{\llbracket\varphi\rrbracket}\)，即 \(\varphi\Rightarrow\psi\) 的语义。故演绎定理在语义侧自动成立——语法侧的证明（9.2.2）与语义侧的伴随（9.1.7）相互印证。</p>
+    <div class="proof">
+      <p><span class="pl">证明.</span> 由命题 9.1.7（可靠性）得可证推导的语义箭头；由第 8 章指数的泛性质得唯一转置；两条路径对每条规则一致（9.1.7 的归纳已逐条验证），故整体一致。<span class="qed">∎</span></p>
+    </div>
+  </div>
+
+  <h3 class="sub">9.2.4 一个完整例子</h3>
+  <div class="prop">
+    <span class="lbl">例 9.2.5（用演绎定理压缩推导）</span>
+    <p>要证 \(\vdash(p\Rightarrow q)\Rightarrow((q\Rightarrow r)\Rightarrow(p\Rightarrow r))\)（蕴含的传递性）。用演绎定理三次：</p>
+    <ol>
+      <li>目标等价于 \((p\Rightarrow q),(q\Rightarrow r)\vdash p\Rightarrow r\)；</li>
+      <li>再等价于 \((p\Rightarrow q),(q\Rightarrow r),p\vdash r\)；</li>
+      <li>由假设 \(p\Rightarrow q\) 与 \(p\) 分离得 \(q\)，由 \(q\Rightarrow r\) 与 \(q\) 分离得 \(r\)。</li>
+    </ol>
+    <p>三步压缩把一棵较深的树变成三次机械的"移假设"，展示了演绎定理作为证明工具的效率。</p>
+  </div>
+
+  <h3 class="sub">9.2.5 边界：何时成立、何时失效</h3>
+  <div class="rmk">
+    演绎定理依赖蕴含规则具有"引入—消去"的配对结构（即 \(\Rightarrow\) 满足伴随）。在我们用的直觉主义自然演绎中它成立。失效的典型：某些模态逻辑（必然算子 \(\Box\) 不满足同样的伴随）、或带不可靠蕴含的次协调逻辑。对本章的 CCC 主线，只需记住"有指数就有演绎定理"，这是 9.3 方程化呈现的出发点。
+  </div>
+
+  <div class="box exer">
+    <h4>② 习题</h4>
+    <div class="grp">基础</div>
+    <ol>
+      <li id="ex9.2.1">用演绎定理证明 \(\vdash p\Rightarrow(q\Rightarrow p)\)（即弱化公理），写出压缩后的三步。</li>
+      <li id="ex9.2.2">对例 9.2.5 的传递性，写出展开后的完整推导树（逐步标出每条规则）。</li>
+      <li id="ex9.2.3">证明：\(\Gamma\vdash\varphi\Rightarrow(\psi\Rightarrow\theta)\) 当且仅当 \(\Gamma,\psi,\varphi\vdash\theta\)（用两次演绎定理加交换规则）。</li>
+      <div class="grp">进阶</div>
+      <li id="ex9.2.4">在 Heyting 代数 \(H\) 中，把演绎定理写成序关系等式 \[\llbracket\Gamma\rrbracket\wedge\llbracket\varphi\rrbracket\le\llbracket\psi\rrbracket\iff\llbracket\Gamma\rrbracket\le\llbracket\varphi\rrbracket\Rightarrow\llbracket\psi\rrbracket.\] 并指出它正是 Heyting 蕴含的定义（8.3）。</li>
+      <li id="ex9.2.5">构造引理 9.2.3 的推导树：\(\vdash(\varphi\Rightarrow\theta\Rightarrow\beta)\Rightarrow(\theta\Rightarrow\varphi\Rightarrow\beta)\)。</li>
+      <li id="ex9.2.6">举例说明演绎定理在"只有 \(\wedge,\top\)、没有 \(\Rightarrow\)"的系统中无法陈述（提示：右边根本写不出来）。</li>
+    </ol>
+  </div>
+
+  <div class="box ans">
+    <h4>③ 完整答案</h4>
+    <div class="item"><b>9.2.1</b>　目标等价于 \(p,q\vdash p\)。由恒等 \(p\vdash p\) 加弱化得 \(p,q\vdash p\)。反用演绎定理：先消去 \(q\) 得 \(p\vdash q\Rightarrow p\)，再消去 \(p\) 得 \(\vdash p\Rightarrow(q\Rightarrow p)\)。<span class="qed">∎</span></div>
+    <div class="item"><b>9.2.2</b>　① 恒等 \(p\Rightarrow q\vdash p\Rightarrow q\)；② 恒等 \(q\Rightarrow r\vdash q\Rightarrow r\)；③ 恒等 \(p\vdash p\)；④ 由 ①③ 分离得 \(q\)；⑤ 由 ②④ 分离得 \(r\)；⑥ 蕴含引入消去 \(p\)：\(p\Rightarrow q,q\Rightarrow r\vdash p\Rightarrow r\)；⑦ 消去 \(q\Rightarrow r\)：\(p\Rightarrow q\vdash(q\Rightarrow r)\Rightarrow(p\Rightarrow r)\)；⑧ 消去 \(p\Rightarrow q\)：得目标。<span class="qed">∎</span></div>
+    <div class="item"><b>9.2.3</b>　对 \(\Gamma\vdash\varphi\Rightarrow(\psi\Rightarrow\theta)\) 反用演绎定理得 \(\Gamma,\varphi\vdash\psi\Rightarrow\theta\)，再用一次得 \(\Gamma,\varphi,\psi\vdash\theta\)，由交换规则（9.2.2）等价于 \(\Gamma,\psi,\varphi\vdash\theta\)。逆向把两轮演绎定理正用即可。<span class="qed">∎</span></div>
+    <div class="item"><b>9.2.4</b>　由 9.1.6 的解释，\(\Gamma,\varphi\vdash\psi\) 的语义是 \(\llbracket\Gamma\rrbracket\wedge\llbracket\varphi\rrbracket\le\llbracket\psi\rrbracket\)；\(\Gamma\vdash\varphi\Rightarrow\psi\) 的语义是 \(\llbracket\Gamma\rrbracket\le\llbracket\varphi\Rightarrow\psi\rrbracket=\llbracket\varphi\rrbracket\Rightarrow\llbracket\psi\rrbracket\)。二者等价正是 Heyting 蕴含的伴随定义 \(c\wedge a\le b\iff c\le a\Rightarrow b\)（取 \(c=\llbracket\Gamma\rrbracket\)）。<span class="qed">∎</span></div>
+    <div class="item"><b>9.2.5</b>　由假设 \(\varphi\Rightarrow\theta\Rightarrow\beta\)、\(\theta\)、\(\varphi\)：先由后两者与第一个假设分离两次（先 \(\varphi\) 得 \(\theta\Rightarrow\beta\)，再 \(\theta\) 得 \(\beta\)），得 \(\varphi\Rightarrow\theta\Rightarrow\beta,\theta,\varphi\vdash\beta\)。用演绎定理消去 \(\varphi\)：\(\varphi\Rightarrow\theta\Rightarrow\beta,\theta\vdash\varphi\Rightarrow\beta\)；消去 \(\theta\)：\(\varphi\Rightarrow\theta\Rightarrow\beta\vdash\theta\Rightarrow\varphi\Rightarrow\beta\)；再消去最左假设：得目标。<span class="qed">∎</span></div>
+    <div class="item"><b>9.2.6</b>　演绎定理的右边含有符号 \(\Rightarrow\)。若系统的连接词只有 \(\wedge,\top\)，则公式集里根本没有形如 \(\varphi\Rightarrow\psi\) 的公式，右侧 \(\Gamma\vdash\varphi\Rightarrow\psi\) 不是合法断言，定理无法陈述。这从反面说明：演绎定理是"蕴含"这一连接词的专属性质，它刻画的正是指数对象。<span class="qed">∎</span></div>
+  </div>
+
+  <div class="box phil">
+    <h4>选读拓展 · 自学与哲学提示（可略读）</h4>
+    <p><strong>自学法与主线。</strong>演绎定理是本章第一个真正的定理，务必把 9.2.2 的归纳逐情形抄一遍。核心只有一句：把"假设 \(\varphi\)"反复用演绎定理推到右边，直到它化为指数 \(\varphi\Rightarrow\)。L&amp;S 在原著 §2 用的正是这个思路。</p>
+    <p><strong>边界。</strong>证明树里"蕴含引入"与"蕴含消去"相邻时可化简（9.1 习题 5 的 \(\beta\)-归约）。本章把它当作直观，第 12–14 章会证明所有项都能化到正规形（强正规化），那才是证明同一性的严格基础。</p>
+    <p><strong>哲学联系。</strong>演绎定理把"在某个前提下推理"变成"对象内部的一个箭头"。用模态语言说，它把相对的可能性（若 \(\varphi\) 则 \(\psi\)）对象化为可讨论的实体（\(\varphi\Rightarrow\psi\) 这个公式本身）。这是"逻辑能自我谈论"的第一步，也是后面内部语言（第 13 章附近）的技术前提。</p>
+  </div>
+</section>
+
+<section class="sec" id="s9-3">
+  <div class="sec-h"><span class="sec-no">9.3</span><h2>CCC 的方程化呈现</h2><span class="src">L Part I §3</span></div>
+
+  <div class="box learn">
+    <h4>① 本节学习目标</h4>
+    <ol>
+      <li>回顾 CCC 的泛性质定义（终端、积、指数），知道它"最优但带唯一性描述"；</li>
+      <li>写出 CCC 的方程化呈现：一套对象生成运算、一套箭头运算、有限条方程；</li>
+      <li>亲手验证 β 与 η 两条方程，理解它们就是"求值后抽象 = 原函数"与"抽象后求值 = 原箭头"；</li>
+      <li>证明方程化定义与泛性质定义等价（两个方向）；</li>
+      <li>明白这一步为何关键：方程化让"CCC 的模型"成为代数结构，为自由构造与机器判定铺路。</li>
+    </ol>
+  </div>
+
+  <h3 class="sub">9.3.1 极简回顾：泛性质 vs 方程</h3>
+  <div class="box prep">
+    <h4>极简回顾（够用即可）</h4>
+    <p>第 8 章用<strong>泛性质</strong>定义 CCC：终端对象是"任何对象都有唯一箭头射向它"，积是"对任意锥有唯一箭头穿过"，指数是"对任意 \(f:C\times A\to B\) 有唯一转置 \(\tilde f:C\to B^A\)"。这些定义的共同句式是"存在唯一"，很好用，但含一个量词和唯一性论证。</p>
+    <p><strong>方程化</strong>换一种写法：把结构运算直接列出来（比如 \(\pi_1,\pi_2,\langle-,-\rangle\)），再要求它们满足几条<strong>等式</strong>（比如 \(\pi_1\circ\langle f,g\rangle=f\)）。"存在唯一"被替换为"给定运算满足等式"。两者描述同一个对象，但方程化有两个好处：一是模型变成纯代数（便于做自由构造，见 9.4），二是"两个项是否相等"变成符号计算（第 12 章判定问题的前提）。</p>
+    <p>术语："笛卡尔闭范畴方程化呈现"就是 L&amp;S 原著 §3 的标题 <em>Cartesian closed categories equationally presented</em>。</p>
+  </div>
+
+  <h3 class="sub">9.3.2 方程化呈现的完整数据</h3>
+  <div class="defn">
+    <span class="lbl">定义 9.3.1（CCC 的方程化呈现）</span>
+    <p>一个<strong>笛卡尔闭范畴</strong>由以下两层和若干方程组成。</p>
+    <p><strong>对象层</strong>：一类对象，配备运算</p>
+    <ul>
+      <li>一个常元 \(1\)（终端对象）；</li>
+      <li>二元运算 \((A,B)\mapsto A\times B\)（积）；</li>
+      <li>二元运算 \((A,B)\mapsto B^{A}\)（指数，读作"从 \(A\) 到 \(B\) 的函数对象"）。</li>
+    </ul>
+    <p><strong>箭头层</strong>：对每对对象 \(A,B\) 一类箭头，配备运算</p>
+    <ul>
+      <li>恒等：\(\operatorname{id}_A:A\to A\)；复合：\(f:A\to B,\ g:B\to C\mapsto g\circ f:A\to C\)；</li>
+      <li>终端箭头：\(!_A:A\to 1\)；</li>
+      <li>投影：\(\pi_1:A\times B\to A\)，\(\pi_2:A\times B\to B\)；配对：\(f:C\to A,\ g:C\to B\mapsto\langle f,g\rangle:C\to A\times B\)；</li>
+      <li>求值：\(\operatorname{ev}_{A,B}:B^{A}\times A\to B\)；抽象（转置）：\(f:C\times A\to B\mapsto f^{\ast}:C\to B^{A}\)。</li>
+    </ul>
+    <p><strong>方程</strong>（对一切使两边有定义的 \(f,g,h\)）：</p>
+    <p><em>范畴律：</em>\(f\circ\operatorname{id}_A=f=\operatorname{id}_B\circ f\)，\(h\circ(g\circ f)=(h\circ g)\circ f\)。</p>
+    <p><em>终端：</em>凡 \(f:A\to 1\) 都有 \(f=!_A\)。</p>
+    <p><em>积：</em>\(\pi_1\circ\langle f,g\rangle=f\)，\(\pi_2\circ\langle f,g\rangle=g\)，\(\langle\pi_1\circ h,\pi_2\circ h\rangle=h\)。</p>
+    <p><em>指数：</em></p>
+    <p>\[
+      \begin{aligned}
+      (\beta)\quad & \operatorname{ev}\circ(f^{\ast}\times\operatorname{id}_A)=f &&(f:C\times A\to B),\\
+      (\eta)\quad & \big(\operatorname{ev}\circ(h\times\operatorname{id}_A)\big)^{\ast}=h &&(h:C\to B^{A}).
+      \end{aligned}
+    \]</p>
+    <p>这里 \(f^{\ast}\times\operatorname{id}_A:C\times A\to B^{A}\times A\) 是把 \(f^{\ast}\) 与 \(\operatorname{id}_A\) 并排的箭头。所有等式都只有"项 = 项"的形状，没有量词与唯一性。</p>
+  </div>
+
+  <div class="rmk">
+    <strong>约定说明。</strong>为避免被括号绊倒，L&amp;S 采用"严格"约定：\(A\times(B\times C)\) 与 \((A\times B)\times C\) 视为同一个对象，\(1\times A=A=A\times1\)。一般范畴中它们只是同构；方程化呈现把结构选定了，故可按严格相等处理。若在普通（非严格）CCC 中工作，把等式右侧的 \(=\) 理解为"由标准结合同构识别"，结论不变。
+  </div>
+
+  <h3 class="sub">9.3.3 两条指数方程的图解</h3>
+  <p>先看 \(\beta\)：先抽象（\(f\mapsto f^{\ast}\)），再求值，回到 \(f\)。图上是从 \(C\times A\) 出发的两条路径：下路直接是 \(f\)，上路先到 \(B^{A}\times A\) 再 \(\operatorname{ev}\)，两路相等。</p>
+
+  <svg class="cd" viewBox="0 0 620 200" width="620" height="200" role="img" aria-label="指数的 beta 方程">
+    <rect class="node" x="40" y="72" width="130" height="42" rx="7"/>
+    <text class="nt" x="105" y="98" text-anchor="middle">C × A</text>
+    <rect class="node2" x="300" y="20" width="180" height="42" rx="7"/>
+    <text class="nt" x="390" y="46" text-anchor="middle">B^A × A</text>
+    <rect class="nodeg" x="300" y="140" width="180" height="42" rx="7"/>
+    <text class="nt" x="390" y="166" text-anchor="middle">B</text>
+    <line class="arb" x1="105" y1="72" x2="350" y2="20"/>
+    <text class="hb" x="200" y="38" text-anchor="middle">f* × id</text>
+    <line class="arg" x1="430" y1="62" x2="410" y2="140"/>
+    <text class="hg" x="470" y="106" text-anchor="start">ev</text>
+    <line class="ar" x1="170" y1="93" x2="300" y2="161"/>
+    <text class="lb" x="210" y="140" text-anchor="middle">f</text>
+  </svg>
+  <p class="figcap">图 9.3　β 方程：沿上边再沿右边（\(f^{\ast}\times\operatorname{id}\) 后 \(\operatorname{ev}\)）等于直接走 \(f\)。</p>
+
+  <p>再看 \(\eta\)：从 \(C\) 出发的箭头 \(h:C\to B^{A}\)，先展开成 \(\operatorname{ev}\circ(h\times\operatorname{id}_A):C\times A\to B\)，再抽象回去，回到 \(h\)。它是 β 的"另一半"，保证抽象与求值互为逆。</p>
+
+  <svg class="cd" viewBox="0 0 620 190" width="620" height="190" role="img" aria-label="指数的 eta 方程">
+    <rect class="node" x="40" y="74" width="110" height="42" rx="7"/>
+    <text class="nt" x="95" y="100" text-anchor="middle">C</text>
+    <rect class="nodeg" x="290" y="20" width="200" height="42" rx="7"/>
+    <text class="nt" x="390" y="46" text-anchor="middle">C × A</text>
+    <rect class="node2" x="290" y="130" width="200" height="42" rx="7"/>
+    <text class="nt" x="390" y="156" text-anchor="middle">B</text>
+    <line class="arb" x1="150" y1="90" x2="360" y2="62"/>
+    <text class="hb" x="205" y="62" text-anchor="middle">h × id</text>
+    <line class="arg" x1="450" y1="62" x2="450" y2="130"/>
+    <text class="hg" x="500" y="102" text-anchor="start">ev</text>
+    <line class="noa" x1="150" y1="100" x2="290" y2="151"/>
+    <text class="lb" x="200" y="146" text-anchor="middle">展开</text>
+    <line class="arp" x1="390" y1="151" x2="200" y2="101"/>
+    <text class="hp" x="270" y="175" text-anchor="middle">(–)*</text>
+  </svg>
+  <p class="figcap">图 9.4　η 方程：把 \(h\) 展开再抽象，回到 \(h\)。与图 9.3 合起来说明 \((-)^{\ast}\) 与 \(\operatorname{ev}\) 互逆。</p>
+
+  <h3 class="sub">9.3.4 等价性定理</h3>
+  <div class="prop">
+    <span class="lbl">定理 9.3.2（两种定义等价）</span>
+    <p>一个结构满足定义 9.3.1 的方程，当且仅当它满足第 8 章的 CCC 泛性质定义。</p>
+    <div class="proof">
+      <p><span class="pl">证明，方程 ⇒ 泛性质.</span> 终端：\(!_A:A\to1\) 存在；若 \(f:A\to1\)，终端方程直接给 \(f=!_A\)，唯一性成立。积：给定锥 \(f:C\to A,\ g:C\to B\)，取 \(\langle f,g\rangle\) 为穿过箭头；存在性由配对运算给出，唯一性：若 \(k:C\to A\times B\) 满足 \(\pi_1 k=f,\pi_2 k=g\)，则
+    \[k=\langle\pi_1\circ k,\pi_2\circ k\rangle=\langle f,g\rangle,\]
+    其中第一步用方程 \(\langle\pi_1 h,\pi_2 h\rangle=h\)，第二步代入假设。指数：给定 \(f:C\times A\to B\)，取 \(\tilde f=f^{\ast}\)；存在性由抽象运算给出，唯一性：若 \(k:C\to B^{A}\) 使 \(\operatorname{ev}\circ(k\times\operatorname{id}_A)=f\)，则
+    \[k=\big(\operatorname{ev}\circ(k\times\operatorname{id}_A)\big)^{\ast}=f^{\ast},\]
+    第一步用 \(\eta\)，第二步代入假设。故三条泛性质全部成立。</p>
+      <p><span class="pl">证明，泛性质 ⇒ 方程.</span> 终端、积的唯一性立即给出对应方程（如 \(\pi_1\circ\langle f,g\rangle=f\) 因 \(\langle f,g\rangle\) 是唯一使两投影为 \(f,g\) 的箭头）。指数：设 \(f:C\times A\to B\)，\(\tilde f\) 是其唯一转置。由转置定义 \(\operatorname{ev}\circ(\tilde f\times\operatorname{id}_A)=f\)，这就是 \(\beta\)。对 \(\eta\)：设 \(h:C\to B^{A}\)，令 \(g=\operatorname{ev}\circ(h\times\operatorname{id}_A):C\times A\to B\)，则 \(h\) 本身满足 \(\operatorname{ev}\circ(h\times\operatorname{id}_A)=g\)，由转置唯一性 \(h=\tilde g=g^{\ast}\)，即 \((\operatorname{ev}\circ(h\times\operatorname{id}_A))^{\ast}=h\)。所有方程成立。<span class="qed">∎</span></p>
+    </div>
+  </div>
+
+  <div class="prop">
+    <span class="lbl">命题 9.3.3（派生方程）</span>
+    <p>下列等式可由定义 9.3.1 的方程推出：</p>
+    <ol>
+      <li>\(\langle f,g\rangle\circ h=\langle f\circ h,g\circ h\rangle\)；</li>
+      <li>\(f^{\ast}\circ h=(f\circ(h\times\operatorname{id}_A))^{\ast}\)，其中 \(f:C\times A\to B,\ h:D\to C\)；</li>
+      <li>\(\operatorname{ev}\circ\langle\langle f,g\rangle\rangle\) 型的配对—求值组合满足 β 的所有自然性变体。</li>
+    </ol>
+    <div class="proof">
+      <p><span class="pl">证明（第 1 条）.</span> 比较 \(\langle f,g\rangle\circ h\) 与 \(\langle f\circ h,g\circ h\rangle\) 的两个投影：\(\pi_1\big(\langle f,g\rangle\circ h\big)=(\pi_1\circ\langle f,g\rangle)\circ h=f\circ h\)，而 \(\pi_1\langle f\circ h,g\circ h\rangle=f\circ h\)；\(\pi_2\) 同理。由积的唯一性方程（对两者都用 \(\langle\pi_1 k,\pi_2 k\rangle=k\)）得二者相等。第 2 条用 \(\eta\)：两边都是箭头 \(D\to B^{A}\)，展开 \(\operatorname{ev}\circ((-)\times\operatorname{id}_A)\) 后两边都化为 \(f\circ(h\times\operatorname{id}_A)\)，再用 \((\eta)\) 的唯一性即得。第 3 条是前两条的反复应用。<span class="qed">∎</span></p>
+    </div>
+  </div>
+
+  <div class="box walk">
+    <h4>交互式交换图导航（样本见附录 A 图 A.2）</h4>
+    <p>定义 9.3.1 的方程看似很多，其实都围绕附录 A 图 A.2 的三种基本形状。建议对照点击：</p>
+    <ol>
+      <li><b>Hom 热点</b>：看"箭头集合随对象变化"，对应本节的 Hom-集运算与抽象 \(f\mapsto f^{\ast}\)。</li>
+      <li><b>unit 热点</b>：看单位律方块，对应 \(\operatorname{id}\) 与 \(\beta/\eta\) 中的恒等。</li>
+      <li><b>corner 热点</b>：看带自由参数的构造，正是下一节多项式范畴 \(C[x]\) 的图形原型。</li>
+    </ol>
+  </div>
+
+  <div class="box exer">
+    <h4>② 习题</h4>
+    <div class="grp">基础</div>
+    <ol>
+      <li id="ex9.3.1">在 \(\mathbf{Set}\) 中，对 \(f:C\times A\to B\)，写出 \(f^{\ast}:C\to B^{A}\) 的逐点公式，并直接验证 \(\beta\) 方程。</li>
+      <li id="ex9.3.2">在偏序范畴（Heyting 代数）中，把配对 \(\langle f,g\rangle\)、投影 \(\pi_1,\pi_2\)、抽象 \(f^{\ast}\) 分别翻译成序关系语言（提示：配对就是 \(\wedge\)，抽象就是 \(\Rightarrow\)）。</li>
+      <li id="ex9.3.3">验证终端方程：在 \(\mathbf{Set}\) 中终端对象是单点集 \(\{*\}\)，证明任一函数 \(f:A\to\{*\}\) 都等于 \(!_A\)。</li>
+      <div class="grp">进阶</div>
+      <li id="ex9.3.4">证明命题 9.3.3 的第 2 条：\(f^{\ast}\circ h=(f\circ(h\times\operatorname{id}_A))^{\ast}\)（用 \(\eta\) 展开两边）。</li>
+      <li id="ex9.3.5">举一个只有终端与积、没有指数的范畴（提示：有限集与函数构成的范畴有指数，换个没有函数对象的结构，如某个偏序格没有 Heyting 蕴含），说明为什么此时无法给出抽象运算。</li>
+      <li id="ex9.3.6">说明为什么"严格"约定下 \(A\times(B\times C)=(A\times B)\times C\)，而在一般 CCC 中只能要求同构；并指出这对方程化呈现意味着什么。</li>
+    </ol>
+  </div>
+
+  <div class="box ans">
+    <h4>③ 完整答案</h4>
+    <div class="item"><b>9.3.1</b>　\(f^{\ast}(c)(a)=f(c,a)\)，即把二元函数 \(f\) 对第一个变量部分应用。验证 \(\beta\)：\(\big(\operatorname{ev}\circ(f^{\ast}\times\operatorname{id}_A)\big)(c,a)=f^{\ast}(c)(a)=f(c,a)\)，两边作为 \(C\times A\to B\) 的函数逐点相等。<span class="qed">∎</span></div>
+    <div class="item"><b>9.3.2</b>　偏序范畴中 \(f:C\to A\) 意味着 \(C\le A\)。配对 \(\langle f,g\rangle:C\to A\times B=A\wedge B\) 就是 \(C\le A\wedge B\)，由 \(C\le A,C\le B\)（交的泛性质）得到；投影 \(\pi_1:A\wedge B\le A\)、\(\pi_2:A\wedge B\le B\)；抽象 \(f:C\wedge A\le B\) 对应 \(f^{\ast}:C\le(B^A)=(A\Rightarrow B)\)，即 Heyting 伴随 \(C\wedge A\le B\iff C\le A\Rightarrow B\)。<span class="qed">∎</span></div>
+    <div class="item"><b>9.3.3</b>　单点集 \(\{*\}\) 到自身的函数唯一，\(A\to\{*\}\) 的函数必须把每个元素送到 \(*\)，只有一个，故 \(f=!_A\)（把每个 \(a\) 送到 \(*\) 的常值函数）。<span class="qed">∎</span></div>
+    <div class="item"><b>9.3.4</b>　对左边用 \(\eta\)：\(f^{\ast}\circ h=\big(\operatorname{ev}\circ((f^{\ast}\circ h)\times\operatorname{id}_A)\big)^{\ast}\)。而 \((f^{\ast}\circ h)\times\operatorname{id}_A=(f^{\ast}\times\operatorname{id}_A)\circ(h\times\operatorname{id}_A)\)，故
+    \[
+      \operatorname{ev}\circ((f^{\ast}\circ h)\times\operatorname{id}_A)
+      =\operatorname{ev}\circ(f^{\ast}\times\operatorname{id}_A)\circ(h\times\operatorname{id}_A)
+      =f\circ(h\times\operatorname{id}_A).
+    \]
+    （最后用 \(\beta\)）。代回得 \(f^{\ast}\circ h=(f\circ(h\times\operatorname{id}_A))^{\ast}\)。<span class="qed">∎</span></div>
+    <div class="item"><b>9.3.5</b>　取格 \((\mathbb R\cup\{+\infty\},\le)\) 之类没有最大元或无界的偏序（8.3.4 已见 \((\mathbb R,\le)\) 无终端）；更贴切的例子：一个只有有限交、没有相对伪补的格（如某些非分配格），它有终端与积（交）但对某些 \(a,b\) 不存在 \(a\Rightarrow b\)，故不能定义抽象运算 \(f^{\ast}\)。缺少指数意味着 Hom-集 \(\operatorname{Hom}(C\times A,B)\) 与 \(\operatorname{Hom}(C,B^{A})\) 无法建立双射，等式 \(B^{A}\) 根本没有对象可指。<span class="qed">∎</span></div>
+    <div class="item"><b>9.3.6</b>　一般范畴中 \(A\times(B\times C)\) 与 \((A\times B)\times C\) 都满足积的泛性质，由唯一性存在唯一同构 \(\alpha\)，但不是同一个对象；严格约定把结构选死，使它们相等。方程化呈现要写死等式（如 \(\operatorname{ev}\circ(f^{\ast}\times\operatorname{id})=f\)），若不严格就得处处带上 \(\alpha\) 的同构修正，方程变复杂。L&amp;S 为简洁采用严格约定，代价是牺牲了"范畴等价不变"的灵活性（在 2-范畴层面应改用等价）。<span class="qed">∎</span></div>
+  </div>
+
+  <div class="box phil">
+    <h4>选读拓展 · 自学与哲学提示（可略读）</h4>
+    <p><strong>自学法与主线。</strong>本节的技术核心只有 β、η 两条方程与定理 9.3.2 的双向证明。请把 β 的方程 \( \operatorname{ev}\circ(f^{\ast}\times\operatorname{id})=f \) 与 9.2 的演绎定理对照：它们说的是同一件事——"抽象与求值互逆"。方程化的价值在下一节立刻显现：有了方程，就能谈"由生成元自由生成的模型"。</p>
+    <p><strong>边界。</strong>严格约定是为书写方便的" Gabber 式"简化；在更高级的处理（如 2-范畴、同伦论）中，结合律只在同构意义下成立，方程化要升级为"带同伦的代数理论"。本章不触及。</p>
+    <p><strong>哲学联系。</strong>泛性质说一个对象"由它进入的关系唯一确定"，方程说一个结构"由少数几条等式完全刻画"。从前者到后者，是把"最优者"的形而上描述，改造成"可被机械检验的有限规则"——这一步让逻辑从哲学思辨进入可计算领域，是 Curry–Howard 纲领得以落地的语言基础。</p>
+  </div>
+</section>
+
+<section class="sec" id="s9-4">
+  <div class="sec-h"><span class="sec-no">9.4</span><h2>自由 CCC 与多项式范畴</h2><span class="src">L Part I §4–5</span></div>
+
+  <div class="box learn">
+    <h4>① 本节学习目标</h4>
+    <ol>
+      <li>知道"图""遗忘函子""自由构造"三件事，理解自由 CCC 的泛性质；</li>
+      <li>描述由图 \(G\) 生成的自由 CCC \(F(G)\)：对象是类型、箭头是项模 βη；</li>
+      <li>理解多项式范畴 \(C[x]\)：往 \(C\) 里加一个不定箭头 \(x\) 得到的自由扩张；</li>
+      <li>亲手验证 \(C[x]\) 的泛性质与代入操作；</li>
+      <li>认清自由 CCC 与多项式范畴的区别与联系（前者从零生成，后者在已有范畴上扩张）。</li>
+    </ol>
+  </div>
+
+  <h3 class="sub">9.4.1 极简回顾：图、自由构造、遗忘函子</h3>
+  <div class="box prep">
+    <h4>极简回顾（只讲马上要用的）</h4>
+    <p><strong>有向图</strong> \(G=(V,E,s,t)\)：顶点集 \(V\)、边集 \(E\)，每条边 \(e\) 有起点 \(s(e)\in V\) 与终点 \(t(e)\in V\)，记作 \(e:s(e)\to t(e)\)。画出来就是一些点加一些带箭头的线。</p>
+    <p><strong>遗忘函子</strong> \(U\)：把一个带结构的对象忘掉部分结构。例如把范畴 \(\mathbf C\) 忘掉复合与恒等，只留对象与箭头，得到一个有向图 \(U(\mathbf C)\)（叫底层图）。第 7 章"自由群"用的正是这个套路：forget 群的运算得到集合，free 从集合造回自由群。</p>
+    <p><strong>自由构造</strong>的泛性质：\(F(G)\) 是"包含 \(G\) 的最自由的 CCC"，精确说法是：存在图映射 \(\eta:G\to U(F(G))\)，使得对任意 CCC \(\mathbf C\) 与任意图映射 \(h:G\to U(\mathbf C)\)，存在<strong>唯一</strong>的 CCC 函子 \(\bar h:F(G)\to\mathbf C\) 满足 \(U(\bar h)\circ\eta=h\)。一句话：给 \(G\) 的顶点和边指定在任意 CCC 中的落点，就能唯一地扩张成一个 CCC 函子。</p>
+    <p>这类"free ⊣ forgetful"的伴随，第 7 章已讲过（自由群 \(F\dashv U\)）。这里把"群"换成"CCC"即可。</p>
+  </div>
+
+  <h3 class="sub">9.4.2 由图生成自由 CCC</h3>
+  <div class="defn">
+    <span class="lbl">定义 9.4.1（自由 CCC）</span>
+    <p>对有向图 \(G\)，<strong>由 \(G\) 生成的自由笛卡尔闭范畴</strong>是范畴 \(F(G)\) 连同图映射 \(\eta:G\to U(F(G))\)，满足 9.4.1 节的泛性质：任意图映射 \(h:G\to U(\mathbf C)\)（\(\mathbf C\) 为 CCC）唯一扩张为 CCC 函子 \(\bar h:F(G)\to\mathbf C\)。</p>
+  </div>
+
+  <div class="prop">
+    <span class="lbl">命题 9.4.2（自由 CCC 的存在与构造）</span>
+    <p>对任意图 \(G\)，\(F(G)\) 存在，可如下具体构造：</p>
+    <ol>
+      <li><strong>对象</strong>：由 \(G\) 的顶点出发，反复用 \(1\)、\(\times\)、\((-)^{(-)}\) 生成的有限表达式（叫类型或公式）。例如顶点 \(X,Y\) 生成 \(X\)、\(Y\)、\(1\)、\(X\times Y\)、\(Y^{X}\)、\((Y^{X})^{X\times Y}\) 等；</li>
+      <li><strong>箭头</strong>：由 \(\eta\) 的像（把每条边看作生成箭头）、9.3.1 的全部箭头运算（恒等、复合、\(!,\pi,\langle,\rangle,\operatorname{ev},(-)^{\ast}\)）生成的表达式（叫项或证明），再模去 9.3.1 的方程（含 β、η）；</li>
+      <li><strong>恒等与复合</strong>按表达式的相应运算给出，方程保证范畴律成立。</li>
+    </ol>
+    <div class="proof">
+      <p><span class="pl">证明（存在性与泛性质）.</span> 上述数据显然给出一个 CCC——方程全部按定义 9.3.1 加上，故满足方程化定义，由定理 9.3.2 是 CCC。图映射 \(\eta:G\to U(F(G))\) 把每个顶点送到对应对象、每条边送到对应生成箭头。给定 \(h:G\to U(\mathbf C)\)，定义 \(\bar h\)：对象 \(X\) 的像由类型结构递归给出（\(\bar h(1)=1\)，\(\bar h(A\times B)=\bar h(A)\times\bar h(B)\)，\(\bar h(B^{A})=\bar h(B)^{\bar h(A)}\)）；箭头的像由项结构递归给出，每个运算用 \(\mathbf C\) 中同名运算解释。因为 \(\mathbf C\) 满足 9.3.1 的方程，模掉方程后良定义。唯一性：任何 CCC 函子若与 \(\eta\) 复合等于 \(h\)，则在生成元（顶点、边、各运算）上被迫与 \(\bar h\) 一致，由结构归纳在全部对象与箭头上一致。<span class="qed">∎</span></p>
+    </div>
+  </div>
+
+  <div class="prop">
+    <span class="lbl">例 9.4.3（门槛最低的两个自由 CCC）</span>
+    <p><strong>(a) \(G=\varnothing\)（空图）：</strong>\(F(\varnothing)\) 是最小的 CCC，只有由 \(1\) 出发用 \(\times\)、\((-)^{(-)}\) 生成的对象，没有生成箭头。它恰是"纯函数的语法世界"——所有箭头都由 CCC 的必然结构（投影、配对、求值、抽象）产生。这是第 10 章"由 λ 演算生成的 CCC"在无常元情形的雏形。</p>
+    <p><strong>(b) \(G\) 一个顶点 \(X\)、无边：</strong>\(F(G)\) 的对象是由一个类型变元 \(X\) 生成的所有类型（\(X,X\times X,X^{X},\dots\)）。它相当于"只有一个类型变元的语言"，是多项式范畴 \(C[x]\) 在 \(C=1\)（终端范畴）时的特例（见下）。</p>
+  </div>
+
+  <h3 class="sub">9.4.3 多项式范畴：往范畴里加不定元</h3>
+  <p>自由 CCC 是从零造起。实际使用时更常见的是：<strong>已有</strong>一个 CCC \(\mathbf C\)，想临时添一个"不定箭头" \(x\)（类似在环 \(R\) 上添不定元得到 \(R[x]\)）。这就是多项式范畴。</p>
+
+  <div class="defn">
+    <span class="lbl">定义 9.4.4（多项式范畴，L&amp;S Part I §5）</span>
+    <p>设 \(\mathbf C\) 是 CCC，\(A_0,A_1\in\mathbf C\) 是两个对象。多项式范畴 \(\mathbf C[x]\)（其中 \(x:A_0\to A_1\) 是<strong>不定箭头</strong>）是满足如下泛性质的范畴：存在 Inclusion 函子 \(i:\mathbf C\to\mathbf C[x]\) 与箭头 \(x:i(A_0)\to i(A_1)\)，使得对任意 CCC \(\mathbf D\)、任意 CCC 函子 \(F:\mathbf C\to\mathbf D\) 与任意箭头 \(\varphi:F(A_0)\to F(A_1)\)，存在唯一的 CCC 函子 \(\bar F:\mathbf C[x]\to\mathbf D\) 满足 \(\bar F\circ i=F\) 且 \(\bar F(x)=\varphi\)。</p>
+    <p>最常见的特例是不定<strong>元素</strong> \(x:1\to A\)（取 \(A_0=1,A_1=A\)）：它就是往 \(\mathbf C\) 里加一个"未指定的 \(A\) 型元素"。</p>
+  </div>
+
+  <div class="prop">
+    <span class="lbl">命题 9.4.5（多项式范畴的构造）</span>
+    <p>\(\mathbf C[x]\) 可具体构造为：取 \(\mathbf C\) 的底层图，添一条新边 \(x:A_0\to A_1\) 得图 \(G\)，令 \(\mathbf C[x]=F(G)\) 再模去使包含 \(i:\mathbf C\to F(G)\) 成为 CCC 函子的那些方程（即原范畴 \(\mathbf C\) 中已有的每个方程在新范畴中仍成立）。等价地：对象是 \(\mathbf C\) 的对象；箭头是由 \(\mathbf C\) 的箭头与 \(x\) 出发，用 CCC 的箭头运算生成、再模去 \(\mathbf C\) 的方程与 βη 的项（叫多项式）。</p>
+    <div class="proof">
+      <p><span class="pl">证明（泛性质）.</span> 给定 \(F:\mathbf C\to\mathbf D\) 与 \(\varphi:F(A_0)\to F(A_1)\)，把 \(F\) 作用于 \(\mathbf C\) 的底层图、并把新边 \(x\) 送到 \(\varphi\)，得图映射 \(h:G\to U(\mathbf D)\)。由自由 CCC 的泛性质（9.4.2），\(h\) 唯一扩张为 CCC 函子 \(\bar F:F(G)\to\mathbf D\)。因为 \(F\) 是 CCC 函子，\(\mathbf C\) 的方程在 \(\mathbf D\) 中成立，故 \(\bar F\) 穿过商，给出 \(\mathbf C[x]\to\mathbf D\)。唯一性由自由性的唯一性继承。<span class="qed">∎</span></p>
+    </div>
+  </div>
+
+  <svg class="cd" viewBox="0 0 660 210" width="660" height="210" role="img" aria-label="多项式范畴的泛性质三角">
+    <rect class="node" x="40" y="70" width="120" height="44" rx="7"/>
+    <text class="nt" x="100" y="97" text-anchor="middle">C</text>
+    <rect class="node2" x="280" y="30" width="180" height="44" rx="7"/>
+    <text class="nt" x="370" y="57" text-anchor="middle">C[x]  (含 x)</text>
+    <rect class="nodeg" x="510" y="70" width="120" height="44" rx="7"/>
+    <text class="nt" x="570" y="97" text-anchor="middle">D</text>
+    <line class="arb" x1="160" y1="85" x2="280" y2="55"/>
+    <text class="hb" x="215" y="60" text-anchor="middle">i</text>
+    <line class="ard" x1="160" y1="100" x2="510" y2="100"/>
+    <text class="lb" x="335" y="94" text-anchor="middle">F</text>
+    <line class="arg" x1="460" y1="55" x2="570" y2="88"/>
+    <text class="hg" x="530" y="50" text-anchor="middle">F̄</text>
+    <text class="hp" x="380" y="150" text-anchor="middle">F̄∘i = F，且 F̄(x) = φ（唯一）</text>
+    <text class="lb" x="370" y="180" text-anchor="middle">图 9.5：加不定元 x 后，任意 F 唯一穿越 C[x]</text>
+  </svg>
+  <p class="figcap">图 9.5　多项式范畴的泛性质：给定 \(F\) 与 \(x\) 的落点 \(\varphi\)，存在唯一 \(\bar F\) 使整个三角交换。</p>
+
+  <h3 class="sub">9.4.4 代入：多项式范畴的"求值"</h3>
+  <p>泛性质最实用的推论是<strong>代入</strong>：若 \(\mathbf D=\mathbf C\)、\(F=\operatorname{id}_{\mathbf C}\)，并把 \(x\) 送到 \(\mathbf C\) 中一条真实箭头 \(a:A_0\to A_1\)，则得唯一的 \(\bar a:\mathbf C[x]\to\mathbf C\)。它把每个多项式 \(p(x)\) 送到"把 \(x\) 替换成 \(a\) 后"的箭头。这正是代数里"多项式求值 \(p(a)\)"的范畴版本。</p>
+
+  <div class="prop">
+    <span class="lbl">命题 9.4.6（代入的函子性）</span>
+    <p>代入 \(\bar a\) 保持复合与恒等；特别地，若 \(p,q\) 是 \(\mathbf C[x]\) 中的多项式，则 \(\overline a(q\circ p)=\bar a(q)\circ\bar a(p)\)。</p>
+    <div class="proof">
+      <p><span class="pl">证明.</span> \(\bar a\) 是 CCC 函子，函子按定义保持复合与恒等，故等式成立。<span class="qed">∎</span></p>
+    </div>
+  </div>
+
+  <div class="rmk">
+    <strong>预备提示（可跳过）。</strong>\(\mathbf C[x]\) 还有另一副面孔：它是某个余单子（comonad）\(A\times(-)\) 的 Kleisli 范畴（nLab 与 L&amp;S 原著 §5 末尾均指出）。余单子与 Kleisli 范畴第 7 章已介绍（对偶于 Monad）。这个刻画是下一节函数完备性证明的高效工具，标为预备——第一遍读可略过，不影响主线理解。
+  </div>
+
+  <div class="box walk">
+    <h4>交互式交换图导航（样本见附录 A 图 A.2）</h4>
+    <p>多项式范畴的泛性质图（图 9.5）与附录 A 图 A.2 的 <b>corner 热点</b> 是同一个结构：自由参数 \(x\) 正是"角落"里那个外来箭头。建议：</p>
+    <ol>
+      <li>点 <b>corner</b>，看外来箭头如何嵌入总图，对应本节 \(x:A_0\to A_1\)。</li>
+      <li>对照图 9.5 的三角，确认"唯一穿越"的箭头在交互图里对应哪条虚线。</li>
+    </ol>
+  </div>
+
+  <div class="box exer">
+    <h4>② 习题</h4>
+    <div class="grp">基础</div>
+    <ol>
+      <li id="ex9.4.1">列出自由 CCC \(F(\varnothing)\) 中最短的三个对象（只用 \(1,\times,(-)^{(-)}\) 生成），并各写一条由必然结构给出的箭头。</li>
+      <li id="ex9.4.2">取 \(\mathbf C=\mathbf{Set}\)，\(x:1\to A\) 是不定元素。写出一个 \(x\) 的多项式 \(p(x):1\to A\times A\)，并代入一个具体元素 \(a:1\to A\) 求 \(p(a)\)。</li>
+      <li id="ex9.4.3">验证图 9.5 的泛性质在 \(\mathbf D=\mathbf C,F=\operatorname{id}\) 时退化为代入操作：写出 \(\bar a\) 满足的两条等式。</li>
+      <div class="grp">进阶</div>
+      <li id="ex9.4.4">证明：自由 CCC \(F(G)\) 的泛性质中，取 \(\mathbf C=F(G')\) 可得 \(F(G+G')\cong F(G)+F(G')\) 型的结构（提示：用余积图与自由性；写出映射构造即可）。</li>
+      <li id="ex9.4.5">说明多项式范畴 \(\mathbf C[x]\) 与自由 CCC \(F(G)\) 的关系：若 \(\mathbf C=F(\varnothing)\) 且只添一个不定元素 \(x:1\to A\)，则 \(\mathbf C[x]\) 与哪个自由 CCC 同构？（提示：把 \(A\) 视作新顶点。）</li>
+      <li id="ex9.4.6">（预备题）用第 7 章余单子的语言说明为什么 \(A\times(-)\) 是余单子（给出余单位与余乘法），从而其 Kleisli 范畴可作为 \(\mathbf C[x]\) 的模型。</li>
+    </ol>
+  </div>
+
+  <div class="box ans">
+    <h4>③ 完整答案</h4>
+    <div class="item"><b>9.4.1</b>　最短对象：\(1\)、\(1\times1\)、\(1^{1}\)（按生成步数排序）。箭头：\(!_1:1\to1\)；\(\pi_1:1\times1\to1\)；\(\operatorname{ev}:1^{1}\times1\to1\)。此外由 \(\eta\) 还有 \(1\to1^{1}\) 的箭头（把 \(1\) 看作 \(1^1\) 的泛元素）。<span class="qed">∎</span></div>
+    <div class="item"><b>9.4.2</b>　取 \(p(x)=\langle x,x\rangle:1\to A\times A\)（把 \(x\) 与自身配对）。若 \(a:1\to A\) 是元素 \(a\in A\)，则代入 \(\bar a(p)=\langle a,a\rangle=(a,a)\in A\times A\)。<span class="qed">∎</span></div>
+    <div class="item"><b>9.4.3</b>　\(\bar a\circ i=\operatorname{id}_{\mathbf C}\)（在原范畴的箭头上代入不改变它），且 \(\bar a(x)=a\)（不定元被送到指定箭头）。这两条唯一决定 \(\bar a\)。<span class="qed">∎</span></div>
+    <div class="item"><b>9.4.4</b>　图的不交并 \(G+G'\) 的顶点、边是两图之和。对任意 CCC \(\mathbf C\)，图映射 \(G+G'\to U(\mathbf C)\) 等价于一对映射 \(G\to U(\mathbf C),G'\to U(\mathbf C)\)；由自由性，这又等价于一对 CCC 函子 \(F(G)\to\mathbf C,F(G')\to\mathbf C\)，即一个函子 \(F(G)+F(G')\to\mathbf C\)（余积的泛性质）。由唯一性得 \(F(G+G')\cong F(G)+F(G')\)（在 CCC 范畴中的余积）。<span class="qed">∎</span></div>
+    <div class="item"><b>9.4.5</b>　\(\mathbf C=F(\varnothing)\) 只有由 \(1\) 生成的对象；添一个不定元素 \(x:1\to A\) 相当于添一个新顶点 \(A\) 与一条从 \(1\) 出发的边。若把 \(A\) 视作新顶点、忽略 \(x\) 的具体起点，\(\mathbf C[x]\) 与由单顶点图生成的自由 CCC 同构（因为 \(x:1\to A\) 的边在自由 CCC 中由其顶点生成的结构表达）。更精确地说，\(\mathbf C[x]\cong F(\bullet)\) 其中 \(\bullet\) 是一个新顶点。<span class="qed">∎</span></div>
+    <div class="item"><b>9.4.6</b>　令 \(T=A\times(-)\): 对对象 \(C\)，\(T(C)=A\times C\)。余单位 \(\varepsilon_C:A\times C\to C\) 取第二投影 \(\pi_2\)；余乘法 \(\delta_C:A\times C\to A\times(A\times C)\) 为 \(\langle\pi_1,\langle\pi_1,\pi_2\rangle\rangle\)（把外层的 \(A\) 复制一份）。验证余单子律（\(\varepsilon\) 与 \(\delta\) 的三角恒等式）用积的唯一性方程即得。其 Kleisli 范畴对象同 \(\mathbf C\)，箭头 \(C\to B\) 为 \(\mathbf C\) 中 \(A\times C\to B\) 的箭头，恰是"含参数 \(A\) 的多项式"，故可作 \(\mathbf C[x]\) 的模型。<span class="qed">∎</span></div>
+  </div>
+
+  <div class="box phil">
+    <h4>选读拓展 · 自学与哲学提示（可略读）</h4>
+    <p><strong>自学法与主线。</strong>本节两个构造要分清：自由 CCC \(F(G)\) 从零开始，多项式范畴 \(\mathbf C[x]\) 在已有 \(\mathbf C\) 上添一个不定元。它们的共同点是"泛性质刻画唯一性"，证明都是 9.4.2 那套"指定落点 → 唯一扩张"的套路，务必亲手走一遍。</p>
+    <p><strong>边界。</strong>多项式范畴的严格泛性质（保 CCC 结构 on the nose）是 L&amp;S 的约定；在 2-范畴层面应放松为等价。预备题 6 的 Kleisli 刻画是下一节的工具，第一遍可跳过。</p>
+    <p><strong>哲学联系。</strong>多项式范畴像"给语言临时引入一个专名"（不定元 \(x\)）。它让我们在不动原有理论的前提下，考察"若有一个满足某描述的任意对象/元素，会推出什么"——这正是数学中"_generic element_（泛元素）"论证的范畴化，也是第 13 章内部语言语义的技术前身。</p>
+  </div>
+</section>
+
+<section class="sec" id="s9-5">
+  <div class="sec-h"><span class="sec-no">9.5</span><h2>函数完备性</h2><span class="src">L Part I §6</span></div>
+
+  <div class="box learn">
+    <h4>① 本节学习目标</h4>
+    <ol>
+      <li>理解函数完备性问题：内部语言的表达力是否追平范畴里的箭头；</li>
+      <li>准确陈述函数完备性定理（不定元 \(x\) 的多项式由唯一箭头抽象而来）；</li>
+      <li>掌握完整证明（叠加多项式范畴的泛性质与指数伴随）；</li>
+      <li>会写出 \(\lambda\)-抽象记号 \(\lambda x.\varphi\)，并推出 \(\beta\) 规则与 \(\eta\) 规则；</li>
+      <li>分清"函数完备性"与逻辑的"完备性定理"，知道各自的边界。</li>
+    </ol>
+  </div>
+
+  <h3 class="sub">9.5.1 极简回顾：多项式求值、泛元素</h3>
+  <div class="box prep">
+    <h4>极简回顾（够用即可）</h4>
+    <p><strong>代数里的求值</strong>：环 \(R[x]\) 中的多项式 \(p(x)\)，给定 \(a\in R\)，把 \(x\) 换成 \(a\) 得 \(p(a)\)。关键是：多项式由其系数唯一决定，求值只是把符号换成值。</p>
+    <p><strong>范畴对应</strong>（9.4）：\(\mathbf C[x]\) 是往 \(\mathbf C\) 添不定箭头 \(x:1\to A\) 的多项式范畴；给定 \(a:1\to A\)（\(\mathbf C\) 中的元素），代入操作 \(\bar a:\mathbf C[x]\to\mathbf C\) 给出"求值" \(p\mapsto p(a)\)。</p>
+    <p><strong>泛元素</strong>：不定元 \(x:1\to A\) 本身在 \(\mathbf C[x]\) 中是一个"通用的 \(A\) 元素"——它不指向某个具体值，但任何具体值都由代入得到。函数完备性要问：\(\mathbf C[x]\) 里的每个箭头，是不是都由 \(\mathbf C\) 里的某个箭头"作用"到这个泛元素上得到？</p>
+  </div>
+
+  <h3 class="sub">9.5.2 定理陈述</h3>
+  <div class="prop">
+    <span class="lbl">定理 9.5.1（函数完备性，L&amp;S Part I §6）</span>
+    <p>设 \(\mathbf C\) 是 CCC，\(x:1\to A\) 是不定元素。则对 \(\mathbf C[x]\) 中任意多项式 \(\varphi(x):1\to B\)（起点为终端、终点为 \(B\) 的箭头），存在 \(\mathbf C\) 中<strong>唯一</strong>的箭头 \(h:1\to B^{A}\)，使得在 \(\mathbf C[x]\) 中</p>
+    <p>\[\operatorname{ev}\circ\langle h,x\rangle=\varphi(x).\]</p>
+    <p>这个唯一的 \(h\) 记作 \(h=\lambda x.\varphi\)，读作"把 \(x\mapsto\varphi(x)\) 抽象成函数"。</p>
+    <p><strong>一般形式</strong>（任意起点 \(C\)）：\(\mathbf C[x]\) 中任意箭头 \(\varphi:C\to B\) 唯一地写成 \(\operatorname{ev}\circ\langle \tilde\varphi,x\circ!_C\rangle\)（把 \(x\) 沿 \(C\to1\) 拉回），其中 \(\tilde\varphi:C\to B^{A}\) 是 \(\mathbf C\) 中的唯一箭头。</p>
+  </div>
+
+  <h3 class="sub">9.5.3 完整证明</h3>
+  <div class="prop">
+    <span class="lbl">证明（用多项式范畴泛性质 + 指数伴随）</span>
+    <div class="proof">
+      <p><span class="pl">准备：Kleisli 刻画（预备工具，9.4 末尾已提示）.</span> \(\mathbf C[x]\) 等价于余单子 \(A\times(-)\) 的 Kleisli 范畴：其对象同 \(\mathbf C\)，箭头 \(\varphi:C\to B\) 恰是 \(\mathbf C\) 中的箭头 \(\widehat\varphi:A\times C\to B\)；不定元 \(x:1\to A\) 对应 \(\operatorname{id}_A:A\times1\cong A\to A\)。（此刻画可由 9.4.5 的构造直接验证。）</p>
+      <p><span class="pl">存在性.</span> 取 \(\mathbf C[x]\) 中多项式 \(\varphi:1\to B\)，由 Kleisli 刻画它对应 \(\mathbf C\) 中箭头 \(\widehat\varphi:A\times1\cong A\to B\)，记 \(g:A\to B\)。由指数伴随（9.3、第 8 章），存在唯一 \(h:1\to B^{A}\) 使 \(\operatorname{ev}\circ(h\times\operatorname{id}_A)\circ\sigma=g\)（\(\sigma:1\times A\cong A\) 为标准同构），即 \(\operatorname{ev}\circ(h\times\operatorname{id}_A)=g\) 在识别 \(1\times A=A\) 后成立。现在在 \(\mathbf C[x]\) 中验证 \(\operatorname{ev}\circ\langle h,x\rangle=\varphi\)：由 Kleisli 刻画，左边作为 \(1\to B\) 对应 \(\mathbf C\) 中箭头 \(A\times1\to B\)，即 \(A\to B\)，计算
+    \[\operatorname{ev}\circ\langle h,x\rangle\ \longleftrightarrow\ \operatorname{ev}\circ(h\times\operatorname{id}_A)\circ\langle\operatorname{id}_A,!\rangle=g=\widehat\varphi,\]
+    其中 \(\langle\operatorname{id}_A,!\rangle:A\to A\times1\) 配对，\(\operatorname{ev}\circ(h\times\operatorname{id}_A)\) 作用后得 \(g\)。故左边的 Kleisli 代表元正是 \(\widehat\varphi\)，即左边 \(=\varphi\)。</p>
+      <p><span class="pl">唯一性.</span> 若 \(h,h':1\to B^{A}\) 都满足 \(\operatorname{ev}\circ\langle h,x\rangle=\varphi=\operatorname{ev}\circ\langle h',x\rangle\)（在 \(\mathbf C[x]\) 中），由 Kleisli 刻画还原到 \(\mathbf C\)：两者都对应同一箭头 \(A\to B\)，即 \(\operatorname{ev}\circ(h\times\operatorname{id}_A)=\operatorname{ev}\circ(h'\times\operatorname{id}_A)\)。对其取抽象（\((-)^{\ast}\)）并用 \(\eta\) 方程（9.3.1），得 \(h=(g)^{\ast}=h'\)。故 \(h\) 唯一。</p>
+      <p><span class="pl">一般形式.</span> 起点为 \(C\) 时，\(\varphi:C\to B\) 对应 \(\widehat\varphi:A\times C\to B\)，由指数伴随得唯一 \(\tilde\varphi:C\to B^{A}\)，把 \(x\) 沿 \(!_C:C\to1\) 拉回为 \(x\circ!_C:C\to A\)，则 \(\langle\tilde\varphi,x\circ!_C\rangle:C\to B^{A}\times A\)，求值即 \(\varphi\)。唯一性同上。<span class="qed">∎</span></p>
+    </div>
+  </div>
+
+  <svg class="cd" viewBox="0 0 680 230" width="680" height="230" role="img" aria-label="函数完备性示意">
+    <text class="lb" x="20" y="26" text-anchor="start">在 C[x] 中</text>
+    <text class="lb" x="420" y="26" text-anchor="start">在 C 中（唯一）</text>
+    <rect class="nodey" x="40" y="60" width="150" height="42" rx="7"/>
+    <text class="nt" x="115" y="86" text-anchor="middle">x: 1 → A</text>
+    <rect class="nodey" x="40" y="160" width="150" height="42" rx="7"/>
+    <text class="nt" x="115" y="186" text-anchor="middle">φ(x): 1 → B</text>
+    <line class="arp" x1="115" y1="102" x2="115" y2="160"/>
+    <text class="hp" x="128" y="134" text-anchor="start">多项式</text>
+    <rect class="nodeg" x="420" y="60" width="200" height="42" rx="7"/>
+    <text class="nt" x="520" y="86" text-anchor="middle">h: 1 → B^A</text>
+    <rect class="node2" x="420" y="160" width="200" height="42" rx="7"/>
+    <text class="nt" x="520" y="186" text-anchor="middle">ev∘⟨h, x⟩ = φ(x)</text>
+    <line class="arg" x1="520" y1="102" x2="520" y2="160"/>
+    <text class="hg" x="535" y="134" text-anchor="start">求值</text>
+    <line class="arb" x1="190" y1="81" x2="420" y2="81"/>
+    <text class="hb" x="305" y="74" text-anchor="middle">λ-抽象（唯一）</text>
+    <text class="lb" x="340" y="215" text-anchor="middle">图 9.6：每个多项式 φ 由唯一箭头 h 抽象而来，求值还原 φ</text>
+  </svg>
+  <p class="figcap">图 9.6　函数完备性：从 \(\varphi\) 唯一地抽出 \(h=\lambda x.\varphi\)，再求值还原 \(\varphi\)。</p>
+
+  <h3 class="sub">9.5.4 推论：β 规则与 η 规则</h3>
+  <div class="prop">
+    <span class="lbl">推论 9.5.2（β 规则）</span>
+    <p>对 \(\mathbf C\) 中任意元素 \(a:1\to A\) 与任意多项式 \(\varphi\)，代入得
+    \[\operatorname{ev}\circ\langle\lambda x.\varphi,\ a\rangle=\varphi(a).\]</p>
+    <div class="proof">
+      <p><span class="pl">证明.</span> 由定理 9.5.1，\(\operatorname{ev}\circ\langle\lambda x.\varphi,x\rangle=\varphi(x)\) 在 \(\mathbf C[x]\) 中成立。对代入态射 \(\bar a:\mathbf C[x]\to\mathbf C\)（9.4.4）作用：\(\bar a(\lambda x.\varphi)=\lambda x.\varphi\)（它不含 \(x\)，是 \(\mathbf C\) 的箭头），\(\bar a(x)=a\)，\(\bar a(\varphi(x))=\varphi(a)\)。因 \(\bar a\) 是函子保持复合与配对，等式被保持，得结论。<span class="qed">∎</span></p>
+    </div>
+  </div>
+  <div class="prop">
+    <span class="lbl">推论 9.5.3（η 规则）</span>
+    <p>对任意 \(h:1\to B^{A}\)，有 \(\lambda x.\big(\operatorname{ev}\circ\langle h,x\rangle\big)=h\)。</p>
+    <div class="proof">
+      <p><span class="pl">证明.</span> 由定理 9.5.1 中 \(h\) 的唯一性：\(\operatorname{ev}\circ\langle h,x\rangle\) 这个多项式的唯一抽象就是 \(h\) 本身（因为 \(h\) 已经满足定义等式）。<span class="qed">∎</span></p>
+    </div>
+  </div>
+
+  <div class="rmk">
+    <strong>与 λ 演算的联系（第 10 章预告）.</strong> 记号 \(\lambda x.\varphi\) 与两条规则 \(\beta,\eta\) 正是 λ 演算的核心。函数完备性说明：CCC 的内部语言里，"函数"这一概念的表达力是完备的——每个多项式行为都对应一个真实的函数箭头。这就是 L&amp;S"CCC ≡ λ 演算"宣言的关键一环（细节在第 10–11 章）。
+  </div>
+
+  <div class="box walk">
+    <h4>交互式交换图导航（样本见附录 A 图 A.2）</h4>
+    <p>函数完备性的证明两次用到"唯一穿越"结构（多项式泛性质 + 指数伴随）。请在附录 A 图 A.2 中对照：</p>
+    <ol>
+      <li>点 <b>corner</b>：看不定元 \(x\) 的嵌入，对应定理里 \(\langle h,x\rangle\) 的构造。</li>
+      <li>点 <b>Hom</b>：看"每个多项式箭头对应唯一 Hom 元素"，正是函数完备性的双射。</li>
+      <li>点 <b>unit</b>：核对 η 规则中抽象与恒等的配合。</li>
+    </ol>
+  </div>
+
+  <div class="box exer">
+    <h4>② 习题</h4>
+    <div class="grp">基础</div>
+    <ol>
+      <li id="ex9.5.1">在 \(\mathbf{Set}\) 中，令 \(A=B=\mathbb N\)，多项式 \(\varphi(x)=x+1\)（把 \(x:1\to\mathbb N\) 加一）。写出抽象 \(h=\lambda x.\varphi\) 作为函数 \(1\to\mathbb N^{\mathbb N}\) 的显式描述。</li>
+      <li id="ex9.5.2">对上题，取具体元素 \(a=5:1\to\mathbb N\)，用 β 规则（推论 9.5.2）算 \(\varphi(a)\)。</li>
+      <li id="ex9.5.3">写出一般形式定理中 \(\tilde\varphi:C\to B^{A}\) 的逐点公式（在 \(\mathbf{Set}\) 中）：\(\tilde\varphi(c)(a)=?\)（提示：\(\widehat\varphi:A\times C\to B\)）。</li>
+      <div class="grp">进阶</div>
+      <li id="ex9.5.4">用函数完备性与代入函子性（9.4.6）证明：若两个多项式 \(\varphi,\psi\) 在所有代入 \(a\) 下取相同值 \(\varphi(a)=\psi(a)\)，则 \(\varphi=\psi\)（提示：比较抽象）。</li>
+      <li id="ex9.5.5">证明推论 9.5.3 的逆否叙述：若 \(\lambda x.\varphi=\lambda x.\psi\)，则 \(\varphi=\psi\)（用求值还原）。</li>
+      <li id="ex9.5.6">边界题：解释为什么"函数完备性"不等于逻辑里的"完备性定理（可证 ⟺ 有效）"（提示：前者谈内部语言的表达力，后者谈语法与语义的吻合；见 9.5.5 前的注）。</li>
+    </ol>
+  </div>
+
+  <div class="box ans">
+    <h4>③ 完整答案</h4>
+    <div class="item"><b>9.5.1</b>　\(\varphi(x)=x+1\) 对应 \(\widehat\varphi=\) 后继函数 \(s:\mathbb N\to\mathbb N\)。抽象 \(h:1\to\mathbb N^{\mathbb N}\) 是选出函数 \(s\) 的常值箭头，即 \(h(*)=s\)（作为函数 \(n\mapsto n+1\)）。写成 λ 记号：\(h=\lambda x.\,x+1\)。<span class="qed">∎</span></div>
+    <div class="item"><b>9.5.2</b>　\(\operatorname{ev}\circ\langle h,a\rangle=h(*)(a)=s(5)=6\)，而 \(\varphi(a)=a+1=5+1=6\)，两边相等，β 规则成立。<span class="qed">∎</span></div>
+    <div class="item"><b>9.5.3</b>　由 Kleisli 对应，\(\varphi:C\to B\) 在 \(\mathbf C[x]\) 中对应 \(\widehat\varphi:A\times C\to B\)，而在 \(\mathbf{Set}\) 中 \(\widehat\varphi(a,c)=\varphi\) 在元素 \(c\) 处代入 \(a\) 的值。逐点：\(\tilde\varphi(c)(a)=\widehat\varphi(a,c)\)（注意 \(A\times C\) 分量顺序；若改用 \(C\times A\) 则 \(\tilde\varphi(c)(a)=\widehat\varphi(a,c)\) 经交换）。即先把 \(c\) 固定、再让 \(a\) 作自变量。<span class="qed">∎</span></div>
+    <div class="item"><b>9.5.4</b>　设对所有 \(a\) 有 \(\varphi(a)=\psi(a)\)。由 β 规则，\(\operatorname{ev}\circ\langle\lambda x.\varphi,a\rangle=\varphi(a)=\psi(a)=\operatorname{ev}\circ\langle\lambda x.\psi,a\rangle\) 对所有 \(a\) 成立，特别对泛元素 \(x\) 本身（把它看作 \(\mathbf C[x]\) 中的代入）得 \(\varphi=\operatorname{ev}\circ\langle\lambda x.\varphi,x\rangle=\operatorname{ev}\circ\langle\lambda x.\psi,x\rangle=\psi\)。<span class="qed">∎</span></div>
+    <div class="item"><b>9.5.5</b>　若 \(\lambda x.\varphi=\lambda x.\psi=h\)，则由定理 9.5.1 的求值式 \(\varphi=\operatorname{ev}\circ\langle h,x\rangle=\psi\)。<span class="qed">∎</span></div>
+    <div class="item"><b>9.5.6</b>　函数完备性（L&amp;S §6）说的是：CCC 内部语言的箭头表达能力足够——每个 \(\mathbf C[x]\) 中的多项式都来自 \(\mathbf C\) 的唯一箭头（表达力追平结构）。逻辑完备性定理（Part II §17/§19）说的是：语法可证 ⟺ 语义有效（语法与语义吻合）。前者是"语言能命名多少箭头"，后者是"证明系统是否完备地刻画了真"。两者对象不同，"完备"含义不同，不可混用。<span class="qed">∎</span></div>
+  </div>
+
+  <div class="box phil">
+    <h4>选读拓展 · 自学与哲学提示（可略读）</h4>
+    <p><strong>自学法与主线。</strong>函数完备性是本章的收官定理，也是全章最漂亮的一处：它把 9.4 的多项式范畴与 9.3 的指数伴随叠加，得出"每个多项式都由唯一箭头抽象而来"。证明的关键一步是 Kleisli 刻画（标了预备），第一遍可用定理陈述 + 图 9.6 建立直观，第二遍再补证明细节。</p>
+    <p><strong>边界。</strong>函数完备性是内部语言的表达力结论，不等于逻辑完备性定理（习题 6）。它针对 CCC 的内部语言；若范畴只有积没有指数，或语言不含 λ-抽象，则相应的"函数"表达会不足。</p>
+    <p><strong>哲学联系。</strong>多项式范畴像"给语言临时加一个专名"，函数完备性说：只要你允许这样加专名，语言的描述能力就能追上范畴里的所有箭头。用因果哲学的话说：一个结构若能对其中的"泛个体"做任何可描述的干预并唯一读出结果，那么它的内部语言就是充分的——至于自然语言或法律语言的表达力，还牵涉语用与语境，不在此列。</p>
+  </div>
+</section>
+
+<footer>
+  <p><a href="范畴论-逻辑-拓扑斯_教材总目录.html">← 返回总目录</a> ｜ 上一章：<a href="范畴论-逻辑-拓扑斯_教材第8章.html">第 8 章 范畴论预备（Part 0）</a> ｜ 下一章：<a href="范畴论-逻辑-拓扑斯_教材第10章.html">第 10 章 λ-演算与证明同一性</a></p>
+  <p>本章对应 Lambek &amp; Scott, <em>Introduction to Higher Order Categorical Logic</em>, Part I §1–§6。公式由 MathJax 渲染，需联网加载。</p>
+</footer>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,982 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>第 8 章 范畴论预备（Part 0）—— 三书递进自学教材</title>
+<script>
+window.MathJax = {
+  tex: {
+    inlineMath: [['\\(','\\)']], displayMath: [['\\[','\\]']], processEscapes: true,
+    macros: {
+      llbracket: '\\lbrack\\lbrack',
+      rrbracket: '\\rbrack\\rbrack'
+    }
+  },
+  options: { ignoreHtmlClass: 'no-tex' },
+  svg: { fontCache: 'global' }
+};
+</script>
+<script async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
+<style>
+  :root{
+    --bg:#f6f7f9; --card:#fff; --ink:#1b1f27; --ink2:#4d5461; --ink3:#7a8190;
+    --line:#e5e8ed; --soft:#f0f2f5;
+    --c1:#2563eb; --c1bg:#eef4ff; --gold:#b45309; --goldbg:#fdf3e3;
+    --ok:#15803d; --okbg:#eefaf1; --phil:#7c3aed; --philbg:#f6f1ff;
+    --teal:#0d9488; --tealbg:#eefaf7; --walk:#b45309;
+    --radius:12px;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;
+    line-height:1.75;-webkit-font-smoothing:antialiased;}
+  .wrap{max-width:920px;margin:0 auto;padding:0 22px 80px;}
+
+  header.top{padding:34px 0 22px;border-bottom:1px solid var(--line);margin-bottom:26px;}
+  .breadcrumb{font-size:12.5px;color:var(--ink3);margin-bottom:10px;}
+  .breadcrumb a{color:var(--c1);text-decoration:none;}
+  h1{font-size:29px;margin:0 0 8px;letter-spacing:-.02em;}
+  .lede{color:var(--ink2);font-size:14.5px;margin:0 0 16px;}
+  .jump{display:flex;gap:8px;flex-wrap:wrap;}
+  .jump a{font-size:12.5px;font-weight:650;text-decoration:none;color:var(--ink2);
+    background:var(--card);border:1px solid var(--line);border-radius:99px;padding:6px 13px;}
+  .jump a:hover{border-color:var(--c1);color:var(--c1);}
+
+  section.sec{margin:0 0 52px;scroll-margin-top:16px;}
+  .sec-h{display:flex;align-items:baseline;gap:12px;border-bottom:2px solid var(--c1);padding-bottom:10px;margin-bottom:22px;}
+  .sec-no{font-size:13px;font-weight:800;color:#fff;background:var(--c1);border-radius:7px;padding:3px 10px;white-space:nowrap;}
+  .sec-h h2{font-size:22px;margin:0;letter-spacing:-.01em;}
+  .src{font-size:11.5px;color:var(--ink3);margin-left:auto;white-space:nowrap;}
+
+  .box{border-radius:var(--radius);padding:16px 20px;margin:18px 0;border:1px solid var(--line);}
+  .box h4{margin:0 0 10px;font-size:14px;letter-spacing:.01em;}
+
+  .learn{background:var(--c1bg);border-color:#cfe0ff;}
+  .learn h4{color:var(--c1);}
+  .learn ol{margin:0;padding-left:22px;} .learn li{margin:4px 0;font-size:14px;}
+
+  .prep{background:var(--tealbg);border-color:#bfe9dd;}
+  .prep h4{color:var(--teal);}
+  .prep p{font-size:13.5px;color:#115e59;margin:8px 0;}
+  .prep ol,.prep ul{margin:8px 0;padding-left:22px;font-size:13.5px;color:#115e59;}
+  .prep li{margin:5px 0;}
+
+  .defn{background:#fafbfc;border-left:4px solid var(--ink2);padding:14px 18px;margin:16px 0;border-radius:0 10px 10px 0;}
+  .defn .lbl{font-weight:800;font-size:13.5px;color:var(--ink);}
+  .prop{background:#fbfcfe;border:1px solid #dbe6f8;border-left:4px solid var(--c1);padding:14px 18px;margin:16px 0;border-radius:0 10px 10px 0;}
+  .prop .lbl{font-weight:800;font-size:13.5px;color:var(--c1);}
+  .rmk{font-size:13.5px;color:var(--ink2);background:var(--soft);padding:11px 16px;border-radius:9px;margin:12px 0;}
+
+  .proof{margin:10px 0 4px;padding-left:16px;border-left:2px solid var(--line);font-size:14px;color:var(--ink2);}
+  .proof .pl{font-weight:700;color:var(--ink);}
+  .qed{float:right;font-style:normal;color:var(--ink3);}
+
+  .exer{background:var(--goldbg);border-color:#f2dfbb;}
+  .exer h4{color:var(--gold);}
+  .exer .grp{font-size:12.5px;font-weight:750;color:var(--gold);margin:12px 0 4px;}
+  .exer ol{margin:0;padding-left:22px;} .exer li{margin:9px 0;font-size:14px;}
+
+  .ans{background:var(--okbg);border-color:#c9ecd3;}
+  .ans h4{color:var(--ok);}
+  .ans .item{margin:14px 0 18px;font-size:14px;}
+  .ans .item:last-child{margin-bottom:0;}
+  .ans .item b{color:var(--ok);}
+  .ans .proof{border-left-color:#bfe6c9;}
+
+  .phil{background:var(--philbg);border-color:#e3d5ff;}
+  .phil h4{color:var(--phil);}
+  .phil p{font-size:14px;color:#5b3a8e;margin:8px 0;}
+
+  .walk{background:#fffbeb;border-color:#fde68a;}
+  .walk h4{color:var(--walk);}
+  .walk p,.walk li{font-size:13.5px;color:#78350f;}
+  .walk ol,.walk ul{margin:8px 0;padding-left:22px;}
+  .walk table{border-collapse:collapse;width:100%;font-size:13px;margin:10px 0;}
+  .walk th,.walk td{border:1px solid #fcd34d;padding:7px 9px;text-align:left;vertical-align:top;}
+  .walk th{background:#fef3c7;color:#78350f;}
+
+  h3.sub{font-size:16px;margin:26px 0 6px;color:var(--ink);}
+  p{margin:9px 0;} .math{overflow-x:auto;}
+
+  .figcap{font-size:12.5px;color:var(--ink3);margin:2px 0 12px;text-align:center;font-style:italic;}
+
+  footer{border-top:1px solid var(--line);margin-top:30px;padding-top:20px;font-size:13px;color:var(--ink3);}
+  footer a{color:var(--c1);text-decoration:none;}
+
+  @media(max-width:640px){
+    h1{font-size:23px;} .wrap{padding:0 14px 60px;}
+    .sec-h{flex-wrap:wrap;} .src{margin-left:0;}
+    .box{padding:14px 15px;}
+  }
+  @media print{body{background:#fff;}.jump{display:none;}.box{break-inside:avoid;}}
+  /* ---- 范畴交换图 SVG（浅色主题）---- */
+  svg.cd{display:block;margin:16px auto 2px;max-width:100%;height:auto;
+    font-family:"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;}
+  svg.cd rect.node{fill:#eef4ff;stroke:#2563eb;stroke-width:1.5;rx:7;}
+  svg.cd rect.node2{fill:#f6f1ff;stroke:#7c3aed;stroke-width:1.5;rx:7;}
+  svg.cd rect.nodeg{fill:#eefaf1;stroke:#15803d;stroke-width:1.5;rx:7;}
+  svg.cd rect.nodey{fill:#fdf3e3;stroke:#b45309;stroke-width:1.5;rx:7;}
+  svg.cd text.nt{fill:#1b1f27;font-size:13.5px;font-weight:600;}
+  svg.cd text.lb{fill:#334155;font-size:12.5px;}
+  svg.cd text.hb{fill:#2563eb;font-size:12.5px;font-weight:600;}
+  svg.cd text.hg{fill:#15803d;font-size:12.5px;font-weight:600;}
+  svg.cd text.hp{fill:#7c3aed;font-size:12.5px;font-weight:600;}
+  svg.cd line.ar,svg.cd path.ar{stroke:#475569;stroke-width:1.6;fill:none;marker-end:url(#cdArr);}
+  svg.cd line.arb,svg.cd path.arb{stroke:#2563eb;stroke-width:1.8;fill:none;marker-end:url(#cdArrB);}
+  svg.cd line.arg,svg.cd path.arg{stroke:#15803d;stroke-width:1.8;fill:none;marker-end:url(#cdArrG);}
+  svg.cd line.arp,svg.cd path.arp{stroke:#7c3aed;stroke-width:1.8;fill:none;marker-end:url(#cdArrP);}
+  svg.cd line.ard,svg.cd path.ard{stroke:#475569;stroke-width:1.5;fill:none;stroke-dasharray:5 4;marker-end:url(#cdArr);}
+  svg.cd line.noa{stroke:#475569;stroke-width:1.5;fill:none;stroke-dasharray:5 4;}
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute;width:0;height:0;overflow:hidden" aria-hidden="true">
+<defs>
+  <marker id="cdArr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+    <path d="M 0 0 L 10 5 L 0 10 z" fill="#475569"/>
+  </marker>
+  <marker id="cdArrB" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+    <path d="M 0 0 L 10 5 L 0 10 z" fill="#2563eb"/>
+  </marker>
+  <marker id="cdArrG" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+    <path d="M 0 0 L 10 5 L 0 10 z" fill="#15803d"/>
+  </marker>
+  <marker id="cdArrP" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+    <path d="M 0 0 L 10 5 L 0 10 z" fill="#7c3aed"/>
+  </marker>
+</defs>
+</svg>
+<div class="wrap">
+
+<header class="top">
+  <div class="breadcrumb"><a href="范畴论-逻辑-拓扑斯_教材总目录.html">← 返回总目录</a> ｜ 第二部分 · Lambek &amp; Scott《Introduction to Higher Order Categorical Logic》</div>
+  <h1>第 8 章　范畴论预备（Part 0）</h1>
+  <p class="lede">从本章起我们进入第二本原著。Lambek 与 Scott 的 Part 0 不是又一次入门讲座，而是一套<strong>为后面两大部分量身准备的工具体检</strong>：函子与自然变换负责"翻译"，伴随、等价、极限、三元组负责"定位泛性质"，笛卡尔闭范畴的例子负责"让抽象落地"。第一部分（第 1–7 章）已从 Awodey 角度讲过这些概念；本章按 L&amp;S 的节序重排，并在需要处补上够用的极简预备知识（集合与函数、偏序、矩阵乘法），让自读者不必来回翻书。主线仍忠于原著：§1–2 → 8.1，§3–6 → 8.2，§7 → 8.3；所有拓展都放在"选读"里，不进正文论证。</p>
+  <div class="rmk" style="margin-top:14px;"><strong>全章地图（抽象形式 ↔ 直观含义）。</strong>
+    8.1 <strong>函子与自然变换</strong>：\(F:\mathbf C\to\mathbf D\) 是范畴间的"翻译"，\(\eta:F\Rightarrow G\) 是两套翻译之间的"逐点对齐" ↔ 换语言不换结构；
+    8.2 <strong>伴随、等价、极限、三元组</strong>：\(\operatorname{Hom}(FA,B)\cong\operatorname{Hom}(A,GB)\) 是贯穿 §3–§6 的一根线，等价是"两边互相当翻译"，极限是"最优接收者"，三元组是伴随留下的代数影子 ↔ 四种说法，同一件事：用关系而非元素锁定对象；
+    8.3 <strong>笛卡尔闭范畴的例子</strong>：终端对象、积、指数 \(B^A\) ↔ "单位材料、并列材料、可加工材料"三件套。
+    每节的"极简回顾"框只讲马上要用的定义，不展开完整理论；标有"预备"的例子可以先跳过，不影响后续。</div>
+  <nav class="jump">
+    <a href="#s8-1">8.1 函子与自然变换</a>
+    <a href="#s8-2">8.2 伴随、等价、极限、三元组</a>
+    <a href="#s8-3">8.3 笛卡尔闭范畴的例子</a>
+  </nav>
+</header>
+
+<section class="sec" id="s8-1">
+  <div class="sec-h"><span class="sec-no">8.1</span><h2>函子与自然变换</h2><span class="src">L Part 0 §1–2</span></div>
+
+  <div class="box learn">
+    <h4>① 本节学习目标</h4>
+    <ol>
+      <li>在集合与函数的层面上重述范畴的定义，知道"交换图"到底在说什么；</li>
+      <li>会写函子（协变/逆变）并逐条验证保恒等、保复合；</li>
+      <li>理解自然变换的分量公式与方块条件，能亲手验证至少两个例子；</li>
+      <li>掌握自然同构"分量是同构 ⇒ 逆也自然"的完整证明；</li>
+      <li>认识函子范畴 \(\mathbf D^{\mathbf C}\)：它的对象是函子、箭头是自然变换。</li>
+    </ol>
+  </div>
+
+  <h3 class="sub">8.1.1 极简回顾：集合、函数、交换图</h3>
+  <div class="box prep">
+    <h4>极简回顾（五分钟，够用即可）</h4>
+    <p><strong>集合</strong>就是把一些对象收在一起，记作 \(A\)；\(x\in A\) 表示 \(x\) 是其中一员。<strong>函数</strong> \(f:A\to B\) 是一条规则，它给每个 \(x\in A\) 指定唯一一个 \(f(x)\in B\)。两个函数可以<strong>复合</strong>：\((g\circ f)(x)=g(f(x))\)，这里要求 \(f:A\to B,\ g:B\to C\)，于是 \(g\circ f:A\to C\)。恒等函数 \(\operatorname{id}_A(x)=x\) 满足 \(f\circ\operatorname{id}_A=f=\operatorname{id}_B\circ f\)，且复合满足结合律。</p>
+    <p><strong>交换图</strong>只是一句承诺书：图上从同一对象到同一对象的两条箭头路径，代表的函数（以后是态射）相等。例如说"方块交换"，意思就是沿上边再沿右边所得的结果，等于沿左边再沿下边所得的结果。</p>
+    <p>本节的范畴定义正是把这套语言搬到更一般的场景：保留"箭头 + 复合 + 恒等 + 结合律"，暂时忘掉"元素"。</p>
+  </div>
+
+  <h3 class="sub">8.1.2 范畴的定义与第一批例子</h3>
+  <div class="defn">
+    <span class="lbl">定义 8.1.1（范畴）</span>
+    <p>一个范畴 \(\mathbf C\) 由以下数据组成：</p>
+    <ol>
+      <li>一类对象 \(A,B,C,\dots\)；</li>
+      <li>对每对对象 \(A,B\)，一个集合 \(\operatorname{Hom}_{\mathbf C}(A,B)\)，其元素叫态射（箭头）\(f:A\to B\)；</li>
+      <li>对每个对象 \(A\)，一个恒等态射 \(\operatorname{id}_A:A\to A\)；</li>
+      <li>对 \(f:A\to B,\ g:B\to C\)，一个复合态射 \(g\circ f:A\to C\)；</li>
+      <li>结合律：\(h\circ(g\circ f)=(h\circ g)\circ f\)；单位律：\(f\circ\operatorname{id}_A=f=\operatorname{id}_B\circ f\)。</li>
+    </ol>
+    <p>若 \(f:A\to B,\ g:B\to A\) 满足 \(g\circ f=\operatorname{id}_A\) 且 \(f\circ g=\operatorname{id}_B\)，则称 \(f\) 为<strong>同构</strong>，\(g\) 是它的逆，记作 \(f^{-1}\)。</p>
+  </div>
+
+  <div class="prop">
+    <span class="lbl">例 8.1.2（门槛最低的四个范畴）</span>
+    <p><strong>(a) \(\mathbf{Set}\)：</strong>对象是集合，态射是函数，复合是函数复合，恒等是恒等函数。8.1.1 的回顾恰好逐条满足定义。</p>
+    <p><strong>(b) \(\mathbf{Rel}\)：</strong>对象仍是集合，态射 \(R:A\to B\) 是关系，即子集 \(R\subseteq A\times B\)。复合定义为
+    \[
+      S\circ R=\{(a,c)\in A\times C:\ \exists b\in B,\ (a,b)\in R,\ (b,c)\in S\}.
+    \]
+    这里 \(\exists b\in B\) 读作"存在 \(b\in B\)"。恒等态射是对角关系 \(\Delta_A=\{(a,a):a\in A\}\)。结合律来自"存在某个中间点"的结合性：\(\exists b\) 再 \(\exists c\) 与 \(\exists d\) 再 \(\exists b\) 都等价于存在一条长度为三的链。</p>
+    <p><strong>(c) 偏序范畴：</strong>设 \((P,\le)\) 是偏序集。"偏序"只需三条：自反 \(x\le x\)、反对称 \(x\le y\le x\Rightarrow x=y\)、传递 \(x\le y\le z\Rightarrow x\le z\)。把它做成范畴：对象为 \(P\) 的元素，规定
+    \[
+      \operatorname{Hom}(x,y)=
+      \begin{cases}
+        \{\ast\}, & x\le y,\\
+        \varnothing, & x\not\le y.
+      \end{cases}
+    \]
+    传递性给出复合，自反性给出恒等态射，反对称保证同构只能是恒等。（"唯一箭头"用 \(\ast\) 表示，它不是星号运算，只是个占位记号。）</p>
+    <p><strong>(d) 终端范畴 \(\mathbf 1\)：</strong>只有一个对象 \(\ast\) 和它的恒等态射；<strong>空范畴 \(\mathbf 0\)：</strong>没有对象。（后文说"终端对象"时，用的正是 \(\mathbf 1\) 作为标尺。）</p>
+  </div>
+  <div class="rmk"><strong>自学提醒。</strong>例子 (a)(c) 只用高中层面的集合语言；(b) 的"存在中间点"也不难。遇到定义时，先在这四个例子里逐条核对，比抽象背诵更快。更复杂的例子下面会给出，但都标出所需预备。</div>
+
+  <h3 class="sub">8.1.3 一个带预备知识的严格例子：矩阵范畴 \(\mathbf{Mat}_R\)</h3>
+  <div class="box prep">
+    <h4>极简回顾：矩阵与矩阵乘法（只讲马上要用的部分）</h4>
+    <p>取 \(R=\mathbb R\)（或任意满足加法、乘法结合与分配律的"半环"，如 \(\mathbb N\)）。一个 \(n\times m\) <strong>矩阵</strong> \(A\) 是一张 \(n\) 行 \(m\) 列的数表，第 \(i\) 行第 \(j\) 列的数记作 \(A_{ij}\)。我们把它看成从 \(m\) 到 \(n\) 的箭头 \(A:m\to n\)，也就是把 \(m\) 维列向量变成 \(n\) 维列向量。</p>
+    <ol>
+      <li><strong>乘法只在维数匹配时定义：</strong>若 \(A:m\to n\)（形状 \(n\times m\)）、\(B:n\to p\)（形状 \(p\times n\)），则乘积 \(BA:m\to p\)（形状 \(p\times m\)）由
+      \[
+        (BA)_{ik}=\sum_{j=1}^{n}B_{ij}\,A_{jk}\qquad (i=1,\dots,p,\ k=1,\dots,m)
+      \]
+      给出。口诀：左矩阵的列数 = 右矩阵的行数；结果的第 \(i\) 行第 \(k\) 列，是"左行右列逐个相乘再求和"。</li>
+      <li><strong>一个数值例子：</strong>\(A=\begin{pmatrix}1&2\\0&1\end{pmatrix}\)（\(2\times2\)），\(B=\begin{pmatrix}0&1\\1&0\end{pmatrix}\)（\(2\times2\)），则
+      \[
+        BA=\begin{pmatrix}0\cdot1+1\cdot0&0\cdot2+1\cdot1\\1\cdot1+0\cdot0&1\cdot2+0\cdot1\end{pmatrix}=\begin{pmatrix}0&1\\1&2\end{pmatrix}.
+      \]</li>
+      <li><strong>单位矩阵</strong> \((I_n)_{ij}=\delta_{ij}\)（对角线上是 \(1\)，其余是 \(0\)）满足 \(AI_m=A=I_nA\)（按形状取下标）。</li>
+      <li><strong>结合律来自有限求和的交换与分配：</strong>对 \(A:m\to n,\ B:n\to p,\ C:p\to q\)，
+      \[
+        ((CB)A)_{ik}=\sum_{l=1}^{p}\Big(\sum_{j=1}^{n}C_{ij}B_{jl}\Big)A_{lk}
+        =\sum_{j=1}^{n}C_{ij}\Big(\sum_{l=1}^{p}B_{jl}A_{lk}\Big)=(C(BA))_{ik}.
+      \]
+      这里用了乘法对加法的分配律与有限求和可交换次序。这就是矩阵乘法结合律的全部内容。</li>
+    </ol>
+  </div>
+  <div class="prop">
+    <span class="lbl">例 8.1.3（\(\mathbf{Mat}_R\)；预备：上面的五行回顾）</span>
+    <p>定义范畴 \(\mathbf{Mat}_R\)：对象为自然数 \(0,1,2,\dots\)；态射 \(m\to n\) 为 \(n\times m\) 矩阵；复合为矩阵乘法；恒等态射为 \(I_n\)。回顾中的第 3、4 条恰好验证单位律与结合律，所以这确实是一个范畴。它把"线性映射"变成了纯组合的对象：\(n\) 只记维数，矩阵本身记映射。</p>
+  </div>
+  <div class="rmk"><strong>为什么放这个例子。</strong>它门槛不高（只需会算矩阵乘法），却说明"对象可以不是集合、态射可以不是函数"。后面第 12 章讲代数理论时，\(\mathbf{Mat}_R\) 会作为有限维自由代数的骨架再次出现；现在认识它，将来零成本。<strong>预备标记：</strong>若你完全没接触过矩阵，只需读完上面的回顾框，不必去学线性空间。</div>
+
+  <h3 class="sub">8.1.4 函子：范畴之间的翻译</h3>
+  <div class="defn">
+    <span class="lbl">定义 8.1.4（函子）</span>
+    <p>设 \(\mathbf C,\mathbf D\) 是范畴。函子 \(F:\mathbf C\to\mathbf D\) 是如下对应：每个对象 \(A\in\mathbf C\) 送到对象 \(F(A)\in\mathbf D\)；每个态射 \(f:A\to B\) 送到态射 \(F(f):F(A)\to F(B)\)，并保持
+    \[
+      F(\operatorname{id}_A)=\operatorname{id}_{F(A)},\qquad F(g\circ f)=F(g)\circ F(f).
+    \]
+    若把箭头方向全部反过来再应用 \(F\)，即 \(F:\mathbf C^{op}\to\mathbf D\)，称为<strong>逆变函子</strong>（相应地上面那种叫协变函子）。这里 \(\mathbf C^{op}\) 表示反范畴：对象不变，\(f:A\to B\) 在 \(\mathbf C^{op}\) 中记作 \(f^{op}:B\to A\)。</p>
+  </div>
+  <div class="prop">
+    <span class="lbl">例 8.1.5（从低门槛开始）</span>
+    <p><strong>(a) 恒等函子</strong> \(\operatorname{id}_{\mathbf C}:\mathbf C\to\mathbf C\)：什么都不改。</p>
+    <p><strong>(b) 幂集函子（协变）。</strong>\(\mathcal P:\mathbf{Set}\to\mathbf{Set}\)，\(\mathcal P(X)=\) \(X\) 的所有子集；对 \(f:X\to Y\)，令 \(\mathcal P(f)(S)=f[S]=\{f(x):x\in S\}\)。验证保复合：\(\mathcal P(g\circ f)(S)=(g\circ f)[S]=g[f[S]]=(\mathcal P(g)\circ\mathcal P(f))(S)\)，保恒等显然。</p>
+    <p><strong>(c) 逆像函子（逆变）。</strong>同一个 \(\mathcal P\) 也可看作 \(\mathcal P:\mathbf{Set}^{op}\to\mathbf{Set}\)：对 \(f:X\to Y\) 定义 \(\mathcal P(f)(T)=f^{-1}(T)=\{x:f(x)\in T\}\)，此时 \(\mathcal P(f):\mathcal P(Y)\to\mathcal P(X)\)。它是逆变的，因为
+    \[
+      (g\circ f)^{-1}(T)=f^{-1}(g^{-1}(T)),
+    \]
+    即 \(\mathcal P(g\circ f)=\mathcal P(f)\circ\mathcal P(g)\)，次序确实反了。</p>
+    <p><strong>(d) 对角线函子。</strong>\(\Delta:\mathbf{Set}\to\mathbf{Set}\times\mathbf{Set}\)，\(\Delta(X)=(X,X)\)，\(\Delta(f)=(f,f)\)。积范畴的态射按分量复合，故两条对应都保恒等与复合。</p>
+    <p><strong>(e) Hom 函子。</strong>固定 \(A\in\mathbf C\)，\(H^A=\operatorname{Hom}(A,-):\mathbf C\to\mathbf{Set}\) 把 \(X\mapsto\operatorname{Hom}(A,X)\)、\(f:X\to Y\) 送到"后复合" \(H^A(f)(h)=f\circ h\)；固定 \(B\)，\(H_B=\operatorname{Hom}(-,B):\mathbf C^{op}\to\mathbf{Set}\) 把 \(f:X\to Y\) 送到"前复合" \(H_B(f)(k)=k\circ f\)。验证 \(H^A(g\circ f)(h)=g\circ f\circ h=g\circ(f\circ h)\)，故保复合；\(H_B\) 的验证同样直接。这两个函子在第 6 章 Yoneda 引理里是主角。</p>
+    <p><strong>(f) 遗忘函子（预备：群的定义——带乘法、单位元、逆元且满足结合律的集合）。</strong>\(U:\mathbf{Grp}\to\mathbf{Set}\) 忘掉乘法结构，只保留底层集合与群同态（同态本身已是函数）。</p>
+  </div>
+  <div class="prop">
+    <span class="lbl">命题 8.1.6（函子保持同构）</span>
+    <p>若 \(f:A\to B\) 在 \(\mathbf C\) 中是同构，则 \(F(f)\) 在 \(\mathbf D\) 中也是同构。</p>
+    <div class="proof"><span class="pl">证明.</span>设 \(g:B\to A\) 是 \(f\) 的逆。则
+    \[
+      F(g)\circ F(f)=F(g\circ f)=F(\operatorname{id}_A)=\operatorname{id}_{F(A)},
+    \]
+    同理 \(F(f)\circ F(g)=\operatorname{id}_{F(B)}\)。故 \(F(g)=F(f)^{-1}\)。<span class="qed">∎</span></div>
+  </div>
+  <div class="rmk"><strong>抽象形式 ↔ 直观含义。</strong>函子不是"在两个范畴之间搬东西"，而是"把一套结构翻译成另一套结构，并且尊重翻译前后的拼接规则"。若把范畴看作一种语言，函子就是忠实的翻译器：原来能接上的两步，翻译后仍能接上。</div>
+
+  <h3 class="sub">8.1.5 自然变换：逐点对齐两套翻译</h3>
+  <div class="defn">
+    <span class="lbl">定义 8.1.7（自然变换）</span>
+    <p>设 \(F,G:\mathbf C\to\mathbf D\) 是函子。自然变换 \(\eta:F\Rightarrow G\) 是一族态射
+    \[
+      \eta_A:F(A)\to G(A)\qquad (A\in\mathbf C),
+    \]
+    称为 \(\eta\) 在 \(A\) 处的<strong>分量</strong>，满足对每个 \(f:A\to B\) 的方块条件
+    \[
+      G(f)\circ\eta_A=\eta_B\circ F(f).
+    \]
+    若每个分量 \(\eta_A\) 都是同构，则称 \(\eta\) 为<strong>自然同构</strong>，记作 \(F\cong G\)。</p>
+  </div>
+  <svg class="cd" viewBox="0 0 560 200" width="560" height="200" role="img" aria-label="自然变换的自然性方块">
+    <rect class="node" x="40" y="28" width="140" height="46" rx="7"/>
+    <text class="nt" x="110" y="57" text-anchor="middle">F(A)</text>
+    <rect class="node" x="380" y="28" width="140" height="46" rx="7"/>
+    <text class="nt" x="450" y="57" text-anchor="middle">F(B)</text>
+    <rect class="node" x="40" y="130" width="140" height="46" rx="7"/>
+    <text class="nt" x="110" y="159" text-anchor="middle">G(A)</text>
+    <rect class="node" x="380" y="130" width="140" height="46" rx="7"/>
+    <text class="nt" x="450" y="159" text-anchor="middle">G(B)</text>
+    <line class="arb" x1="180" y1="51" x2="380" y2="51"/>
+    <text class="hb" x="280" y="43" text-anchor="middle">F(f)</text>
+    <line class="arb" x1="180" y1="153" x2="380" y2="153"/>
+    <text class="hb" x="280" y="176" text-anchor="middle">G(f)</text>
+    <line class="arp" x1="110" y1="74" x2="110" y2="130"/>
+    <text class="hp" x="98" y="106" text-anchor="end">η_A</text>
+    <line class="arp" x1="450" y1="74" x2="450" y2="130"/>
+    <text class="hp" x="462" y="106" text-anchor="start">η_B</text>
+  </svg>
+  <p class="figcap">图 8.1　自然性方块：两条从 \(F(A)\) 到 \(G(B)\) 的路径必须相等，即 \(G(f)\circ\eta_A=\eta_B\circ F(f)\)</p>
+
+  <div class="prop">
+    <span class="lbl">例 8.1.8（单元素集映射：门槛最低的自然变换）</span>
+    <p>取 \(F=\operatorname{id}_{\mathbf{Set}}\)，\(G=\mathcal P\)（协变幂集函子）。定义 \(\eta_X:X\to\mathcal P(X)\) 为 \(\eta_X(x)=\{x\}\)。验证自然性：对任意 \(f:X\to Y\) 与 \(x\in X\)，
+    \[
+      (\mathcal P(f)\circ\eta_X)(x)=\mathcal P(f)(\{x\})=\{f(x)\},
+      \qquad ((\eta_Y\circ f))(x)=\eta_Y(f(x))=\{f(x)\}.
+    \]
+    两边作为函数相等，故 \(\eta:\operatorname{id}_{\mathbf{Set}}\Rightarrow\mathcal P\) 是自然变换。</p>
+  </div>
+  <div class="prop">
+    <span class="lbl">命题 8.1.9（自然变换的复合）</span>
+    <p>若 \(\eta:F\Rightarrow G\)（\(F,G:\mathbf C\to\mathbf D\)）与 \(\theta:G\Rightarrow H\)（\(H:\mathbf C\to\mathbf D\)），则逐点定义 \((\theta\circ\eta)_A=\theta_A\circ\eta_A\) 得到自然变换 \(\theta\circ\eta:F\Rightarrow H\)。</p>
+    <div class="proof"><span class="pl">证明.</span>对 \(f:A\to B\)，利用 \(\theta\) 与 \(\eta\) 各自的自然性：
+    \[
+      H(f)\circ(\theta_A\circ\eta_A)=(H(f)\circ\theta_A)\circ\eta_A
+      =(\theta_B\circ G(f))\circ\eta_A=\theta_B\circ(G(f)\circ\eta_A)
+      =\theta_B\circ(\eta_B\circ F(f))=(\theta_B\circ\eta_B)\circ F(f).
+    \]
+    这正是 \(\theta\circ\eta\) 的自然性方块。<span class="qed">∎</span></div>
+  </div>
+  <div class="prop">
+    <span class="lbl">命题 8.1.10（水平复合的对角公式）</span>
+    <p>设 \(F,F':\mathbf C\to\mathbf D\)、\(G,G':\mathbf D\to\mathbf E\)，且 \(\eta:F\Rightarrow F'\)、\(\theta:G\Rightarrow G'\)。则对每个 \(A\in\mathbf C\)，
+    \[
+      (\theta\ast\eta)_A:=\theta_{F'(A)}\circ G(\eta_A)=G'(\eta_A)\circ\theta_{F(A)}
+    \]
+    两种写法相等，且随 \(A\) 给出自然变换 \(\theta\ast\eta:GF\Rightarrow G'F'\)，称为 \(\theta\) 与 \(\eta\) 的<strong>水平复合</strong>。</p>
+    <div class="proof"><span class="pl">证明.</span>考虑 \(\theta\) 在态射 \(\eta_A:F(A)\to F'(A)\) 处的自然性方块（\(\theta\) 是 \(G\Rightarrow G'\)，\(G,G':\mathbf D\to\mathbf E\)）：
+    \[
+      \theta_{F'(A)}\circ G(\eta_A)=G'(\eta_A)\circ\theta_{F(A)}.
+    \]
+    这就是要证的等式。自然性（关于 \(A\)）由两次应用各自的自然性方块拼接得到：若 \(f:A\to B\)，则 \(G'F'(f)\) 与 \(GF(f)\) 分别夹住上式两端，四块拼成的大方块交换。<span class="qed">∎</span></div>
+  </div>
+
+  <h3 class="sub">8.1.6 自然同构与函子范畴</h3>
+  <div class="prop">
+    <span class="lbl">命题 8.1.11（自然同构判别）</span>
+    <p>设 \(\eta:F\Rightarrow G\)。若每个分量 \(\eta_A\) 都是同构，则逐点取逆 \(\eta_A^{-1}\) 构成自然变换 \(\eta^{-1}:G\Rightarrow F\)，从而 \(\eta\) 是自然同构。</p>
+    <div class="proof"><span class="pl">证明.</span>需验证 \(\eta^{-1}\) 的自然性，即对每个 \(f:A\to B\)，
+    \[
+      F(f)\circ\eta_A^{-1}=\eta_B^{-1}\circ G(f).
+    \]
+    已知 \(\eta\) 的自然性：\(G(f)\circ\eta_A=\eta_B\circ F(f)\)。左复合 \(\eta_B^{-1}\)、右复合 \(\eta_A^{-1}\)，得
+    \[
+      \eta_B^{-1}\circ G(f)\circ\eta_A\circ\eta_A^{-1}=\eta_B^{-1}\circ\eta_B\circ F(f)\circ\eta_A^{-1},
+    \]
+    化简即得 \( \eta_B^{-1}\circ G(f)=F(f)\circ\eta_A^{-1}\)，正是所需。<span class="qed">∎</span></div>
+  </div>
+  <div class="defn">
+    <span class="lbl">定义 8.1.12（函子范畴）</span>
+    <p>给定范畴 \(\mathbf C,\mathbf D\)，函子范畴 \(\mathbf D^{\mathbf C}\)（也记作 \([\mathbf C,\mathbf D]\)）的对象是函子 \(F:\mathbf C\to\mathbf D\)，态射 \(F\to G\) 是自然变换 \(F\Rightarrow G\)，复合为 8.1.9 的逐点复合，恒等态射是恒等自然变换 \((\operatorname{id}_F)_A=\operatorname{id}_{F(A)}\)。命题 8.1.9 保证复合存在，结合律与单位律逐点继承自 \(\mathbf D\)。</p>
+  </div>
+  <div class="rmk"><strong>读图与交互提示。</strong>图 8.1 是后面所有自然性方块的母版：把 \(F(A),F(B),G(A),G(B)\) 换成具体的 Hom 集、积、指数、量词，就得到相应交换图。附录 A 的交互式嵌套图 A.2 演示了同一套读法——点击热点下钻到子方块；本章的交换图都是静态版，读图时请按"标出起点 → 选两条路 → 核对标签"三步走。</div>
+
+  <div class="box exer">
+    <h4>② 习题</h4>
+    <div class="grp">基础巩固</div>
+    <ol>
+      <li>设 \(f:X\to Y\)。用元素计算验证 \(f[S\cup T]=f[S]\cup f[T]\) 与 \(f^{-1}(U\cap V)=f^{-1}(U)\cap f^{-1}(V)\)，并说明它们分别对应协变与逆变幂集函子的哪条保持性质。</li>
+      <li>取 \(A=1\)（单元素集合），把 \(H^1=\operatorname{Hom}(1,-)\) 与恒等函子 \(\operatorname{id}_{\mathbf{Set}}\) 比较：写出自然同构 \(\operatorname{Hom}(1,X)\cong X\) 的分量，并验证自然性。</li>
+      <li>证明：函子 \(F:\mathbf C\to\mathbf D\) 保持同构且保持逆元，即 \(F(f^{-1})=F(f)^{-1}\)（命题 8.1.6 的精确形式）。</li>
+      <li>令 \(A=\begin{pmatrix}1&1\\0&1\end{pmatrix}, B=\begin{pmatrix}2&0\\1&3\end{pmatrix}, C=\begin{pmatrix}0&1\\1&0\end{pmatrix}\) 都是 \(2\times2\) 实矩阵。计算 \((CB)A\) 与 \(C(BA)\)，逐项核对结合律。</li>
+      <li>验证 \(\eta:\operatorname{id}_{\mathbf{Set}}\Rightarrow\mathcal P,\ \eta_X(x)=\{x\}\) 是自然变换（写出分量与方块两边），并说明为什么不存在自然变换 \(\mathcal P\Rightarrow\operatorname{id}_{\mathbf{Set}}\)。（提示：看空集。）</li>
+      <li>在函子范畴 \(\mathbf{Set}^{\mathbf{Set}}\) 中，描述恒等函子到自身的恒等自然变换，并写出两个自然变换的逐点复合在对象 \(X\) 处的分量。</li>
+    </ol>
+  </div>
+
+  <div class="box ans">
+    <h4>③ 参考答案</h4>
+    <div class="item"><b>8.1.1</b>　\(y\in f[S\cup T]\) 当且仅当存在 \(x\in S\cup T\) 使 \(f(x)=y\)，当且仅当 \(y\in f[S]\) 或 \(y\in f[T]\)；故等式成立。同理 \(x\in f^{-1}(U\cap V)\iff f(x)\in U\cap V\iff f(x)\in U\) 且 \(f(x)\in V\iff x\in f^{-1}(U)\cap f^{-1}(V)\)。前者体现 \(\mathcal P(f)\) 与并运算相容（保并），后者体现逆像与交相容；但函子所需的只是 \(\mathcal P(g\circ f)=\mathcal P(g)\circ\mathcal P(f)\) 与 \((g\circ f)^{-1}=f^{-1}\circ g^{-1}\)，它们分别由像与逆像的定义直接给出。<span class="qed">∎</span></div>
+    <div class="item"><b>8.1.2</b>　分量 \(\alpha_X:\operatorname{Hom}(1,X)\to X\)，\(\alpha_X(h)=h(\ast)\)（\(\ast\) 是 \(1\) 的唯一元素）。其逆为 \(x\mapsto\) 常值函数 \(c_x:1\to X\)，故是双射。自然性：对 \(f:X\to Y\)，\(f(\alpha_X(h))=f(h(\ast))=(f\circ h)(\ast)=\alpha_Y(\operatorname{Hom}(1,f)(h))\)，其中 \(\operatorname{Hom}(1,f)(h)=f\circ h\)。<span class="qed">∎</span></div>
+    <div class="item"><b>8.1.3</b>　设 \(f:A\to B\) 有逆 \(g\)。由函子保恒等与保复合，
+    \[
+      F(g)\circ F(f)=F(g\circ f)=F(\operatorname{id}_A)=\operatorname{id}_{F(A)},\quad
+      F(f)\circ F(g)=F(f\circ g)=F(\operatorname{id}_B)=\operatorname{id}_{F(B)}.
+    \]
+    逆在范畴中唯一（若 \(g',g''\) 都是逆，则 \(g'=g'\circ\operatorname{id}_B=g'\circ(f\circ g'')=(g'\circ f)\circ g''=g''\)），故 \(F(g)=F(f)^{-1}\)。<span class="qed">∎</span></div>
+    <div class="item"><b>8.1.4</b>　先算
+    \[
+      CB=\begin{pmatrix}0\cdot2+1\cdot1&0\cdot0+1\cdot3\\1\cdot2+0\cdot1&1\cdot0+0\cdot3\end{pmatrix}=\begin{pmatrix}1&3\\2&0\end{pmatrix},\qquad
+      (CB)A=\begin{pmatrix}1\cdot1+3\cdot0&1\cdot1+3\cdot1\\2\cdot1+0\cdot0&2\cdot1+0\cdot1\end{pmatrix}=\begin{pmatrix}1&4\\2&2\end{pmatrix}.
+    \]
+    再算
+    \[
+      BA=\begin{pmatrix}2\cdot1+0\cdot0&2\cdot1+0\cdot1\\1\cdot1+3\cdot0&1\cdot1+3\cdot1\end{pmatrix}=\begin{pmatrix}2&2\\1&4\end{pmatrix},\qquad
+      C(BA)=\begin{pmatrix}0\cdot2+1\cdot1&0\cdot2+1\cdot4\\1\cdot2+0\cdot1&1\cdot2+0\cdot4\end{pmatrix}=\begin{pmatrix}1&4\\2&2\end{pmatrix}.
+    \]
+    两边逐项相等。一般地，两边展开都是三重和 \(\sum_{j,l}C_{ij}B_{jl}A_{lk}\)，只是求和次序不同，这正是 8.1.3 中结合律的证明。<span class="qed">∎</span></div>
+    <div class="item"><b>8.1.5</b>　分量与自然性已在例 8.1.8 验证：\((\mathcal P(f)\circ\eta_X)(x)=\{f(x)\}=(\eta_Y\circ f)(x)\)。不存在 \(\mathcal P\Rightarrow\operatorname{id}\)：取 \(X=\varnothing\)，则 \(\mathcal P(\varnothing)=\{\varnothing\}\) 是单元素集，而 \(\operatorname{id}(\varnothing)=\varnothing\) 没有元素，故分量 \(\mathcal P(\varnothing)\to\varnothing\) 作为函数根本不存在。<span class="qed">∎</span></div>
+    <div class="item"><b>8.1.6</b>　恒等自然变换的分量是 \((\operatorname{id}_{\operatorname{id}})_X=\operatorname{id}_X:X\to X\)。一般地，若 \(\alpha,\beta:\operatorname{id}\Rightarrow\operatorname{id}\) 是两个自自然变换，则 \((\beta\circ\alpha)_X=\beta_X\circ\alpha_X:X\to X\)，即逐点函数复合；这里 \(\alpha_X(x)=a\cdot x\)（对阿贝尔群自同态）之类的例子也可看出为什么自自然变换交换。<span class="qed">∎</span></div>
+  </div>
+
+  <div class="box phil">
+    <h4>选读拓展 · 自学与哲学提示（可略读）</h4>
+    <p><strong>自学法：</strong>本节所有新概念都可用 8.1.2 的四个入门范畴测试一遍：把 \(F,G\) 取成 \(\mathbf{Set}\) 上的恒等与幂集，把方块画出来，检查两条路径是不是同一个函数。"先具体后抽象"在这里不是妥协，而是范畴论的标准练习方式。</p>
+    <p><strong>哲学联系：</strong>自然性要求"不依赖对象 \(A\) 的偶然信息"：分量 \(\eta_A\) 虽逐对象给出，却必须被所有态射 \(f\) 兼容。这与后面"证明同一性"的主题遥相呼应——一个变换是不是"同一个"，判据不是它怎么写出来，而是它是否在外界观察（所有 \(f\)）下保持一致。</p>
+  </div>
+</section>
+
+<section class="sec" id="s8-2">
+  <div class="sec-h"><span class="sec-no">8.2</span><h2>伴随、等价、极限、三元组</h2><span class="src">L Part 0 §3–6</span></div>
+
+  <div class="box learn">
+    <h4>① 本节学习目标</h4>
+    <ol>
+      <li>用 Hom-集双射、单位/余单位两种语言定义伴随，并给出两者等价的完整证明；</li>
+      <li>证明"函子是等价 ⟺ 完全忠实且本质上满"，包括反向的构造；</li>
+      <li>写出极限（锥、泛性质）的定义，证明极限唯一到唯一同构，并会验证 \(\mathbf{Set}\) 中极限的构造；</li>
+      <li>证明右伴随保持极限，理解它为什么是"翻译保持最优解"；</li>
+      <li>从伴随构造三元组 \(T=GF\)，逐条验证单位律与结合律。</li>
+    </ol>
+  </div>
+
+  <h3 class="sub">8.2.1 极简回顾：偏序与单调函数</h3>
+  <div class="box prep">
+    <h4>极简回顾（偏序只需三行）</h4>
+    <p>8.1.2 (c) 已给出偏序的定义：自反、反对称、传递。函数 \(f:P\to Q\) 称为<strong>单调</strong>的，若 \(x\le y\Rightarrow f(x)\le f(y)\)。在把偏序看成范畴时，单调函数恰好就是函子（因为箭头 \(x\to y\) 存在当且仅当 \(x\le y\)，函子保复合即传递性）。若 \(f,g:P\to Q\) 都单调，则自然变换 \(f\Rightarrow g\) 存在当且仅当逐点有 \(f(x)\le g(x)\)——因为两个对象之间最多一条箭头，方块自动交换。</p>
+    <p>这个"范畴 ↔ 偏序"的小词典，能把本节所有定义先在一个最便宜的例子里试一遍：伴随变成 Galois 联络，极限变成下确界，三元组变成闭包算子。</p>
+  </div>
+
+  <h3 class="sub">8.2.2 伴随函子（L §3）</h3>
+  <div class="defn">
+    <span class="lbl">定义 8.2.1（伴随，Hom-集形式）</span>
+    <p>设 \(F:\mathbf C\to\mathbf D\)、\(G:\mathbf D\to\mathbf C\)。称 \(F\) <strong>左伴随</strong>于 \(G\)（\(G\) 右伴随于 \(F\)），记作 \(F\dashv G\)，若存在双射族
+    \[
+      \varphi_{A,B}:\operatorname{Hom}_{\mathbf D}(F A,B)\;\xrightarrow{\cong}\;\operatorname{Hom}_{\mathbf C}(A,G B)
+    \]
+    对 \(A\in\mathbf C,B\in\mathbf D\) 有定义，且关于 \(A,B\) 自然：对 \(u:A'\to A,\ v:B\to B'\)，
+    \[
+      G(v)\circ\varphi_{A,B}(f)\circ u=\varphi_{A',B'}(v\circ f\circ F(u)).
+    \]
+    （等价说法：\(\varphi\) 是函子 \(\operatorname{Hom}_{\mathbf D}(F-,-)\) 与 \(\operatorname{Hom}_{\mathbf C}(-,G-)\) 之间的自然同构。）</p>
+  </div>
+  <div class="defn">
+    <span class="lbl">定义 8.2.2（伴随，单位/余单位形式）</span>
+    <p>\(F\dashv G\) 也可由自然变换 \(\eta:1_{\mathbf C}\Rightarrow GF\)（<strong>单位</strong>）与 \(\varepsilon:FG\Rightarrow1_{\mathbf D}\)（<strong>余单位</strong>）给出，要求对一切 \(A,B\) 有三角恒等式
+    \[
+      \varepsilon_{F A}\circ F(\eta_A)=\operatorname{id}_{F A},\qquad
+      G(\varepsilon_B)\circ\eta_{G B}=\operatorname{id}_{G B}.
+    \]</p>
+  </div>
+  <svg class="cd" viewBox="0 0 660 280" width="660" height="280" role="img" aria-label="伴随的两条三角恒等式">
+    <rect class="node2" x="30" y="18" width="150" height="42" rx="7"/>
+    <text class="nt" x="105" y="45" text-anchor="middle">F(A) ∈ D</text>
+    <rect class="node2" x="255" y="18" width="150" height="42" rx="7"/>
+    <text class="nt" x="330" y="45" text-anchor="middle">F G F(A) ∈ D</text>
+    <rect class="node2" x="480" y="18" width="150" height="42" rx="7"/>
+    <text class="nt" x="555" y="45" text-anchor="middle">F(A) ∈ D</text>
+    <line class="arb" x1="180" y1="39" x2="255" y2="39"/>
+    <text class="hb" x="218" y="31" text-anchor="middle">F(η_A)</text>
+    <line class="arg" x1="405" y1="39" x2="480" y2="39"/>
+    <text class="hg" x="442" y="31" text-anchor="middle">ε_{F(A)}</text>
+    <path class="ard" d="M 105 60 L 105 100 L 555 100 L 555 60"/>
+    <text class="lb" x="330" y="118" text-anchor="middle">复合 = id_{F(A)}</text>
+
+    <rect class="node" x="30" y="148" width="150" height="42" rx="7"/>
+    <text class="nt" x="105" y="175" text-anchor="middle">G(B) ∈ C</text>
+    <rect class="node" x="255" y="148" width="150" height="42" rx="7"/>
+    <text class="nt" x="330" y="175" text-anchor="middle">G F G(B) ∈ C</text>
+    <rect class="node" x="480" y="148" width="150" height="42" rx="7"/>
+    <text class="nt" x="555" y="175" text-anchor="middle">G(B) ∈ C</text>
+    <line class="arp" x1="180" y1="169" x2="255" y2="169"/>
+    <text class="hp" x="218" y="161" text-anchor="middle">η_{G(B)}</text>
+    <line class="arg" x1="405" y1="169" x2="480" y2="169"/>
+    <text class="hg" x="442" y="161" text-anchor="middle">G(ε_B)</text>
+    <path class="ard" d="M 105 190 L 105 230 L 555 230 L 555 190"/>
+    <text class="lb" x="330" y="248" text-anchor="middle">复合 = id_{G(B)}</text>
+  </svg>
+  <p class="figcap">图 8.2　单位 \(\eta\) 把对象送进往返 \(GF\)，余单位 \(\varepsilon\) 把往返压回原地；两条三角恒等式说"绕一圈等于没绕"</p>
+
+  <div class="prop">
+    <span class="lbl">定理 8.2.3（两种定义等价）</span>
+    <p>Hom-集定义与单位/余单位定义互相推出。</p>
+    <div class="proof"><span class="pl">证明（Hom ⇒ 单位/余单位）.</span>给定 \(\varphi\)，置
+    \[
+      \eta_A=\varphi_{A,F A}(\operatorname{id}_{F A}):A\to GFA,\qquad
+      \varepsilon_B=\varphi^{-1}_{GB,B}(\operatorname{id}_{GB}):FGB\to B.
+    \]
+    先从 \(\varphi\) 的自然性（取 \(A'=A,u=\operatorname{id}_A,v=f\)）得到两个通用公式。对 \(f:FA\to B\)：
+    \[
+      \varphi_{A,B}(f)=G(f)\circ\varphi_{A,FA}(\operatorname{id}_{FA})=G(f)\circ\eta_A. \tag{1}
+    \]
+    对 \(g:A\to GB\)，先由 \(\varepsilon_B=\varphi^{-1}_{GB,B}(\operatorname{id}_{GB})\) 与公式 (1)（取 \(A=GB,f=\varepsilon_B\)）得
+    \[
+      \varphi_{GB,B}(\varepsilon_B)=G\varepsilon_B\circ\eta_{GB}=\operatorname{id}_{GB}, \tag{2}
+    \]
+    这就是第二条三角恒等式。再用 (2) 验证 \(\varphi\) 的逆公式：
+    \[
+      \varphi_{A,B}\big(\varepsilon_B\circ Fg\big)=G\varepsilon_B\circ GFg\circ\eta_A
+      \stackrel{\eta\text{-nat}}{=}G\varepsilon_B\circ\eta_{GB}\circ g
+      \stackrel{(2)}{=}g,
+    \]
+    故 \(\varphi^{-1}_{A,B}(g)=\varepsilon_B\circ Fg\)。最后把 \(B=FA,g=\eta_A\) 代入（注意 \(\eta_A=\varphi_{A,FA}(\operatorname{id}_{FA})\)）：
+    \[
+      \varepsilon_{FA}\circ F\eta_A=\varphi^{-1}_{A,FA}(\eta_A)=\operatorname{id}_{FA},
+    \]
+    第一条三角恒等式也成立。
+    <span class="pl">证明（单位/余单位 ⇒ Hom）.</span>给定 \(\eta,\varepsilon\) 与三角恒等式，置
+    \[
+      \varphi_{A,B}(f)=G(f)\circ\eta_A\ (f:FA\to B),\qquad
+      \psi_{A,B}(g)=\varepsilon_B\circ F(g)\ (g:A\to GB).
+    \]
+    先证 \(\psi\varphi=\operatorname{id}\)。取 \(f:FA\to B\)，则
+    \[
+      \psi(\varphi(f))=\varepsilon_B\circ F(Gf\circ\eta_A)=\varepsilon_B\circ FGf\circ F\eta_A
+      \stackrel{(\ast)}{=}f\circ\varepsilon_{FA}\circ F\eta_A=f\circ\operatorname{id}_{FA}=f,
+    \]
+    其中 \((\ast)\) 是 \(\varepsilon\) 在 \(f\) 处的自然性（\(\varepsilon_B\circ FGf=f\circ\varepsilon_{FA}\)），最后一步是第一条三角恒等式。再证 \(\varphi\psi=\operatorname{id}\)：取 \(g:A\to GB\)，
+    \[
+      \varphi(\psi(g))=G(\varepsilon_B\circ Fg)\circ\eta_A=G\varepsilon_B\circ GFg\circ\eta_A
+      \stackrel{(\ast\ast)}{=}G\varepsilon_B\circ\eta_{GB}\circ g=\operatorname{id}_{GB}\circ g=g,
+    \]
+    其中 \((\ast\ast)\) 是 \(\eta\) 在 \(g\) 处的自然性，最后一步是第二条三角恒等式。两式互逆，故 \(\varphi\) 是双射；自然性由 \(\eta,\varepsilon\) 的自然性直接核对。<span class="qed">∎</span></div>
+  </div>
+  <div class="rmk"><strong>自学拆解。</strong>上面证明里最值钱的是两处"自然性 + 三角恒等式"的配合：自然性把 \(F(Gf)\) 挪成 \(f\) 在前，三角恒等式把剩下的往返消掉。以后凡是遇到伴随的计算，先问"这里能用谁的自然性"，再问"能不能套三角恒等式"。</div>
+
+  <svg class="cd" viewBox="0 0 660 230" width="660" height="230" role="img" aria-label="伴随双射的自然性">
+    <rect class="node" x="30" y="26" width="150" height="42" rx="7"/>
+    <text class="nt" x="105" y="53" text-anchor="middle">Hom_D(FA, B)</text>
+    <rect class="node" x="440" y="26" width="180" height="42" rx="7"/>
+    <text class="nt" x="530" y="53" text-anchor="middle">Hom_C(A, GB)</text>
+    <rect class="node" x="30" y="150" width="150" height="42" rx="7"/>
+    <text class="nt" x="105" y="177" text-anchor="middle">Hom_D(FA', B')</text>
+    <rect class="node" x="440" y="150" width="180" height="42" rx="7"/>
+    <text class="nt" x="530" y="177" text-anchor="middle">Hom_C(A', GB')</text>
+    <line class="arb" x1="180" y1="47" x2="440" y2="47"/>
+    <text class="hb" x="310" y="39" text-anchor="middle">φ_{A,B}</text>
+    <line class="arb" x1="180" y1="171" x2="440" y2="171"/>
+    <text class="hb" x="310" y="190" text-anchor="middle">φ_{A',B'}</text>
+    <line class="ar" x1="105" y1="68" x2="105" y2="150"/>
+    <text class="lb" x="92" y="112" text-anchor="end">v ∘ (−) ∘ F(u)</text>
+    <line class="ar" x1="530" y1="68" x2="530" y2="150"/>
+    <text class="lb" x="542" y="112" text-anchor="start">G(v) ∘ (−) ∘ u</text>
+  </svg>
+  <p class="figcap">图 8.3　伴随双射的自然性：先在 \(\mathbf D\) 里复合再翻译，等于先翻译再在 \(\mathbf C\) 里复合</p>
+
+  <div class="prop">
+    <span class="lbl">例 8.2.4（最低门槛：集合之间的 Galois 联络）</span>
+    <p>设 \(f:X\to Y\) 是函数。在幂集偏序（按包含序）中考虑三函子
+    \[
+      \exists_f:\mathcal P(X)\to\mathcal P(Y),\quad \exists_f(S)=f[S];\qquad
+      f^{-1}:\mathcal P(Y)\to\mathcal P(X);\qquad
+      \forall_f(S)=\{y\in Y: f^{-1}(\{y\})\subseteq S\}.
+    \]
+    它们满足 \(\exists_f\dashv f^{-1}\dashv\forall_f\)，即
+    \[
+      f[S]\subseteq T\iff S\subseteq f^{-1}[T],\qquad
+      f^{-1}[U]\subseteq S\iff U\subseteq\forall_f(S).
+    \]
+    完整验证：第一条，\(f[S]\subseteq T\) 表示"对每个 \(s\in S\)，\(f(s)\in T\)"，即 \(S\subseteq\{x:f(x)\in T\}=f^{-1}[T]\)。第二条，\(f^{-1}[U]\subseteq S\) 表示"对每个 \(y\in U\)，整个纤维 \(f^{-1}(\{y\})\) 落入 \(S\)"，即 \(U\subseteq\{y:f^{-1}(\{y\})\subseteq S\}\)。两个双射都由定义直接读出，无需任何高等预备。</p>
+  </div>
+  <div class="prop">
+    <span class="lbl">例 8.2.5（标准例子，预备：群与自由群）</span>
+    <p>\(F:\mathbf{Set}\to\mathbf{Grp}\) 自由群函子，\(U:\mathbf{Grp}\to\mathbf{Set}\) 遗忘函子，则 \(F\dashv U\)。给定函数 \(f:X\to U(G)\) 与群同态 \(\bar f:F(X)\to G\)，双射由"生成元去向唯一决定同态"给出；这就是第 7 章自由–遗忘伴随的原型，此处不再重演证明。另一个无需预备的例子是 \(\mathbf{Set}\) 上 \((-)\times A\dashv(-)^A\)，将在 8.3 详证。</p>
+  </div>
+
+  <h3 class="sub">8.2.3 范畴等价（L §4）</h3>
+  <div class="defn">
+    <span class="lbl">定义 8.2.6（等价、完全忠实、本质上满）</span>
+    <p>函子 \(F:\mathbf C\to\mathbf D\) 称为<strong>等价</strong>，若存在 \(G:\mathbf D\to\mathbf C\) 使 \(GF\cong1_{\mathbf C}\) 且 \(FG\cong1_{\mathbf D}\)（自然同构）。称 \(F\) <strong>忠实</strong>，若每个映射 \(f\mapsto Ff:\operatorname{Hom}_{\mathbf C}(A,B)\to\operatorname{Hom}_{\mathbf D}(FA,FB)\) 是单射；<strong>完全</strong>，若是满射；<strong>完全忠实</strong>，若都是双射。称 \(F\) <strong>本质上满</strong>，若对每个 \(D\in\mathbf D\)，存在 \(A\in\mathbf C\) 与同构 \(F(A)\cong D\)。</p>
+  </div>
+  <div class="prop">
+    <span class="lbl">定理 8.2.7（等价的判别法）</span>
+    <p>\(F\) 是等价当且仅当 \(F\) 完全忠实且本质上满。</p>
+    <div class="proof"><span class="pl">证明（⇒）.</span>设 \(G\) 为拟逆，取自然同构 \(\eta:1_{\mathbf C}\xrightarrow{\cong}GF\) 与 \(\varepsilon:FG\xrightarrow{\cong}1_{\mathbf D}\)。若 \(Ff=Fg\)，则
+    \[
+      f=\eta_B^{-1}\circ G(Ff)\circ\eta_A=\eta_B^{-1}\circ G(Fg)\circ\eta_A=g
+    \]
+    （中间用 \(\eta\) 的自然性），故忠实。给定 \(k:FA\to FB\)，置 \(f=\eta_B^{-1}\circ G(k)\circ\eta_A:A\to B\)，则
+    \[
+      Ff=F(\eta_B^{-1})\circ FG(k)\circ F(\eta_A)
+      \stackrel{(\ast)}{=}\Big(F(\eta_B^{-1})\circ\varepsilon_{FB}^{-1}\Big)\circ k\circ\Big(\varepsilon_{FA}\circ F\eta_A\Big)=k,
+    \]
+    其中 \((\ast)\) 先用 \(\varepsilon\) 在 \(k:FA\to FB\) 处的自然性 \(FG(k)=\varepsilon_{FB}^{-1}\circ k\circ\varepsilon_{FA}\)；再用三角恒等式 \(\varepsilon_{FB}\circ F\eta_B=\operatorname{id}_{FB}\)（\(\eta\) 是自然同构，故 \(F(\eta_B^{-1})\circ\varepsilon_{FB}^{-1}=(\varepsilon_{FB}\circ F\eta_B)^{-1}=\operatorname{id}_{FB}\)）与 \(\varepsilon_{FA}\circ F\eta_A=\operatorname{id}_{FA}\)。故完全。本质上满：对 \(D\in\mathbf D\)，取 \(A=G(D)\)，则 \(\varepsilon_D:FG(D)\to D\) 是同构。
+    <span class="pl">证明（⇐）.</span>设 \(F\) 完全忠实且本质上满。对每个 \(D\in\mathbf D\) 选一个对象 \(G(D)\in\mathbf C\) 与同构 \(\varepsilon_D:F G(D)\xrightarrow{\cong}D\)。对 \(h:D\to D'\)，由完全性取唯一的 \(G(h):G(D)\to G(D')\) 使
+    \[
+      F(G(h))=\varepsilon_{D'}^{-1}\circ h\circ\varepsilon_D.
+    \]
+    唯一性（忠实性）立即使 \(G(\operatorname{id}_D)=\operatorname{id}_{G(D)}\)，且 \(G(h'h)=G(h')G(h)\)，故 \(G\) 是函子。再定义 \(\eta_A:A\to GFA\) 为唯一使 \(F(\eta_A)=\varepsilon_{FA}^{-1}\) 的态射。自然性：对 \(f:A\to B\)，
+    \[
+      F(GFf\circ\eta_A)=\varepsilon_{FB}^{-1}\circ Ff\circ\varepsilon_{FA}\circ\varepsilon_{FA}^{-1}
+      =\varepsilon_{FB}^{-1}\circ Ff=F(\eta_B\circ f),
+    \]
+    由忠实性 \(GFf\circ\eta_A=\eta_B\circ f\)，即 \(\eta:1\Rightarrow GF\) 自然。\(\varepsilon:FG\Rightarrow1\) 的自然性由构造直接成立。\(\varepsilon_D\) 是同构；\(\eta_A\) 也是同构：因 \(F(\eta_A)=\varepsilon_{FA}^{-1}\) 是同构，而完全忠实函子反映同构（若 \(Fh\) 有逆 \(k\)，由完全性取 \(h'\) 使 \(Fh'=k\)，则 \(F(h'h)=\operatorname{id}=F(\operatorname{id})\)，忠实性给 \(h'h=\operatorname{id}\)，同理 \(hh'=\operatorname{id}\)）。故 \(F\) 是等价。<span class="qed">∎</span></div>
+  </div>
+  <svg class="cd" viewBox="0 0 620 180" width="620" height="180" role="img" aria-label="范畴等价的往返同构">
+    <rect class="node" x="40" y="30" width="150" height="44" rx="7"/>
+    <text class="nt" x="115" y="58" text-anchor="middle">C</text>
+    <rect class="node2" x="430" y="30" width="150" height="44" rx="7"/>
+    <text class="nt" x="505" y="58" text-anchor="middle">D</text>
+    <line class="arb" x1="190" y1="48" x2="430" y2="48"/>
+    <text class="hb" x="310" y="40" text-anchor="middle">F</text>
+    <line class="arb" x1="430" y1="72" x2="190" y2="72"/>
+    <text class="hb" x="310" y="90" text-anchor="middle">G</text>
+    <path class="arp" d="M 60 74 C 60 140, 250 140, 250 74"/>
+    <text class="hp" x="155" y="150" text-anchor="middle">GF ≅ 1_C</text>
+    <path class="arp" d="M 470 74 C 470 140, 560 140, 560 74"/>
+    <text class="hp" x="520" y="150" text-anchor="middle">FG ≅ 1_D</text>
+  </svg>
+  <p class="figcap">图 8.4　等价：两个方向各走一次，回到原范畴时只差一个自然同构</p>
+  <div class="rmk"><strong>等价 ≠ 同构。</strong>范畴同构要求 \(GF=1_{\mathbf C}\) 严格相等，等价只要求自然同构。实践中几乎总是等价更自然：例如单点范畴与"所有对象都同构且每个 hom 集单元素"的范畴等价却不同构。</div>
+
+  <h3 class="sub">8.2.4 极限（L §5）</h3>
+  <div class="defn">
+    <span class="lbl">定义 8.2.8（锥与极限）</span>
+    <p>设 \(D:\mathbf J\to\mathbf C\) 是函子（称为图）。一个<strong>锥</strong>是对象 \(A\in\mathbf C\) 连同态射族 \(\lambda_J:A\to D(J)\)（\(J\in\mathbf J\)），使对每个 \(\alpha:J\to J'\) 有 \(D(\alpha)\circ\lambda_J=\lambda_{J'}\)。锥 \((L,\lambda)\) 称为 \(D\) 的<strong>极限</strong>，若对任意锥 \((A,\mu)\) 存在唯一态射 \(u:A\to L\) 使 \(\lambda_J\circ u=\mu_J\) 对所有 \(J\) 成立。</p>
+  </div>
+  <div class="prop">
+    <span class="lbl">命题 8.2.9（极限唯一到唯一同构）</span>
+    <p>若 \((L,\lambda)\) 与 \((L',\lambda')\) 都是 \(D\) 的极限，则存在唯一同构 \(h:L\to L'\) 且 \(\lambda'_J\circ h=\lambda_J\)。</p>
+    <div class="proof"><span class="pl">证明.</span>把 \((L,\lambda)\) 当锥、\((L',\lambda')\) 当极限，得唯一 \(h:L\to L'\) 使 \(\lambda'_J h=\lambda_J\)；反过来得唯一 \(k:L'\to L\) 使 \(\lambda_J k=\lambda'_J\)。于是 \(\lambda_J(kh)=\lambda'_J h=\lambda_J=\lambda_J(\operatorname{id}_L)\)，而 \((L,\lambda)\) 作为极限，从锥 \((L,\lambda)\) 到自身的态射唯一，故 \(kh=\operatorname{id}_L\)；同理 \(hk=\operatorname{id}_{L'}\)。<span class="qed">∎</span></div>
+  </div>
+  <div class="prop">
+    <span class="lbl">例 8.2.10（三个极限，全部只用定义验证）</span>
+    <p><strong>(a) 积：</strong>\(\mathbf J\) 是两对象无箭头的离散范畴，极限 \(A\times B\) 带投影 \(\pi_A,\pi_B\)，泛性质是"给 \(f:X\to A,g:X\to B\)，存在唯一 \(\langle f,g\rangle:X\to A\times B\) 使 \(\pi_A\langle f,g\rangle=f,\pi_B\langle f,g\rangle=g\)"。</p>
+    <p><strong>(b) 等化子：</strong>\(\mathbf J\) 是两对象加两条平行箭头 \(u,v:0\rightrightarrows1\)，极限是 \(e:E\to A\) 满足 \(f e=g e\)，且任何使 \(f h=g h\) 的 \(h\) 唯一穿过 \(e\)。</p>
+    <p><strong>(c) 拉回：</strong>\(\mathbf J\) 是 \(1\to0\leftarrow2\)，极限为方块
+    \[
+      \begin{array}{ccc}
+        P&\xrightarrow{\ p_2\ }&B\\
+        \downarrow p_1&&\downarrow g\\
+        A&\xrightarrow{f}&C
+      \end{array}
+    \]
+    满足 \(f p_1=g p_2\)，且对任何 \(r:X\to A,s:X\to B\) 满足 \(fr=gs\)，存在唯一 \(t:X\to P\) 使 \(p_1t=r,p_2t=s\)。在 \(\mathbf{Set}\) 中 \(P=\{(a,b):f(a)=g(b)\}\)。</p>
+  </div>
+  <div class="prop">
+    <span class="lbl">定理 8.2.11（\(\mathbf{Set}\) 有小极限）</span>
+    <p>设 \(\mathbf J\) 是小范畴（对象与箭头都成集合），\(D:\mathbf J\to\mathbf{Set}\)。则
+    \[
+      L=\Big\{(x_J)_{J\in\mathbf J}\in\prod_{J}D(J):\ D(\alpha)(x_J)=x_{J'},\ \forall\alpha:J\to J'\Big\}
+    \]
+    连同投影 \(\lambda_J:L\to D(J)\)，是 \(D\) 的极限。</p>
+    <div class="proof"><span class="pl">证明.</span>先验证 \((L,\lambda)\) 是锥：定义中条件正是 \(D(\alpha)\lambda_J=\lambda_{J'}\)。再给任意锥 \((A,\mu)\)，定义 \(u:A\to L,\ u(a)=(\mu_J(a))_{J}\)。这是良定义的：因为 \((A,\mu)\) 是锥，\(D(\alpha)(\mu_J(a))=\mu_{J'}(a)\)，故 \(u(a)\in L\)。且 \(\lambda_J u(a)=\mu_J(a)\)，即 \(\lambda_J u=\mu_J\)。唯一性：若 \(u'\) 也满足，则对每个 \(a\) 与 \(J\)，\(\lambda_J(u'(a))=\mu_J(a)=\lambda_J(u(a))\)，作为积的元素逐坐标相等，故 \(u'(a)=u(a)\)。<span class="qed">∎</span></div>
+  </div>
+  <div class="prop">
+    <span class="lbl">命题 8.2.12（函子范畴逐点取极限）</span>
+    <p>若 \(\mathbf C\) 有 \(\mathbf J\)-极限，则 \([\mathbf K,\mathbf C]\) 也有，且逐点计算：\((D:\mathbf J\to[\mathbf K,\mathbf C])\) 的极限 \(L\) 满足 \(L(K)=\lim_J D(J)(K)\)，投影在每点上是 \(\mathbf C\) 中的投影。</p>
+    <div class="proof"><span class="pl">证明.</span>对 \(k:K\to K'\)，需要 \(L(k):L(K)\to L(K')\)。因每个 \(D(J)(k):D(J)(K)\to D(J)(K')\) 与投影相容（\(D(J k)\circ\lambda_J=\) 锥条件），由 \(L(K')\) 的泛性质得唯一 \(L(k)\) 使 \(\lambda_{J,K'}\circ L(k)=D(J)(k)\circ\lambda_{J,K}\)。函子性由唯一性：两组复合与投影复合后都等于相应的 \(D(J)(k'\circ k)\)，故相等。给定 \([\mathbf K,\mathbf C]\) 中的锥 \((A,\mu)\)，逐点用泛性质得唯一 \(u_K:A(K)\to L(K)\)，唯一性保证 \(u\) 是自然变换，且是唯一穿过者。<span class="qed">∎</span></div>
+  </div>
+  <div class="prop">
+    <span class="lbl">定理 8.2.13（右伴随保极限）</span>
+    <p>若 \(F\dashv G\) 且 \(D:\mathbf J\to\mathbf D\) 有极限 \(L\)，则 \(G D:\mathbf J\to\mathbf C\) 有极限 \(G L\)。</p>
+    <div class="proof"><span class="pl">证明.</span>设 \(\lambda_J:L\to D(J)\) 是极限锥，投影为 \(G\lambda_J:GL\to G D(J)\)，它显然是锥。取 \(\mathbf C\) 中任意锥 \((A,\mu_J:A\to GD(J))\)。用伴随双射逐点转置 \(\mu_J\) 得 \(\mu'_J:F A\to D(J)\)。这些 \(\mu'_J\) 构成锥：对 \(\alpha:J\to J'\)，
+    \[
+      D(\alpha)\circ\mu'_J=\varphi\big(GD(\alpha)\circ\mu_J\big)=\varphi(\mu_{J'})=\mu'_{J'},
+    \]
+    其中 \(\varphi\) 是关于 \(B\) 的自然性（这里取 \(GD(\alpha)\) 与 \(\mu_J\)）。由 \(L\) 的泛性质得唯一 \(u':FA\to L\) 使 \(\lambda_J u'=\mu'_J\)。转置回去得 \(u:A\to GL\)，且由 \(\varphi\) 的自然性 \(\lambda_J\circ u=\mu_J\)。唯一性：若 \(v\) 也满足，转置后 \(v'\) 是穿过 \(L\) 的态射，故 \(v'=u'\)，再用双射得 \(v=u\)。<span class="qed">∎</span></div>
+  </div>
+  <div class="rmk"><strong>对偶提示。</strong>把本节所有箭头反向，得到"余极限"与"左伴随保余极限"；证明逐字对偶。第 11 章讲拓扑斯的内部语言时，"语义函子保极限"会是反复使用的工具。</div>
+
+  <h3 class="sub">8.2.5 三元组（Triples，L §6）</h3>
+  <div class="defn">
+    <span class="lbl">定义 8.2.14（三元组 / Monad）</span>
+    <p>范畴 \(\mathbf C\) 上的<strong>三元组</strong> \((T,\eta,\mu)\) 由函子 \(T:\mathbf C\to\mathbf C\) 与自然变换 \(\eta:1_{\mathbf C}\Rightarrow T\)、\(\mu:T^2\Rightarrow T\) 组成，满足
+    \[
+      \mu_A\circ T(\eta_A)=\operatorname{id}_{TA}=\mu_A\circ\eta_{TA},\qquad
+      \mu_A\circ T(\mu_A)=\mu_A\circ\mu_{TA}.
+    \]
+    <p>前两条称为单位律，最后一条称为结合律。</p>
+    L&amp;S 称之为 triple，与第一部分的 monad 是同一个对象。</p>
+  </div>
+  <div class="prop">
+    <span class="lbl">定理 8.2.15（伴随诱导三元组）</span>
+    <p>若 \(F\dashv G\) 且 \(F:\mathbf C\to\mathbf D\)，则 \((T=GF,\eta,\mu=G\varepsilon F)\) 是 \(\mathbf C\) 上的三元组。</p>
+    <div class="proof"><span class="pl">证明.</span>\(T^2=GFGF\)，\(\mu_A=G(\varepsilon_{FA}):GFGF(A)\to GF(A)\)。
+    <strong>单位律：</strong>
+    \[
+      \mu_A\circ T\eta_A=G\varepsilon_{FA}\circ GF(\eta_A)=G\big(\varepsilon_{FA}\circ F\eta_A\big)=G(\operatorname{id}_{FA})=\operatorname{id}_{TA},
+    \]
+    用第一条三角恒等式；另一条
+    \[
+      \mu_A\circ\eta_{TA}=G\varepsilon_{FA}\circ\eta_{GFA}=\operatorname{id}_{GFA}
+    \]
+    是定义 8.2.3 证明中得到的第二条三角恒等式（取 \(B=FA\)）。
+    <strong>结合律：</strong>考虑 \(\varepsilon\) 在态射 \(\varepsilon_{F A}:FGF A\to F A\) 处的自然性（\(\varepsilon:FG\Rightarrow1_{\mathbf D}\)）：
+    \[
+      \varepsilon_{FA}\circ FG(\varepsilon_{FA})=\varepsilon_{FA}\circ\varepsilon_{FGFA}.
+    \]
+    两边左复合 \(G\) 并取 \(A\) 处，得
+    \[
+      G\varepsilon_{FA}\circ GFG\varepsilon_{FA}=G\varepsilon_{FA}\circ G\varepsilon_{FGFA},
+    \]
+    即 \(\mu_A\circ T\mu_A=\mu_A\circ\mu_{TA}\)。<span class="qed">∎</span></div>
+  </div>
+  <svg class="cd" viewBox="0 0 660 250" width="660" height="250" role="img" aria-label="三元组的结合律方块">
+    <rect class="node2" x="40" y="22" width="180" height="44" rx="7"/>
+    <text class="nt" x="130" y="50" text-anchor="middle">T³(A) = GFGFGF(A)</text>
+    <rect class="node2" x="440" y="22" width="180" height="44" rx="7"/>
+    <text class="nt" x="530" y="50" text-anchor="middle">T²(A) = GFGF(A)</text>
+    <rect class="node" x="440" y="180" width="180" height="44" rx="7"/>
+    <text class="nt" x="530" y="208" text-anchor="middle">T(A) = GF(A)</text>
+    <rect class="node" x="40" y="180" width="180" height="44" rx="7"/>
+    <text class="nt" x="130" y="208" text-anchor="middle">T²(A) = GFGF(A)</text>
+    <line class="arb" x1="220" y1="44" x2="440" y2="44"/>
+    <text class="hb" x="330" y="36" text-anchor="middle">T(μ_A)</text>
+    <line class="arg" x1="530" y1="66" x2="530" y2="180"/>
+    <text class="hg" x="542" y="126" text-anchor="start">μ_A</text>
+    <line class="arb" x1="130" y1="66" x2="130" y2="180"/>
+    <text class="hb" x="118" y="126" text-anchor="end">μ_{T(A)}</text>
+    <line class="arg" x1="220" y1="202" x2="440" y2="202"/>
+    <text class="hg" x="330" y="224" text-anchor="middle">μ_A</text>
+  </svg>
+  <p class="figcap">图 8.5　三元组结合律：从 \(T^3A\) 到 \(TA\) 的两条路径必须相等，即 \(\mu\circ T\mu=\mu\circ\mu_T\)</p>
+  <div class="prop">
+    <span class="lbl">例 8.2.16（三个三元组）</span>
+    <p><strong>(a) 恒等三元组：</strong>\(T=1,\eta=\mu=\operatorname{id}\)，来自 \(1\dashv1\)。</p>
+    <p><strong>(b) 幂集三元组（无需预备）：</strong>\(T=\mathcal P\)，\(\eta_X(x)=\{x\}\)，\(\mu_X(\mathcal S)=\bigcup_{U\in\mathcal S}U\)。单位律：\(\mu_X(\{x\})=x\)，\(\mu_X(\{\{x_1\},\{x_2\},\dots\})=\{x_1,x_2,\dots\}\) 把每个单点集再单点化的并还原为原集合，即回到 \(\mathcal S\)。结合律：\(\bigcup_{\mathcal S\in\mathfrak S}\bigcup_{U\in\mathcal S}U\) 与 \(\bigcup_{V\in\bigcup\mathfrak S}V\) 都是"把所有集合的所有元素并起来"。</p>
+    <p><strong>(c) 列表三元组（预备：自由幺半群 = 有限字）：</strong>\(T(X)=X^{\ast}\)，\(\eta_X(x)=[x]\)，\(\mu_X\) 把"词的列表"拼成一个词。结合律即拼接的结合律。</p>
+  </div>
+  <div class="box walk">
+    <h4>交互式交换图 · 文字导航（适合时对照图 A.2 操作）</h4>
+    <p>下面这张"想象的嵌套图"把本节四件工具装进一个可点击的界面。附录 A 的图 A.2（<code>米田引理_交互式嵌套交换图.svg</code>）就是这种交互的实际样本：点击金色热点下钻、点"返回顶层"回退，可用 \(+/-\) 缩放。读本节静态图时，按同一套动作在脑中"点开"即可。</p>
+    <table>
+      <tr><th>层级</th><th>热点 / 按钮</th><th>下钻后看到的子图</th><th>交换的内容</th></tr>
+      <tr><td>顶层总览</td><td> Hom 双射 </td><td>图 8.3：\(\operatorname{Hom}(FA,B)\) 与 \(\operatorname{Hom}(A,GB)\) 两列，横向 \(\varphi\)，纵向 \(F(u),G(v)\)</td><td>先翻译后复合 = 先复合后翻译</td></tr>
+      <tr><td>顶层总览</td><td> unit / counit </td><td>图 8.2：\(A\to F A\to GFA\) 与 \(GB\to FGB\to B\) 两条往返</td><td>两条三角恒等式：绕一圈等于恒等</td></tr>
+      <tr><td>顶层总览</td><td> corner 构造 </td><td>图 8.5：\(T^3A\) 到 \(TA\) 的双路径</td><td>三元组结合律 \(\mu T\mu=\mu\mu_T\)</td></tr>
+      <tr><td>任一子图</td><td> 返回顶层 </td><td>回到总览，热点仍可再次进入</td><td>——</td></tr>
+    </table>
+    <p>操作建议：先在顶层认出"哪两个函子、哪两个方向"；下钻后先找两条路径的公共起点与终点，再逐段核对箭头标签；若标签是 \(\eta\) 或 \(\varepsilon\)，调用三角恒等式；若是 \(F(f)\) 或 \(G(f)\)，调用自然性。这条读图流程与附录 A 完全一致，学会一次，全书通用。</p>
+  </div>
+
+  <div class="box exer">
+    <h4>② 习题</h4>
+    <div class="grp">基础巩固</div>
+    <ol>
+      <li>写出 \(\exists_f\dashv f^{-1}\dashv\forall_f\) 的两个 Hom-集双射，并用 8.2.2 的公式写出对应的单位与余单位。</li>
+      <li>设 \(F\dashv G\)，\(\eta,\varepsilon\) 为单位余单位。证明 \(\eta\) 与 \(\varepsilon\) 都是自然变换（逐条验证方块）。</li>
+      <li>证明：若伴随 \(F\dashv G\) 的余单位 \(\varepsilon\) 是自然同构，则 \(G\) 完全忠实。</li>
+      <li>在偏序范畴中，极限是什么？用 8.2.1 的小词典把定义 8.2.8 翻译成偏序语言并说明为什么正确。</li>
+      <li>设 \(D:\mathbf J\to\mathbf{Set}\) 是常值图（所有对象映到同一集合 \(X\)，所有箭头映到 \(\operatorname{id}_X\)）。用定理 8.2.11 的公式算出极限，并说明它同构于 \(X\)。</li>
+      <li>验证幂集三元组的两条单位律与结合律（写出元素级计算）。</li>
+    </ol>
+    <div class="grp">进阶思考</div>
+    <ol start="7">
+      <li>证明：等价函子保持并反映极限（若 \(\mathbf J\)-极限存在则被保持；若目标有极限则源也有）。</li>
+      <li>设 \(F\dashv G\) 且 \(F\dashv G'\)。证明 \(G\cong G'\)（伴随唯一到自然同构），写出所用同构的分量。</li>
+    </ol>
+  </div>
+
+  <div class="box ans">
+    <h4>③ 参考答案</h4>
+    <div class="item"><b>8.2.1</b>　当偏序看作范畴时，\(\operatorname{Hom}(S,T)\) 非空当且仅当 \(S\subseteq T\)，伴随即 \(S\subseteq f^{-1}[T]\iff f[S]\subseteq T\) 与 \(f^{-1}[U]\subseteq S\iff U\subseteq\forall_f(S)\)。对每个 \(S\subseteq X\)，\((\exists_f\dashv f^{-1})\) 的单位是包含映射 \(S\subseteq f^{-1}f[S]\)；余单位是 \(f f^{-1}[T]\subseteq T\)。\((f^{-1}\dashv\forall_f)\) 的单位是 \(U\subseteq\forall_f f^{-1}[U]\)（纤维 nonempty 则整条纤维包含在逆像中）；余单位是 \(f^{-1}\forall_f(S)\subseteq S\)。<span class="qed">∎</span></div>
+    <div class="item"><b>8.2.2</b>　\(\eta\) 自然：对 \(f:A\to A'\) 需 \(GF(f)\circ\eta_A=\eta_{A'}\circ f\)。由 8.2.3 中公式 \(\varphi_{A,B}(g)=Gg\circ\eta_A\)，取 \(B=F A', g=Ff\)，得 \(\varphi(Ff)=GFf\circ\eta_A\)；另一方面 \(\eta_{A'}=\varphi_{A',FA'}(\operatorname{id})\)，由 \(\varphi\) 关于 \(A\) 的自然性（取 \(u=f\)）得 \(\varphi_{A,FA'}(Ff)=\varphi_{A',FA'}(\operatorname{id})\circ f=\eta_{A'}\circ f\)。两式左端相同，故相等。\(\varepsilon\) 自然：对 \(h:B\to B'\)，比较 \(\varphi_{GB,B'}\) 作用在两边。由公式 (1) 与三角恒等式，
+    \[
+      \varphi_{GB,B'}(h\circ\varepsilon_B)=Gh\circ G\varepsilon_B\circ\eta_{GB}=Gh,
+    \]
+    又由 \(\eta\) 在 \(Gh:GB\to GB'\) 处的自然性与三角恒等式，
+    \[
+      \varphi_{GB,B'}(\varepsilon_{B'}\circ FGh)=G\varepsilon_{B'}\circ GFGh\circ\eta_{GB}
+      =G\varepsilon_{B'}\circ\eta_{GB'}\circ Gh=Gh.
+    \]
+    \(\varphi\) 是单射，故 \(\varepsilon_{B'}\circ FGh=h\circ\varepsilon_B\)。<span class="qed">∎</span></div>
+    <div class="item"><b>8.2.3</b>　把 \(G\) 的 hom 映射拆成两步：
+    \[
+      \operatorname{Hom}_{\mathbf D}(B,B')\xrightarrow{\ \varepsilon_B^\ast\ }\operatorname{Hom}_{\mathbf D}(FGB,B')
+      \xrightarrow{\ \varphi_{GB,B'}\ }\operatorname{Hom}_{\mathbf C}(GB,GB'),
+    \]
+    第一步是前复合 \(\varepsilon_B\)（即 \(h\mapsto h\circ\varepsilon_B\)），第二步是伴随双射。若 \(\varepsilon_B\) 是同构，第一步有逆 \(f\mapsto f\circ\varepsilon_B^{-1}\)，是双射；第二步按定义是双射。故复合是双射，即 \(G\) 完全忠实。（反向也成立：若 \(G\) 完全忠实，则 \(\varepsilon_B^\ast\) 对所有 \(B'\) 是双射，取 \(B'=B\) 与 \(\operatorname{id}_B\) 即可得 \(\varepsilon_B\) 的逆。）自由群⊣遗忘中 \(\varepsilon_G:FUG\to G\) 一般不是同构，故遗忘函子不完全忠实。<span class="qed">∎</span></div>
+    <div class="item"><b>8.2.4</b>　偏序范畴中锥 \((A,\lambda_J)\) 即"\(A\le D(J)\) 对所有 \(J\)"（因 hom 集至多一元素，三角形自动交换）。极限即最大下确界 \(\inf_J D(J)\)：它是锥（小于等于每个 \(D(J)\)），且任意其他锥 \(A\) 有唯一箭头 \(A\to\inf\)（即 \(A\le\inf\)）。这就是泛性质"任何锥唯一穿过极限"。<span class="qed">∎</span></div>
+    <div class="item"><b>8.2.5</b>　按公式 \(L=\{(x_J)\in X^{\mathbf J}: D(\alpha)(x_J)=x_{J'},\ \forall\alpha:J\to J'\}=\{(x_J): \operatorname{id}_X(x_J)=x_{J'}\ \forall\alpha:J\to J'\}\)。若 \(\mathbf J\) 连通（任意两对象可由箭头链连接），则所有坐标相等，\(L\cong X\)，投影都是恒等。若 \(\mathbf J\) 有 \(n\) 个连通分支，则 \(L\cong X^n\)。<span class="qed">∎</span></div>
+    <div class="item"><b>8.2.6</b>　单位律一：\(\mu_X(\eta_X(x))=\mu_X(\{x\})=x\)。单位律二：\(\eta_{\mathcal P X}(\mathcal S)=\{\mathcal S\}\)，\(\mu_X(\{\mathcal S\})=\mathcal S\)。结合律：取 \(\mathfrak S\subseteq\mathcal P(\mathcal P X)\)，左边 \(\mu_X(\mathcal P\mu_X(\mathfrak S))=\bigcup_{\mathcal S\in\mathfrak S}\bigcup_{U\in\mathcal S}U\)；右边 \(\mu_X(\mu_{\mathcal P X}(\mathfrak S))=\bigcup_{V\in\bigcup_{\mathcal S\in\mathfrak S}\mathcal S}V\)。两边都等于 \(\{x:\exists\mathcal S\in\mathfrak S,\exists U\in\mathcal S,x\in U\}\)。<span class="qed">∎</span></div>
+    <div class="item"><b>8.2.7</b>　等价函子 \(F\dashv G\) 且 \(GF\cong1_{\mathbf C}\)，由定理 8.2.13 \(F\) 保极限；又因 \(G\) 也是 \(F\) 的左伴随（等价的逆也是伴随），\(G\) 也保极限。若 \(L=\lim D\)，对 \(\mathbf C\) 中锥 \(\mu_J:X\to D(J)\)，用自然同构 \(\varepsilon:FG\cong1_{\mathbf D}\) 与伴随转置可得唯一 \(u:X\to L\)，故 \(F\) 反映极限。反向：若 \(FD\) 有极限 \(L'\)，则 \(G L'\) 是 \(D\) 的极限（用 \(GF\cong1\) 与保极限性），故源范畴也有。唯一性均由同构与泛性质保持得到。<span class="qed">∎</span></div>
+    <div class="item"><b>8.2.8</b>　设两个伴随的单位余单位为 \((\eta,\varepsilon)\)、\((\eta',\varepsilon')\)。定义 \(\theta:G\Rightarrow G'\) 的分量
+    \[
+      \theta_B=G'(\varepsilon_B)\circ\eta'_{GB}:G B\to G'B ,
+    \]
+    其中 \(\eta':1_{\mathbf C}\Rightarrow G'F\) 是伴随 \(F\dashv G'\) 的单位。类型检查：\(\eta'_{GB}:GB\to G'FGB\)，而 \(G'(\varepsilon_B):G'FGB\to G'B\)。其逆为 \(G(\varepsilon'_B)\circ\eta_{G'B}\)，两者互逆由三角恒等式与 \(\eta,\varepsilon'\) 的自然性得出。对 \(h:B\to B'\) 的自然性方块同样由这两条自然性拼接得到，故 \(G\cong G'\)。<span class="qed">∎</span></div>
+  </div>
+
+  <div class="box phil">
+    <h4>选读拓展 · 自学与哲学提示（可略读）</h4>
+    <p><strong>自学法：</strong>§3–§6 的四件工具其实共享一个动作：把"从 \(X\) 到 \(Y\) 的所有箭头"换成另一个方向的箭头集，然后要求这个替换在两边都自然。学完每一小节，试着把结论写成一句 Hom-集的话：伴随是同构，等价是"两边 hom 集互相双射"，极限是 \(\operatorname{Hom}(X,\lim D)\cong\lim\operatorname{Hom}(X,D)\)，三元组是往返变换。写不出来时，说明还没抓住主线。</p>
+    <p><strong>哲学联系：</strong>右伴随保极限这条定理，可以被读成一条"结构主义的守恒律"：只要一种翻译是由泛性质（而非元素层面的临时构造）给出的，它就必须 preserve 由同类泛性质定义的结构。等价的判别法则则给出同一性的操作标准：两个范畴"一样"，不是因为它们元素相同，而是因为互相完全忠实且本质上满——这与后面关于证明同一性的讨论属于同一种思路。</p>
+  </div>
+</section>
+
+<section class="sec" id="s8-3">
+  <div class="sec-h"><span class="sec-no">8.3</span><h2>笛卡尔闭范畴的例子</h2><span class="src">L Part 0 §7</span></div>
+
+  <div class="box learn">
+    <h4>① 本节学习目标</h4>
+    <ol>
+      <li>写出笛卡尔闭范畴（CCC）的定义，并验证指数对象唯一到唯一同构；</li>
+      <li>在 \(\mathbf{Set}\) 中逐条验证终端对象、积与指数，掌握转置与求值的两条方程；</li>
+      <li>在偏序与 Heyting 代数中验证 CCC 结构（只需偏序知识）；</li>
+      <li>理解 \(\mathbf{Cat}\) 与函子范畴为何是 CCC（预备：函子范畴，第 6 章）；</li>
+      <li>知道 \(\mathbf{Set}^{\mathbf C^{op}}\) 的指数由 Yoneda 给出（预备：Yoneda 引理，第 6 章），并能识别一个非例子。</li>
+    </ol>
+  </div>
+
+  <h3 class="sub">8.3.1 定义：终端对象、积、指数</h3>
+  <div class="defn">
+    <span class="lbl">定义 8.3.1（笛卡尔闭范畴）</span>
+    <p>范畴 \(\mathbf C\) 称为<strong>笛卡尔闭</strong>的，若它满足：</p>
+    <ol>
+      <li>有终端对象 \(1\)：对每个 \(A\)，存在唯一态射 \(!_A:A\to1\)；</li>
+      <li>有有限积：对 \(A,B\)，有对象 \(A\times B\) 与投影 \(\pi_A,\pi_B\) 满足 8.2.10 (a) 的泛性质；</li>
+      <li>有指数：对 \(A,B\)，有对象 \(B^A\) 与态射 \(\operatorname{ev}:B^A\times A\to B\)，使对每个 \(f:C\times A\to B\)，存在唯一转置 \(\tilde f:C\to B^A\) 满足
+      \[
+        \operatorname{ev}\circ(\tilde f\times\operatorname{id}_A)=f.
+      \]
+      等价地，存在自然双射 \(\operatorname{Hom}(C\times A,B)\cong\operatorname{Hom}(C,B^A)\)。</li>
+    </ol>
+  </div>
+  <div class="prop">
+    <span class="lbl">命题 8.3.2（指数唯一到唯一同构）</span>
+    <p>若 \((B^A,\operatorname{ev})\) 与 \((B'^A,\operatorname{ev}')\) 都满足指数的泛性质，则存在唯一同构 \(h:B^A\to B'^A\) 使 \(\operatorname{ev}'\circ(h\times\operatorname{id})=\operatorname{ev}\)。</p>
+    <div class="proof"><span class="pl">证明.</span>把 \(B'^A\) 当作 \(B^A\) 的候选：在泛性质中取 \(C=B^A\)、\(f=\operatorname{ev}\)，得唯一 \(h:B^A\to B'^A\) 使 \(\operatorname{ev}'\circ(h\times\operatorname{id})=\operatorname{ev}\)。对称地得唯一 \(k:B'^A\to B^A\) 使 \(\operatorname{ev}\circ(k\times\operatorname{id})=\operatorname{ev}'\)。于是 \(\operatorname{ev}'\circ((hk)\times\operatorname{id})=\operatorname{ev}\circ(k\times\operatorname{id})=\operatorname{ev}'\)，而 \(h k\) 与 \(\operatorname{id}_{B'^A}\) 都是满足该方程的唯一态射（把 \(B'^A\) 当作自己的指数候选），故 \(hk=\operatorname{id}\)；同理 \(kh=\operatorname{id}\)。<span class="qed">∎</span></div>
+  </div>
+  <svg class="cd" viewBox="0 0 640 230" width="640" height="230" role="img" aria-label="指数对象的转置与求值">
+    <rect class="node" x="30" y="26" width="180" height="44" rx="7"/>
+    <text class="nt" x="120" y="54" text-anchor="middle">Hom(C × A, B)</text>
+    <rect class="node" x="420" y="26" width="190" height="44" rx="7"/>
+    <text class="nt" x="515" y="54" text-anchor="middle">Hom(C, B^A)</text>
+    <line class="arb" x1="210" y1="48" x2="420" y2="48"/>
+    <text class="hb" x="315" y="40" text-anchor="middle">(−)~</text>
+    <line class="arb" x1="420" y1="70" x2="210" y2="70"/>
+    <text class="hb" x="315" y="88" text-anchor="middle">ev ∘ ((−) × id)</text>
+    <text class="lb" x="320" y="130" text-anchor="middle">展开成元素：f(c,a) ↔ f̃(c)(a)</text>
+    <rect class="nodey" x="170" y="155" width="300" height="48" rx="7"/>
+    <text class="nt" x="320" y="184" text-anchor="middle">ev(f̃(c), a) = f(c, a)</text>
+  </svg>
+  <p class="figcap">图 8.6　指数伴随：二元箭头 \(C\times A\to B\) 与"返回函数"的箭头 \(C\to B^A\) 一一对应，求值是转置的逆</p>
+
+  <h3 class="sub">8.3.2 例一（零预备）：集合范畴 \(\mathbf{Set}\)</h3>
+  <div class="prop">
+    <span class="lbl">例 8.3.3（\(\mathbf{Set}\) 是 CCC）</span>
+    <p><strong>终端对象：</strong>任一单元素集合 \(1=\{\ast\}\)，对每个 \(X\) 只有唯一函数 \(X\to1\)（把所有元素送到 \(\ast\)）。</p>
+    <p><strong>积：</strong>笛卡尔积 \(X\times Y=\{(x,y):x\in X,y\in Y\}\)，投影 \(\pi_X(x,y)=x\)。给定 \(f:Z\to X,g:Z\to Y\)，唯一配对是 \(\langle f,g\rangle(z)=(f(z),g(z))\)。</p>
+    <p><strong>指数：</strong>\(B^A=\{h:A\to B\}\)（所有从 \(A\) 到 \(B\) 的函数），\(\operatorname{ev}:B^A\times A\to B\) 为 \(\operatorname{ev}(h,a)=h(a)\)。对 \(f:C\times A\to B\)，定义
+    \[
+      \tilde f(c)(a)=f(c,a).
+    \]
+    验证两条方程：
+    \[
+      \big(\operatorname{ev}\circ(\tilde f\times\operatorname{id}_A)\big)(c,a)=\operatorname{ev}(\tilde f(c),a)=\tilde f(c)(a)=f(c,a),
+    \]
+    而若 \(g:C\to B^A\) 且 \(\operatorname{ev}\circ(g\times\operatorname{id})=f\)，则对每个 \(c\)，函数 \(g(c):A\to B\) 在 \(a\) 处的值是 \(f(c,a)\)，故 \(g(c)=\tilde f(c)\)，即 \(g=\tilde f\)。唯一性成立，\(\mathbf{Set}\) 是 CCC。</p>
+  </div>
+  <div class="rmk"><strong>为什么这是第一个例子。</strong>它只用"函数是逐点指定的规则"这一件事。后面所有 CCC 例子都在这个框架里理解：指数对象就是"所有可用的加工方式"。</div>
+
+  <h3 class="sub">8.3.3 例二（只需偏序）：偏序范畴与 Heyting 代数</h3>
+  <div class="box prep">
+    <h4>极简回顾：格与 Heyting 代数（三行）</h4>
+    <p>偏序集 \(P\) 中，两元素的<strong>下确界</strong> \(a\wedge b\) 是最大的 \(c\) 满足 \(c\le a,c\le b\)；<strong>上确界</strong> \(a\vee b\) 是最小的 \(c\) 满足 \(a\le c,b\le c\)。带这两样运算的偏序叫<strong>格</strong>；有最大元 \(\top\) 与最小元 \(\bot\) 时叫有界格。有界格若还对每对 \(a,b\) 存在 \(a\Rightarrow b\) 满足
+    \[
+      c\le (a\Rightarrow b)\iff c\wedge a\le b,
+    \]
+    就称为 <strong>Heyting 代数</strong>。注意这条正是指数的泛性质在偏序范畴中的样子（hom 集至多一元素，"存在唯一箭头"变成"不等式成立"）。</p>
+  </div>
+  <div class="prop">
+    <span class="lbl">例 8.3.4（\(\mathbf{Pos}\) 与 Heyting 代数是 CCC）</span>
+    <p><strong>(a) 偏序范畴 \((\mathbf{Pos},\le)\)（对象为偏序集，态射为单调函数）是 CCC：</strong>终端对象是单元素偏序集 \(1\)；积是逐点序的笛卡尔积，\((x,y)\le(x',y')\iff x\le x',y\le y'\)，投影单调；指数是单调函数集 \([A\to B]\)，逐点定序 \(f\le g\iff f(a)\le g(a)\) 对所有 \(a\)。给定单调 \(h:C\times A\to B\)，令 \(\tilde h(c)(a)=h(c,a)\)。若 \(c\le c'\)，则对所有 \(a\)，\(h(c,a)\le h(c',a)\)，即 \(\tilde h(c)\le\tilde h(c')\)，故 \(\tilde h\) 单调；反之若 \(g:C\to[A\to B]\) 单调，则 \(g(c,a):=g(c)(a)\) 对 \((c,a)\le(c',a')\) 满足
+    \[
+      g(c)(a)\le g(c)(a')\le g(c')(a'),
+    \]
+    故是单调的 \(C\times A\to B\)。两构造互逆，指数泛性质成立。</p>
+    <p><strong>(b) 每个 Heyting 代数作为偏序范畴是 CCC：</strong>终端对象是 \(\top\)（任意 \(a\le\top\)）；积是 \(a\wedge b\)（由下确界定义，\(c\le a\wedge b\iff c\le a,c\le b\)）；指数是 \(a\Rightarrow b\)，而 Heyting 代数的定义式 \(c\le(a\Rightarrow b)\iff c\wedge a\le b\) 就是 \(\operatorname{Hom}(c,a\Rightarrow b)\cong\operatorname{Hom}(c\wedge a,b)\)。<strong>最简例子：</strong>两元素格 \(\{\bot,\top\}\) 中 \(\bot\Rightarrow\bot=\top\)，\(\bot\Rightarrow\top=\top\)，\(\top\Rightarrow\bot=\bot\)，\(\top\Rightarrow\top=\top\)；逐条核对上式即可（例如 \(c\wedge\top\le\bot\) 只在 \(c=\bot\) 时成立，而 \(c\le\bot\) 同样只在 \(c=\bot\) 时成立）。</p>
+  </div>
+  <div class="rmk"><strong>与逻辑的连接（原著主线的预告）。</strong>Heyting 代数的 \(\Rightarrow\) 是直觉主义蕴含的代数影子；\(\neg a=a\Rightarrow\bot\) 一般不满足排中律 \(a\vee\neg a=\top\)。Part I 将证明：命题演算的演绎定理、λ-演算的抽象规则、CCC 的指数转置，是同一条等式的三种写法。现在先把这个代数例子认清，届时可直接对接。</div>
+
+  <h3 class="sub">8.3.4 例三（预备：函子范畴，第 6 章）：\(\mathbf{Cat}\) 是 CCC</h3>
+  <div class="prop">
+    <span class="lbl">例 8.3.5（小范畴与函子构成的范畴 \(\mathbf{Cat}\)）</span>
+    <p>对象是（小）范畴，态射是函子。终端对象是 \(\mathbf 1\)（8.1.2 (d)）。积是积范畴 \(\mathbf C\times\mathbf D\)：对象对 \((C,D)\)，态射对 \((f,g)\)，逐分量复合。指数是函子范畴 \([\mathbf C,\mathbf D]\)（定义 8.1.12）。验证伴随：给定函子 \(F:\mathbf E\times\mathbf C\to\mathbf D\)，定义 \(\tilde F:\mathbf E\to[\mathbf C,\mathbf D]\)：
+    \[
+      \tilde F(E)(C)=F(E,C),\qquad \tilde F(E)(c)=F(\operatorname{id}_E,c),\qquad
+      \tilde F(e)_C=F(e,\operatorname{id}_C).
+    \]
+    这里 \(\tilde F(e):\tilde F(E)\Rightarrow\tilde F(E')\) 的分量在 \(C\) 处是 \(F(e,\operatorname{id}_C)\)。它是自然变换：对 \(c:C\to C'\)，积范畴中
+    \[
+      (\operatorname{id}_{E'},c)\circ(e,\operatorname{id}_C)=(e,c)=(e,\operatorname{id}_{C'})\circ(\operatorname{id}_E,c),
+    \]
+    两边作用 \(F\) 得 \(\tilde F(E')(c)\circ\tilde F(e)_C=\tilde F(e)_{C'}\circ\tilde F(E)(c)\)，正是自然性方块。\(\tilde F\) 保恒等与复合也由积范畴中 \((e,c)=(e,\operatorname{id})\circ(\operatorname{id},c)\) 的分解和函子性得到。反向给定 \(G:\mathbf E\to[\mathbf C,\mathbf D]\)，定义 \(G^{\flat}(E,C)=G(E)(C)\)、\(G^{\flat}(e,c)=G(e)_C\circ G(E)(c)\)；两构造互逆（用上式分解检查），故 \(\operatorname{Hom}(\mathbf E\times\mathbf C,\mathbf D)\cong\operatorname{Hom}(\mathbf E,[\mathbf C,\mathbf D])\)，\(\mathbf{Cat}\) 是 CCC。</p>
+  </div>
+
+  <h3 class="sub">8.3.5 例四（预备：Yoneda 引理，第 6 章）：函子范畴与预层</h3>
+  <div class="prop">
+    <span class="lbl">例 8.3.6（预层范畴 \(\mathbf{Set}^{\mathbf C^{op}}\) 是 CCC）</span>
+    <p>设 \(\mathbf C\) 小。预层范畴的对象是函子 \(F:\mathbf C^{op}\to\mathbf{Set}\)。终端对象是常值单点函子；积逐点取笛卡尔积 \((F\times G)(U)=F(U)\times G(U)\)。指数不能逐点取 \(G(U)^{F(U)}\)（那一般不满足泛性质），正确公式是
+    \[
+      (G^F)(U)=\operatorname{Hom}\big(\mathbf y U\times F,\ G\big),
+    \]
+    其中 \(\mathbf y U=\operatorname{Hom}(-,U)\) 是 Yoneda 嵌入（第 6 章）。</p>
+    <div class="proof"><span class="pl">验证泛性质.</span>对任意预层 \(H\)，构造自然双射
+    \[
+      \operatorname{Hom}(H,G^F)\cong\operatorname{Hom}(H\times F,G).
+    \]
+    给定 \(\alpha:H\times F\to G\)，定义 \(\beta_U:H(U)\to(G^F)(U)\)：对 \(h\in H(U)\)，令 \(\beta_U(h)\) 是从 \(\mathbf yU\times F\) 到 \(G\) 的自然变换，其在 \(V\in\mathbf C\) 的分量为
+    \[
+      \big(\beta_U(h)\big)_V(f,x)=\alpha_V\big(H(f)(h),\,x\big),\qquad f:V\to U,\ x\in F(V).
+    \]
+    对 \(g:W\to V\)，两边先复合再比较，都用 \(\alpha\) 的自然性与函子性 \(H(gf)=H(f)H(g)\)、\(F(g)\) 的方向，得同一结果，故 \(\beta_U(h)\) 确为自然变换；\(\beta\) 关于 \(U\) 自然。反向给定 \(\beta\)，取 \(U=V\)、\(f=\operatorname{id}_U\)，利用 Yoneda："自然变换 \(\mathbf yU\times F\to G\) 由其在 \((\operatorname{id}_U,x)\) 上的值唯一决定"，令
+    \[
+      \alpha_U(h,x)=\big(\beta_U(h)\big)_U(\operatorname{id}_U,x).
+    \]
+    两构造互逆，且关于 \(H\) 自然。故指数泛性质成立。<span class="qed">∎</span></div>
+  </div>
+  <div class="rmk"><strong>例子门槛提示。</strong>8.3.2 与 8.3.3 只需集合与偏序；8.3.4 需要"函子范畴"的定义（第 6 章 6.2）；8.3.5 还需要 Yoneda 引理（第 6 章 6.4）。若你尚未掌握后者，可先跳过 8.3.5，不影响后面章节——Part I 的主体只用到 CCC 的泛性质本身，不会在这里卡住。</div>
+  <div class="prop">
+    <span class="lbl">例 8.3.7（非例子，帮助划清边界；无需预备）</span>
+    <p>\(\mathbf{Rel}\)（8.1.2 (b)）虽有终端对象 \(\varnothing\)、积与余积重合为不交并 \(+\)，但<strong>不是</strong>笛卡尔闭的。理由：\(\varnothing+A\cong A\)，而 \(\operatorname{Hom}_{\mathbf{Rel}}(\varnothing,B^A)\) 只有空关系一个元素（从空集出发的关系只有 \(\varnothing\)）；但 \(\operatorname{Hom}_{\mathbf{Rel}}(\varnothing+A,B)=\operatorname{Hom}_{\mathbf{Rel}}(A,B)=\mathcal P(A\times B)\) 在 \(A=B=1\) 时有两个元素。若指数存在，由伴随双射这两集合应等势，矛盾。</p>
+  </div>
+  <div class="box walk">
+    <h4>交互式交换图 · 文字导航（CCC 版）</h4>
+    <p>若把 8.3 的交换图也做成附录 A 那样的嵌套界面，顶层应是"CCC 三件套"，三个热点分别下钻：</p>
+    <table>
+      <tr><th>热点</th><th>下钻子图</th><th>交换 / 对应的内容</th></tr>
+      <tr><td> terminal </td><td>每个 \(A\) 到 \(1\) 的唯一箭头 \(!_A\)</td><td>唯一性：任意两条 \(A\to1\) 的箭头重合</td></tr>
+      <tr><td> product </td><td>图 8.2.10 (a) 的三角：\(A\xleftarrow{\pi_A}A\times B\xrightarrow{\pi_B}B\)</td><td>\(\langle f,g\rangle\) 是唯一使两三角交换的箭头</td></tr>
+      <tr><td> exponential </td><td>图 8.6：\(\operatorname{Hom}(C\times A,B)\) 与 \(\operatorname{Hom}(C,B^A)\) 的双射</td><td>\(\operatorname{ev}(\tilde f\times\operatorname{id})=f\)，且 \(\tilde{\ \cdot\ }\) 唯一</td></tr>
+      <tr><td> 返回顶层 </td><td>回到三件套总览</td><td>——</td></tr>
+    </table>
+    <p>在 \(\mathbf{Set}\) 中把热点逐一"点开"最划算：终端是单元素集，积是有序对集，指数是函数集。把图上的每个标签换成具体的函数，整套泛性质就成了高中层面的核对。</p>
+  </div>
+
+  <div class="box exer">
+    <h4>② 习题</h4>
+    <div class="grp">基础巩固</div>
+    <ol>
+      <li>在 \(\mathbf{Set}\) 中取 \(A=\varnothing\)。分别写出 \(B^{\varnothing}\) 与 \(\varnothing^{B}\)（\(B\) 非空），并用指数泛性质解释为什么前者是单元素集、后者是空集。</li>
+      <li>验证指数的两条互逆公式：对 \(f:C\times A\to B\)，写出 \(g=\tilde f\) 并验证 \(\operatorname{ev}\circ(g\times\operatorname{id})=f\)；对 \(g:C\to B^A\)，令 \(f=\operatorname{ev}\circ(g\times\operatorname{id})\)，验证 \(\tilde f=g\)。用元素解释每一步。</li>
+      <li>在两元素 Heyting 代数 \(\{\bot,\top\}\) 中列出 \(\wedge,\vee,\Rightarrow\) 的完整的运算表（每个 4 项），并核对 \(c\le(a\Rightarrow b)\iff c\wedge a\le b\) 的 8 种情形。</li>
+      <li>设 \(P\) 是全序集 \((\mathbb R,\le)\)。说明它作为偏序范畴有终端对象吗？有积吗？若把 \(\top\) 人为加上（扩展实数），指数是什么？</li>
+      <li>在 \(\mathbf{Cat}\) 中，描述函子范畴 \([\mathbf 1,\mathbf C]\) 并说明它同构于 \(\mathbf C\)（提示：从 \(\mathbf 1\) 出发的函子只挑一个对象）。</li>
+      <div class="grp">进阶思考</div>
+      <li>证明：若 \(\mathbf C\) 是 CCC，则对任意对象 \(A\)，函子 \((-)\times A:\mathbf C\to\mathbf C\) 有右伴随 \((-)^A\)；由此推出 \((-)\times A\) 保余极限（用第 7 章左伴随保余极限）。</li>
+    </ol>
+  </div>
+
+  <div class="box ans">
+    <h4>③ 参考答案</h4>
+    <div class="item"><b>8.3.1</b>　从空集到 \(B\) 的函数恰有一个（空函数），故 \(B^{\varnothing}=1\)。从非空 \(B\) 到空集没有函数，故 \(\varnothing^{B}=\varnothing\)。泛性质解释：\(\operatorname{Hom}(C\times\varnothing,B)=\operatorname{Hom}(\varnothing,B)=1\)，而 \(\operatorname{Hom}(C,B^{\varnothing})\) 必须对任意 \(C\) 都是单元素，故 \(B^{\varnothing}\cong1\)；\(\operatorname{Hom}(C\times B,\varnothing)\) 当 \(C\times B\neq\varnothing\) 时为空，故 \(\varnothing^B\) 没有从非空对象出发的箭头，只能是初始对象 \(\varnothing\)。<span class="qed">∎</span></div>
+    <div class="item"><b>8.3.2</b>　对 \(f:C\times A\to B\)，令 \(g=\tilde f:C\to B^A\)，即 \(g(c)(a)=f(c,a)\)。则
+    \[
+      \big(\operatorname{ev}\circ(g\times\operatorname{id}_A)\big)(c,a)=g(c)(a)=f(c,a),
+    \]
+    故 \(\operatorname{ev}\circ(g\times\operatorname{id}_A)=f\)。对 \(g:C\to B^A\)，令 \(f=\operatorname{ev}\circ(g\times\operatorname{id}_A)\)，则 \(f(c,a)=g(c)(a)\)，于是 \(\tilde f(c)(a)=f(c,a)=g(c)(a)\)，故 \(\tilde f=g\)。元素层面这两句就是"把二元函数柯里化再展开回到原函数"。<span class="qed">∎</span></div>
+    <div class="item"><b>8.3.3</b>　\(\wedge\)：\(\bot\wedge\bot=\bot,\bot\wedge\top=\bot,\top\wedge\bot=\bot,\top\wedge\top=\top\)；\(\vee\) 对偶。\(\Rightarrow\)：\(\bot\Rightarrow\bot=\top,\bot\Rightarrow\top=\top,\top\Rightarrow\bot=\bot,\top\Rightarrow\top=\top\)。核对 8 种情形：\(a=\bot\) 时左边 \(c\le\top\) 恒真，右边 \(c\wedge\bot=\bot\le b\) 恒真；\(a=\top,b=\bot\) 时左边 \(c\le\bot\iff c=\bot\)，右边 \(c\wedge\top=c\le\bot\iff c=\bot\)；\(a=\top,b=\top\) 时两边恒真。<span class="qed">∎</span></div>
+    <div class="item"><b>8.3.4</b>　\((\mathbb R,\le)\) 没有最大元，故没有终端对象；但任意两元有下确界 \(\min\)，故有积（还有所有小极限）。加上 \(\top=+\infty\) 后成为有界全序格；一般公式是 \(a\Rightarrow b=\sup\{c:c\wedge a\le b\}\)。在全序中按 \(a\le b\) 与否分两种：若 \(a\le b\)，则任意 \(c\) 都满足 \(\min(c,a)\le a\le b\)，上确界是 \(+\infty\)；若 \(a>b\)，则条件等价于 \(c\le b\)，上确界是 \(b\)。故 \(a\Rightarrow b=+\infty\)（当 \(a\le b\)），否则 \(=b\)。<span class="qed">∎</span></div>
+    <div class="item"><b>8.3.5</b>　\(\mathbf 1\) 只有一个对象 \(\ast\) 与 \(\operatorname{id}_\ast\)。函子 \(F:\mathbf 1\to\mathbf C\) 由 \(F(\ast)\in\mathbf C\) 唯一决定，且必须把 \(\operatorname{id}_\ast\) 送到 \(\operatorname{id}_{F(\ast)}\)；函子间的自然变换 \(\alpha:F\Rightarrow G\) 只有一个分量 \(\alpha_\ast:F(\ast)\to G(\ast)\)，方块自动交换。故 \([\mathbf 1,\mathbf C]\cong\mathbf C\)（把函子送到 \(F(\ast)\)，自然变换送到 \(\alpha_\ast\)）。<span class="qed">∎</span></div>
+    <div class="item"><b>8.3.6</b>　CCC 的定义直接给出 \(\operatorname{Hom}(C\times A,B)\cong\operatorname{Hom}(C,B^A)\)，关于 \(C,B\) 自然，故 \((-)\times A\dashv(-)^A\)。由第 7 章"左伴随保余极限"，\((-)\times A\) 保余极限。特别地，在 \(\mathbf{Set}\) 中 \(X\times(A+B)\cong (X\times A)+(X\times B)\)（分配律），这是有限积与余积分配的一个范畴论解释。<span class="qed">∎</span></div>
+  </div>
+
+  <div class="box phil">
+    <h4>选读拓展 · 自学与哲学提示（可略读）</h4>
+    <p><strong>自学法与主线。</strong>本节按原著的节序走：先给定义（§7 的核心是 CCC 的例子清单），再依次给 \(\mathbf{Set}\)、偏序/Heyting、\(\mathbf{Cat}\)、预层。你只需把前两个例子彻底做透；后两个标了预备，可以等第 6 章的函子范畴与 Yoneda 真正熟练后再回来读。无论如何，请亲手把图 8.6 的转置公式在 \(\mathbf{Set}\) 中写三遍——Part I 的全部内容几乎是这条公式的展开。</p>
+    <p><strong>哲学联系。</strong>Heyting 代数把"可证明"写成了序关系：\(a\le b\) 表示"从 \(a\) 可推出 \(b\)"，蕴含 \(a\Rightarrow b\) 由它与其他推导的关系（而不是真值表）决定。这与本书反复出现的立场一致：一个对象的同一性由它进入的关系网络刻画。Part I 的 Curry–Howard–Lambek 三位一体，正是把这条立场从命题推广到类型与证明。</p>
+  </div>
+</section>
+
+<footer>
+  <p><a href="范畴论-逻辑-拓扑斯_教材总目录.html">← 返回总目录</a> ｜ 上一章：<a href="范畴论-逻辑-拓扑斯_教材第7章.html">第 7 章 伴随与 Monad</a> ｜ 下一章：<a href="范畴论-逻辑-拓扑斯_教材第9章.html">第 9 章 演绎系统与笛卡尔闭范畴</a></p>
+  <p>本章对应 Lambek &amp; Scott, <em>Introduction to Higher Order Categorical Logic</em>, Part 0 §1–§7。公式由 MathJax 渲染，需联网加载。</p>
+</footer>
+
+</div>
+</body>
+</html>
