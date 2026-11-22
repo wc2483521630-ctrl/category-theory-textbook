@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-page-node-id="kG7IaKZ7LGkihcu6GHkXVW">
+<head data-page-node-id="TW4LRXibgfBfHT9GUKk9e2">
+<meta charset="UTF-8" data-page-node-id="QTB28QeALcaMN9PbzbcbZq">
+<meta name="viewport" content="width=device-width, initial-scale=1.0" data-page-node-id="XHZVUUCOADrHP81AL6SVgG">
+<title>第 5 章 指数对象与笛卡尔闭范畴 —— 三书递进自学教材</title>
+<script>
+window.MathJax = {
+  tex: {
+    inlineMath: [['\\(','\\)']], displayMath: [['\\[','\\]']], processEscapes: true,
+    macros: {
+      llbracket: '\\lbrack\\lbrack',
+      rrbracket: '\\rbrack\\rbrack'
+    }
+  },
+  options: { ignoreHtmlClass: 'no-tex' },
+  svg: { fontCache: 'global' }
+};
+</script>
+<script async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
+<style>
+  :root{
+    --bg:#f6f7f9; --card:#fff; --ink:#1b1f27; --ink2:#4d5461; --ink3:#7a8190;
+    --line:#e5e8ed; --soft:#f0f2f5;
+    --c1:#2563eb; --c1bg:#eef4ff; --gold:#b45309; --goldbg:#fdf3e3;
+    --ok:#15803d; --okbg:#eefaf1; --phil:#7c3aed; --philbg:#f6f1ff;
+    --radius:12px;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;
+    line-height:1.75;-webkit-font-smoothing:antialiased;}
+  .wrap{max-width:920px;margin:0 auto;padding:0 22px 80px;}
+
+  header.top{padding:34px 0 22px;border-bottom:1px solid var(--line);margin-bottom:26px;}
+  .breadcrumb{font-size:12.5px;color:var(--ink3);margin-bottom:10px;}
+  .breadcrumb a{color:var(--c1);text-decoration:none;}
+  h1{font-size:29px;margin:0 0 8px;letter-spacing:-.02em;}
+  .lede{color:var(--ink2);font-size:14.5px;margin:0 0 16px;}
+  .jump{display:flex;gap:8px;flex-wrap:wrap;}
+  .jump a{font-size:12.5px;font-weight:650;text-decoration:none;color:var(--ink2);
+    background:var(--card);border:1px solid var(--line);border-radius:99px;padding:6px 13px;}
+  .jump a:hover{border-color:var(--c1);color:var(--c1);}
+
+  section.sec{margin:0 0 52px;scroll-margin-top:16px;}
+  .sec-h{display:flex;align-items:baseline;gap:12px;border-bottom:2px solid var(--c1);padding-bottom:10px;margin-bottom:22px;}
+  .sec-no{font-size:13px;font-weight:800;color:#fff;background:var(--c1);border-radius:7px;padding:3px 10px;white-space:nowrap;}
+  .sec-h h2{font-size:22px;margin:0;letter-spacing:-.01em;}
+  .src{font-size:11.5px;color:var(--ink3);margin-left:auto;white-space:nowrap;}
+
+  .box{border-radius:var(--radius);padding:16px 20px;margin:18px 0;border:1px solid var(--line);}
+  .box h4{margin:0 0 10px;font-size:14px;letter-spacing:.01em;}
+
+  .learn{background:var(--c1bg);border-color:#cfe0ff;}
+  .learn h4{color:var(--c1);}
+  .learn ol{margin:0;padding-left:22px;} .learn li{margin:4px 0;font-size:14px;}
+
+  .defn{background:#fafbfc;border-left:4px solid var(--ink2);padding:14px 18px;margin:16px 0;border-radius:0 10px 10px 0;}
+  .defn .lbl{font-weight:800;font-size:13.5px;color:var(--ink);}
+  .prop{background:#fbfcfe;border:1px solid #dbe6f8;border-left:4px solid var(--c1);padding:14px 18px;margin:16px 0;border-radius:0 10px 10px 0;}
+  .prop .lbl{font-weight:800;font-size:13.5px;color:var(--c1);}
+  .rmk{font-size:13.5px;color:var(--ink2);background:var(--soft);padding:11px 16px;border-radius:9px;margin:12px 0;}
+
+  .proof{margin:10px 0 4px;padding-left:16px;border-left:2px solid var(--line);font-size:14px;color:var(--ink2);}
+  .proof .pl{font-weight:700;color:var(--ink);}
+  .qed{float:right;font-style:normal;color:var(--ink3);}
+
+  .exer{background:var(--goldbg);border-color:#f2dfbb;}
+  .exer h4{color:var(--gold);}
+  .exer .grp{font-size:12.5px;font-weight:750;color:var(--gold);margin:12px 0 4px;}
+  .exer ol{margin:0;padding-left:22px;} .exer li{margin:9px 0;font-size:14px;}
+
+  .ans{background:var(--okbg);border-color:#c9ecd3;}
+  .ans h4{color:var(--ok);}
+  .ans .item{margin:14px 0 18px;font-size:14px;}
+  .ans .item:last-child{margin-bottom:0;}
+  .ans .item b{color:var(--ok);}
+  .ans .proof{border-left-color:#bfe6c9;}
+
+  .phil{background:var(--philbg);border-color:#e3d5ff;}
+  .phil h4{color:var(--phil);}
+  .phil p{font-size:14px;color:#5b3a8e;margin:8px 0;}
+
+  h3.sub{font-size:16px;margin:26px 0 6px;color:var(--ink);}
+  p{margin:9px 0;} .math{overflow-x:auto;}
+
+  .figcap{font-size:12.5px;color:var(--ink3);margin:2px 0 12px;text-align:center;font-style:italic;}
+
+  footer{border-top:1px solid var(--line);margin-top:30px;padding-top:20px;font-size:13px;color:var(--ink3);}
+  footer a{color:var(--c1);text-decoration:none;}
+
+  @media(max-width:640px){
+    h1{font-size:23px;} .wrap{padding:0 14px 60px;}
+    .sec-h{flex-wrap:wrap;} .src{margin-left:0;}
+    .box{padding:14px 15px;}
+  }
+  @media print{body{background:#fff;}.jump{display:none;}.box{break-inside:avoid;}}
+</style>
+</head>
+<body data-page-node-id="8yzme5cZpjPU4dQzv3MR8V">
+<div class="wrap" data-page-node-id="glzdtqb5LFDIKrh2G94o8R">
+
+<header class="top" data-page-node-id="R3HcD1DyJUpLcPpul6MOJd">
+  <div class="breadcrumb" data-page-node-id="z9H6h0yy75aPLuFDVSaRtg"><a href="范畴论-逻辑-拓扑斯_教材总目录.html" data-page-node-id="do32vxoxQtprMDjWJ7TGu6">← 返回总目录</a> ｜ 第一部分 · Awodey《Category Theory》（第二版）</div>
+  <h1 data-page-node-id="GrpnDAv7cUh2cOIWpkUij0">第 5 章　指数对象与笛卡尔闭范畴</h1>
+  <p class="lede" data-page-node-id="OB573PRTzRa4lamD2AxjC6">上一章我们用"图上的锥"把积、等化子、拉回统一成一种构造；本章要跨过另一道门槛——把"箭头"本身也变成对象。在 \(\mathbf{Set}\) 里，从 \(A\) 到 \(B\) 的所有函数本来就组成一个集合 \(B^A\)，可一般范畴没有元素，"两个对象之间的全部箭头"凭什么也算一个对象？指数对象用一个求值箭头 \(\epsilon:B^A\times A\to B\) 加一条泛性质回答了这件事，它把柯里化升格为范畴结构。有了它，范畴就从"能谈论极限"进而"能在内部谈论函数"：逻辑里的蕴涵、程序里的函数类型，都是这件事的不同侧面。对应 Awodey 第二版第 6 章。</p>
+  <nav class="jump" data-page-node-id="M1Y5MRj8hppkSsW8VayHOR">
+    <a href="#s5-1" data-page-node-id="uFw2dzt0ag0bztN1L6wWSL">5.1 指数对象</a>
+    <a href="#s5-2" data-page-node-id="zqnTFEmrS8UMfSnnPIvMMf">5.2 笛卡尔闭范畴</a>
+    <a href="#s5-3" data-page-node-id="c3ZpcW2q8qQG3I1R0fdvHX">5.3 Heyting 代数与命题演算</a>
+    <a href="#s5-4" data-page-node-id="nh0hl0QutkmsDMRjDJAYTk">5.4 λ-演算初步</a>
+  </nav>
+</header>
+
+<section class="sec" id="s5-1" data-page-node-id="YbFI5L4Wv1j10526kjco1V">
+  <div class="sec-h" data-page-node-id="CrFuH1MKO9T3so5PCcX436"><span class="sec-no" data-page-node-id="N93Uo4WTivk6ZB2F80kJsD">5.1</span><h2 data-page-node-id="qdmT9OjjeYzsBiTni1xGqC">指数对象</h2><span class="src" data-page-node-id="aoCiWmILJjHQxSJOFAVbPT">A §6.1, p.119–121</span></div>
+
+  <div class="box learn" data-page-node-id="CbY1L7iUPfLY8lB0yvrknt">
+    <h4 data-page-node-id="Tf4d5vbCc7v4RoAJK5nfHm">① 本节学习目标</h4>
+    <ol data-page-node-id="1c5I1PtfVddLyam4L2fnIA">
+      <li data-page-node-id="qs0SNctV72A9S0Cu4jkrSp">从 \(\mathbf{Set}\) 中的函数空间 \(B^A=\operatorname{Hom}(A,B)\) 与柯里化出发，讲清"把箭头做成对象"的动机；</li>
+      <li data-page-node-id="gNeeGnI9rvvodEm4eCnwqs">严格写出指数对象的定义：对象 \(B^A\)、求值箭头 \(\epsilon:B^A\times A\to B\) 与唯一存在的转置 \(\tilde f\)；</li>
+      <li data-page-node-id="vA06lJ7gJlnfzwiUcGdXpO">证明 Horn-集双射 \(\operatorname{Hom}(X\times A,B)\cong\operatorname{Hom}(X,B^A)\) 及其在 \(X\) 上的自然性，并认出它就是伴随 \(-\times A\dashv (-)^A\)；</li>
+      <li data-page-node-id="ginldLlAqGBhJvNfcPa5cA">证明指数唯一到唯一同构，并说明 \((-)^A\) 对 \(B\) 协变、\(B^{(-)}\) 对 \(A\) 反变；</li>
+      <li data-page-node-id="0nqyXWNwS8eAC9uVTOGoPH">会计算 \(\mathbf{Set}\)、有限集、偏序集中的指数，知道指数记号 \(B^A\) 的来历。</li>
+    </ol>
+  </div>
+
+  <h3 class="sub" data-page-node-id="GNRMFQaAdmDfaYxacNJ1kV">5.1.1　动机：箭头能不能也当对象</h3>
+  <p data-page-node-id="JKJm1WZzuXBtCgKYGiDDOy">在 \(\mathbf{Set}\) 里，"从 \(A\) 到 \(B\) 的所有函数"构成一个集合 \(\operatorname{Hom}(A,B)=B^A\)，它和 \(A\)、\(B\) 一样是个集合。换句话说，集合范畴里"箭头"自己又是一个"对象"。这是集合论的一个特殊恩赐。在一般范畴里对象没有元素，\(\operatorname{Hom}(A,B)\) 只是一个外部的集合（一个 hom-set），并不自动是范畴内部的对象。</p>
+  <p data-page-node-id="elxDmvhFe9OQsrwMN7lzxt">问题因此变成：<strong data-page-node-id="DbD5G534ETlR3ThK6JM8xo">能不能在范畴内部找到一个对象，使得"从任意阶段 \(X\) 到它的箭头"恰好记录"从 \(X\times A\) 到 \(B\) 的箭头"？</strong> 钥匙是柯里化。一个双变量函数 \(f:X\times A\to B\) 可以改写成一个单变量函数 \(\tilde f:X\to B^A\)，办法是把 \(x\in X\) 送到"\(a\mapsto f(x,a)\)"这个函数：
+    \[\tilde f(x)(a)=f(x,a).\]
+    这里真正需要的全部结构，只是一个"把函数作用在自变量上"的求值操作 \(\epsilon(f,a)=f(a)\)。把这个操作抽象出来，就得到指数的定义。</p>
+  <div class="rmk" data-page-node-id="jM6Ld31dbQ4wWBCRf19TRm"><strong data-page-node-id="CzIBsT9oj8lxmElYywj3Ab">和前面泛性质的差别。</strong>积、等化子、极限的泛性质都是"任一合适的箭头唯一地因子过某个箭头"。指数的泛性质长得不太一样：它是先指定一个<strong data-page-node-id="1aHAnQBIsvD1Wwz3FtgUFB">求值</strong>箭头 \(\epsilon\)，再要求每个 \(f\) 都有唯一的<strong data-page-node-id="n8FuIBgnY8oOqLm4GvyMsq">转置</strong> \(\tilde f\) 使某三角形交换。但骨子里仍是同一件事——用唯一性把对象钉死到同构。</div>
+
+  <h3 class="sub" data-page-node-id="ejwADEu8Br0a47G4K6K73G">5.1.2　定义与交换图</h3>
+  <div class="defn" data-page-node-id="zXlfQYx1Eh6uAPwYkYqaQo"><span class="lbl" data-page-node-id="VvZz8mXzGhLMag6ZomCSVL">定义 5.1.1（指数对象）</span>　设范畴 \(\mathbf C\) 有二元积，\(A,B\in\operatorname{ob}(\mathbf C)\)。\(B\) 关于 \(A\) 的<strong data-page-node-id="SVRAcomCxy45jKh0DGYTMN">指数对象</strong>（exponential）是一个对象 \(B^A\)，连同箭头
+    \[\epsilon:B^A\times A\to B\]
+    （称为<strong data-page-node-id="sFjd3tcuQQ7m9UCn5yz3Ga">求值</strong>，evaluation），满足如下泛性质：对任意对象 \(X\) 与任意箭头 \(f:X\times A\to B\)，存在<strong data-page-node-id="NSCobXW8QwtqiPP6TWmglE">唯一</strong>箭头 \(\tilde f:X\to B^A\)（称为 \(f\) 的<strong data-page-node-id="0PDQFbnHDuDAL856Q8jEi9">转置</strong>，transpose）使
+    \[\epsilon\circ(\tilde f\times\mathrm{id}_A)=f.\]
+    这也可读成 hom-set 的自然双射 \(\operatorname{Hom}(X\times A,B)\cong\operatorname{Hom}(X,B^A)\)。　【A §6.1, p.119；定义 6.1】</div>
+
+  <p data-page-node-id="bUxmDEvjclpRJXGUw0ScGa">把泛性质画成交换图（三角在左下单箭头、求值在上边）：</p>
+  \[
+    \begin{array}{ccc}
+      B^A\times A & \xrightarrow{\ \epsilon\ } & B\\[2pt]
+      \uparrow{\scriptstyle \tilde f\times \mathrm{id}_A} & \nearrow{\scriptstyle f} & \\[2pt]
+      X\times A & &
+    \end{array}
+  \]
+  <p class="figcap" data-page-node-id="ElhKhU8HuE9q5hpHksnHeu">图 5.1　指数对象的泛性质：给定 \(f\)，存在唯一 \(\tilde f\) 使三角形交换。</p>
+  <p data-page-node-id="13ObqAMUvCYqBLxlKACgLV"><strong data-page-node-id="IzpUZaAIdP9KHBumkgd3TX">图怎么读。</strong>左下角是 \(X\times A\)；左边竖直向上的箭头是 \(\tilde f\times\mathrm{id}_A\)，它把 \((x,a)\) 送到 \((\tilde f(x),a)\)；顶边水平的箭头是求值 \(\epsilon\)，把 \((\tilde f(x),a)\) 送到 \(\tilde f(x)(a)\)。斜箭头 \(f\) 是事先给定的 \(X\times A\to B\)。所谓"三角形交换"，就是说"先转置再求值"这条路径 \(\epsilon\circ(\tilde f\times\mathrm{id}_A)\) 的结果，和直接走 \(f\) 完全一样；而这样的 \(\tilde f\) 只有一个。</p>
+
+  <h3 class="sub" data-page-node-id="MJBEpeDL8lSDVdFV1tNW6n">5.1.3　转置与伴随</h3>
+  <div class="prop" data-page-node-id="gy3nmCnXnJcS0CbXKUwCz7"><span class="lbl" data-page-node-id="im88yiFtmZBidtDJwJ3s0c">命题 5.1.2（转置给出双射）</span>　对每个对象 \(X\)，映射
+    \[\Phi_X:\operatorname{Hom}(X,B^A)\longrightarrow\operatorname{Hom}(X\times A,B),\qquad g\longmapsto \epsilon\circ(g\times\mathrm{id}_A)\]
+    是双射，其逆是 \(f\mapsto\tilde f\)。因此 \(\operatorname{Hom}(X\times A,B)\cong\operatorname{Hom}(X,B^A)\)，且这个双射自然于 \(X\)。</div>
+  <div class="proof" data-page-node-id="jfAwrI7nsA1ZF0pU9xtggA"><span class="pl" data-page-node-id="FAeKyhvzbGrz8vMNtwKjO9">证明：</span>记 \(\Phi_X(g)=\epsilon\circ(g\times\mathrm{id}_A)\)，\(\Psi_X(f)=\tilde f\)。
+    <br data-page-node-id="Sxz4Co99QzZ2ZRjcuf50rD">(1) 对 \(f:X\times A\to B\)，由定义 5.1.1 的唯一性，\(\tilde f\) 是使 \(\epsilon\circ(h\times\mathrm{id}_A)=f\) 的唯一 \(h\)。而 \(\Phi_X(\tilde f)=\epsilon\circ(\tilde f\times\mathrm{id}_A)=f\)，故 \(\Phi_X\Psi_X(f)=f\)。
+    <br data-page-node-id="nMgGaMp04c0yEDJlIOEzKh">(2) 对 \(g:X\to B^A\)，令 \(f:=\Phi_X(g)=\epsilon\circ(g\times\mathrm{id}_A)\)。那么 \(g\) 本身满足 \(\epsilon\circ(g\times\mathrm{id}_A)=f\)，由唯一性 \(\tilde f=g\)，即 \(\Psi_X\Phi_X(g)=g\)。两式合起来说明 \(\Phi_X,\Psi_X\) 互逆。
+    <br data-page-node-id="vtLinHn4Y5D4AECnbgk9vN">自然性：设 \(u:X'\to X\)。需证 \(\Phi_{X'}(g\circ u)=\Phi_X(g)\circ(u\times\mathrm{id}_A)\)。两边展开：左边 \(=\epsilon\circ((g\circ u)\times\mathrm{id}_A)=\epsilon\circ(g\times\mathrm{id}_A)\circ(u\times\mathrm{id}_A)\)，正是右边（用到 \((g\circ u)\times\mathrm{id}=(g\times\mathrm{id})\circ(u\times\mathrm{id})\)）。<span class="qed" data-page-node-id="gKy58MtRQc0Axp2AMMFE2k">∎</span></div>
+  <div class="rmk" data-page-node-id="Zhvv6xJXf5TNnrWQD50wIE"><strong data-page-node-id="8VLFqXaejLilNu000lly57">这就是伴随。</strong>命题 5.1.2 说的正是：函子 \(-\times A:\mathbf C\to\mathbf C\) 与函子 \((-)^A:\mathbf C\to\mathbf C\) 构成伴随
+    \[-\times A\;\dashv\;(-)^A,\]
+    其中 \(-\times A\) 是左伴随，\((-)^A\) 是右伴随，\(\epsilon\) 是余单位（counit），而单位 \(\eta_X:X\to (X\times A)^A\) 是 \(\operatorname{id}_{X\times A}\) 的转置。伴随这个词将在第 9 章正式登场，这里先认清它的样子。</div>
+
+  <h3 class="sub" data-page-node-id="FE3RchFO4L8vJdGxgSPrwS">5.1.4　\(\mathbf{Set}\) 中的指数与记号来历</h3>
+  <div class="prop" data-page-node-id="kaQKyOJLsiki67CKXUH428"><span class="lbl" data-page-node-id="zh0ipOHEk1ehOXXqyk7iEq">命题 5.1.3（\(\mathbf{Set}\) 中的指数）</span>　在 \(\mathbf{Set}\) 中，\(B^A=\operatorname{Hom}_{\mathbf{Set}}(A,B)\) 连同求值 \(\epsilon(f,a)=f(a)\) 是指数对象；转置为 \(\tilde f(x)(a)=f(x,a)\)。</div>
+  <div class="proof" data-page-node-id="5Z12c0bYBKfCBhYjt6sFHb"><span class="pl" data-page-node-id="TrrQxbLCjJPUVqrTaaOxy1">证明：</span>给定 \(f:X\times A\to B\)，定义 \(\tilde f:X\to B^A\) 为 \(\tilde f(x)(a):=f(x,a)\)。则
+    \[\big(\epsilon\circ(\tilde f\times\mathrm{id}_A)\big)(x,a)=\epsilon(\tilde f(x),a)=\tilde f(x)(a)=f(x,a),\]
+    即等式成立。若 \(g:X\to B^A\) 也满足 \(\epsilon\circ(g\times\mathrm{id}_A)=f\)，则对每个 \(x,a\) 有 \(g(x)(a)=f(x,a)\)，由函数的外延性 \(g(x)=\tilde f(x)\)，故 \(g=\tilde f\)。唯一性成立。<span class="qed" data-page-node-id="r8HCb2dpqQUZWBEIyBraUZ">∎</span></div>
+  <p data-page-node-id="Kx3I2SHLPF8cWZYUpXPICf">记号的来历现在清楚了：若 \(A,B\) 是有限集，则 \(|B^A|=|B|^{|A|}\)——指数的底数、幂次与集合的基数完全对应，所以干脆把函数空间写成 \(B^A\)。两个特例值得记住：</p>
+  <ul data-page-node-id="3bHtYIRQnZ51LzD16aQ7vc">
+    <li data-page-node-id="ECwm1dMcrU0wAM9dHUaCMq">\(2^A\cong\mathcal P(A)\)（取 \(2=\{0,1\}\)，函数 \(A\to 2\) 与 \(A\) 的特征函数一一对应，即与子集一一对应）；</li>
+    <li data-page-node-id="QhGTD3fKf5pDEV2dyofZ2i">\(A^1\cong A\)（从单点出发的函数由像点唯一决定），\(1^A\cong 1\)（到单点的函数唯一）。</li>
+  </ul>
+
+  <h3 class="sub" data-page-node-id="tyPfbBCWaXfCwtDy6HAjmZ">5.1.5　唯一性与函子性</h3>
+  <div class="prop" data-page-node-id="7MEj4ndY9iRiLQX2HySbfN"><span class="lbl" data-page-node-id="wrfQKqhb1PCVYZwRlfqFa1">命题 5.1.4（指数唯一到唯一同构）</span>　若 \(B^A\) 与 \(D\) 都是 \(B\) 关于 \(A\) 的指数（求值分别为 \(\epsilon\) 与 \(\delta:D\times A\to B\)），则存在唯一同构 \(u:B^A\to D\) 使 \(\delta\circ(u\times\mathrm{id}_A)=\epsilon\)。</div>
+  <div class="proof" data-page-node-id="uCwOFFEvapxKNgJX11s9Bk"><span class="pl" data-page-node-id="LZudzHFXyj4ij3g7T2kNGD">证明：</span>把 \(\epsilon:B^A\times A\to B\) 看成以 \(D\) 为指数的"待转置箭头"（此时阶段 \(X=B^A\)），得唯一 \(u:B^A\to D\) 使 \(\delta\circ(u\times\mathrm{id}_A)=\epsilon\)。反过来把 \(\delta:D\times A\to B\) 用 \(B^A\) 转置，得唯一 \(v:D\to B^A\) 使 \(\epsilon\circ(v\times\mathrm{id}_A)=\delta\)。于是
+    \[\epsilon\circ(v\circ u\times\mathrm{id}_A)=\epsilon\circ(v\times\mathrm{id}_A)\circ(u\times\mathrm{id}_A)=\delta\circ(u\times\mathrm{id}_A)=\epsilon=\epsilon\circ(\mathrm{id}_{B^A}\times\mathrm{id}_A).\]
+    由 \(B^A\) 的唯一性，\(v\circ u=\mathrm{id}_{B^A}\)；同理 \(u\circ v=\mathrm{id}_D\)。故 \(u\) 是同构，唯一性由泛性质给出。<span class="qed" data-page-node-id="DlxgUm0x90f0HICEHfI1Dh">∎</span></div>
+  <div class="prop" data-page-node-id="F5nUeM0FLMnobNvIJz9RUN"><span class="lbl" data-page-node-id="RTmnWOIN77ZxWgewqQuCJe">命题 5.1.5（指数的函子性）</span>　设 \(\mathbf C\) 有指数。对固定 \(A\)，赋值 \(B\mapsto B^A\) 可扩充为函子 \((-)^A:\mathbf C\to\mathbf C\)：对 \(g:B\to B'\)，令
+    \[g^A:=\widetilde{\,g\circ\epsilon\,}:B^A\to B'^A.\]
+    对固定 \(B\)，赋值 \(A\mapsto B^A\) 是反变函子 \(B^{(-)}:\mathbf C^{op}\to\mathbf C\)：对 \(h:A'\to A\)，令 \(B^h:=\widetilde{\,\epsilon\circ(\mathrm{id}_{B^A}\times h)\,}:B^A\to B^{A'}\)。</div>
+  <div class="proof" data-page-node-id="wczoU1v4FvFl3aMrFikvdb"><span class="pl" data-page-node-id="gh5og0Iwu8hUHZVO2e01DD">证明：</span>只证协变情形。\(g\circ\epsilon:B^A\times A\to B'\)，由泛性质可转置为 \(g^A:B^A\to B'^A\)，满足 \(\epsilon'\circ(g^A\times\mathrm{id}_A)=g\circ\epsilon\)。恒等：\(\mathrm{id}_B^A\) 满足 \(\epsilon\circ(h\times\mathrm{id})=\mathrm{id}_B\circ\epsilon=\epsilon\)，而 \(\mathrm{id}_{B^A}\) 也满足 \(\epsilon\circ(\mathrm{id}_{B^A}\times\mathrm{id})=\epsilon\)，由唯一性 \(\mathrm{id}_B^A=\mathrm{id}_{B^A}\)。复合：给定 \(g:B\to B'\)、\(k:B'\to B''\)，比较 \((k\circ g)^A\) 与 \(k^A\circ g^A\)，两者转置回 \(B^A\times A\to B''\) 后都等于 \(k\circ g\circ\epsilon\)，由唯一性相等。反变情形同法，注意 \(h:A'\to A\) 使 \(\mathrm{id}\times h:B^A\times A'\to B^A\times A\) 方向反转。<span class="qed" data-page-node-id="Z1qWM2MRpCuS6vx2oLCozM">∎</span></div>
+  <div class="rmk" data-page-node-id="FAT1Yw2ND41JH1KCVtjfOr"><strong data-page-node-id="MQyIu77A2yrU5sxc2t2xgM">一个提醒。</strong>与积不同，\(B^A\) 对两个变量不是二元函子（bifunctor）：它对 \(B\) 协变、对 \(A\) 反变，这种"一协一反"的赋值叫 <em data-page-node-id="KBZUpLvNVk4544KkQoSxyW">difunctor</em>。写 \(g^f\) 时务必先看清哪个箭头在指数位、哪个在底数位。</div>
+
+  <div class="box exer" data-page-node-id="jZe3tRflhB7Nq6Lj9ERbr9">
+    <h4 data-page-node-id="kKDWyELWibZq1NxHCD0ULB">③ 课后习题</h4>
+    <div class="grp" data-page-node-id="GTEfRSYuqhdFyyU5S2tOfW">基础巩固</div>
+    <ol data-page-node-id="8Qy3iEbFZusQOohyoBRTC6">
+      <li data-page-node-id="DJ5YsFfhkYKdsDbXGITQoN">在 \(\mathbf{Set}\) 中，令 \(f:\mathbb R\times\mathbb R\to\mathbb R\) 为 \(f(x,y)=x+y\)。写出转置 \(\tilde f:\mathbb R\to\mathbb R^{\mathbb R}\)，并验证 \(\epsilon\circ(\tilde f\times\mathrm{id})=f\)。</li>
+      <li data-page-node-id="Hiyj4hJ6VAOX6q4MT69JiO">证明命题 5.1.4：指数唯一到唯一同构。要求写出 \(u,v\) 的构造与 \(v\circ u=\mathrm{id}\)、\(u\circ v=\mathrm{id}\) 的完整推导。</li>
+      <li data-page-node-id="f8wRUOBOMn3Zy85iLoeHnE">计算有限集上的指数基数：(a) \(|\{0,1\}^{\{1,2,3\}}|\)；(b) \(|\varnothing^A|\)（\(A\neq\varnothing\)）；(c) \(|A^{\varnothing}|\)。并解释为何这些等式与集合论里函数个数的计数一致。</li>
+      <li data-page-node-id="dFEeZHrloUGdeocB5lg6st">证明 \(B^1\cong B\) 与 \(1^A\cong 1\)（\(1\) 为终对象）。</li>
+      <div class="grp" data-page-node-id="AgGnI9kGeWIOIOc3ZUAKfB">进阶思考</div>
+      <li data-page-node-id="ZPjqBcnHRxhFewJQP6h2hH">证明命题 5.1.5 中 \((-)^A\) 保持恒等与复合，并把反变部分 \(B^{(-)}\) 的证明补全。</li>
+      <li data-page-node-id="NQxI4sG4R4mzH6SlHOYHEo">证明指数的"乘积律"：\((B\times C)^A\cong B^A\times C^A\)。（提示：用 hom-set 双射或第 4 章积的泛性质。）</li>
+      <li data-page-node-id="OnBdys0UOdQ3K2wxUGV8Te">思考：\(-\times A\dashv(-)^A\) 的单位 \(\eta_X:X\to (X\times A)^A\) 具体是什么？把它在 \(\mathbf{Set}\) 中写出来，并说明它为何对应"把 \(x\) 送到 \(a\mapsto(x,a)\)"。</li>
+    </ol>
+  </div>
+
+  <div class="box ans" data-page-node-id="Mgvpp4O5z6FU8hixGgSt9K">
+    <h4 data-page-node-id="fQhq4GNJtuVDvgcCDFA9dc">④ 习题参考答案</h4>
+    <div class="item" data-page-node-id="FayGCoSkJmHDnfXIfAQiLC"><b data-page-node-id="qFITBCibb3u8ZfXm2qGZfw">5.1.1</b>　\(\tilde f(x)(y)=x+y\)，即 \(\tilde f(x)\) 是函数 \(y\mapsto x+y\)。验证：\((\epsilon\circ(\tilde f\times\mathrm{id}))(x,y)=\tilde f(x)(y)=x+y=f(x,y)\)。唯一性：若 \(g(x)(y)=x+y\) 对所有 \(x,y\) 成立，则 \(g(x)=\tilde f(x)\)，故 \(g=\tilde f\)。<span class="qed" data-page-node-id="IFdmXDhULk6A4xI27xScnz">∎</span></div>
+    <div class="item" data-page-node-id="eBt720uIIJ84J9mdGGph1M"><b data-page-node-id="ODj2krTeR2LtDcnsggFVTN">5.1.2</b>　由 \(D\) 的泛性质，把 \(\epsilon:B^A\times A\to B\) 转置得唯一 \(u:B^A\to D\) 使 \(\delta(u\times\mathrm{id})=\epsilon\)；由 \(B^A\) 的泛性质，把 \(\delta\) 转置得唯一 \(v:D\to B^A\) 使 \(\epsilon(v\times\mathrm{id})=\delta\)。则
+      \[\epsilon\circ((v u)\times\mathrm{id})=\epsilon(v\times\mathrm{id})\circ(u\times\mathrm{id})=\delta(u\times\mathrm{id})=\epsilon=\epsilon(\mathrm{id}\times\mathrm{id}),\]
+      由 \(B^A\) 的唯一性 \(vu=\mathrm{id}_{B^A}\)；同理 \(\delta((uv)\times\mathrm{id})=\delta\) 给 \(uv=\mathrm{id}_D\)。故 \(u\) 同构且唯一。<span class="qed" data-page-node-id="U7ZqwLU4bsli60skKS2n3S">∎</span></div>
+    <div class="item" data-page-node-id="rm9PJCRsnzPl1ZkDzJldT7"><b data-page-node-id="Faw4Z4GH3FsZoIrFn1NSbO">5.1.3</b>　(a) 从 3 元集到 2 元集的函数共 \(2^3=8\) 个。(b) \(A\neq\varnothing\) 时无非空函数到 \(\varnothing\)，故 \(|\varnothing^A|=0=0^{|A|}\)。(c) 从 \(\varnothing\) 到 \(A\) 恰有空函数一个，故 \(|A^{\varnothing}|=1=|A|^0\)。指数基数 \(|B|^{|A|}\) 正是集合论中函数个数的计数公式，这正是记号 \(B^A\) 的来源。<span class="qed" data-page-node-id="abqfM7AoDZjyPsigaB8IG0">∎</span></div>
+    <div class="item" data-page-node-id="fHAc3TlwYq8Ah3nfkvkYGo"><b data-page-node-id="K9HPNJWBUVrEIU2coTPonk">5.1.4</b>　\(B^1\)：\(1\) 为终，\(B\times 1\cong B\)，故 \(\operatorname{Hom}(X\times 1,B)\cong\operatorname{Hom}(X,B)\cong\operatorname{Hom}(X,B^1)\)（后一个同构由 \(B^1\) 的泛性质），取 \(X=B\) 得 \(B^1\cong B\)。\(1^A\)：\(\operatorname{Hom}(X\times A,1)\)  singleton（终对象性质），而 \(\operatorname{Hom}(X,1)\) 也 singleton，故 \(\operatorname{Hom}(X,1^A)\) singleton 对一切 \(X\)；取 \(X=1^A\) 得 \(1^A\cong 1\)。<span class="qed" data-page-node-id="ziEvaooj45H8FLzKVWA9YY">∎</span></div>
+    <div class="item" data-page-node-id="IAGQxqw70MECBStTRTulqB"><b data-page-node-id="vCf6Ck2oTJxazRYfydMkSG">5.1.5</b>　协变：\(\mathrm{id}_B^A\) 与 \(\mathrm{id}_{B^A}\) 转置回 \(B^A\times A\to B\) 均为 \(\epsilon\)，唯一性给相等；\((kg)^A\) 与 \(k^A g^A\) 转置回均为 \(k g\epsilon\)，唯一性给相等。反变：对 \(h:A'\to A\)，\(\epsilon(\mathrm{id}\times h):B^A\times A'\to B\) 可转置为 \(B^h:B^A\to B^{A'}\)。恒等 \(h=\mathrm{id}_A\) 时是 \(\epsilon\) 自身转置即 \(\mathrm{id}_{B^A}\)；复合 \(A''\xrightarrow{h'}A'\xrightarrow{h}A\) 时，\((\mathrm{id}\times h')(\mathrm{id}\times h)=\mathrm{id}\times(hh')\)，转置的唯一性给 \(B^{hh'}=B^h\circ B^{h'}\)，反变性得证。<span class="qed" data-page-node-id="EyV9aLh2jOAizv1oA1pqOH">∎</span></div>
+    <div class="item" data-page-node-id="5oEocdxKcVJz9kCSesPz0w"><b data-page-node-id="G33JRECHqCPcN6oBRkSQFx">5.1.6</b>　对任意 \(X\)，把同构链分行写：
+    \[\begin{aligned}
+      \operatorname{Hom}\big(X,(B\times C)^A\big)
+        &\cong \operatorname{Hom}(X\times A,\;B\times C)\\
+        &\cong \operatorname{Hom}(X\times A,\;B)\times \operatorname{Hom}(X\times A,\;C)\\
+        &\cong \operatorname{Hom}(X,\;B^A)\times \operatorname{Hom}(X,\;C^A)\\
+        &\cong \operatorname{Hom}(X,\;B^A\times C^A).
+    \end{aligned}\]
+    第二步用积的泛性质。由 Yoneda（或第 4 章"同 hom 即同构"），得 \((B\times C)^A\cong B^A\times C^A\)。<span class="qed" data-page-node-id="8LtUd07bhubHwOie1hNpxf">∎</span></div>
+    <div class="item" data-page-node-id="c7HojisU7aH3ny9FNHnyW8"><b data-page-node-id="71l9B0mDEg4xwOhM3zYnPC">5.1.7</b>　单位 \(\eta_X=\widetilde{\mathrm{id}_{X\times A}}:X\to(X\times A)^A\)。在 \(\mathbf{Set}\) 中，\(\mathrm{id}_{X\times A}\) 的转置满足 \(\eta_X(x)(a)=\mathrm{id}_{X\times A}(x,a)=(x,a)\)。故 \(\eta_X(x)\) 正是函数 \(a\mapsto(x,a)\)：它把 \(x\) 固定住，只让 \(a\) 变化。这正是伴随单位"把一个变量打包成函数"的直觉。<span class="qed" data-page-node-id="bUfyV64hTILPYSY9CZngGp">∎</span></div>
+  </div>
+
+  <div class="box phil" data-page-node-id="dW1lqo3h5w7nqkSEXxaBuI">
+    <h4 data-page-node-id="nUOJfsZ9W4NmNb9S7atkhS">选读拓展（哲学联系，非正文）</h4>
+    <p data-page-node-id="SMZN87xGJQmzGf1FDwatxR">柯里化 \(\operatorname{Hom}(X\times A,B)\cong\operatorname{Hom}(X,B^A)\) 说的是：一个涉及两个变量的事件，可以改写成"先固定一个变量、留下一个关于另一个变量的函数"。你把"同时看 \(x\) 与 \(a\)"改写成"对每个 \(x\)，持有一个待作用于 \(a\) 的函数 \(\tilde f(x)\)"。这种"把关系拆成函数"的操作，与你在因果哲学里区分"事件"与"以事件为条件的规律"有几分相似——不过这只是结构上的类比，范畴的指数并不编码时间或因果方向。</p>
+  </div>
+</section>
+
+<section class="sec" id="s5-2" data-page-node-id="Xjdh2Fg8zxCG4rDdIf99T5">
+  <div class="sec-h" data-page-node-id="BC1PoCcCkaP9H4u5IiqRfh"><span class="sec-no" data-page-node-id="NkrX6uU9um2li2RqF88G6T">5.2</span><h2 data-page-node-id="ahOoN7kpu7UP4TpAjJfqvt">笛卡尔闭范畴</h2><span class="src" data-page-node-id="i5EuHArHEe6g2MNgiA15ra">A §6.2, §6.5, p.122–128, 134–135</span></div>
+
+  <div class="box learn" data-page-node-id="dOoIGZiBAibo0O90w1yt4j">
+    <h4 data-page-node-id="wxxWRvud9vKgHTZOSLz43C">① 本节学习目标</h4>
+    <ol data-page-node-id="E0FCN37ZM4o9toIkeSPAiJ">
+      <li data-page-node-id="mV9BzcXGwbs7QHABpu6hV1">给出笛卡尔闭范畴（CCC）的定义：有终对象、二元积与全部指数；</li>
+      <li data-page-node-id="btjGYCqMDWaIdJI9PrSVY3">理解"闭"（closed）的确切含义——hom-set 被范畴内部的对象 \(B^A\) 所"表示"；</li>
+      <li data-page-node-id="tMKvzAcqEK2aeOn0ntjLp5">掌握等价的<strong data-page-node-id="ZMCvC686avNBYxn2lWrsPt">等式定义</strong>（用 \(\epsilon,\lambda,\langle,\rangle,\pi\) 及五条等式），从而把 CCC 看成一个代数结构；</li>
+      <li data-page-node-id="ZmihYkrkSZDcGG7RNXIL6G">能举出 CCC 的正例（\(\mathbf{Set}\)、有限集、偏序、函子范畴）与反例（\(\mathbf{Top}\)、\(\mathbf{Grp}\)），并说清失败的原因；</li>
+      <li data-page-node-id="uqOfaULGxhPFQKbWmxtWHE">熟练使用指数的形式定律：\(B^1\cong B\)、\((B^A)^C\cong B^{A\times C}\)、\(B^{A+C}\cong B^A\times B^C\) 等。</li>
+    </ol>
+  </div>
+
+  <h3 class="sub" data-page-node-id="UCJimaGnprbPbXoe7J2yad">5.2.1　动机：什么叫"闭"</h3>
+  <p data-page-node-id="sqRSY9RNhwmX6Q9thyJRau">把上一章与这一章合起来看：一个范畴若有终对象与二元积，就有全部有限积；若再对每对对象都有指数，那么它就有了一种相当强的"内部完备性"——不仅对象之间可以取积，连"对象之间的箭头"也能作为对象留在范畴里。这样的范畴叫<strong data-page-node-id="ByVcKrKBF38Ud6GrldwdlX">笛卡尔闭范畴</strong>。</p>
+  <p data-page-node-id="JiNfe5kVt2Fbhv91ny0KwD">"闭"字要这样读：对固定的 \(A\)，函子 \(-\times A\) 把 \(X\) 送到 \(X\times A\)；它有一个右伴随 \((-)^A\)。伴随关系
+    \[\operatorname{Hom}(X\times A,B)\;\cong\;\operatorname{Hom}(X,B^A)\]
+    说明"从 \(X\times A\) 出发的箭头"这一外部 hom-set，被内部对象 \(B^A\) 所表示（represented）。箭头集合没有跑到范畴外面去——它被收进了范畴内部，所以说范畴对箭头构造是"封闭"的。</p>
+  <div class="defn" data-page-node-id="qJaOa5uddgADmP7c34BhSg"><span class="lbl" data-page-node-id="ZEfcdvijADcWvb3PvhWhXD">定义 5.2.1（笛卡尔闭范畴）</span>　范畴 \(\mathbf C\) 称为<strong data-page-node-id="ilSlfdXfTbtjueB3hK30qa">笛卡尔闭</strong>（cartesian closed category，CCC），若它满足：
+    <ol style="margin:6px 0;padding-left:24px;" data-page-node-id="6FoS5xEBeTZtizXXBY4P9Z">
+      <li data-page-node-id="29BE9zH4UKVGHGQ8rlTuCN">有终对象 \(1\)；</li>
+      <li data-page-node-id="pZNhHuTyfmCwihgiXdmrFy">任意两对象有积；</li>
+      <li data-page-node-id="CjV6s2okOuvKUf2jn1Nk1C">任意两对象 \(A,B\) 有指数 \(B^A\)。</li>
+    </ol>
+    由前两条，\(\mathbf C\) 有全部有限积；第三条把 hom-set "内部化"。　【A §6.2, p.122】</div>
+
+  <h3 class="sub" data-page-node-id="1pyKNiPHueUvIeSZyzBDH0">5.2.2　伴随的单位与余单位</h3>
+  <p data-page-node-id="UyXqlhEYIEmrkTSD8oWAyz">固定 \(A\)，伴随 \(-\times A\dashv(-)^A\) 给出两个自然变换，把它们写清楚，就得到指数的全部等式规律。</p>
+  <ul data-page-node-id="S2fLlV38wtJ2hfJKTPiuzM">
+    <li data-page-node-id="CE6KSFwFkTnJ5G7Ou8COHp"><strong data-page-node-id="2AeiUxzINJm4KBTI3xRRKf">余单位</strong>（counit）\(\epsilon_B:B^A\times A\to B\)，就是求值箭头；</li>
+    <li data-page-node-id="nuGbUULwm9KyhBNdyHtdQj"><strong data-page-node-id="k679myftaI1ULqhxRYzJeY">单位</strong>（unit）\(\eta_X:X\to(X\times A)^A\)，是 \(\mathrm{id}_{X\times A}\) 的转置：\(\eta_X(x)(a)=(x,a)\)。</li>
+  </ul>
+  <p data-page-node-id="Mj9AzBljdFDLRKt1Ls9eAU">伴随的"之"字恒等式（triangle identities）在此具体化为两条熟悉的规律：</p>
+  \[
+    \epsilon_B\circ(\eta_{B^A}\times\mathrm{id}_A)=\mathrm{id}_{B^A\times A}
+    \qquad
+    \epsilon_B^A\circ\eta_{B^A}=\mathrm{id}_{B^A}.
+  \]
+  <p class="figcap" data-page-node-id="2XpaWIm8RTESN30ct6Hi1U">第一式说"先打包再求值"还原恒等（计算律）；第二式说"求值的转置是恒等"（反射律）。</p>
+  <p data-page-node-id="kVqEhqBdKoAIaIDrdV4mIF">用交换图表示计算律 \(\epsilon\circ(\widetilde f\times\mathrm{id}_A)=f\)（这里 \(\widetilde f\) 是任意 \(f:X\times A\to B\) 的转置），正是图 5.1；而反射律 \(\widetilde\epsilon=\mathrm{id}_{B^A}\) 则是说：把求值本身再转置一次，回到原来的对象。这两条加上唯一性，等价于定义 5.1.1 的泛性质。</p>
+
+  <h3 class="sub" data-page-node-id="JL3JDOlEHZe4gq2GWouR5w">5.2.3　等价的等式定义</h3>
+  <p data-page-node-id="RLJVztH9Zaa68N2NecWEzs">Awodey §6.5 指出：CCC 可以完全用<strong data-page-node-id="R68REMuyOkbTjL6ZxQv3k4">等式</strong>（而非存在唯一量词）来刻画。数据为：终对象 \(1\) 及唯一箭头 \(!_A:A\to1\)；积 \(A\times B\) 及 \(\pi_1,\pi_2,\langle -,-\rangle\)；指数 \(B^A\) 及 \(\epsilon\) 与转置运算 \(\lambda\)（把 \(f:A\times B\to C\) 送到 \(\lambda f:A\to C^B\)）。要求下列等式对所有合适的箭头成立：</p>
+  <div class="prop" data-page-node-id="nsxvElax5ttj7y8UdhF2VV"><span class="lbl" data-page-node-id="ai0TMnHjDCD0NaspFFE0x0">命题 5.2.2（CCC 的等式公理）</span>　上述数据构成 CCC 当且仅当：
+    \[
+      \begin{aligned}
+      &\pi_1\circ\langle f,g\rangle=f,\qquad \pi_2\circ\langle f,g\rangle=g,\qquad \langle\pi_1,\pi_2\rangle=\mathrm{id},\\[2pt]
+      &\epsilon\circ(\lambda f\times\mathrm{id})=f,\\[2pt]
+      &\lambda\big(\epsilon\circ(g\times\mathrm{id})\big)=g.
+      \end{aligned}
+    \]
+    第一组是积的三角等式；第二式叫<strong>计算律</strong>（先转置再求值，回到原函数），第三式叫<strong>唯一性律</strong>（先求值再转置，回到原箭头）。
+    这里 \(\langle f,g\rangle\) 的定义与 \(\lambda f\) 的定义由泛性质保证满足这些等式。　【A §6.5, p.134】</div>
+  <div class="rmk" data-page-node-id="hdXvEfSZmumoWQAiIC7Roq"><strong data-page-node-id="trHQKKoeYYYKMRuRxIEiNn">为什么这件看似形式化的事很重要。</strong>一旦 CCC 被写成一组等式，它就成为一门<em data-page-node-id="Bv7yzqlYCsLUlHMi1kY6Sl">代数理论</em>（algebraic theory），和群、环处在同一个层次：一个 CCC 就是这套理论的一个模型；一个保终对象、保积、保指数的函子，正是保这些等式的函子（即代数的同态）。更重要的一点留给第 5.4 节：这些等式与 \(\lambda\)-演算的 \(\beta\eta\)-归约规则逐条对应，"等式定义"其实已经埋下了逻辑与计算语义的种子。</div>
+
+  <h3 class="sub" data-page-node-id="k7GzD50R5745yyBCZvT0sD">5.2.4　例子与反例</h3>
+  <div class="prop" data-page-node-id="H4XlxjbVuIGYloPR7ArFQZ"><span class="lbl" data-page-node-id="BpcoBoHliFSQHmStoar6rT">例 5.2.3（CCC 的正例）</span>
+    <ol style="margin:6px 0;padding-left:24px;" data-page-node-id="8muBUGqbGvCc0UUsnyD1K1">
+      <li data-page-node-id="7UIQlfn4ZEHKCUWK8Eg4Tk">\(\mathbf{Set}\)：终对象单点集，积为笛卡尔积，指数为函数集（命题 5.1.3）。</li>
+      <li data-page-node-id="67KvRYs05AYmxId7CNKnSi">\(\mathbf{FinSet}\)（有限集）：同样的构造，函数集仍有限，故也是 CCC。</li>
+      <li data-page-node-id="r77EIKBPKDnEfMi5J4u6rN">偏序集 \(P\) 视作范畴：当 \(P\) 是有界格且满足 Heyting 蕴涵的伴随条件 \(a\wedge b\le c\iff b\le a\Rightarrow c\) 时是 CCC（见 5.3）。</li>
+      <li data-page-node-id="FfduWO8XZBzaoOTJVWU1iH">函子范畴 \(\mathbf{Set}^{\mathbf C^{op}}\)：逐点取积、指数由 Yoneda 式构造给出，仍是 CCC（Awodey §8.7）。第 13 章讲拓扑斯时会用到这一事实。</li>
+    </ol>
+  </div>
+  <div class="prop" data-page-node-id="FQai2Qj9XlIsWF5FKMCYoY"><span class="lbl" data-page-node-id="ldppsOELPqou4gVAsFdIwQ">例 5.2.4（反例：为什么 \(\mathbf{Top}\) 不是 CCC）</span>　\(\mathbf{Top}\) 有终对象与积，但指数一般不存在。对空间 \(Y,Z\)，指数需要函数空间 \(Z^Y\) 带一个拓扑，使求值 \(\epsilon(f,y)=f(y)\) 连续。经典结果：当 \(Y\) 是局部紧 Hausdorff 时，取紧开拓扑可行；但 \(Y\) 一般时求值可以不连续，\(Z^Y\) 便不成指数。因而 \(\mathbf{Top}\) 不是 CCC；改用紧生成 Hausdorff 空间的范畴才能补成 CCC。</div>
+  <div class="prop" data-page-node-id="zEXW2TuGnbzHaPF7hPPHyA"><span class="lbl" data-page-node-id="KJIkZG4FJR0Rf6bVaBmEQX">例 5.2.5（反例：为什么 \(\mathbf{Grp}\) 不是 CCC）</span>　设 \(\mathbf{Grp}\) 是 CCC，取 \(\mathbb Z\)。群同态 \(\mathbb Z\to G\) 由 \(1\mapsto g\) 唯一决定，故 \(\operatorname{Hom}(\mathbb Z,G)\) 与 \(G\) 的底层集等势。若 \(\mathbb Z^{\mathbb Z}\) 存在，则
+    \[\operatorname{Hom}(\mathbb Z,\mathbb Z^{\mathbb Z})\cong\operatorname{Hom}(\mathbb Z\times\mathbb Z,\mathbb Z).\]
+    左边与 \(\mathbb Z^{\mathbb Z}\)（全体函数 \(\mathbb Z\to\mathbb Z\)，基数连续统）等势；右边：\(\mathbb Z\times\mathbb Z\) 是自由阿贝尔群，同态由两个生成元的像决定，故与 \(\mathbb Z^2\) 等势（可数）。连续统 \(\neq\) 可数，矛盾。故 \(\mathbf{Grp}\) 不是 CCC。（事实上仅当 \(A\) 为自由群时 \(B^A\) 才对某些 \(B\) 存在，远不足以覆盖全部对象。）</div>
+
+  <h3 class="sub" data-page-node-id="YUev2zxFBV44GOIHEtStjd">5.2.5　指数的基本定律</h3>
+  <div class="prop" data-page-node-id="uDC3VqwxBFCeDy9wry3iXW"><span class="lbl" data-page-node-id="E0EiMt62M0TXZT11h2areG">命题 5.2.6</span>　设 \(\mathbf C\) 是 CCC，则对任意对象有自然同构：
+    \[B^1\cong B,\qquad 1^A\cong 1,\qquad (B^A)^C\cong B^{A\times C},\qquad B^{A+C}\cong B^A\times B^C\]（最后一条要求余积存在）。</div>
+  <div class="proof" data-page-node-id="B4ZBjNpRpiUlHMlizgOpev"><span class="pl" data-page-node-id="7qCMKpHKRHqBJ8BsgemZrY">证明：</span>前两个已在习题 5.1.4 证明。第三个：对任意 \(X\)，
+    \[\operatorname{Hom}\big(X,(B^A)^C\big)\cong\operatorname{Hom}(X\times C,B^A)\cong\operatorname{Hom}\big((X\times C)\times A,B\big)\cong\operatorname{Hom}(X\times(A\times C),B)\cong\operatorname{Hom}(X,B^{A\times C}),\]
+    中间用了积的结合律；由 hom-set 双射得同构。第四个（Ada 律）：由余积的泛性质有分配同构 \(-\times(A+C)\cong(-\times A)+(-\times C)\)，再用 \(\operatorname{Hom}(U+V,B)\cong\operatorname{Hom}(U,B)\times\operatorname{Hom}(V,B)\)，得 \(\operatorname{Hom}(X,B^{A+C})\cong\operatorname{Hom}(X,B^A)\times\operatorname{Hom}(X,B^C)\cong\operatorname{Hom}(X,B^A\times B^C)\)。<span class="qed" data-page-node-id="pEzV1PBHnyRSXUW6I2327u">∎</span></div>
+  <div class="rmk" data-page-node-id="BbDyiDpETg7vTboq0tTFf9">第三个同构 \((B^A)^C\cong B^{A\times C}\) 就是集合论里的指数律 \((b^a)^c=b^{a\cdot c}\) 在范畴中的翻版；第四个 \(B^{A+C}\cong B^A\times B^C\) 翻版的是 \(b^{a+c}=b^a\cdot b^c\)。指数记号的"算术感"并非巧合。</div>
+
+  <div class="box exer" data-page-node-id="X6TLqbLuC8Vh4AxxB4FTXv">
+    <h4 data-page-node-id="1H1FjOvYbVeKfi53b0fWMP">③ 课后习题</h4>
+    <div class="grp" data-page-node-id="1LzhYklRA1rVv5ZRNXiDAB">基础巩固</div>
+    <ol data-page-node-id="ie62laNhGuEFsRkc2j5aWz">
+      <li data-page-node-id="9pdoC8t8OS0kBjEABfvIJd">写出 \(\mathbf{FinSet}\) 成为 CCC 的全部数据（终对象、积、指数），并验证命题 5.1.3 的泛性质在有限集上仍成立。</li>
+      <li data-page-node-id="83qdTmHReZkEZhcbfMjA7t">证明 \((B^A)^C\cong B^{A\times C}\)（命题 5.2.6 第三个），要求写出逐步的 hom-set 双射，并说明用了积的哪条泛性质。</li>
+      <li data-page-node-id="UTRUBKVZ3ZSJaWQDDbsGBq">验证"计算律"与"唯一性律"确实蕴含定义 5.1.1 的泛性质：若 \(\epsilon(\lambda f\times\mathrm{id})=f\) 且 \(\lambda(\epsilon(g\times\mathrm{id}))=g\)，证明使 \(\epsilon(h\times\mathrm{id})=f\) 的 \(h\) 必唯一。</li>
+      <div class="grp" data-page-node-id="u9mEcr9YNdDA4oERX0o7yA">进阶思考</div>
+      <li data-page-node-id="ZqouNsFaXh9ZaKibexKCKt">补全例 5.2.5 的论证：为什么"群同态 \(\mathbb Z\to G\) 与底层集 \(G\) 一一对应"？并检验右边 \(\operatorname{Hom}(\mathbb Z\times\mathbb Z,\mathbb Z)\cong\mathbb Z^2\) 的推导。</li>
+      <li data-page-node-id="K0wVzdlk5CqxfYI5APA12M">证明 \(B^{A+C}\cong B^A\times B^C\)（命题 5.2.6 第四个），明确写出每一步用的是余积的哪条泛性质。</li>
+      <li data-page-node-id="QGzN0U7QMVyg4kJO5hHvYz">思考：一个 CCC 是否必有等化子？（提示：不必然。试想偏序集作范畴时，等化子对应什么；或回忆"有限完备"需要等化子而 CCC 只保证有限积。）</li>
+    </ol>
+  </div>
+
+  <div class="box ans" data-page-node-id="1GOwhB6o3ELeNz2SFE6d2a">
+    <h4 data-page-node-id="CmxSzSPiwUtvBt33BucUg7">④ 习题参考答案</h4>
+    <div class="item" data-page-node-id="dSYe7bpjQexR5PAeelvwVj"><b data-page-node-id="GhRz0jKC8HDMqPG2qHkevA">5.2.1</b>　终对象为单点集 \(\{*\}\)，积为笛卡尔积 \(A\times B\) 带投影，指数为全体函数集 \(B^A=\{f:A\to B\}\)（有限集上仍有限，因 \(|B^A|=|B|^{|A|}\)）。求值 \(\epsilon(f,a)=f(a)\)，转置 \(\tilde f(x)(a)=f(x,a)\) 的验证与命题 5.1.3 完全相同，只是把任意集合换成有限集；唯一性由函数外延性保证。<span class="qed" data-page-node-id="oZ04X69lkHDug1OTz1jGRE">∎</span></div>
+    <div class="item" data-page-node-id="n7Cz7uHKHHqDcI1INdPWhg"><b data-page-node-id="K9UMuApsX1GY0471hrnC47">5.2.2</b>　对任意 \(X\)：\(\operatorname{Hom}(X,(B^A)^C)\cong\operatorname{Hom}(X\times C,B^A)\)（\(B^A\) 的泛性质，固定 \(A\)）；\(\cong\operatorname{Hom}((X\times C)\times A,B)\)（再把 \(B^A\) 对 \(A\) 展开）；\(\cong\operatorname{Hom}(X\times(C\times A),B)\)（积的结合子，由积的泛性质给出的同构 \(\alpha_{X,C,A}:(X\times C)\times A\cong X\times(C\times A)\)）；\(\cong\operatorname{Hom}(X\times(A\times C),B)\)（交换 \(A,C\)，用积的交换同构）；\(\cong\operatorname{Hom}(X,B^{A\times C})\)。由 Yoneda 得同构。<span class="qed" data-page-node-id="6udlBqsEdt3jaj14v2ZRmR">∎</span></div>
+    <div class="item" data-page-node-id="waBeoWUy4o0COfLmaiIGyl"><b data-page-node-id="ihY0s87GguJEgWRfJWI7Go">5.2.3</b>　设 \(h:X\to B^A\) 满足 \(\epsilon(h\times\mathrm{id})=f\)。把等式两边取转置：左边 \(\lambda(\epsilon(h\times\mathrm{id}))\)，由唯一性律等于 \(h\)；右边 \(\lambda f\)。故 \(h=\lambda f\)，唯一。<span class="qed" data-page-node-id="DBZIcZ8Er3S2DIH0ItWjRZ">∎</span></div>
+    <div class="item" data-page-node-id="O5UzBI67bZSmbPHj95vjTq"><b data-page-node-id="Gv00fUXlg8w3xmIiWzHAi8">5.2.4</b>　\(\mathbb Z\) 是自由群（生成元 \(1\)），群同态由生成元的像唯一决定：给定 \(g\in G\)，存在唯一同态 \(\varphi_g:\mathbb Z\to G\) 使 \(\varphi_g(1)=g\)（\(\varphi_g(n)=g^n\)）。故 \(\operatorname{Hom}(\mathbb Z,G)\cong U(G)\)（底层集）。右边：\(\mathbb Z\times\mathbb Z\) 是秩 2 自由阿贝尔群，同态 \(\mathbb Z^2\to\mathbb Z\) 由 \((1,0),(0,1)\) 的像 \(m,n\in\mathbb Z\) 唯一决定，故 \(\cong\mathbb Z^2\)，可数。左边 \(\mathbb Z^{\mathbb Z}\) 全体函数，基数 \(|\mathbb Z|^{|\mathbb Z|}=\aleph_0^{\aleph_0}=2^{\aleph_0}\)（连续统），不可数。矛盾。<span class="qed" data-page-node-id="agVRXPdTYx3oD6e59FhOgl">∎</span></div>
+    <div class="item" data-page-node-id="smOyimdNMYXAHfspS21ljM"><b data-page-node-id="m1IF0yLm9zzLbUhqeSYtdX">5.2.5</b>　由余积泛性质，\(\mathrm{id}_{A+C}\) 与注入 \(i_A,i_C\) 给出 \(A+C\)；对任意 \(X\)，\(X\times(A+C)\) 同构于 \((X\times A)+(X\times C)\)：注入为 \(\mathrm{id}_X\times i_A,\mathrm{id}_X\times i_C\)，给定 \(u:X\times A\to B\)、\(v:X\times C\to B\)，由余积泛性质存在唯一 \([u,v]\) 使 \([u,v](\mathrm{id}\times i_A)=u\)、\([u,v](\mathrm{id}\times i_C)=v\)。于是 \(\operatorname{Hom}(X\times(A+C),B)\cong\operatorname{Hom}(X\times A,B)\times\operatorname{Hom}(X\times C,B)\)（由余积的"配对"泛性质），再分别用指数泛性质与积泛性质，得 \(\cong\operatorname{Hom}(X,B^A)\times\operatorname{Hom}(X,B^C)\cong\operatorname{Hom}(X,B^A\times B^C)\)。由 Yoneda 得 \(B^{A+C}\cong B^A\times B^C\)。<span class="qed" data-page-node-id="BDx1jeD250Wfnn0QXrwHCw">∎</span></div>
+    <div class="item" data-page-node-id="9QAH2gBDCDFlnDYsemKaUO"><b data-page-node-id="3XnUYCKhb7TMMRRIzK8UDo">5.2.6</b>　不必然。若偏序集 \(P\) 作 CCC（即 Heyting 代数），任意两条平行箭头 \(f,g:a\to b\) 只可能是同一条（偏序范畴是薄范畴）；它们的等化子应是"使 \(f=g\) 的最大子对象"，而在 \(f=g\) 时就是 \(a\) 自身——存在。但一般 CCC 里等化子可能不存在：例如取一个有终对象、积、指数但缺少某个等化子的范畴（构造略，属反例目录内容）。要点在于：CCC 的定义只提供终对象、积、指数三种极限，不提供等化子，故不能推出有限完备；"有限完备 + CCC"才是众多应用（如拓扑斯）真正需要的强条件。<span class="qed" data-page-node-id="mY6NRQI3L6ncmBdSa69Xti">∎</span></div>
+  </div>
+
+  <div class="box phil" data-page-node-id="GR5ennYSwkloHjWpMFgCNG">
+    <h4 data-page-node-id="Uo662WIn92SQU2vwxhhN66">选读拓展（哲学联系，非正文）</h4>
+    <p data-page-node-id="CdxwvZlKgELYGfyFVeDhYx">等式定义把 CCC 变成一门代数，这件事本身有一个耐人寻味的含义：所谓"逻辑的规律"可以被写成一组等式，而"满足这些等式的结构"可以有无数个模型（集合、偏序、开集格……）。同一组等式在不同载体上实现——这正是你在泛代数里熟悉的"代数簇"思路。它暗示：逻辑规律不绑定于任何特定"对象"，而绑定于结构关系；这也正是范畴逻辑相对传统证明论的一个根本转向。</p>
+  </div>
+</section>
+
+<section class="sec" id="s5-3" data-page-node-id="whMbnfS7x0HvBKnGDaoU7x">
+  <div class="sec-h" data-page-node-id="eOUyGlwJwHdq0QdzuWr9e7"><span class="sec-no" data-page-node-id="lyrK4i3a2ztacNpZ00L8jo">5.3</span><h2 data-page-node-id="oub93FEfawYSFTfwPJNEFy">Heyting 代数与命题演算</h2><span class="src" data-page-node-id="SPYt7AkN7j8faKNXWuR0OQ">A §6.3–6.4, p.129–134</span></div>
+
+  <div class="box learn" data-page-node-id="AfBWEMJ4DDNfGqeOefPOJV">
+    <h4 data-page-node-id="6GqPWLmtUatnbWxxH0Ahu1">① 本节学习目标</h4>
+    <ol data-page-node-id="P0NPuYqX4Ol18UYKKc7rt5">
+      <li data-page-node-id="6eCVrtK4lc6njCLeWmHIU7">把"命题及其蕴含"看作一个偏序范畴：命题为对象、可证蕴含为箭头，并认出合取 \(\wedge\) 是积、\(\top\) 是终对象；</li>
+      <li data-page-node-id="mZ4CCodPcFs2cqo3A9k1Dz">严格定义 Heyting 代数，理解蕴涵 \(a\Rightarrow b\) 是伴随 \(-\wedge a\dashv(a\Rightarrow-)\) 的右伴随；</li>
+      <li data-page-node-id="uXHSgEjr5uJlGYTlLrKrH0">证明"Heyting 代数 = 笛卡尔闭的偏序范畴"，从而把直觉主义命题逻辑接上 CCC；</li>
+      <li data-page-node-id="tAdpYSdQIc81xq1fANpsDj">会算两个关键例子：开集格 \(\mathcal O(X)\) 中 \(U\Rightarrow V=\operatorname{int}(U^c\cup V)\)，以及布尔代数是 Heyting 代数的特例；</li>
+      <li data-page-node-id="e7Fc5RjoYWo1D9yMHS891a">理解否定 \(\neg a:=a\Rightarrow\bot\) 为何不满足排中律，并能给出开集上的反例。</li>
+    </ol>
+  </div>
+
+  <h3 class="sub" data-page-node-id="dLfGOUc7EQHYD8GDxUCIxz">5.3.1　动机：把逻辑读成一个范畴</h3>
+  <p data-page-node-id="R86as9o56HiFkJFSqnZK5P">从这一节起，范畴论与逻辑的通道正式打开。关键是换一个视角看命题逻辑：不再问"这个公式是真还是假"，而是把每个命题看成一个对象，把"从 \(\varphi\) 可证 \(\psi\)"看成一条箭头 \(\varphi\to\psi\)。</p>
+  <p data-page-node-id="ajLkN1Znp9oAd0zT53faDm">于是逻辑联结词就变成了范畴构造。合取 \(\varphi\wedge\psi\) 满足：\(\theta\vdash\varphi\wedge\psi\) 当且仅当 \(\theta\vdash\varphi\) 且 \(\theta\vdash\psi\)——这正是积的泛性质；\(\top\) 满足任何命题都蕴含它，这是终对象；析取 \(\varphi\vee\psi\) 对偶地是余积，\(\bot\) 是初对象。而本节的主角——蕴涵 \(\varphi\Rightarrow\psi\)——满足的正是<strong data-page-node-id="AIw0u608ybs2VTG5fvgBR0">指数</strong>的泛性质：</p>
+  \[\theta\wedge\varphi\vdash\psi\quad\Longleftrightarrow\quad\theta\vdash(\varphi\Rightarrow\psi).\]
+  <div class="rmk" data-page-node-id="FkQU09Xl6xJCyvErtlPlhH"><strong data-page-node-id="40E0Rw7FcFoCrXVREu78qX">与你背景的连接。</strong>你熟悉的格论在这里正好派上用场：一个 Heyting 代数首先是一个有界格（\(\wedge,\vee,\top,\bot\)），多出来的只是一族右伴随 \(a\Rightarrow-\)。所以可以把它读作"带指数的格"，也就是"笛卡尔闭的偏序范畴"——旧知识直接复用。</div>
+
+  <h3 class="sub" data-page-node-id="sQRxIdUSRgk7i45CDgYEJ6">5.3.2　Heyting 代数的定义</h3>
+  <div class="defn" data-page-node-id="dsIHgKHC2PRDZd9vRPD6cn"><span class="lbl" data-page-node-id="pBXabd2DH2MMgIIro4IU29">定义 5.3.1（Heyting 代数）</span>　一个 <strong data-page-node-id="21BAPlAG9yPLVXAYvUK3AN">Heyting 代数</strong>是一个有界格 \((H,\wedge,\vee,\top,\bot)\)，配备一个二元运算 \(\Rightarrow:H\times H\to H\)，使对所有 \(a,b,c\in H\) 成立伴随条件
+    \[a\wedge b\le c\quad\Longleftrightarrow\quad b\le(a\Rightarrow c).\]
+    等价地：对每个 \(a\)，函子 \(-\wedge a\) 有右伴随 \(a\Rightarrow-\)。　【A §6.3, p.129】</div>
+  <div class="prop" data-page-node-id="ZxVquFLKvCJixtgPFHxNsw"><span class="lbl" data-page-node-id="GFKWrSPDmvCfP8bkTEj7y8">命题 5.3.2（Heyting 代数 = CCC 的偏序范畴）</span>　设 \(H\) 是有界格，视作范畴（\(a\to b\iff a\le b\)）。则 \(H\) 是 Heyting 代数当且仅当 \(H\) 作为范畴是笛卡尔闭的。</div>
+  <div class="proof" data-page-node-id="nVSNKt1ilXoxBHzDRUgktN"><span class="pl" data-page-node-id="25BBukTIAhxxbqsWBhLvSo">证明：</span>视 \(H\) 为范畴：终对象是 \(\top\)（\(a\le\top\) 恒成立），二元积是 \(a\wedge b\)（因 \(c\le a\wedge b\iff c\le a\) 且 \(c\le b\)），初对象是 \(\bot\)，余积是 \(a\vee b\)。CCC 还要求每对 \(a,c\) 有指数 \(c^a\)，即存在对象使
+    \[\operatorname{Hom}(x\wedge a,c)\cong\operatorname{Hom}(x,c^a)\]
+    自然于 \(x\)；在偏序范畴里，\(\operatorname{Hom}(u,v)\) 非空当且仅当 \(u\le v\)，故上式即
+    \[x\wedge a\le c\quad\Longleftrightarrow\quad x\le c^a.\]
+    这正是定义 5.3.1 的伴随条件（取 \(c^a=a\Rightarrow c\)）。两端互为充要，得证。<span class="qed" data-page-node-id="3mwonhiIhr8jaONUNLjFza">∎</span></div>
+  <p data-page-node-id="46wR0KmUMiEKf1cv8eVv0l">由此，5.2 的全部指数定律在 Heyting 代数里都有格论版本，例如 \((c^a)^b=c^{a\wedge b}\) 读作
+    \[b\Rightarrow(a\Rightarrow c)=(a\wedge b)\Rightarrow c,\]
+    这就是逻辑里的"前件合取可以拆成两次蕴含"（currying 的逻辑版）。</p>
+
+  <h3 class="sub" data-page-node-id="P9sY7BmjnkiM2Wai7k5LE7">5.3.3　例：布尔代数与开集格</h3>
+  <div class="prop" data-page-node-id="wJ0U7b2rdmiz44PsFfBY05"><span class="lbl" data-page-node-id="GPa0bkiXDKBLhlURSXOf5C">例 5.3.3（布尔代数是 Heyting 代数）</span>　若 \(H\) 是布尔代数，令 \(a\Rightarrow c:=\neg a\vee c\)。验证伴随：
+    \[a\wedge b\le c\iff b\le\neg a\vee c,\]
+    右边用德摩根律与分配律可验证与左边等价（在布尔代数中 \(a\wedge b\le c\iff a\wedge b\wedge\neg c=\bot\iff b\le\neg(a\wedge\neg c)=\neg a\vee c\)）。故布尔代数是 Heyting 代数。</div>
+  <div class="prop" data-page-node-id="PDv8LGOqnuz4WgBsqpvFXY"><span class="lbl" data-page-node-id="nOg81ua4zBBXH3Tu16M7Gi">例 5.3.4（开集格 \(\mathcal O(X)\)）</span>　拓扑空间 \(X\) 的开集格 \(\mathcal O(X)\)（按包含排序，\(\wedge=\cap\)，\(\vee=\cup\)，\(\top=X\)，\(\bot=\varnothing\)）是 Heyting 代数，其中
+    \[U\Rightarrow V=\operatorname{int}(U^c\cup V).\]
+    这里 \(U^c=X\setminus U\)，\(\operatorname{int}\) 取内部。</div>
+  <div class="proof" data-page-node-id="Lp7OMJpZqNqR9QDrWa5NJW"><span class="pl" data-page-node-id="KGKudLfB3bZ8sKIRzXLLf0">证明：</span>需证对开集 \(W,U,V\)：\(W\cap U\subseteq V\iff W\subseteq\operatorname{int}(U^c\cup V)\)。
+    <br data-page-node-id="ZniZR1yQfPwkpyg60WPXY4">"\(\Rightarrow\)"：设 \(W\cap U\subseteq V\)。取 \(x\in W\)。若 \(x\in U\)，则 \(x\in W\cap U\subseteq V\)，故 \(x\in U^c\cup V\)；若 \(x\notin U\)，则 \(x\in U^c\)。总有 \(x\in U^c\cup V\)。故 \(W\subseteq U^c\cup V\)。又 \(W\) 开，而 \(\operatorname{int}(U^c\cup V)\) 是 \(U^c\cup V\) 中最大的开集，故 \(W\subseteq\operatorname{int}(U^c\cup V)\)。
+    <br data-page-node-id="pcA634mIYxk4yAW1z96DUy">"\(\Leftarrow\)"：设 \(W\subseteq\operatorname{int}(U^c\cup V)\subseteq U^c\cup V\)。取 \(x\in W\cap U\)，则 \(x\in U\) 且 \(x\in U^c\cup V\)，故必有 \(x\in V\)（不可能 \(x\in U^c\)）。于是 \(W\cap U\subseteq V\)。<span class="qed" data-page-node-id="b0TuP7HcFqedOFBERhmEd0">∎</span></div>
+
+  <h3 class="sub" data-page-node-id="8pgrEBYcH81cgsRFoc3RyO">5.3.4　否定与排中律的失效</h3>
+  <p data-page-node-id="80aK73TCgOsD8u9rJqPyDb">在 Heyting 代数中定义<strong data-page-node-id="h2nWsdnmLY16AjhZg9MC2M">否定</strong>为 \(\neg a:=a\Rightarrow\bot\)。在开集格里，
+    \[\neg U=U\Rightarrow\varnothing=\operatorname{int}(U^c\cup\varnothing)=\operatorname{int}(U^c).\]
+    注意这是 \(U^c\) 的<strong data-page-node-id="6WUyfRQ6MeeVJR9IVoBkz2">内部</strong>，一般严格小于补集。这直接导致排中律失效。</p>
+  <div class="prop" data-page-node-id="fRL2cQQHlORWFCAUsVrEzc"><span class="lbl" data-page-node-id="iJYGka6SDBCbPO7WtlmAF3">例 5.3.5（排中律失效的具体反例）</span>　取 \(X=\mathbb R\)，\(U=(0,1)\)。则 \(\neg U=\operatorname{int}\big((-\infty,0]\cup[1,\infty)\big)=(-\infty,0)\cup(1,\infty)\)。于是
+    \[U\cup\neg U=\mathbb R\setminus\{0,1\}\ne\mathbb R,\]
+    故 \(U\vee\neg U\ne\top\)，排中律不成立。再看双重否定：\(\neg\neg U=\operatorname{int}\big(\mathbb R\setminus((-\infty,0)\cup(1,\infty))\big)=\operatorname{int}([0,1])=(0,1)=U\)，此例里恰好相等；但取 \(U=\mathbb Q\) 在 \(\mathbb R\) 中并先取内部，可得严格不等的一般例子（见习题）。</div>
+  <div class="rmk" data-page-node-id="TOspRGAtvy4g9SI3EV3B1l"><strong data-page-node-id="y3vHoJEdOgEUNLCueCFBo0">逻辑解读。</strong>布尔代数对应经典命题逻辑（排中律成立），一般 Heyting 代数对应<strong data-page-node-id="LqoPuCFTo3nrVtJZAm5Vjh">直觉主义命题逻辑</strong>（排中律不成立）。范畴论把两者的差别压缩成一个结构差异：是否有 \(a\vee\neg a=\top\)。这个"同一套范畴机制、加上一条等式就得到经典逻辑"的图景，在拓扑斯理论中会以"子对象分类子是否是布尔的"再次出现（第 13、15 章）。</div>
+
+  <h3 class="sub" data-page-node-id="tBIuzOJqBGnCAgi22PMYj9">5.3.5　命题演算的 Cube：从证明到箭头</h3>
+  <p data-page-node-id="n21Y4YsXLWBNWe9Qeb7K0v">把上面的对应整理成一张字典，它会在下一节和第三部分反复出现：</p>
+  <div class="prop" data-page-node-id="7fFKlxz3CUTgsfU0DI5mdF"><span class="lbl" data-page-node-id="UY6EP3YMF6Q8F2dDPfanj3">表 5.1　直觉主义命题逻辑 ↔ CCC（Curry–Howard–Lambek 的骨架）</span></div>
+  <ul data-page-node-id="4r3pfmP2qg9adj3khWFscy">
+    <li data-page-node-id="LXboBFlX7PRpTkPYdlrkio">命题 \(\varphi\) ↔ 对象 \(\llbracket\varphi\rrbracket\)；</li>
+    <li data-page-node-id="p2IIvf4NOxypHPJF7ae7T3">证明 \(\varphi\vdash\psi\)（或推导 \(\mathcal D\)）↔ 箭头 \(\llbracket\varphi\rrbracket\to\llbracket\psi\rrbracket\)；</li>
+    <li>合取 \(\varphi\wedge\psi\) ↔ 积 \(\llbracket\varphi\rrbracket\times\llbracket\psi\rrbracket\)；析取 \(\varphi\vee\psi\) ↔ 余积；</li>
+    <li>\(\top\) ↔ 终对象；\(\bot\) ↔ 初对象。</li>
+    <li data-page-node-id="nvhZyZXQlSL8T7gtLR9hdh">蕴涵 \(\varphi\Rightarrow\psi\) ↔ 指数 \(\llbracket\psi\rrbracket^{\llbracket\varphi\rrbracket}\)；</li>
+    <li data-page-node-id="fNCLE6hnkGz1dJjYyqhaYO">假言推理（modus ponens）↔ 求值 \(\epsilon\)；演绎定理 ↔ 转置 \(\lambda\)。</li>
+  </ul>
+
+  <div class="box exer" data-page-node-id="IIT3nPInc0MO5C2LABcREY">
+    <h4 data-page-node-id="CLgGEv6G2F5tihiVupcPax">③ 课后习题</h4>
+    <div class="grp" data-page-node-id="PTOlz3XpOZVyGKB3CGtjwb">基础巩固</div>
+    <ol data-page-node-id="A7jyJI4EYQlnPG9tnJnsna">
+      <li data-page-node-id="DQAlQWKrER51YbBVquo1Wt">验证布尔代数中 \(a\Rightarrow c=\neg a\vee c\) 满足伴随条件 \(a\wedge b\le c\iff b\le\neg a\vee c\)，给出完整推导。</li>
+      <li data-page-node-id="DtK6YbE8zM1L0xawSZMCAj">证明命题 5.3.2：有界格 \(H\) 是 Heyting 代数当且仅当作为范畴是 CCC。写出两个方向。</li>
+      <li data-page-node-id="SsibkaRmrOhqKdiET4Gl1s">在开集格 \(\mathcal O(\mathbb R)\) 中计算 \(U=(0,1)\) 的 \(\neg U\) 与 \(U\vee\neg U\)，验证排中律失效。</li>
+      <div class="grp" data-page-node-id="sEPxZUhOgAMETQJ8zE5mCq">进阶思考</div>
+      <li data-page-node-id="Zik3b5KHvRlU6E0yUdO2jB">证明例 5.3.4 的伴随等价 \(W\cap U\subseteq V\iff W\subseteq\operatorname{int}(U^c\cup V)\) 的两个方向，注意"内部是最大开集"的使用。</li>
+      <li data-page-node-id="ppKsIPsDdNBnsjtZ2BqSjJ">证明：在任意 Heyting 代数中，\(a\le\neg\neg a\) 恒成立（提示：由伴随，这等价于 \(a\wedge\neg a\le\bot\)，而左边 \(\le\bot\) 自动成立）。再说明为何反向 \(\neg\neg a\le a\) 不总成立。</li>
+      <li data-page-node-id="SF1Ttwq5IESFxFkWCRW8SB">证明："Heyting 代数是布尔代数"当且仅当对所有 \(a\) 有 \(\neg\neg a=a\)。据此说明为何经典逻辑 = 布尔代数语义。</li>
+    </ol>
+  </div>
+
+  <div class="box ans" data-page-node-id="UCnQhcIkYiwMnHQ1SBRxWr">
+    <h4 data-page-node-id="1xkU4G6RfJvk63KrTk6ZIG">④ 习题参考答案</h4>
+    <div class="item" data-page-node-id="HFyj4aQD2FYhMrRtrT4aeU"><b data-page-node-id="LHm5vqareqOV9F41YLjDzC">5.3.1</b>　在布尔代数中 \(a\wedge b\le c\iff a\wedge b\wedge\neg c=\bot\)（因 \(x\le y\iff x\wedge\neg y=\bot\)）。由交换律与德摩根律，\(a\wedge b\wedge\neg c=\bot\iff b\wedge\neg(\neg a\vee c)=\bot\)（因 \(\neg(\neg a\vee c)=a\wedge\neg c\)，故 \(b\wedge(a\wedge\neg c)=b\wedge a\wedge\neg c\)，与左边同一式；换个方向写：\(a\wedge b\le c\iff b\le a\Rightarrow c\)，而 \(a\Rightarrow c\) 按定义 \(=\neg a\vee c\)）。严格地：在偏序中 \(x\le y\iff x\wedge\neg y=\bot\)；令 \(x=a\wedge b,y=c\)，得 \(a\wedge b\wedge\neg c=\bot\)，重组为 \(b\wedge(a\wedge\neg c)=\bot\iff b\wedge\neg(\neg a\vee c)=\bot\iff b\le\neg a\vee c\)。<span class="qed" data-page-node-id="9SA2b5U2FQMzGKQAsw2jzY">∎</span></div>
+    <div class="item" data-page-node-id="DZLa4BkdPFMIlXTIcitJ1l"><b data-page-node-id="JvUJ1YI1097LcTOp8KuRIR">5.3.2</b>　"\(\Rightarrow\)"：设 \(H\) 是 Heyting 代数。视 \(H\) 为范畴，终对象 \(\top\)、积 \(\wedge\) 齐备；由伴随 \(a\wedge b\le c\iff b\le a\Rightarrow c\)，取 \(c\) 固定、\(a\) 为指数位，即 \(\operatorname{Hom}(x\wedge a,c)\cong\operatorname{Hom}(x,a\Rightarrow c)\)，说明 \(a\Rightarrow c\) 是 \(c\) 关于 \(a\) 的指数。故是 CCC。"\(\Leftarrow\)"：设 \(H\) 作为范畴是 CCC。积必为 \(\wedge\)、终为 \(\top\)；指数 \(c^a\) 满足 \(\operatorname{Hom}(x\wedge a,c)\cong\operatorname{Hom}(x,c^a)\)，即 \(x\wedge a\le c\iff x\le c^a\)，令 \(\Rightarrow\) 为 \(c^a=a\Rightarrow c\)，得 Heyting 代数。<span class="qed" data-page-node-id="kjKVqT89EHLmZ9wlGAh2eY">∎</span></div>
+    <div class="item" data-page-node-id="Nn3usdsUPwjbAQyxnYNFTu"><b data-page-node-id="ebA6KoljpkcGtWNFrDhOCO">5.3.3</b>　\(\neg U=\operatorname{int}(U^c)=\operatorname{int}((-\infty,0]\cup[1,\infty))=(-\infty,0)\cup(1,\infty)\)。故 \(U\cup\neg U=(0,1)\cup(-\infty,0)\cup(1,\infty)=\mathbb R\setminus\{0,1\}\)，缺两点，\(\ne\mathbb R=\top\)，排中律失效。<span class="qed" data-page-node-id="564VDAB6Fcy1VRh1r9I68t">∎</span></div>
+    <div class="item" data-page-node-id="G7AiBCnxmYDvXye1FhRjNJ"><b data-page-node-id="a6Tq87xRZvvKKPI1MDjs06">5.3.4</b>　见正文证明。"\(\Rightarrow\)"中，\(W\) 开且 \(W\subseteq U^c\cup V\)，而 \(\operatorname{int}(U^c\cup V)\) 是 \(U^c\cup V\) 的最大开子集，故 \(W\subseteq\operatorname{int}(U^c\cup V)\)。"\(\Leftarrow\)"中，由 \(x\in U\) 排除 \(x\in U^c\)，只能在 \(V\)，故 \(W\cap U\subseteq V\)。<span class="qed" data-page-node-id="p6pQLOI4uBti69DeFfSar9">∎</span></div>
+    <div class="item" data-page-node-id="cBlts7pxGICB6CV1LH4BAd"><b data-page-node-id="EGjbGKTyCH9BGJcEoIydQe">5.3.5</b>　由伴随，\(a\le\neg\neg a=(a\Rightarrow\bot)\Rightarrow\bot\iff a\wedge(a\Rightarrow\bot)\le\bot\)。而 \(a\wedge\neg a\le\bot\) 恒成立（\(\bot\) 是最小元）。故 \(a\le\neg\neg a\)。反向不总成立：例 5.3.5 中 \(U=(0,1)\) 恰相等；取 \(X=\mathbb R^2\)、\(U\) 为挖去一点的平面，则 \(\neg U=\operatorname{int}(\{pt\})=\varnothing\)，\(\neg\neg U=\operatorname{int}(\mathbb R^2)=X\ne U\)。<span class="qed" data-page-node-id="EpnjFIjCx4jjjenYDpmXCj">∎</span></div>
+    <div class="item" data-page-node-id="APg5nywMYSJO44GsYDz1YJ"><b data-page-node-id="HFjgZNmtSAytwMRSPIu65U">5.3.6</b>　若 Heyting 代数满足 \(\neg\neg a=a\) 对所有 \(a\)：由 \(a\vee\neg a\le\neg\neg(a\vee\neg a)=\neg(\neg a\wedge\neg\neg a)=\neg(\neg a\wedge a)=\neg\bot=\top\)，反向显然，故 \(a\vee\neg a=\top\)，是布尔代数。反之布尔代数有 \(\neg\neg a=a\)。故二者等价，经典逻辑的语义正是布尔代数（即满足该等式的 Heyting 代数）。<span class="qed" data-page-node-id="VgKiE9z80CrENd5K3epPem">∎</span></div>
+  </div>
+
+  <div class="box phil" data-page-node-id="DqdNW6D4Qg8hsYtUvDQEO6">
+    <h4 data-page-node-id="HsJizI09H1EOEly7Eqyf6E">选读拓展（哲学联系，非正文）</h4>
+    <p data-page-node-id="tAwJt14WPvGKuQUSVd5bbl">排中律的失效对你并不陌生——它和你在可能性、自由意志讨论里遇到的"尚未决定的命题"是同一类现象。直觉主义说 \(p\vee\neg p\) 不总成立，理由是"还没有证明 \(p\)，也没有证明 \(\neg p\)"；这把真值从"世界已经确定的事实"改成"我们手上有什么证明"。开集格 \(U\Rightarrow V=\operatorname{int}(U^c\cup V)\) 把这个改造成一个可以计算的拓扑公式：蕴涵要求"在 \(U\) 之外或 \(V\) 之内"不仅是事实，还得在一个开邻域里稳定成立。这种"稳定/可持续"的要求，和把可能性理解为"存在邻域内的持续"是同构的思路——但仍是类比，范畴不替你决定采用哪种形而上学。</p>
+  </div>
+</section>
+
+<section class="sec" id="s5-4" data-page-node-id="sq6thDLic15sAx13Ps6lPZ">
+  <div class="sec-h" data-page-node-id="i1KUAElcCxWnkmfjn5nHph"><span class="sec-no" data-page-node-id="XZRcfNkkGfsjykNHvAUoTi">5.4</span><h2 data-page-node-id="yACx0lBa7fAkrTkRmaNMPj">λ-演算初步</h2><span class="src" data-page-node-id="sNQdaY9SZbFijvMbB43pMu">A §6.6, p.135–140</span></div>
+
+  <div class="box learn" data-page-node-id="q0jPNwwfP9XDGXJuO6GoCu">
+    <h4 data-page-node-id="GKwnFKrAgPQ3tDYwSMDGyF">① 本节学习目标</h4>
+    <ol data-page-node-id="nnm3QfGfgqeQfJh95FXzTI">
+      <li data-page-node-id="N0xIAqCodQRbvK6BqPTs1Y">写出简单类型 λ-演算的语法：类型、项、变量、抽象 \(\lambda x.M\)、应用 \(MN\) 与定型规则；</li>
+      <li data-page-node-id="SFalNRM7gIqiG7KQTpTtdf">理解 \(\beta\)-归约与 \(\eta\)-归约，知道强规范化与合流性；</li>
+      <li data-page-node-id="jYlVWOs3sEhE21Pcmd1Lkk">给出 λ-演算在 CCC 中的语义：类型作对象、项作箭头、抽象作转置、应用作求值；</li>
+      <li data-page-node-id="ZTt3O4LW5lFi6kmVOKGjLV">陈述并证明可靠性：\(\beta\eta\)-等价的项在任意 CCC 中指称同一箭头；</li>
+      <li data-page-node-id="nXtYjYhPMsySnleaxGs6eJ">理解 Curry–Howard–Lambek 三方对应：证明、程序、箭头是同一结构的三种读法，并与你的"证明同一性"主题接轨。</li>
+    </ol>
+  </div>
+
+  <h3 class="sub" data-page-node-id="nd7x8hxR64jlgjLRRXxiWc">5.4.1　动机：把"函数"写成可计算的语法</h3>
+  <p data-page-node-id="cmpIOrzRPsUcEBGXNojHYB">指数对象告诉我们范畴"应当有"函数空间；λ-演算则给出函数空间的<strong data-page-node-id="hW8E42qPiBG7bEd2FMrVav">语法</strong>——怎样具体地写出一个函数、怎样把它作用在自变量上、怎样判断两个函数表达式"算的是同一个东西"。简单类型 λ-演算（simply typed \(\lambda\)-calculus）是这套语法的最小完整版本，也是所有函数式编程语言的理论内核。</p>
+  <p data-page-node-id="HB2SW47hz2gY6vN28J3ut8">它与 CCC 的关系是双向的、而且精确：简单类型 λ-演算是 CCC 的<strong data-page-node-id="bLA63jFawM6KfgIzCTR974">内部语言</strong>（internal language），每个 CCC 都提供一种 λ-演算的语义；反过来，把项按 \(\beta\eta\)-等价取商，就得到一个 CCC。这个"语法 ⟷ 语义"的对应由 Lambek 在 1980 年给出，是 Curry–Howard 对应的范畴化版本。</p>
+
+  <h3 class="sub" data-page-node-id="DAFCnvfGi7HxbFRMbB6grG">5.4.2　语法与定型规则</h3>
+  <div class="defn" data-page-node-id="Pm39FGpypVSslVDzTdy8gB"><span class="lbl" data-page-node-id="uQkb35EixaqUOMznnjNCVY">定义 5.4.1（简单类型 λ-演算 \(\lambda_\to\)）</span>
+    <p data-page-node-id="jFG2UUZZnzn5mSBepDzBwf"><strong data-page-node-id="HaC94rhXKzhZ1vb4MmEB1w">类型</strong>：给定基本类型集合 \(S\)，类型为 \(S\) 的元素以及 \(\sigma\to\tau\)（函数类型）。若加上积与单位，还允许 \(\sigma\times\tau\) 与 \(1\)。</p>
+    <p data-page-node-id="fsZAF9rMgGWlKydhzlHX47"><strong data-page-node-id="UoydOxbq6X8VUXTzTjU0AB">项</strong>：变元 \(x\)；抽象 \(\lambda x:\sigma.\,M\)；应用 \(MN\)；若含积则有配对 \(\langle M,N\rangle\) 与投影 \(\pi_1 M,\pi_2 M\)；单位元 \(*\)。</p>
+    <p data-page-node-id="OIXNVL8z8H5NNtr1E9rt3N"><strong data-page-node-id="L6C7FGCP4Wc5yGrtD7DWP5">定型判断</strong>：\(\Gamma\vdash M:\sigma\)，其中 \(\Gamma=x_1:\sigma_1,\dots,x_n:\sigma_n\) 是语境。主要规则：</p>
+    \[
+      \frac{}{x:\sigma\vdash x:\sigma}\ (\mathrm{Var})\qquad
+      \frac{\Gamma,x:\sigma\vdash M:\tau}{\Gamma\vdash\lambda x:\sigma.\,M:\sigma\to\tau}\ (\to I)
+      \qquad
+      \frac{\Gamma\vdash M:\sigma\to\tau\quad \Gamma\vdash N:\sigma}{\Gamma\vdash MN:\tau}\ (\to E)
+    \]
+    \[\frac{\Gamma\vdash M:\sigma\quad \Gamma\vdash N:\tau}{\Gamma\vdash\langle M,N\rangle:\sigma\times\tau}\ (\times I)\qquad
+      \frac{\Gamma\vdash M:\sigma\times\tau}{\Gamma\vdash\pi_1 M:\sigma}\ (\times E)
+    \]
+    （\(\to I\) 即演绎定理，"若加假设 \(\sigma\) 可证 \(\tau\)，则有函数 \(\sigma\to\tau\)"；\(\to E\) 即假言推理。）　【A §6.6, p.135】</div>
+
+  <div class="rmk">
+  <p>刚接触 λ-演算，最容易卡住的不是后面的定理，而是这几个符号到底在说什么。把它们逐一拆开，用具体例子落到实处。</p>
+  <p><strong>类型</strong>就是“东西的种类”，可以想成编程语言里的 int、bool。说 \(5:\mathbb N\)，\(\mathbb N\) 是标签，5 是这个标签下的一个值——类型不是值本身，是值的形状。\(\sigma\to\tau\) 是函数类型：吃进一个 \(\sigma\)、吐出一个 \(\tau\) 的那种东西。此外 \(\sigma\times\tau\) 是有序对类型，\(1\) 是只有一个值的单位类型。</p>
+  <p><strong>项</strong>就是“东西本身”——表达式、数据、程序，每个项都带着一个类型。项有四种基本造法：</p>
+  <ol style="margin:6px 0;padding-left:24px;">
+    <li><strong>变量 \(x\)</strong>：一个占位名字，代表“某个暂未指定的输入”。写 \(x:\sigma\) 就是声明“x 是 σ 型的”。</li>
+    <li><strong>抽象 \(\lambda x:\sigma.\,M\)</strong>：定义一个函数。\(\lambda\) 是希腊字母 lambda（λ-演算由此得名），紧跟的 \(x:\sigma\) 是参数及其类型，圆点后的 \(M\) 是函数体。整句读作“把 \(x\) 映到 \(M\) 的那个函数”。例：\(\lambda x:\mathbb N.\,x+1\) 是“加一函数”，类型为 \(\mathbb N\to\mathbb N\)。</li>
+    <li><strong>应用 \(MN\)</strong>：调用函数。函数 \(M\) 写在前，参数 \(N\) 紧贴其后，省掉括号，和数学里的 \(M(N)\) 是一回事。合法的条件是 \(M:\sigma\to\tau\) 且 \(N:\sigma\)，于是 \(MN:\tau\)。例：\((\lambda x:\mathbb N.\,x+1)\,5\) 就是“把加一函数用在 5 上”，等于 6。</li>
+    <li>若允许积：还有配对 \(\langle M,N\rangle\)、投影 \(\pi_1M,\pi_2M\) 与单位值 \(*\)。</li>
+  </ol>
+  <p>抽象与应用是一对逆操作：<strong>抽象</strong>把含 \(x\) 的表达式打包成函数，<strong>应用</strong>把函数拆开、把 \(x\) 换成具体的值。这就是下一节 β-归约的直觉来源。</p>
+  <p><strong>定型判断 \(\Gamma\vdash M:\sigma\)</strong>读作“在语境 \(\Gamma\) 下，项 \(M\) 有类型 \(\sigma\)”。\(\Gamma\) 是一张清单，列出当前可用的变量及其类型；\(\vdash\) 读作“由此可推出”。例：\(x:\mathbb N\vdash\lambda y:\mathbb N.\,x+y:\mathbb N\to\mathbb N\)，意思是“已知 x 是自然数，那么‘把 y 映到 x+y’这个函数有类型 ℕ→ℕ”。</p>
+  <p>对应地，三条核心定型规则可以这样读：<strong>(Var)</strong>，变量在声明它的语境里就带自己的类型；<strong>(\(\to I\))</strong>，若在额外假设 \(x:\sigma\) 下能推出 \(M:\tau\)，撤掉假设后 \(\lambda x:\sigma.\,M\) 便有类型 \(\sigma\to\tau\)——这正是逻辑里的演绎定理；<strong>(\(\to E\))</strong>，若 \(M:\sigma\to\tau\) 而 \(N:\sigma\)，则 \(MN:\tau\)——这正是假言推理。</p>
+  </div>
+
+  <h3 class="sub" data-page-node-id="aXDLO0ji3kHbfQoyX4tzXy">5.4.3　归约与规范化</h3>
+  <div class="defn" data-page-node-id="eZLTgFH0gg9SvglAeKV2Nm"><span class="lbl" data-page-node-id="6hFbmOLQfbCZ71l2geuXib">定义 5.4.2（\(\beta\) 与 \(\eta\)）</span>　两条归约规则：
+    \[(\lambda x:\sigma.\,M)N\;\to_\beta\;M[x:=N],\qquad
+      \lambda x:\sigma.\,Mx\;\to_\eta\;M\quad(x\notin\operatorname{FV}(M)).
+    \]
+    第一式是 \(\beta\)-归约，即计算的规则：把函数作用在自变量上，等于把函数体里的 \(x\) 替换成 \(N\)（代入）。第二式是 \(\eta\)-归约，即外延性的规则：若 \(M\) 里没有 \(x\)，则“包裹一层再立刻拆开”不改变函数。把它们双向取闭包，得等价关系 \(=_{\beta\eta}\)。</div>
+  <div class="prop" data-page-node-id="UukKSiJtC9m5dgYV3qY635"><span class="lbl" data-page-node-id="1SehVUG0IiwDgeooaaGSNS">事实 5.4.3</span>　简单类型 λ-演算具有：(1) <strong data-page-node-id="7IfSh7AkXl0rkvCu1vadEN">强规范化</strong>——每个项的归约都终止（Tait，1967）；(2) <strong data-page-node-id="LYDtgGoGDKRKyNRFzaiefo">合流性</strong>（Church–Rosser）——不同归约路径汇合到同一范式。因此 \(M=_{\beta\eta}N\) 可判定。</div>
+  <div class="rmk" data-page-node-id="f6qWAqVeuoeKh6dJMLpyOo">强规范化是简单类型 λ-演算区别于无类型 λ-演算的关键：无类型演算可以写出不终止的项（如 \(\Omega=(\lambda x.xx)(\lambda x.xx)\)），而简单类型的类型约束排除了它们。这也正是它适合作" totality 逻辑"语言的原因——每个程序都停下来，每个证明都有限。</div>
+
+  <h3 class="sub" data-page-node-id="V0YT2SbHFylz0eC5wLyZWX">5.4.4　CCC 中的语义</h3>
+  <p data-page-node-id="rnBVLIZxx0FVuZSkdz2OoH">设 \(\mathbf C\) 是 CCC。定义指称（denotation）：</p>
+  <ul data-page-node-id="xostMi8EnU45Sxi0JGHE3s">
+    <li data-page-node-id="w75kflMUjWDhCyDCB3HdgB">每个类型 \(\sigma\) 指称一个对象 \(\llbracket\sigma\rrbracket\in\mathbf C\)：\(\llbracket\sigma\to\tau\rrbracket=\llbracket\tau\rrbracket^{\llbracket\sigma\rrbracket}\)，\(\llbracket\sigma\times\tau\rrbracket=\llbracket\sigma\rrbracket\times\llbracket\tau\rrbracket\)，\(\llbracket 1\rrbracket=1\)；</li>
+    <li data-page-node-id="7j6uwCG8eIWpDNYbBLYfyW">语境 \(\Gamma=x_1:\sigma_1,\dots,x_n:\sigma_n\) 指称 \(\llbracket\Gamma\rrbracket=\llbracket\sigma_1\rrbracket\times\cdots\times\llbracket\sigma_n\rrbracket\)；</li>
+    <li data-page-node-id="WEuVyihk144dXXIlQyjOtP">一个定型项 \(\Gamma\vdash M:\sigma\) 指称一条箭头 \(\llbracket M\rrbracket:\llbracket\Gamma\rrbracket\to\llbracket\sigma\rrbracket\)，递归定义：</li>
+  </ul>
+  <div class="prop" data-page-node-id="rV7FSsdULQHYBhgf494k9V"><span class="lbl" data-page-node-id="jZwpuWnSQ5Ef2YdUvwGP4r">语义规则</span>
+    \[
+      \llbracket x_i\rrbracket=\pi_i:\llbracket\Gamma\rrbracket\to\llbracket\sigma_i\rrbracket,\qquad
+      \llbracket MN\rrbracket=\epsilon\circ\langle\llbracket M\rrbracket,\llbracket N\rrbracket\rangle,\qquad
+      \llbracket\lambda x:\sigma.\,M\rrbracket=\lambda\big(\llbracket M\rrbracket\big):\llbracket\Gamma\rrbracket\to\llbracket\tau\rrbracket^{\llbracket\sigma\rrbracket}.
+    \]
+    这里最后一条中，把 \(\Gamma,x:\sigma\vdash M:\tau\) 看作 \(\llbracket\Gamma\rrbracket\times\llbracket\sigma\rrbracket\to\llbracket\tau\rrbracket\)，再取转置 \(\lambda\)；\(\llbracket MN\rrbracket\) 中 \(\epsilon\) 是求值，\(\langle-,-\rangle\) 是配对。</div>
+  <p data-page-node-id="EAXcMNQV6MNcmPxV7iY2eO">看一眼抽象与应用如何对上号，交换图与图 5.1 是同一张：</p>
+  \[
+    \begin{array}{ccc}
+      \llbracket\Gamma\rrbracket\times\llbracket\sigma\rrbracket & \xrightarrow{\ \llbracket\lambda x.M\rrbracket\times\mathrm{id}\ } & \llbracket\tau\rrbracket^{\llbracket\sigma\rrbracket}\times\llbracket\sigma\rrbracket\\[2pt]
+      & \searrow{\scriptstyle \llbracket M\rrbracket} & \downarrow{\scriptstyle \epsilon}\\[2pt]
+      & & \llbracket\tau\rrbracket
+    \end{array}
+  \]
+  <p class="figcap" data-page-node-id="X0Icueg5JBVxmrt6q7FhAM">图 5.2　抽象（转置）与应用（求值）互为逆操作：走斜边 \(\llbracket M\rrbracket\) 等于先转置再求值。</p>
+
+  <div class="prop" data-page-node-id="xrhdGh8wRmaCkCPrEIPDTu"><span class="lbl" data-page-node-id="kLfIWzuXUXx0a1Hvy5cfHY">命题 5.4.4（可靠性，soundness）</span>　若 \(M=_{\beta\eta}N\)（在空语境或同一语境下），则 \(\llbracket M\rrbracket=\llbracket N\rrbracket\) 在任意 CCC 中成立。</div>
+  <div class="proof" data-page-node-id="FhiEXMW0GvEZvijcp2SWH3"><span class="pl" data-page-node-id="6BJQgnxEeQwseuBFUehplO">证明：</span>只需验证 \(\beta\) 与 \(\eta\) 两条规则被指数泛性质尊重。
+    <br data-page-node-id="PBvSB0hMAROOEJM0F3eb5C">\(\beta\)：\(\llbracket(\lambda x.M)N\rrbracket=\epsilon\circ\langle\lambda(\llbracket M\rrbracket),\llbracket N\rrbracket\rangle\)。把 \(\llbracket M\rrbracket:\llbracket\Gamma\rrbracket\times\llbracket\sigma\rrbracket\to\llbracket\tau\rrbracket\) 视为 \(f\)，由计算律 \(\epsilon\circ(\lambda f\times\mathrm{id})=f\)；与 \(\llbracket N\rrbracket\) 配对后代入，恰得 \(\llbracket M\rrbracket\circ\langle\mathrm{id},\llbracket N\rrbracket\rangle=\llbracket M[x:=N]\rrbracket\)（代入的语义由配对给出）。
+    <br data-page-node-id="geoxetk0xxfH3H9P5BK938">\(\eta\)：若 \(x\notin\operatorname{FV}(M)\)，则
+      \[\llbracket Mx\rrbracket=\epsilon\circ\langle\llbracket M\rrbracket\circ\pi,\llbracket x\rrbracket\rangle=\epsilon\circ(\llbracket M\rrbracket\times\mathrm{id})\circ\langle\pi,\mathrm{id}\rangle;\]
+      取转置得 \(\lambda(\llbracket Mx\rrbracket)=\llbracket M\rrbracket\)（用 \(\lambda(\epsilon(g\times\mathrm{id}))=g\)）。故两式指称相同。<span class="qed" data-page-node-id="sAsZIzX7Iy1wIpwjd90Zuz">∎</span></div>
+  <div class="rmk" data-page-node-id="lIp6MEyB8EYcqAA40EQXGu"><strong data-page-node-id="fKofJcUJPOlFT9Dg682Adn">完全性（completeness）也成立</strong>：若一个等式在<em data-page-node-id="Kj8ASQGDCmRi9xrSPPgx0q">所有</em> CCC 中指称相同，则它可由 \(\beta\eta\)-等价推出。这是 Lambek 定理的实质："简单类型 λ-演算 = CCC 的内部语言"不是比喻，而是范畴等价（第 8 章后可用 Yoneda 严格化）。</div>
+
+  <h3 class="sub" data-page-node-id="smwUfKxVe87U86H6DYqK2S">5.4.5　Curry–Howard–Lambek 三方对应与"证明同一性"</h3>
+  <p data-page-node-id="wGceAPp41BxJZtesGHWoJK">把 5.3 的表 5.1 与本节合起来，得到一张三列字典：</p>
+  <div class="prop" data-page-node-id="oKvdDkiStaGWsUEvdJNUHl"><span class="lbl" data-page-node-id="VPppDdbmsHTVOJryoNedhA">表 5.2　Curry–Howard–Lambek 对应</span></div>
+  <ul data-page-node-id="2DTgD13OSjyHxwLK29x7X5">
+    <li data-page-node-id="umam9u7MBj0SzLF28I2K7H"><strong data-page-node-id="hlhEMF3zeTOdR2U4PwbUhw">逻辑</strong>：命题、证明、假言推理与演绎定理；</li>
+    <li data-page-node-id="nDzWOzqAEiB6eADkONDd9U"><strong data-page-node-id="eXdmEWzEejv24TPNCn6yi6">计算</strong>：类型、程序（项）、应用与抽象；</li>
+    <li data-page-node-id="3LmOj1LQIFB1GwO3NDVRbD"><strong data-page-node-id="OvQeCDqXQfI1Qh8eHEE3Qs">范畴</strong>：对象、箭头、求值与转置。</li>
+  </ul>
+  <p data-page-node-id="hA6vi1Bo5K20ugoO7kYE67">三者说的是同一件事：一个证明 \(\mathcal D:\varphi\Rightarrow\psi\)，一个程序 \(M:\sigma\to\tau\)，一条箭头 \(f:\llbracket\varphi\rrbracket\to\llbracket\psi\rrbracket\)，在字典下是同一个东西的三种名字。\(\beta\)-归约对应证明的规范化（消去冗余步骤），\(\eta\) 对应证明的外延性。</p>
+  <div class="rmk" data-page-node-id="HMEq3CtnnMjDJ7cFlJHRGO"><strong data-page-node-id="MnRRPmaOLqkJiJ9evU29oi">接回你的主题。</strong>你的知识库主题"证明同一性"在这里获得了一个精确的技术版本：两个证明何时"是同一个证明"？一派答案是"当它们规范化后相同"（证明论的可判定标准，靠强规范化保证）；范畴论给另一派答案——"当它们在所有 CCC 模型中指称同一箭头"（语义标准）。可靠性说前者蕴含后者；完全性说（对所有模型）后者也蕴含前者。你此前关心的"平行证明箭头取余等化子"的做法，正是要把这些被语义判定为相同的证明商成一个对象——这与本节按 \(=_{\beta\eta}\) 取商得到 CCC 是同一个动作的两种写法。至于哪一派更贴近"同一性"的哲学实在论，范畴论不替你回答，但它把分歧的位置标得清清楚楚。</div>
+
+  <div class="box exer" data-page-node-id="khOAQI6SJtsCZR3aWMDuVf">
+    <h4 data-page-node-id="m3FuLogKOeUNGhKrFfUksb">③ 课后习题</h4>
+    <div class="grp" data-page-node-id="gbsOnEm1K09Cku17hQesJd">基础巩固</div>
+    <ol data-page-node-id="BG9ZPUdGj6CdH7Myu0mzAF">
+      <li data-page-node-id="HdmHgNFH9U57L1Rpj5JmAj">写出恒等函数 \(I=\lambda x:\sigma.\,x\)、常值函数 \(K=\lambda x:\sigma.\,\lambda y:\tau.\,x\) 的类型，并在 \(\mathbf{Set}\) 中说出它们的指称箭头。</li>
+      <li data-page-node-id="3cOJs7uvW4ngLlb5GGPHhM">对项 \((\lambda x:\sigma.\,\lambda y:\tau.\,x)\,M\,N\) 做 \(\beta\)-归约，写出每一步，并说明为何结果不依赖 \(M,N\) 的具体内容（只要类型正确）。</li>
+      <li data-page-node-id="QJhRNyjMnwo1aumq3nF1H2">用定型规则推导 \(\vdash\lambda f:\sigma\to\tau.\,\lambda x:\sigma.\,fx:\ (\sigma\to\tau)\to\sigma\to\tau\)，并在 \(\mathbf{Set}\) 中指认这条箭头。</li>
+      <div class="grp" data-page-node-id="kfsYQiojT1QKP4R4Hircgm">进阶思考</div>
+      <li data-page-node-id="SEkZ7xpzMGhvn2ZOjFIdZE">证明命题 5.4.4 中 \(\beta\) 规则的语义等式：\(\llbracket(\lambda x.M)N\rrbracket=\llbracket M[x:=N]\rrbracket\)，用计算律与代入语义。</li>
+      <li data-page-node-id="1mg2AkZNrDjInvJAD30CnN">说明为何强规范化排除无类型 λ-演算的不终止项 \(\Omega=(\lambda x.xx)(\lambda x.xx)\)：指出它为什么在简单类型规则下不可定型。</li>
+      <li data-page-node-id="jy2SgTQCLoLMydIHCx4RlE">结合表 5.2，把"演绎定理"（若 \(\Gamma,\varphi\vdash\psi\) 则 \(\Gamma\vdash\varphi\Rightarrow\psi\)）翻译成范畴语言，并指出它对应本节的哪条语义规则。</li>
+    </ol>
+  </div>
+
+  <div class="box ans" data-page-node-id="byL1CGX84uAAloTprfa7Cz">
+    <h4 data-page-node-id="QRWI0NL7gfohkJvzPcQfom">④ 习题参考答案</h4>
+    <div class="item" data-page-node-id="CD3kGiCBAvghxAbOdsb9t4"><b data-page-node-id="SLzZKCXmRtwd91YJjySUQs">5.4.1</b>　\(I:\sigma\to\sigma\)，在 \(\mathbf{Set}\) 中指称 \(\mathrm{id}_{[\![\sigma]\!]}\)。\(K:\sigma\to(\tau\to\sigma)\)，因为 \(\lambda y:\tau.x\) 类型为 \(\tau\to\sigma\)，再抽象 \(x\) 得 \(\sigma\to(\tau\to\sigma)\)；在 \(\mathbf{Set}\) 中指称箭头 \(a\mapsto(b\mapsto a)\)，即指数对象的"常值函数"广义元素。<span class="qed" data-page-node-id="9uiJWsHKZsH0pE76DVKtS2">∎</span></div>
+    <div class="item" data-page-node-id="Pinb0PiBKphEcmPO1xgXLF"><b data-page-node-id="D3ZuwIMdZ0gevFeS6upArc">5.4.2</b>　第一步：\((\lambda x.\,\lambda y.\,x)M\to_\beta(\lambda y.\,x)[x:=M]=\lambda y.\,M\)。第二步：\((\lambda y.\,M)N\to_\beta M[y:=N]\)。因 \(y\notin\operatorname{FV}(M)\)（\(M\) 在 \(\lambda y\) 外层），故 \(M[y:=N]=M\)。结果为 \(M\)。类型正确性只需 \(M:\sigma,N:\tau\) 保证两次应用合法。<span class="qed" data-page-node-id="UoDgLVw4yPDvSV1sEgmnnt">∎</span></div>
+    <div class="item" data-page-node-id="FvlvbjRlaytgyUxzerWfmO"><b data-page-node-id="hySoA3geo9DCLBPqpStgGF">5.4.3</b>　由 \((\to I)\)：设 \(f:\sigma\to\tau,x:\sigma\vdash f:\sigma\to\tau\) 与 \(x:\sigma\vdash x:\sigma\)，用 \((\to E)\) 得 \(f:\sigma\to\tau,x:\sigma\vdash fx:\tau\)；对 \(x\) 抽象得 \(f:\sigma\to\tau\vdash\lambda x.fx:\sigma\to\tau\)；再对 \(f\) 抽象得 \(\vdash\lambda f.\lambda x.fx:(\sigma\to\tau)\to(\sigma\to\tau)\)。在 \(\mathbf{Set}\) 中它指称 \((g:A\to B)\mapsto(g\circ-)\)，即后复合箭头 \(g\mapsto g^{A}\)，是"函数空间上的恒等后作用"，由 \(\eta\) 等于 \(\mathrm{id}\)。<span class="qed" data-page-node-id="JlB3O8vqXOEQYdVUIXGvKa">∎</span></div>
+    <div class="item" data-page-node-id="mJAubjJoRTPl4b2M13AE1J"><b data-page-node-id="DsWZS1ULniBuN3UlZ3myG6">5.4.4</b>　\(\llbracket(\lambda x.M)N\rrbracket=\epsilon\circ\langle\lambda(\llbracket M\rrbracket),\llbracket N\rrbracket\rangle\)。把 \(\llbracket M\rrbracket\) 记为 \(f:\llbracket\Gamma\rrbracket\times\llbracket\sigma\rrbracket\to\llbracket\tau\rrbracket\)，则 \(\llbracket M[x:=N]\rrbracket=f\circ\langle\mathrm{id}_{\llbracket\Gamma\rrbracket},\llbracket N\rrbracket\rangle\)。计算律给 \(\epsilon\circ(\lambda f\times\mathrm{id})=f\)，两边右复合 \(\langle\mathrm{id},\llbracket N\rrbracket\rangle\)：左边
+      \[\epsilon\circ(\lambda f\times\mathrm{id})\circ\langle\mathrm{id},\llbracket N\rrbracket\rangle=\epsilon\circ\langle\lambda f,\llbracket N\rrbracket\rangle\]
+      （因 \((\lambda f\times\mathrm{id})\langle\mathrm{id},N\rangle=\langle\lambda f,N\rangle\)），即得所需等式。<span class="qed" data-page-node-id="wXhDe1WD55YTKuYMHCwqg7">∎</span></div>
+    <div class="item" data-page-node-id="RRrFWV9VHI6lYjlJklTopK"><b data-page-node-id="Su8fcAG3kxH5IUXwdSJuao">5.4.5</b>　\(\Omega=(\lambda x.xx)(\lambda x.xx)\) 中的子项 \(xx\) 要求 \(x\) 既是 \(\alpha\to\beta\) 又要是 \(\alpha\)，即需类型方程 \(\alpha=\alpha\to\beta\)，在简单类型语法中无解（类型归纳深度有限），故 \(x\,x\) 不可定型，\(\Omega\) 不可定型。这正是简单类型系统排除不终止项的机制：类型约束使自身应用不可能。<span class="qed" data-page-node-id="3FNHICksPq1smrSej31eiZ">∎</span></div>
+    <div class="item" data-page-node-id="JfWAPsGi8Cy6GHULG6YiBR"><b data-page-node-id="RRLDkGrhR0K2AA15fPCmt4">5.4.6</b>　演绎定理翻译成范畴语言：若存在箭头 \(\llbracket\Gamma\rrbracket\times\llbracket\varphi\rrbracket\to\llbracket\psi\rrbracket\)，则存在箭头 \(\llbracket\Gamma\rrbracket\to\llbracket\psi\rrbracket^{\llbracket\varphi\rrbracket}\)。这正是指数的转置（currying）规则 \(\lambda\)——即语义规则 \(\llbracket\lambda x.M\rrbracket=\lambda(\llbracket M\rrbracket)\)。演绎定理与假言推理，分别对应 \(\lambda\) 与 \(\epsilon\)。<span class="qed" data-page-node-id="a2aRMMbH84nyeCSyWBSGtW">∎</span></div>
+  </div>
+
+  <div class="box phil" data-page-node-id="qMu4xK20P3N7dMeq4Rp3Vy">
+    <h4 data-page-node-id="GZ3mXinJKyGIWh1rWxm6pU">选读拓展（哲学联系，非正文）</h4>
+    <p data-page-node-id="zJs6A1KMxlCfbJGWxCGCya">Curry–Howard–Lambek 对应最让人不安也最迷人的地方，是它抹平了"证明"与"程序"的界线：一个证明就是一个能被运行的程序，一个程序就是一个能被检验的论证。放到你的自由意志与责任主题上，这提供了一个 sharper 的问法：如果一个行动者的"理由"是一个证明，那么"他本可以做别的"就不是形而上学上含混的可能性，而是"存在另一条不同构的证明箭头"。证明同一性于是成为责任归属的技术前提——若两个理由在 \(\beta\eta\) 意义下同一，就不能把它们算作两个不同的选择根据。范畴论在这里不给出自由意志的答案，但它把"什么算作同一个理由"这件事变成了可判定的问题。</p>
+  </div>
+</section>
+
+
+<footer data-page-node-id="giS982QVCv8RxbaBnwKAVq">
+  <p data-page-node-id="rhhY7mueZeIh8DOpB9EFKz"><a href="范畴论-逻辑-拓扑斯_教材总目录.html" data-page-node-id="AzAzJgtoJvFYC0AJmLOIpX">← 返回总目录</a> ｜ 上一章：<a href="范畴论-逻辑-拓扑斯_教材第4章.html" data-page-node-id="cj2xMEUdtDLxCPTioeT9vb">第 4 章 极限与余极限</a> ｜ 下一章：<a href="范畴论-逻辑-拓扑斯_教材第6章.html">第 6 章 自然性、函子范畴与 Yoneda</a></p>
+  <p data-page-node-id="2mTovzIBwS6JEOzkjK7EVf">本章对应 Awodey, <em data-page-node-id="YhxNT3IEssjTAvyLVH3Ktz">Category Theory</em>, 2nd ed., §6.1–§6.6。公式由 MathJax 渲染，需联网加载。</p>
+</footer>
+
+</div>
+</body>
+</html>

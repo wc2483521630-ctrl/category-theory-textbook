@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>第 1 章 范畴与函子 —— 三书递进自学教材</title>
+<script>
+window.MathJax = {
+  tex: { inlineMath: [['\\(','\\)']], displayMath: [['\\[','\\]']], processEscapes: true },
+  options: { ignoreHtmlClass: 'no-tex' },
+  svg: { fontCache: 'global' }
+};
+</script>
+<script async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
+<style>
+  :root{
+    --bg:#f6f7f9; --card:#fff; --ink:#1b1f27; --ink2:#4d5461; --ink3:#7a8190;
+    --line:#e5e8ed; --soft:#f0f2f5;
+    --c1:#2563eb; --c1bg:#eef4ff; --gold:#b45309; --goldbg:#fdf3e3;
+    --ok:#15803d; --okbg:#eefaf1; --phil:#7c3aed; --philbg:#f6f1ff;
+    --radius:12px;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;
+    line-height:1.75;-webkit-font-smoothing:antialiased;}
+  .wrap{max-width:920px;margin:0 auto;padding:0 22px 80px;}
+
+  header.top{padding:34px 0 22px;border-bottom:1px solid var(--line);margin-bottom:26px;}
+  .breadcrumb{font-size:12.5px;color:var(--ink3);margin-bottom:10px;}
+  .breadcrumb a{color:var(--c1);text-decoration:none;}
+  h1{font-size:29px;margin:0 0 8px;letter-spacing:-.02em;}
+  .lede{color:var(--ink2);font-size:14.5px;margin:0 0 16px;}
+  .jump{display:flex;gap:8px;flex-wrap:wrap;}
+  .jump a{font-size:12.5px;font-weight:650;text-decoration:none;color:var(--ink2);
+    background:var(--card);border:1px solid var(--line);border-radius:99px;padding:6px 13px;}
+  .jump a:hover{border-color:var(--c1);color:var(--c1);}
+
+  section.sec{margin:0 0 52px;scroll-margin-top:16px;}
+  .sec-h{display:flex;align-items:baseline;gap:12px;border-bottom:2px solid var(--c1);padding-bottom:10px;margin-bottom:22px;}
+  .sec-no{font-size:13px;font-weight:800;color:#fff;background:var(--c1);border-radius:7px;padding:3px 10px;white-space:nowrap;}
+  .sec-h h2{font-size:22px;margin:0;letter-spacing:-.01em;}
+  .src{font-size:11.5px;color:var(--ink3);margin-left:auto;white-space:nowrap;}
+
+  .box{border-radius:var(--radius);padding:16px 20px;margin:18px 0;border:1px solid var(--line);}
+  .box h4{margin:0 0 10px;font-size:14px;letter-spacing:.01em;}
+
+  .learn{background:var(--c1bg);border-color:#cfe0ff;}
+  .learn h4{color:var(--c1);}
+  .learn ol{margin:0;padding-left:22px;} .learn li{margin:4px 0;font-size:14px;}
+
+  .defn{background:#fafbfc;border-left:4px solid var(--ink2);padding:14px 18px;margin:16px 0;border-radius:0 10px 10px 0;}
+  .defn .lbl{font-weight:800;font-size:13.5px;color:var(--ink);}
+  .prop{background:#fbfcfe;border:1px solid #dbe6f8;border-left:4px solid var(--c1);padding:14px 18px;margin:16px 0;border-radius:0 10px 10px 0;}
+  .prop .lbl{font-weight:800;font-size:13.5px;color:var(--c1);}
+  .rmk{font-size:13.5px;color:var(--ink2);background:var(--soft);padding:11px 16px;border-radius:9px;margin:12px 0;}
+
+  .proof{margin:10px 0 4px;padding-left:16px;border-left:2px solid var(--line);font-size:14px;color:var(--ink2);}
+  .proof .pl{font-weight:700;color:var(--ink);}
+  .qed{float:right;font-style:normal;color:var(--ink3);}
+
+  .exer{background:var(--goldbg);border-color:#f2dfbb;}
+  .exer h4{color:var(--gold);}
+  .exer .grp{font-size:12.5px;font-weight:750;color:var(--gold);margin:12px 0 4px;}
+  .exer ol{margin:0;padding-left:22px;} .exer li{margin:9px 0;font-size:14px;}
+
+  .ans{background:var(--okbg);border-color:#c9ecd3;}
+  .ans h4{color:var(--ok);}
+  .ans .item{margin:14px 0 18px;font-size:14px;}
+  .ans .item:last-child{margin-bottom:0;}
+  .ans .item b{color:var(--ok);}
+  .ans .proof{border-left-color:#bfe6c9;}
+
+  .phil{background:var(--philbg);border-color:#e3d5ff;}
+  .phil h4{color:var(--phil);}
+  .phil p{font-size:14px;color:#5b3a8e;margin:8px 0;}
+
+  h3.sub{font-size:16px;margin:26px 0 6px;color:var(--ink);}
+  p{margin:9px 0;} .math{overflow-x:auto;}
+
+  footer{border-top:1px solid var(--line);margin-top:30px;padding-top:20px;font-size:13px;color:var(--ink3);}
+  footer a{color:var(--c1);text-decoration:none;}
+
+  @media(max-width:640px){
+    h1{font-size:23px;} .wrap{padding:0 14px 60px;}
+    .sec-h{flex-wrap:wrap;} .src{margin-left:0;}
+    .box{padding:14px 15px;}
+  }
+  @media print{body{background:#fff;}.jump{display:none;}.box{break-inside:avoid;}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="top">
+  <div class="breadcrumb"><a href="范畴论-逻辑-拓扑斯_教材总目录.html">← 返回总目录</a> ｜ 第一部分 · Awodey《Category Theory》（第二版）</div>
+  <h1>第 1 章　范畴与函子</h1>
+  <p class="lede">从集合上的函数出发，把"定义域—值域—复合—恒等"这四件事抽出来，得到范畴的定义；再用例子、同构、函子、自然变换把这套语言搭建完整。对应 Awodey 第二版第 1、7 章。</p>
+  <nav class="jump">
+    <a href="#s1-1">1.1 函数、复合与范畴的定义</a>
+    <a href="#s1-2">1.2 范畴的例子</a>
+    <a href="#s1-3">1.3 同构</a>
+    <a href="#s1-4">1.4 函子与函子范畴</a>
+    <a href="#s1-5">1.5 自然变换</a>
+  </nav>
+</header>
+
+<!-- ==================== 1.1 ==================== -->
+<section class="sec" id="s1-1">
+  <div class="sec-h"><span class="sec-no">1.1</span><h2>函数、复合与范畴的定义</h2><span class="src">A §1.1–1.3, pp.1–4</span></div>
+
+  <div class="box learn">
+    <h4>① 本节学习目标</h4>
+    <ol>
+      <li>用<strong>有序三元组</strong>精确写出函数的定义，并说明为何"定义域 + 对应规则"不足以确定一个函数；</li>
+      <li>独立证明函数复合的结合律与单位律（不借助直觉）；</li>
+      <li>逐条复述范畴的 8 项数据/公理，并解释"箭头必须带定义域与值域"这一要求的必要性；</li>
+      <li>严格验证 <span>\(\mathbf{Set}\)</span> 是范畴，说清"箭头不必是函数"这一抽象步骤的含义；</li>
+      <li>区分 <strong>small</strong> 与 <strong>locally small</strong> 范畴。</li>
+    </ol>
+  </div>
+
+  <h3 class="sub">1.1.1　函数</h3>
+  <p>我们先从熟悉的集合论出发，但要把通常含混的"函数"说法改装成严格对象。</p>
+  <div class="defn"><span class="lbl">定义 1.1.1（函数）</span>　设 \(A,B\) 是集合。一个<strong>从 \(A\) 到 \(B\) 的函数</strong> \(f:A\to B\) 是一个三元组
+    \[f=(A,\,B,\,\Gamma_f),\]
+    其中 \(\Gamma_f\subseteq A\times B\) 满足：对每个 \(a\in A\)，存在<strong>唯一</strong>的 \(b\in B\) 使得 \((a,b)\in\Gamma_f\)。
+    此时称 \(A\) 为 \(f\) 的<strong>定义域</strong> \(\operatorname{dom}(f)=A\)，\(B\) 为<strong>值域（上域）</strong> \(\operatorname{cod}(f)=B\)，写 \(f(a)=b\)，\(\Gamma_f\) 称为图像。</div>
+  <div class="rmk"><strong>为何必须把 \(B\) 写进三元组？</strong>因为"对应规则相同"并不决定函数。\(f:\mathbb{R}\to\mathbb{R},\ f(x)=x^2\) 与 \(g:\mathbb{R}\to\mathbb{R}_{\ge 0},\ g(x)=x^2\) 有相同图像，但 \(f\ne g\)——值域不同，而"是否满射"立即区分二者（\(g\) 满，\(f\) 不满）。在范畴论中，上域是箭头的结构性组成部分。</div>
+
+  <div class="defn"><span class="lbl">定义 1.1.2（函数的相等）</span>　设 \(f,g:A\to B\)。则 \(f=g\iff \forall a\in A,\ f(a)=g(a)\)。即相等的函数必须有相同定义域、相同值域，且每点取值相同（<strong>外延性</strong>）。</div>
+
+  <h3 class="sub">1.1.2　复合及其公理</h3>
+  <div class="defn"><span class="lbl">定义 1.1.3（复合）</span>　设 \(f:A\to B,\ g:B\to C\)。定义 \(g\circ f:A\to C\) 为 \((g\circ f)(a)=g(f(a))\)。该定义合法，因为 \(f(a)\in B=\operatorname{dom}(g)\)。</div>
+  <div class="defn"><span class="lbl">定义 1.1.4（恒等函数）</span>　对集合 \(A\)，\(\mathrm{id}_A:A\to A\) 定义为 \(\mathrm{id}_A(a)=a\)。</div>
+
+  <div class="prop"><span class="lbl">命题 1.1.5（结合律）</span>　若 \(f:A\to B,\ g:B\to C,\ h:C\to D\)，则 \(h\circ(g\circ f)=(h\circ g)\circ f\)。
+    <div class="proof"><span class="pl">证明：</span>两边定义域均为 \(A\)、值域均为 \(D\)。对任意 \(a\in A\)，逐项展开：
+      \[\bigl(h\circ(g\circ f)\bigr)(a)\overset{\text{def 1.1.3}}{=}h\bigl((g\circ f)(a)\bigr)\overset{\text{def 1.1.3}}{=}h\bigl(g(f(a))\bigr);\]
+      \[\bigl((h\circ g)\circ f\bigr)(a)\overset{\text{def 1.1.3}}{=}(h\circ g)\bigl(f(a)\bigr)\overset{\text{def 1.1.3}}{=}h\bigl(g(f(a))\bigr).\]
+      两边在每点取值相同，由定义 1.1.2 即得相等。<span class="qed">∎</span></div>
+  </div>
+  <div class="prop"><span class="lbl">命题 1.1.6（单位律）</span>　对任意 \(f:A\to B\)，\(\mathrm{id}_B\circ f=f=f\circ\mathrm{id}_A\)。
+    <div class="proof"><span class="pl">证明：</span>先证左边：两边同为 \(A\to B\) 的函数，对任意 \(a\in A\)，\((\mathrm{id}_B\circ f)(a)=\mathrm{id}_B(f(a))=f(a)\)，由外延性得证。再证右边：对任意 \(a\in A\)，\((f\circ\mathrm{id}_A)(a)=f(\mathrm{id}_A(a))=f(a)\)，故相等。<span class="qed">∎</span></div>
+  </div>
+  <p>这两个命题就是接下来范畴公理的全部来源——范畴即把它们抽象成公理。</p>
+
+  <h3 class="sub">1.1.3　范畴的定义</h3>
+  <div class="defn"><span class="lbl">定义 1.1.7（范畴）</span>　一个<strong>范畴</strong> \(\mathbf{C}\) 由以下数据组成：
+    <ol>
+      <li>一个<strong>对象类</strong> \(\operatorname{ob}(\mathbf{C})\)，元素记作 \(A,B,C,\dots\)；</li>
+      <li>对每对对象 \(A,B\)，一个<strong>集合</strong> \(\operatorname{Hom}_{\mathbf{C}}(A,B)\)，其元素称为从 \(A\) 到 \(B\) 的<strong>箭头</strong>，\(f\in\operatorname{Hom}(A,B)\) 记作 \(f:A\to B\)；</li>
+      <li>对每三个对象 \(A,B,C\)，<strong>复合运算</strong> \(\circ:\operatorname{Hom}(B,C)\times\operatorname{Hom}(A,B)\to\operatorname{Hom}(A,C),\ (g,f)\mapsto g\circ f\)；</li>
+      <li>对每个对象 \(A\)，一个箭头 \(\mathrm{id}_A\in\operatorname{Hom}(A,A)\)，称为 \(A\) 上的<strong>恒等箭头</strong>。</li>
+    </ol>
+    满足两条公理：<br>
+    <strong>(C1) 结合律：</strong>对 \(A\xrightarrow{f}B\xrightarrow{g}C\xrightarrow{h}D\)，\(h\circ(g\circ f)=(h\circ g)\circ f\)。<br>
+    <strong>(C2) 单位律：</strong>对 \(f:A\to B\)，\(\mathrm{id}_B\circ f=f=f\circ\mathrm{id}_A\)。</div>
+  <div class="rmk"><strong>关于"箭头带唯一定义域与值域"的技术约定：</strong>要求诸 \(\operatorname{Hom}(A,B)\) 作为集合<strong>两两不交</strong>：若 \((A,B)\ne(A',B')\) 则二者交为空。否则同一箭头可属两个 Hom-集，\(\operatorname{dom}(f),\operatorname{cod}(f)\) 不唯一，复合运算输入不明便无定义。等价的另一种处理是把箭头定义为四元组 \((A,B,\text{标签})\)。两法等价，本书采用前者。</div>
+  <div class="defn"><span class="lbl">定义 1.1.8（locally small / small）</span>　若 \(\mathbf{C}\) 的每个 \(\operatorname{Hom}(A,B)\) 都是集合（而非真类），称 \(\mathbf{C}\) <strong>局部小</strong>；若进一步 \(\operatorname{ob}(\mathbf{C})\) 也是集合，称 \(\mathbf{C}\) <strong>小</strong>。本书中除特别声明外均局部小。</div>
+  <div class="prop"><span class="lbl">例 1.1.9（范畴 \(\mathbf{Set}\)）</span>　\(\operatorname{ob}(\mathbf{Set})=\) 全体集合的类；\(\operatorname{Hom}(A,B)=\) 全体 \(A\to B\) 的函数；复合为定义 1.1.3；\(\mathrm{id}_A\) 为定义 1.1.4。公理 (C1)(C2) 分别由命题 1.1.5、1.1.6 成立，故 \(\mathbf{Set}\) 是范畴（局部小但不小——"全体集合"不是集合）。</div>
+  <div class="rmk"><strong>关键点：箭头不必是函数。</strong>定义 1.1.7 只要求箭头可复合、有恒等元，不要求是集合间的映射，对象也不必是集合。定义 1.1.7 主表"对象是什么"于不顾，只问箭头如何复合——这正是范畴论与"集合论 + 结构"思维的分水岭。</div>
+
+  <div class="box exer">
+    <h4>③ ✅ 课后练习题</h4>
+    <div class="grp">（一）基础巩固题</div>
+    <ol>
+      <li id="q111">设 \(A=\varnothing\)，\(B\) 任意。证明存在唯一的函数 \(A\to B\)；并确定当 \(B=\varnothing\) 时，从 \(\varnothing\) 到 \(\varnothing\) 的函数个数。</li>
+      <li id="q112">设 \(f:A\to B,\ g:B\to C\)。证明：若 \(f,g\) 都满射则 \(g\circ f\) 满射；若 \(f,g\) 都单射则 \(g\circ f\) 单射。（按定义逐条写出 \(\forall\) 推理，不得只写结论。）</li>
+      <li id="q113">设 \(A\) 含 \(n\) 个元素，\(B\) 含 \(m\) 个元素。计算从 \(A\) 到 \(B\) 的函数总数，并说明计数为何穷尽且无重复。</li>
+    </ol>
+    <div class="grp">（二）进阶思考题</div>
+    <ol start="4">
+      <li id="q114">证明：在任意范畴 \(\mathbf{C}\) 中，每个对象 \(A\) 上的恒等箭头 \(\mathrm{id}_A\) 唯一。（提示：设 \(e\) 也满足单位律，分别用两种单位律计算 \(e\circ \mathrm{id}_A\)。）</li>
+      <li id="q115">设 \((P,\le)\) 是偏序集。构造范畴 \(\mathbf{P}\)：\(\operatorname{ob}(\mathbf{P})=P\)；若 \(p\le q\) 置 \(\operatorname{Hom}(p,q)=\{\ast_{pq}\}\)，否则为空；复合由 \(p\le q\le r\Rightarrow p\le r\) 强制给出。(a) 验证范畴公理；(b) 证明任意两对象间至多一个箭头，且若 \(p\cong q\)（同构，见 1.3）则 \(p=q\)。</li>
+    </ol>
+  </div>
+
+  <div class="box ans">
+    <h4>④ ✅ 习题参考答案</h4>
+    <div class="item"><b>1.1.1</b>　按定义 1.1.1，函数 \(f:\varnothing\to B\) 是三元组 \((\varnothing,B,\Gamma_f)\)，其中 \(\Gamma_f\subseteq\varnothing\times B=\varnothing\)，故 \(\Gamma_f=\varnothing\) 唯一。条件"对每个 \(a\in\varnothing\)，存在唯一 \(b\in B\) 使 \((a,b)\in\Gamma_f\)"因 \(a\in\varnothing\) 恒假而空真地成立。故满足条件的三元组只有 \((\varnothing,B,\varnothing)\)，即存在唯一函数 \(\varnothing\to B\)。特别地从 \(\varnothing\) 到 \(\varnothing\) 的函数恰有 \(1\) 个。<span class="qed">∎</span></div>
+    <div class="item"><b>1.1.2</b>　(1) 满射：需证 \(\forall c\in C,\exists a\in A:(g\circ f)(a)=c\)。任取 \(c\in C\)，由 \(g\) 满取 \(b\in B\) 使 \(g(b)=c\)，由 \(f\) 满取 \(a\in A\) 使 \(f(a)=b\)，则 \((g\circ f)(a)=g(f(a))=g(b)=c\)。<br>
+      (2) 单射：设 \(g(f(a_1))=g(f(a_2))\)。由 \(g\) 单得 \(f(a_1)=f(a_2)\)，由 \(f\) 单得 \(a_1=a_2\)。故 \(g\circ f\) 单。<span class="qed">∎</span></div>
+    <div class="item"><b>1.1.3</b>　每个 \(a\in A\) 可独立、可重复地从 \(B\) 中选取 \(f(a)\)，共 \(m\) 种；\(A\) 有 \(n\) 个元素，各点互不约束。由乘法原理总数 \(=m^n\)。穷尽性：任一函数由各点取值唯一确定（定义 1.1.2）；无重复：不同取值表给出不同图像 \(\Gamma_f\)。边界 \(n=0\) 时 \(m^0=1\)，与 1.1.1 一致。<span class="qed">∎</span></div>
+    <div class="item"><b>1.1.4</b>　设 \(e:A\to A\) 也满足单位律：对一切 \(f:X\to A\) 有 \(e\circ f=f\)，对一切 \(g:A\to Y\) 有 \(g\circ e=g\)。取 \(f=\mathrm{id}_A\)，由 \(e\) 的左单位性得 \(e\circ\mathrm{id}_A=\mathrm{id}_A\)；取 \(g=e\)，由 \(\mathrm{id}_A\) 的右单位性（(C2) 中令 \(f=e\)）得 \(e\circ\mathrm{id}_A=e\)。两式左边相同，故 \(\mathrm{id}_A=e\)。<span class="qed">∎</span></div>
+    <div class="item"><b>1.1.5</b>　(a) Hom-集两两不交（空集与单元集互不相交，不同标号 \(\ast_{pq}\) 互异）；复合：\(p\le q\le r\Rightarrow p\le r\)，定义 \(g\circ f=\ast_{pr}\) 唯一；恒等：由自反性 \(p\le p\) 取 \(\mathrm{id}_p=\ast_{pp}\)。结合律：设 \(p\le q\le r\le s\)，两边均等于唯一的 \(\ast_{ps}\)；单位律：\(\ast_{qq}\circ\ast_{pq}=\ast_{pq}=\ast_{pq}\circ\ast_{pp}\)。故为范畴。<br>
+      (b) Hom-集非空当且仅当 \(p\le q\)，且非空时为单元集，故至多一箭头。设 \(p\cong q\)，则存在 \(f:p\to q\)（故 \(p\le q\)）与 \(g:q\to p\)（故 \(q\le p\)）；由偏序反对称性得 \(p=q\)。<span class="qed">∎</span></div>
+  </div>
+
+  <div class="box phil">
+    <h4>选读拓展（哲学联系，非正文，可跳过不影响数学学习）</h4>
+    <p>定义 1.1.1 坚持把上域 \(B\) 塞进函数本身，其后果是：<strong>一个性质（如满射）不是规则的内在属性，而依赖于我们把箭头放在哪个语境中</strong>。\(x^2\) 是否满射没有绝对答案，答案取决于你选 \(\mathbb{R}\) 还是 \(\mathbb{R}_{\ge 0}\) 作上域。这与你在可能性问题里熟悉的结构有可对照处：同一"内容"在不同模型中赋不同可能范围，其模态性质随之改变。但要留意差别——函数的上域在定义时就固定，不构成随情境变化的参数；真正把"可变上域"做成数学结构，要等到 18.2 的 Kripke–Joyal 语义中真值依赖于阶段 \(U\)。此处只是一颗种子，不是答案。</p>
+    <p>另一点：定义 1.1.7 把对象完全交给箭头刻画，不追问对象"是什么"。这是方法论立场而非本体论断言——它不否认对象有内部结构，只主张先研究可复合的箭头。习题 1.1.5 表明偏序集本质上是"箭头至多一条"的范畴，序关系由此统一进同一语言；你熟悉的格论与同余关系将在第 2 章用这套语言重述。</p>
+  </div>
+</section>
+
+<!-- ==================== 1.2 ==================== -->
+<section class="sec" id="s1-2">
+  <div class="sec-h"><span class="sec-no">1.2</span><h2>范畴的例子：Set、Rel、Mat、偏序、单对象范畴</h2><span class="src">A §1.4, pp.5–12</span></div>
+
+  <div class="box learn">
+    <h4>① 本节学习目标</h4>
+    <ol>
+      <li>能逐一验证五个标准例子确实满足范畴公理（而非仅记住结论）；</li>
+      <li>掌握关系范畴 \(\mathbf{Rel}\) 中复合的"存在中间点"定义并验证结合律；</li>
+      <li>严格证明<strong>群 = 单对象范畴</strong>、幺半群 = 单对象范畴，并用它把泛代数中的同余、同态语言翻译成范畴语言；</li>
+      <li>理解"箭头不必是函数"的具体含义（矩阵范畴中的箭头是矩阵，不是映射）。</li>
+    </ol>
+  </div>
+
+  <h3 class="sub">1.2.1　 \(\mathbf{Set}\) 与具体范畴</h3>
+  <p>1.1 节已验证 \(\mathbf{Set}\) 是范畴。同类构造还有很多：对象取"带结构的集合"，箭头取"保结构的映射"。记法上约定：<span>\(\mathbf{Set}\)</span>（集合与函数）、<span>\(\mathbf{Grp}\)</span>（群与群同态）、<span>\(\mathbf{Ab}\)</span>（阿贝尔群与同态）、<span>\(\mathbf{Ring}\)</span>（含幺环与保幺环同态）、<span>\(\mathbf{Top}\)</span>（拓扑空间与连续映射）、<span>\(\mathbf{Vect}_k\)</span>（域 \(k\) 上向量空间与线性映射）。每一例中 (C1)(C2) 的验证都化为"保结构映射的复合仍保结构""恒等映射保结构"这两件初等事实。</p>
+
+  <h3 class="sub">1.2.2　关系范畴 \(\mathbf{Rel}\)</h3>
+  <div class="defn"><span class="lbl">例 1.2.1（\(\mathbf{Rel}\)）</span>　令 \(\operatorname{ob}(\mathbf{Rel})\) 为全体集合的类；\(\operatorname{Hom}(X,Y)\) 为所有二元关系 \(R\subseteq X\times Y\)。对 \(R:X\to Y\)、\(S:Y\to Z\) 定义复合
+    \[S\circ R=\{(x,z)\in X\times Z\mid \exists y\in Y,\ (x,y)\in R\ \text{且}\ (y,z)\in S\}.\]
+    令 \(\mathrm{id}_X=\Delta_X=\{(x,x)\mid x\in X\}\)（对角线关系）。</div>
+  <div class="prop"><span class="lbl">命题 1.2.2</span>　\(\mathbf{Rel}\) 是范畴。
+    <div class="proof"><span class="pl">证明：</span>先证结合律。设 \(R:X\to Y,\ S:Y\to Z,\ T:Z\to W\)。按定义展开：
+      \[(T\circ S)\circ R=\{(x,w)\mid \exists y\in Y:\ (x,y)\in R,\ (y,w)\in T\circ S\}\]
+      \[\qquad=\{(x,w)\mid \exists y\in Y,\exists z\in Z:\ (x,y)\in R,\ (y,z)\in S,\ (z,w)\in T\}.\]
+      另一方面
+      \[T\circ(S\circ R)=\{(x,w)\mid \exists z\in Z:\ (x,z)\in S\circ R,\ (z,w)\in T\}\]
+      \[\qquad=\{(x,w)\mid \exists z\in Z,\exists y\in Y:\ (x,y)\in R,\ (y,z)\in S,\ (z,w)\in T\}.\]
+      两者刻画同一集合（存在量词次序可交换），故相等。<br>
+      再证单位律：\(\Delta_Y\circ R=\{(x,y)\mid\exists y'\in Y:(x,y')\in R,(y',y)\in\Delta_Y\}\)。因 \((y',y)\in\Delta_Y\iff y'=y\)，故该集等于 \(\{(x,y)\mid(x,y)\in R\}=R\)。同理 \(R\circ\Delta_X=R\)。<span class="qed">∎</span></div>
+  </div>
+  <div class="rmk">注意 \(\mathbf{Rel}\) 中的箭头关系 \(R\) 完全可能不是函数（一个 \(x\) 可对应多个 \(y\)，也可能没有对应）。这已 concrete 地表明"箭头不必是函数"。</div>
+
+  <h3 class="sub">1.2.3　矩阵范畴 \(\mathbf{Mat}_R\)</h3>
+  <div class="defn"><span class="lbl">例 1.2.3（\(\mathbf{Mat}_R\)）</span>　设 \(R\) 是环。令对象为自然数 \(0,1,2,\dots\)；\(\operatorname{Hom}(m,n)\) 为全体 \(n\times m\) 的 \(R\)-值矩阵（故箭头 \(m\to n\) 是 \(n\times m\) 矩阵）；复合为矩阵乘法：若 \(A:m\to n\) 是 \(n\times m\) 矩阵、\(B:n\to p\) 是 \(p\times n\) 矩阵，则 \(B\circ A:=BA\) 是 \(p\times m\) 矩阵；\(\mathrm{id}_n=I_n\)（\(n\) 阶单位矩阵）。</div>
+  <div class="prop"><span class="lbl">命题 1.2.4</span>　\(\mathbf{Mat}_R\) 是范畴。
+    <div class="proof"><span class="pl">证明：</span>复合合法：\(BA\) 确为 \(p\times m\) 矩阵，落在 \(\operatorname{Hom}(m,p)\)。结合律：矩阵乘法结合律给出 \((CB)A=C(BA)\)（逐元素验证：\([(CB)A]_{ik}=\sum_j(\sum_l C_{il}B_{lj})A_{jk}=\sum_l C_{il}(\sum_j B_{lj}A_{jk})=[C(BA)]_{ik}\)，用到环乘法对加法的分配律与有限求和的重组）。单位律：\(I_n A=A=A I_m\) 为矩阵乘法的基本性质。<span class="qed">∎</span></div>
+  </div>
+  <div class="rmk">此例最能说明抽象的好处：对象 \(m\) 只是"列数"的标签，箭头 \(m\to n\) 是矩阵<strong>而非函数</strong> \(m\to n\)。范畴定义只关心可复合性，不关心箭头"内部是什么"。</div>
+
+  <h3 class="sub">1.2.4　偏序作为范畴</h3>
+  <p>习题 1.1.5 已完整证明：偏序集 \((P,\le)\) 给出范畴 \(\mathbf{P}\)，其箭头 \(p\to q\) 存在当且仅当 \(p\le q\)，且至多一条。推广一步：预序（自反 + 传递，不要求反对称）同样给出范畴，只是此时 \(p\cong q\) 不再蕴含 \(p=q\)（见 1.3）。反向也成立：任一"任意两对象间至多一个箭头"的范畴在对象上定义 \(A\le B\iff\operatorname{Hom}(A,B)\ne\varnothing\)，得到一个预序。</p>
+
+  <h3 class="sub">1.2.5　单对象范畴 = 幺半群（衔接你的泛代数背景）</h3>
+  <div class="prop"><span class="lbl">命题 1.2.5</span>　若范畴 \(\mathbf{C}\) 只有一个对象 \(\ast\)，则 \(M=\operatorname{Hom}(\ast,\ast)\) 连同复合 \(\circ\) 与单位 \(\mathrm{id}_\ast\) 构成一个幺半群。反之，任一幺半群 \((M,\cdot,e)\) 给出单对象范畴 \(\mathbf{C}_M\)：唯一对象 \(\ast\)，\(\operatorname{Hom}(\ast,\ast)=M\)，复合 \(b\circ a:=b\cdot a\)，\(\mathrm{id}_\ast=e\)。
+    <div class="proof"><span class="pl">证明：</span>第一句：范畴公理 (C1) 即 \(M\) 中运算的结合律，(C2) 即 \(\mathrm{id}_\ast\) 是双边单位元，故 \((M,\circ,\mathrm{id}_\ast)\) 是幺半群。<br>
+      第二句：幺半群的结合律与单位元恰好是 (C1)(C2)，其余数据平凡（只有一个对象、一个 Hom-集），故 \(\mathbf{C}_M\) 是范畴。两构造互逆（在同构意义下）：从幺半群出发得 \(\mathbf{C}_M\) 再取其唯一 Hom-集，回到 \(M\)。<span class="qed">∎</span></div>
+  </div>
+  <div class="prop"><span class="lbl">命题 1.2.6</span>　若唯一对象 \(\ast\) 的范畴中每个箭头都可逆（即都是同构，定义见 1.3），则其对应的幺半群是群；反之群 \(G\) 给出这样一个范畴 \(\mathbf{B}G\)（称为 \(G\) 的<strong>分类范畴</strong>）。
+    <div class="proof"><span class="pl">证明：</span>由 1.3 的定义，箭头 \(g:\ast\to\ast\) 可逆即存在 \(h\) 使 \(hg=\mathrm{id}_\ast=gh\)，这正是群中逆元的定义；结合律与单位元已由命题 1.2.5 给出。反向同理。<span class="qed">∎</span></div>
+  </div>
+  <div class="rmk">这把你熟悉的泛代数对象"降维"成了一个范畴：群是一个只有一个对象、但有很多箭头（可逆）的范畴。<strong>同余关系</strong>在下一节之后会以"核对"（kernel pair，即拉回）的形式重新出现——那是范畴论表达"同一性"的标准方式，也是全书主题"证明同一性"的技术入口。此处先记住这个对应关系即可。</div>
+
+  <h3 class="sub">1.2.6　小范畴 \(0,1,2,3\)</h3>
+  <p>记号 \(0\) 表示空范畴（无对象无箭头）；\(1\) 表示只有一个对象及其恒等箭头的范畴；\(2\) 表示两个对象 \(0,1\)，除恒等外恰有一条箭头 \(0\to 1\)；\(3\) 表示三个对象 \(0\to1\to2\)，并包含复合箭头 \(0\to2\)。这些小范畴在后面充当"形状"（索引范畴）：一个函子 \(\mathbf{2}\to\mathbf{C}\) 就是 \(\mathbf{C}\) 中的一个箭头，一个函子 \(\mathbf{1}\to\mathbf{C}\) 就是 \(\mathbf{C}\) 中的一个对象（见 1.4）。</p>
+
+  <div class="box exer">
+    <h4>③ ✅ 课后练习题</h4>
+    <div class="grp">（一）基础巩固题</div>
+    <ol>
+      <li id="q121">验证 \(\mathbf{Rel}\) 中 \(R\circ\Delta_X=R\)（与命题 1.2.2 中证明的 \(\Delta_Y\circ R=R\) 对照）。</li>
+      <li id="q122">写出 \(\mathbf{Mat}_R\) 中从 \(2\) 到 \(2\) 的一个非单位、但满足 \(A\circ A=A\) 的箭头（取 \(R=\mathbb{R}\)）。</li>
+      <li id="q123">列出小范畴 \(\mathbf{3}\) 的全部对象与全部箭头（含恒等与复合），并写出其复合表中唯一的非平凡复合。</li>
+    </ol>
+    <div class="grp">（二）进阶思考题</div>
+    <ol start="4">
+      <li id="q124">证明：预序 \((P,\preceq)\) 给出的范畴中，\(p\cong q\iff p\preceq q\) 且 \(q\preceq p\)。由此说明偏序（反对称）恰对应"同构即相等"的范畴。</li>
+      <li id="q125">设 \(G\) 是群，\(\mathbf{B}G\) 是命题 1.2.6 的范畴。证明：\(\mathbf{B}G\) 作为范畴同构于 \(\mathbf{B}H\) 当且仅当 \(G\cong H\)（群同构）。</li>
+      <li id="q126">（范畴论式地重述同余）设 \(M\) 是幺半群，\(\sim\) 是其上的同余关系（等价且保乘法）。证明：存在唯一的幺半群结构使商集 \(M/{\sim}\) 成为幺半群，且自然投影 \(\pi:M\to M/{\sim}\) 是满同态。</li>
+    </ol>
+  </div>
+
+  <div class="box ans">
+    <h4>④ ✅ 习题参考答案</h4>
+    <div class="item"><b>1.2.1</b>　\(R\circ\Delta_X=\{(x,y)\mid\exists x'\in X:(x,x')\in\Delta_X,(x',y)\in R\}\)。由 \((x,x')\in\Delta_X\iff x=x'\)，该集化为 \(\{(x,y)\mid(x,y)\in R\}=R\)。<span class="qed">∎</span></div>
+    <div class="item"><b>1.2.2</b>　取 \(A=\begin{pmatrix}1&0\\0&0\end{pmatrix}\)。则 \(A^2=\begin{pmatrix}1&0\\0&0\end{pmatrix}\begin{pmatrix}1&0\\0&0\end{pmatrix}=\begin{pmatrix}1&0\\0&0\end{pmatrix}=A\)，且 \(A\ne I_2\)。这正是一个投影矩阵。<span class="qed">∎</span></div>
+    <div class="item"><b>1.2.3</b>　对象 \(0,1,2\)；箭头：\(\mathrm{id}_0,\mathrm{id}_1,\mathrm{id}_2,\ f:0\to1,\ g:1\to2,\ h:0\to2\)，共 6 条。唯一非平凡复合：\(g\circ f=h\)；其余复合涉及恒等箭头时由 (C2) 显然。<span class="qed">∎</span></div>
+    <div class="item"><b>1.2.4</b>　若 \(p\cong q\)，则存在 \(f:p\to q\)（故 \(p\preceq q\)）与 \(g:q\to p\)（故 \(q\preceq p\)）。反之若 \(p\preceq q\) 且 \(q\preceq p\)，则 \(\operatorname{Hom}(p,q)\) 与 \(\operatorname{Hom}(q,p)\) 都非空，取 \(f,g\)；由于任意两对象间至多一个箭头，\(g\circ f:p\to p\) 必等于唯一的 \(\mathrm{id}_p\)，\(f\circ g=\mathrm{id}_q\)，故 \(f\) 是同构。偏序加上反对称后，\(p\preceq q\preceq p\Rightarrow p=q\)，即同构只在相等时发生。<span class="qed">∎</span></div>
+    <div class="item"><b>1.2.5</b>　设 \(F:\mathbf{B}G\to\mathbf{B}H\) 是范畴同构。因只有一个对象，\(F\) 给出集合映射 \(\varphi:G=\operatorname{Hom}_\mathbf{BG}(\ast,\ast)\to\operatorname{Hom}_\mathbf{BH}(\ast,\ast)=H\)。函子性（1.4 将定义）要求 \(F(gh)=F(g)F(h)\) 与 \(F(e_G)=e_H\)，故 \(\varphi\) 是群同态；因 \(F\) 同构，\(\varphi\) 有逆（由 \(F^{-1}\) 给出），故为群同构。反之群同构 \(\varphi:G\to H\) 直接定义函子 \(F\)（对象 \(\ast\mapsto\ast\)，箭头 \(g\mapsto\varphi(g)\)），其逆由 \(\varphi^{-1}\) 给出。<span class="qed">∎</span></div>
+    <div class="item"><b>1.2.6</b>　在商集上定义 \([a]\cdot[b]:=[a\cdot b]\)。良定义：若 \(a\sim a'\)、\(b\sim b'\)，则由同余的保乘法性 \(ab\sim a'b'\)，故 \([ab]=[a'b']\)。结合律与单位元从 \(M\) 继承：\(([a][b])[c]=[abc]=[a]([b][c])\)，\([e][a]=[a]=[a][e]\)。\(\pi\) 保乘法：\(\pi(ab)=[ab]=[a][b]=\pi(a)\pi(b)\)，且 \(\pi(e)=[e]\) 是商中单位，故为满同态。唯一性：任何使 \(\pi\) 为同态的乘法必须满足 \([a][b]=\pi(a)\pi(b)=\pi(ab)=[ab]\)，故结构唯一。<span class="qed">∎</span></div>
+  </div>
+
+  <div class="box phil">
+    <h4>选读拓展（哲学联系，非正文）</h4>
+    <p>把群写成"只有一个对象的范畴"，是一次视角转换：原本被当作<strong>运算对象</strong>的群元素，现在被当作<strong>变换（箭头）</strong>。群不再是"带运算的集合"，而是"一个点的自同构全体"。这个转换对因果哲学有个直接用处：若把某系统的"所有可能状态变换"看作一个群，则系统本身收缩为一个对象，而"规律"就是箭头之间的复合规则；因果结构于是被编码为箭头结构，而非状态集合上的函数。</p>
+    <p>习题 1.2.6 中同余的作用值得单独看：同余 \(\sim\) 把"哪些元素算作同一个"明确化为一种保运算的等价关系。这与你要研究的<strong>证明同一性</strong>是同型问题——证明之间何者算作"同一证明"，就是要在证明的集合上选一个合适的同余。范畴论后来把这件事做得更细：不区分元素的同一性，而区分箭头由泛性质给出的同一性（见 1.5 与 10.4）。</p>
+  </div>
+</section>
+
+<!-- ==================== 1.3 ==================== -->
+<section class="sec" id="s1-3">
+  <div class="sec-h"><span class="sec-no">1.3</span><h2>同构</h2><span class="src">A §1.5, pp.12–14</span></div>
+
+  <div class="box learn">
+    <h4>① 本节学习目标</h4>
+    <ol>
+      <li>用"存在双边逆箭头"严格定义同构，并证明<strong>逆箭头唯一</strong>；</li>
+      <li>证明同构关系是对象上的等价关系；</li>
+      <li>在 \(\mathbf{Set}\)、\(\mathbf{Grp}\)、偏序范畴、\(\mathbf{B}G\) 中判定何时同构；</li>
+      <li>区分"同构"与"相等"，并理解为何范畴论只关心同构类。</li>
+    </ol>
+  </div>
+
+  <div class="defn"><span class="lbl">定义 1.3.1（同构）</span>　设 \(\mathbf{C}\) 是范畴，\(f:A\to B\)。若存在 \(g:B\to A\) 使
+    \[g\circ f=\mathrm{id}_A\quad\text{且}\quad f\circ g=\mathrm{id}_B,\]
+    则称 \(f\) 是<strong>同构</strong>（isomorphism），\(g\) 称为 \(f\) 的<strong>逆</strong>。此时记 \(f:A\xrightarrow{\ \sim\ }B\)，或 \(A\cong B\)，并把 \(g\) 记作 \(f^{-1}\)。若 \(A=B\) 且 \(f\) 是同构，称 \(f\) 为 \(A\) 的<strong>自同构</strong>。</div>
+
+  <div class="prop"><span class="lbl">命题 1.3.2（逆唯一）</span>　若 \(g:B\to A\) 与 \(h:B\to A\) 都是 \(f:A\to B\) 的逆，则 \(g=h\)。
+    <div class="proof"><span class="pl">证明：</span>由 \(g\) 是逆得 \(g\circ f=\mathrm{id}_A\)；由 \(h\) 是逆得 \(f\circ h=\mathrm{id}_B\)。于是
+      \[g=g\circ\mathrm{id}_B=g\circ(f\circ h)=(g\circ f)\circ h=\mathrm{id}_A\circ h=h.\]
+      第一、末两步用 (C2)，中间两步分别用 \(h\) 与 \(g\) 的逆性质及 (C1)。<span class="qed">∎</span></div>
+  </div>
+
+  <div class="prop"><span class="lbl">命题 1.3.3</span>　同构关系 \(\cong\) 是 \(\operatorname{ob}(\mathbf{C})\) 上的等价关系。
+    <div class="proof"><span class="pl">证明：</span><br>
+      <strong>自反：</strong>\(\mathrm{id}_A\) 的逆是自身，因 \(\mathrm{id}_A\circ\mathrm{id}_A=\mathrm{id}_A\)，故 \(A\cong A\)。<br>
+      <strong>对称：</strong>若 \(f:A\to B\) 同构、逆为 \(g\)，则定义 1.3.1 中关于 \(f,g\) 的两式对称，故 \(g:B\to A\) 也是同构（其逆为 \(f\)），于是 \(B\cong A\)。<br>
+      <strong>传递：</strong>设 \(f:A\to B\) 逆 \(f^{-1}\)，\(g:B\to C\) 逆 \(g^{-1}\)。断言 \(g\circ f:A\to C\) 的逆是 \(f^{-1}\circ g^{-1}:C\to A\)。验证：
+      \[(f^{-1}\circ g^{-1})\circ(g\circ f)=f^{-1}\circ(g^{-1}\circ g)\circ f=f^{-1}\circ\mathrm{id}_B\circ f=f^{-1}\circ f=\mathrm{id}_A,\]
+      \[(g\circ f)\circ(f^{-1}\circ g^{-1})=g\circ(f\circ f^{-1})\circ g^{-1}=g\circ\mathrm{id}_B\circ g^{-1}=g\circ g^{-1}=\mathrm{id}_C.\]
+      故 \(A\cong C\)。<span class="qed">∎</span></div>
+  </div>
+
+  <div class="prop"><span class="lbl">命题 1.3.4（\(\mathbf{Set}\) 中的同构）</span>　在 \(\mathbf{Set}\) 中，\(f:A\to B\) 是同构当且仅当 \(f\) 是双射。
+    <div class="proof"><span class="pl">证明：</span><br>
+      \((\Rightarrow)\) 设 \(f\) 有逆 \(g\)。单射性：若 \(f(a_1)=f(a_2)\)，则 \(a_1=g(f(a_1))=g(f(a_2))=a_2\)。满射性：对任意 \(b\in B\)，令 \(a=g(b)\in A\)，则 \(f(a)=f(g(b))=b\)。故 \(f\) 双射。<br>
+      \((\Leftarrow)\) 设 \(f\) 双射。对每个 \(b\in B\)，由满射性存在 \(a\in A\) 使 \(f(a)=b\)，由单射性此 \(a\) 唯一；定义 \(g(b)=a\)。则 \(\forall a\in A\)，\(g(f(a))=a\)（因 \(a\) 是满足 \(f(\cdot)=f(a)\) 的唯一元素），故 \(g\circ f=\mathrm{id}_A\)；\(\forall b\in B\)，\(f(g(b))=b\)，故 \(f\circ g=\mathrm{id}_B\)。即 \(f\) 同构。<span class="qed">∎</span></div>
+  </div>
+  <p>同理可证：在 \(\mathbf{Grp}\)、\(\mathbf{Ab}\)、\(\mathbf{Vect}_k\)、\(\mathbf{Top}\) 中，同构分别恰为群同构、阿贝尔群同构、线性同构、同胚。关键在于逆映射保结构：<span>\(\mathbf{Top}\)</span> 中双射的连续逆未必连续，故"连续双射"不等于同构——这正是范畴定义比"集合上的双射"更严格的地方。</p>
+
+  <div class="prop"><span class="lbl">例 1.3.5（偏序范畴的同构）</span>　在偏序范畴 \(\mathbf{P}\) 中，\(p\cong q\iff p=q\)；在由预序给出的范畴中，\(p\cong q\iff p\preceq q\) 且 \(q\preceq p\)。
+    <div class="proof"><span class="pl">证明：</span>这是习题 1.1.5(b) 与 1.2.4 的直接结论。<span class="qed">∎</span></div>
+  </div>
+  <div class="prop"><span class="lbl">例 1.3.6（\(\mathbf{B}G\) 的同构）</span>　在群 \(G\) 的分类范畴 \(\mathbf{B}G\) 中，每个箭头都是同构，且 \(g:\ast\to\ast\) 的逆是群逆元 \(g^{-1}\)。
+    <div class="proof"><span class="pl">证明：</span>由 \(g^{-1}g=e=\mathrm{id}_\ast=gg^{-1}\) 及命题 1.2.6。<span class="qed">∎</span></div>
+  </div>
+
+  <div class="rmk"><strong>同构 ≠ 相等。</strong>在 \(\mathbf{Set}\) 中，两个不同集合（如 \(\{0,1\}\) 与 \(\{\text{红},\text{蓝}\}\)）可以同构；在偏序范畴中同构才化为相等。范畴论的标准立场是：一个范畴中"值得研究"的性质必须在同构下不变（即只能由箭头结构定义）。这不是说相等不重要，而是说相等是元理论层面的事，而范畴内部可说的是同构。这一点将在 1.5 的"自然同构"中进一步 sharpen：并非任意同构都算"好的同一性"，还要看它是否自然。</div>
+
+  <div class="box exer">
+    <h4>③ ✅ 课后练习题</h4>
+    <div class="grp">（一）基础巩固题</div>
+    <ol>
+      <li id="q131">在 \(\mathbf{Set}\) 中，证明：若 \(A,B\) 都是有限集，则 \(A\cong B\iff|A|=|B|\)。</li>
+      <li id="q132">设 \(f:A\to B\) 与 \(f':A\to B\) 有共同的逆 \(g:B\to A\)。证明 \(f=f'\)。</li>
+      <li id="q133">在偏序范畴 \(\mathbf{P}\) 中，求自同构集 \(\operatorname{Aut}(p)\)；在 \(\mathbf{B}G\) 中，求 \(\operatorname{Aut}(\ast)\)。</li>
+    </ol>
+    <div class="grp">（二）进阶思考题</div>
+    <ol start="4">
+      <li id="q134">判断下述断言在一般范畴中是否成立，成立则证明，不成立则给出反例：<strong>"\(g\circ f\) 是同构当且仅当 \(f\) 与 \(g\) 都是同构。"</strong>（提示：两个方向要分别处理；其中一个方向的"显然"最有欺骗性。）</li>
+      <li id="q135">在 \(\mathbf{Rel}\) 中，关系 \(R:X\to Y\) 何时为同构？证明：\(R\) 同构当且仅当存在双射 \(f:X\to Y\) 使 \(R=\{(x,f(x))\mid x\in X\}\)（即 \(R\) 是某个双射的图像）。</li>
+      <li id="q136">设 \(h:A\to A\) 是幂等的：\(h\circ h=h\)。证明：若 \(h\) 同时是同构，则 \(h=\mathrm{id}_A\)。（这是"同构消去幂等"的标准论证。）</li>
+    </ol>
+  </div>
+
+  <div class="box ans">
+    <h4>④ ✅ 习题参考答案</h4>
+    <div class="item"><b>1.3.1</b>　\((\Rightarrow)\) 同构即双射（命题 1.3.4），有限集间双射存在当且仅当基数相等。<br>\((\Leftarrow)\) 设 \(|A|=|B|=n\)。若 \(n=0\) 唯一函数 \(\varnothing\to B=\varnothing\) 是双射；若 \(n\ge1\)，把 \(A=\{a_1,\dots,a_n\}\)、\(B=\{b_1,\dots,b_n\}\)，定义 \(f(a_i)=b_i\)，则 \(f\) 双射故同构。<span class="qed">∎</span></div>
+    <div class="item"><b>1.3.2</b>　把命题 1.3.2 用于箭头 \(g:B\to A\)：该命题说任一箭头的逆唯一。由 \(g\circ f=\mathrm{id}_A\) 与 \(f\circ g=\mathrm{id}_B\)，\(f\) 是 \(g\) 的逆；由 \(g\circ f'=\mathrm{id}_A\) 与 \(f'\circ g=\mathrm{id}_B\)，\(f'\) 也是 \(g\) 的逆。故 \(f=f'\)。<br>
+      （也可直接算：\(f=\mathrm{id}_B\circ f=(f'\circ g)\circ f=f'\circ(g\circ f)=f'\circ\mathrm{id}_A=f'\)。）<span class="qed">∎</span></div>
+    <div class="item"><b>1.3.3</b>　在 \(\mathbf{P}\) 中 \(p\cong p\) 恒真且由 1.3.5 只有 \(p=p\) 的同构，故 \(\operatorname{Aut}(p)=\{\mathrm{id}_p\}\)（单元集）。在 \(\mathbf{B}G\) 中 \(\operatorname{Aut}(\ast)=G\) 全体元素（例 1.3.6），且复合即群乘法，故 \(\operatorname{Aut}(\ast)\cong G\) 作为群。<span class="qed">∎</span></div>
+    <div class="item"><b>1.3.4</b>　<strong>本题的断言在一般范畴中为假，正确结论是单向的。</strong><br>
+      (1) 若 \(f,g\) 都是同构，则由命题 1.3.3（传递性），\(g\circ f\) 是同构，其逆为 \(f^{-1}\circ g^{-1}\)。<br>
+      (2) 反之不成立。反例：取 \(\mathbf{Set}\)，\(A=\{\ast\}\)，\(B=\{1,2\}\)，\(f:A\to B\) 为 \(f(\ast)=1\)，\(g:B\to A\) 为常值映射（唯一函数）。则 \(g\circ f=\mathrm{id}_A\) 是同构；但 \(f\) 不是双射（不满），\(g\) 也不是双射（不单），故由命题 1.3.4 二者都不是同构。<br>
+      这里失败的推理是"从 \(g\circ f\) 同构想消去 \(g\) 得到 \(f\) 同构"——范畴中一般没有消去律。<strong>正确命题：</strong>若 \(g\circ f\) 同构且 \(f\) 是单态、\(g\) 是满态（定义见 2.1），则 \(f,g\) 都是同构。<span class="qed">∎</span></div>
+    <div class="item"><b>1.3.5</b>　设 \(R:X\to Y\) 同构、逆为 \(S:Y\to X\)。因 \(S\circ R=\Delta_X\)，对每 \(x\in X\) 取 \(y\in Y\) 使 \((x,y)\in R\)（存在性：\((x,x)\in S\circ R\)），若 \((x,y),(x,y')\in R\)，则 \((y,x)\in S\) 且 \((x,y')\in R\)，故 \((y,y')\in R\circ S=\Delta_Y\)，得 \(y=y'\)。故 \(R\) 是函数 \(f\) 的图像；同理 \(S\) 是 \(f^{-1}\) 的图像，故 \(f\) 双射。反之若 \(R\) 是双射 \(f\) 的图像，其 inverse 关系 \(S=\{(f(x),x)\}\) 满足 \(S\circ R=\Delta_X,\ R\circ S=\Delta_Y\)。<span class="qed">∎</span></div>
+    <div class="item"><b>1.3.6</b>　设 \(h\) 同构、逆 \(h^{-1}\)。由 \(h\circ h=h\)，两边左乘 \(h^{-1}\)：\((h^{-1}\circ h)\circ h=h^{-1}\circ h\)，即 \(\mathrm{id}_A\circ h=\mathrm{id}_A\)，故 \(h=\mathrm{id}_A\)。<span class="qed">∎</span></div>
+  </div>
+
+  <div class="box phil">
+    <h4>选读拓展（哲学联系，非正文）</h4>
+    <p>命题 1.3.2（逆唯一）看似平凡，却是"证明同一性"问题的微型样板：一旦把"同一"理解为"存在双边逆"，唯一性就不是额外假设，而是从复合结构里推出来的。你熟悉的泛代数中，逆元唯一性是群公理的推论；这里把它推广到任何可复合结构，于是群、群胚、关系、矩阵中的"同一"都有了统一的判据。</p>
+    <p>习题 1.3.4 尤其值得看：复合 \(g\circ f\) 是同构，并不能推出 \(f,g\) 各自同构（\(\mathbf{Set}\) 中单元素嵌入到两点集再投影回去就是反例）。套用到因果推理上：一个"整体可逆"的过程，并不意味着它的每个中间环节可逆。<strong>整体层面的对称不蕴含局部层面的对称</strong>——这是范畴论给因果哲学的一个精确警告，它把"可逆性"从直觉词变成可判定的结构性质。</p>
+  </div>
+</section>
+
+<!-- ==================== 1.4 ==================== -->
+<section class="sec" id="s1-4">
+  <div class="sec-h"><span class="sec-no">1.4</span><h2>函子与函子范畴</h2><span class="src">A §1.4（Def.1.2, p.8–9）, §1.6, §7.7</span></div>
+
+  <div class="box learn">
+    <h4>① 本节学习目标</h4>
+    <ol>
+      <li>写出函子的严格定义（保定义域/值域、保恒等、保复合），并说明为何三条缺一不可；</li>
+      <li>验证遗忘函子、自由函子、幂集函子、对角函子确为函子；</li>
+      <li>证明函子保同构；</li>
+      <li>严格证明函子可复合、恒等函子存在，从而范畴连同函子构成范畴 \(\mathbf{Cat}\)；</li>
+      <li>理解函子范畴 \([\mathbf{J},\mathbf{C}]\) 的定义：其箭头是下一节定义的自然变换。</li>
+    </ol>
+  </div>
+
+  <h3 class="sub">1.4.1　函子的定义</h3>
+  <div class="defn"><span class="lbl">定义 1.4.1（函子）</span>　设 \(\mathbf{C},\mathbf{D}\) 是范畴。一个<strong>函子</strong> \(F:\mathbf{C}\to\mathbf{D}\) 由以下映射组成：
+    \[\text{对象映射 } A\mapsto F(A),\qquad \text{箭头映射 } (f:A\to B)\mapsto (F(f):F(A)\to F(B)),\]
+    满足：
+    <ol>
+      <li><strong>保持定义域与值域：</strong>\(F(f:A\to B)=F(f):F(A)\to F(B)\)；</li>
+      <li><strong>保持恒等：</strong>\(F(\mathrm{id}_A)=\mathrm{id}_{F(A)}\)；</li>
+      <li><strong>保持复合：</strong>\(F(g\circ f)=F(g)\circ F(f)\)。</li>
+    </ol>
+  </div>
+  <div class="rmk"><strong>三条为何缺一不可：</strong>(1) 保证箭头映射有合法的目标；(2)(3) 保证 \(F\) 把 \(\mathbf{C}\) 中的交换图送到 \(\mathbf{D}\) 中的交换图——这是"保结构"的确切含义。若只保复合不保恒等，可以把所有对象映到同一点但箭头乱映，结构就丢了。函子是范畴之间的"同态"。</div>
+
+  <h3 class="sub">1.4.2　函子的例子</h3>
+  <div class="prop"><span class="lbl">例 1.4.2（恒等函子）</span>　对任意范畴 \(\mathbf{C}\)，\(1_{\mathbf{C}}:\mathbf{C}\to\mathbf{C}\) 在对象与箭头上都取恒等映射。三条性质显然成立。</div>
+  <div class="prop"><span class="lbl">例 1.4.3（遗忘函子）</span>　\(U:\mathbf{Grp}\to\mathbf{Set}\) 把群映到其底层集合、群同态映到其底层函数。保持恒等与复合显然（因为复合与恒等在 \(\mathbf{Grp}\) 中就是底层函数的复合与恒等）。同理有 \(U:\mathbf{Top}\to\mathbf{Set}\)、\(U:\mathbf{Ring}\to\mathbf{Set}\)、\(U:\mathbf{Vect}_k\to\mathbf{Set}\)。</div>
+  <div class="prop"><span class="lbl">例 1.4.4（幂集函子）</span>　\(P:\mathbf{Set}\to\mathbf{Set}\)：\(P(A)=\) \(A\) 的幂集；对 \(f:A\to B\)，\(P(f):P(A)\to P(B)\) 定义为 \(P(f)(S)=f[S]\)（像集）。
+    <div class="proof"><span class="pl">验证：</span>\(P(\mathrm{id}_A)(S)=\mathrm{id}_A[S]=S=\mathrm{id}_{P(A)}(S)\)；\(P(g\circ f)(S)=(g\circ f)[S]=g[f[S]]=P(g)(P(f)(S))=(P(g)\circ P(f))(S)\)。三条成立。<span class="qed">∎</span></div>
+  </div>
+  <div class="prop"><span class="lbl">例 1.4.5（反变幂集函子）</span>　\(P^\ast:\mathbf{Set}^{\mathrm{op}}\to\mathbf{Set}\)：\(P^\ast(A)=P(A)\)；对 \(f:A\to B\)（在 \(\mathbf{Set}^{\mathrm{op}}\) 中是 \(B\to A\) 的箭头），\(P^\ast(f)=f^{-1}:P(B)\to P(A)\)（原像）。因为 \((g\circ f)^{-1}(T)=f^{-1}(g^{-1}(T))\)，故反变地 \(P^\ast(g\circ f)=P^\ast(f)\circ P^\ast(g)\)，即作为 \(\mathbf{Set}^{\mathrm{op}}\to\mathbf{Set}\) 的函子满足定义 1.4.1(3)。</div>
+  <div class="prop"><span class="lbl">例 1.4.6（小范畴作为索引）</span>　函子 \(F:\mathbf{1}\to\mathbf{C}\) 恰是 \(\mathbf{C}\) 的一个对象（\(\mathbf{1}\) 只有一个对象与恒等箭头）；函子 \(F:\mathbf{2}\to\mathbf{C}\) 恰是 \(\mathbf{C}\) 的一个箭头；函子 \(F:\mathbf{3}\to\mathbf{C}\) 恰是一对可复合的箭头 \(A\xrightarrow{f}B\xrightarrow{g}C\)（连同复合 \(g\circ f\)）。这是"函子 = 在 \(\mathbf{C}\) 中放置一个给定形状的图"的确切含义。</div>
+
+  <div class="prop"><span class="lbl">命题 1.4.7（函子保同构）</span>　若 \(F:\mathbf{C}\to\mathbf{D}\) 是函子，\(f:A\to B\) 是 \(\mathbf{C}\) 中的同构，则 \(F(f):F(A)\to F(B)\) 是 \(\mathbf{D}\) 中的同构。
+    <div class="proof"><span class="pl">证明：</span>设 \(f^{-1}:B\to A\) 满足 \(f^{-1}\circ f=\mathrm{id}_A,\ f\circ f^{-1}=\mathrm{id}_B\)。由函子保复合与保恒等：
+      \[F(f^{-1})\circ F(f)=F(f^{-1}\circ f)=F(\mathrm{id}_A)=\mathrm{id}_{F(A)},\]
+      \[F(f)\circ F(f^{-1})=F(f\circ f^{-1})=F(\mathrm{id}_B)=\mathrm{id}_{F(B)}.\]
+      故 \(F(f^{-1})\) 是 \(F(f)\) 的逆，\(F(f)\) 同构。<span class="qed">∎</span></div>
+  </div>
+  <div class="rmk"><strong>逆命题不成立：</strong>遗忘函子 \(U:\mathbf{Grp}\to\mathbf{Set}\) 中，若 \(U(f)\) 是双射，则 \(f\) 确为群同构（因为双射同态的逆自动保结构），但这个结论依赖具体范畴的性质，不是函子的一般性质。一般地，"反映同构"是函子的额外性质。</div>
+
+  <h3 class="sub">1.4.3　函子的复合与 \(\mathbf{Cat}\)</h3>
+  <div class="prop"><span class="lbl">命题 1.4.8</span>　若 \(F:\mathbf{C}\to\mathbf{D}\)、\(G:\mathbf{D}\to\mathbf{E}\) 是函子，则复合 \(G\circ F:\mathbf{C}\to\mathbf{E}\)（对象 \(A\mapsto G(F(A))\)，箭头 \(f\mapsto G(F(f))\)）是函子；且 \(1_{\mathbf{D}}\circ F=F=F\circ1_{\mathbf{C}}\)。
+    <div class="proof"><span class="pl">证明：</span>保定义域值域：\(F(f):F(A)\to F(B)\)，故 \(G(F(f)):G(F(A))\to G(F(B))\)。保恒等：\((G\circ F)(\mathrm{id}_A)=G(F(\mathrm{id}_A))=G(\mathrm{id}_{F(A)})=\mathrm{id}_{G(F(A))}\)。保复合：
+      \[(G\circ F)(h\circ g)=G(F(h\circ g))=G(F(h)\circ F(g))=G(F(h))\circ G(F(g))=((G\circ F)h)\circ((G\circ F)g).\]
+      恒等函子的复合显然回到原函子。<span class="qed">∎</span></div>
+  </div>
+  <div class="prop"><span class="lbl">定义/命题 1.4.9（\(\mathbf{Cat}\)）</span>　以<strong>小范畴</strong>为对象、以函子为箭头、以命题 1.4.8 的复合为复合、以 \(1_{\mathbf{C}}\) 为恒等，得到一个范畴 \(\mathbf{Cat}\)。
+    <div class="proof"><span class="pl">证明：</span>复合封闭由命题 1.4.8；结合律来自对象与箭头映射的复合的结合律；单位律同。注意必须限制到小范畴，否则 \(\operatorname{ob}\) 是真类；即便如此 \(\mathbf{Cat}\) 本身也不是小范畴（它是"大"的），只是局部小的。<span class="qed">∎</span></div>
+  </div>
+
+  <h3 class="sub">1.4.4　函子范畴（预告）</h3>
+  <p>给定范畴 \(\mathbf{J}\)（称为<strong>索引范畴</strong>或"形状"）与 \(\mathbf{C}\)，记 \([\mathbf{J},\mathbf{C}]\) 为以"函子 \(\mathbf{J}\to\mathbf{C}\)"为对象的范畴，其箭头将是下一节定义的<strong>自然变换</strong>。本节只先明确对象层：\([\mathbf{1},\mathbf{C}]\) 的对象对应 \(\mathbf{C}\) 的对象，\([\mathbf{2},\mathbf{C}]\) 的对象对应 \(\mathbf{C}\) 的箭头，\([\mathbf{3},\mathbf{C}]\) 的对象对应可复合箭头对。完整的范畴结构（箭头、复合、恒等）在 1.5.4 给出。</p>
+
+  <div class="box exer">
+    <h4>③ ✅ 课后练习题</h4>
+    <div class="grp">（一）基础巩固题</div>
+    <ol>
+      <li id="q141">验证"常值函子" \(K_c:\mathbf{C}\to\mathbf{D}\)（固定 \(c\in\mathbf{D}\)，所有对象映到 \(c\)，所有箭头映到 \(\mathrm{id}_c\)）是函子。</li>
+      <li id="q142">设 \(F:\mathbf{C}\to\mathbf{D}\) 是函子。证明：若 \(f\) 是 \(\mathbf{C}\) 中的同构，则 \(F(f)\) 是 \(\mathbf{D}\) 中的同构（命题 1.4.7）；并举例说明其<strong>逆命题不成立</strong>：存在函子 \(F\) 与箭头 \(f\) 使 \(F(f)\) 同构但 \(f\) 不同构。（提示：取 \(F\) 为到终范畴 \(\mathbf{1}\) 的唯一函子。）</li>
+      <li id="q143">对偏序范畴 \(\mathbf{P},\mathbf{Q}\)，证明：函子 \(F:\mathbf{P}\to\mathbf{Q}\) 恰是保序映射（\(p\le q\Rightarrow F(p)\le F(q)\)）。</li>
+    </ol>
+    <div class="grp">（二）进阶思考题</div>
+    <ol start="4">
+      <li id="q144">（自由函子，严格版）构造 \(F:\mathbf{Set}\to\mathbf{Grp}\)，把集合 \(X\) 映到 \(X\) 上的自由群 \(F(X)\)。精确陈述它的泛性质：对任意群 \(G\) 与函数 \(\varphi:X\to U(G)\)，存在唯一群同态 \(\bar\varphi:F(X)\to G\) 使 \(U(\bar\varphi)\circ\eta=\varphi\)（\(\eta:X\to U(F(X))\) 为自然嵌入）。说明为何这条泛性质唯一确定了 \(F\)（同构意义下）。</li>
+      <li id="q145">证明：函子 \(F:\mathbf{C}\to\mathbf{D}\) 是同构（即 \(\mathbf{Cat}\) 中的同构）当且仅当它是双射于对象、且每个分量 \(\operatorname{Hom}(A,B)\to\operatorname{Hom}(F(A),F(B))\) 是双射。</li>
+      <li id="q146">设 \(\mathbf{G}\) 是群 \(G\) 的分类范畴（1.2.6），\(\mathbf{H}\) 是群 \(H\) 的分类范畴。描述所有函子 \(\mathbf{G}\to\mathbf{H}\) 与群同态 \(G\to H\) 的对应，并验证函子的三条公理恰好翻译成群同态公理。</li>
+    </ol>
+  </div>
+
+  <div class="box ans">
+    <h4>④ ✅ 习题参考答案</h4>
+    <div class="item"><b>1.4.1</b>　对象映射显然；箭头映射 \(f\mapsto\mathrm{id}_c\)：因 \(f:A\to B\) 被映为 \(\mathrm{id}_c:F(A)=c\to c=F(B)\)，合法。保恒等：\(K_c(\mathrm{id}_A)=\mathrm{id}_c=\mathrm{id}_{K_c(A)}\)。保复合：\(K_c(g\circ f)=\mathrm{id}_c=\mathrm{id}_c\circ\mathrm{id}_c=K_c(g)\circ K_c(f)\)。<span class="qed">∎</span></div>
+    <div class="item"><b>1.4.2</b>　正向即命题 1.4.7。逆命题反例：令 \(!:\mathbf{Set}\to\mathbf{1}\) 为到终范畴（只有一个对象与恒等箭头）的唯一函子——它把所有集合映到 \(\ast\)、所有函数映到 \(\mathrm{id}_\ast\)。取 \(f:\varnothing\to\{0\}\)（唯一函数）。在 \(\mathbf{1}\) 中 \(!(f)=\mathrm{id}_\ast\) 是同构；但在 \(\mathbf{Set}\) 中 \(f\) 不满射，故由命题 1.3.4 不是同构。这说明函子一般<strong>不反映同构</strong>。<span class="qed">∎</span></div>
+    <div class="item"><b>1.4.3</b>　函子 \(F\) 在对象上给出映射 \(P\to Q\)。若 \(p\le q\)，则 \(\operatorname{Hom}_{\mathbf{P}}(p,q)\ne\varnothing\)，取 \(f\)；则 \(F(f):F(p)\to F(q)\) 存在，故 \(F(p)\le F(q)\)。即 \(F\) 保序。反之任一保序映射 \(g:P\to Q\) 定义函子：\(g(p)\le g(q)\) 时 \(\operatorname{Hom}\) 为单元集，把唯一的 \(p\to q\) 映到唯一的 \(g(p)\to g(q)\)；保恒等与复合由唯一性自动成立。<span class="qed">∎</span></div>
+    <div class="item"><b>1.4.4</b>　取 \(F(X)\) 为字母表 \(X\) 上约化字的集合（含空字），乘法为拼接后约化，单位为空字——这是群。\(\eta(x)\) 为单字母字。给定 \(\varphi:X\to U(G)\)，定义 \(\bar\varphi([x_1^{\epsilon_1}\cdots x_n^{\epsilon_n}])=\varphi(x_1)^{\epsilon_1}\cdots\varphi(x_n)^{\epsilon_n}\)；约化关系 \(x x^{-1}=e\) 在 \(G\) 中成立，故良定义；\(\bar\varphi\) 保乘法（拼接对应乘法）且唯一（因 \(F(X)\) 由 \(\eta(X)\) 生成，群同态由生成元取值唯一决定）。唯一性：若 \(F'\) 也满足该泛性质，令 \(F'(\eta)\) 的扩张与 \(F\) 的扩张互相复合，由唯一性得二者互逆，故 \(F(X)\cong F'(X)\) 自然同构。<span class="qed">∎</span></div>
+    <div class="item"><b>1.4.5</b>　设 \(F\) 是 \(\mathbf{Cat}\) 中的同构，逆为 \(G\)。则 \(GF=1_{\mathbf{C}}\) 给出 \(G(F(A))=A\)，故 \(F\) 在对象上是双射（逆为 \(G\)）。对箭头：\(F:\operatorname{Hom}(A,B)\to\operatorname{Hom}(FA,FB)\) 有逆 \(G:\operatorname{Hom}(FA,FB)\to\operatorname{Hom}(A,B)\)，故为双射。反之若对象与每个 Hom-映射都是双射，逐对象、逐 Hom-集取逆拼成 \(G\)，验证 \(GF=1_{\mathbf{C}}\)、\(FG=1_{\mathbf{D}}\) 即得函子同构。<span class="qed">∎</span></div>
+    <div class="item"><b>1.4.6</b>　唯一对象 \(\ast\) 必映到唯一对象 \(\ast\)。每个 \(g\in G\) 是箭头 \(\ast\to\ast\)，必映到箭头 \(\varphi(g):\ast\to\ast\)，即 \(H\) 的元素。保恒等：\(F(e_G)=e_H\)；保复合：\(F(gh)=F(g)F(h)\)。故 \(\varphi:G\to H\) 是群同态。反之群同态按此规则给出函子，三条函子公理恰翻译成同态的保单位、保乘法。<span class="qed">∎</span></div>
+  </div>
+
+  <div class="box phil">
+    <h4>选读拓展（哲学联系，非正文）</h4>
+    <p>遗忘函子 \(U:\mathbf{Grp}\to\mathbf{Set}\) 做了一件哲学上很值得盯住的事：它<strong>故意丢掉结构</strong>，只留下"底层"。你研究可能性时可以把它读作"从带模态结构的世界退到裸集合的世界"——丢掉的是可达关系、是规律，留下的是点的集合。1.2.5 已经看到群可以收缩为单对象范畴；遗忘函子则往相反方向走：把丰富的箭头结构压扁成一个集合。这种"何时允许丢结构、丢掉后还剩什么"的问题，在 7.3（量词作为伴随）与 17.4（内部与外部）会以严格形式回来。</p>
+    <p>习题 1.4.4 的自由群泛性质，是全书反复出现的模式："用一个箭头生成自由对象，然后任何到别处的映射都唯一分解越过它。"这个模式的哲学读法是：给定一个"语言"（字母表 \(X\)）和一门"解释"（\(\varphi:X\to U(G)\)），自由群是这门语言在群的世界里能说的<strong>全部</strong>句子，而解释就是给句子赋值的唯一方式。证明同一性问题在这里初露端倪：两个不同的字表示同一个群元素，恰是"两个证明被认作同一"的代数版本。</p>
+  </div>
+</section>
+
+<!-- ==================== 1.5 ==================== -->
+<section class="sec" id="s1-5">
+  <div class="sec-h"><span class="sec-no">1.5</span><h2>自然变换</h2><span class="src">A §7.4–7.5, pp.155–161；函子范畴见 §7.7</span></div>
+
+  <div class="box learn">
+    <h4>① 本节学习目标</h4>
+    <ol>
+      <li>用分量族 + 自然性方块严格定义自然变换，并画出、验证自然性方块；</li>
+      <li>给出自然变换的标准例子（恒等自然变换、行列式、双对偶映射）；</li>
+      <li>严格区分<strong>自然同构</strong>与<strong>普通同构</strong>（用 \(V\cong V^\ast\) 与 \(V\cong V^{\ast\ast}\) 的经典对照）；</li>
+      <li>定义函子范畴 \([\mathbf{J},\mathbf{C}]\)：其箭头是自然变换，并验证它确为范畴；</li>
+      <li>证明 Yoneda 观点下的第一个结论：表示函子的自然变换由像决定（为第 6 章铺垫）。</li>
+    </ol>
+  </div>
+
+  <h3 class="sub">1.5.1　自然变换的定义</h3>
+  <div class="defn"><span class="lbl">定义 1.5.1（自然变换）</span>　设 \(F,G:\mathbf{C}\to\mathbf{D}\) 是函子。一个<strong>从 \(F\) 到 \(G\) 的自然变换</strong> \(\eta:F\Rightarrow G\) 是一族箭头
+    \[\bigl(\eta_A:F(A)\to G(A)\bigr)_{A\in\operatorname{ob}(\mathbf{C})},\]
+    使得对 \(\mathbf{C}\) 中每个箭头 \(f:A\to B\)，下列方块在 \(\mathbf{D}\) 中交换：
+    \[\begin{array}{ccc} F(A) & \xrightarrow{\ F(f)\ } & F(B) \\ \downarrow{\eta_A} & & \downarrow{\eta_B} \\ G(A) & \xrightarrow{\ G(f)\ } & G(B) \end{array}\qquad\text{即}\qquad G(f)\circ\eta_A=\eta_B\circ F(f).\]
+    \(\eta_A\) 称为 \(\eta\) 在 \(A\) 处的<strong>分量</strong>。若每个 \(\eta_A\) 都是同构，称 \(\eta\) 为<strong>自然同构</strong>，记作 \(F\cong G\)。</div>
+  <div class="rmk">自然性是"分量之间必须相容"的条件：它不允许对每对象任意挑一个箭头，而要求这些箭头与所有结构映射 \(F(f),G(f)\) 协调。正是这一点使自然变换成为范畴论中比"逐对象同构"更强、更有意义的概念。</div>
+
+  <h3 class="sub">1.5.2　例子</h3>
+  <div class="prop"><span class="lbl">例 1.5.2（恒等自然变换）</span>　对任意函子 \(F\)，令 \(\eta_A=\mathrm{id}_{F(A)}\)。自然性方块为 \(F(f)\circ\mathrm{id}=\mathrm{id}\circ F(f)\)，成立。记为 \(1_F:F\Rightarrow F\)。</div>
+  <div class="prop"><span class="lbl">例 1.5.3（双对偶映射是自然的）</span>　在 \(\mathbf{Vect}_k\) 上，令 \(F=1\)（恒等函子），\(G=(-)^{\ast\ast}\)（取两次对偶）。定义 \(\eta_V:V\to V^{\ast\ast}\) 为 \(\eta_V(v)(\varphi)=\varphi(v)\)（\(\varphi\in V^\ast\)）。则 \(\eta:1\Rightarrow(-)^{\ast\ast}\) 是自然变换。
+    <div class="proof"><span class="pl">证明：</span>先验证 \(\eta_V\) 线性（逐点验证 \((\eta_V(v_1+\lambda v_2))(\varphi)=\varphi(v_1+\lambda v_2)=\varphi(v_1)+\lambda\varphi(v_2)\)）。再验证自然性：对线性映射 \(f:V\to W\)，需方块
+      \[\begin{array}{ccc} V & \xrightarrow{f} & W \\ \downarrow{\eta_V} & & \downarrow{\eta_W} \\ V^{\ast\ast} & \xrightarrow{f^{\ast\ast}} & W^{\ast\ast}\end{array}\]
+      交换，即 \(f^{\ast\ast}\circ\eta_V=\eta_W\circ f\)。取 \(v\in V\)、\(\psi\in W^\ast\)：
+      \[\bigl(f^{\ast\ast}(\eta_V(v))\bigr)(\psi)=\eta_V(v)(\psi\circ f)=(\psi\circ f)(v)=\psi(f(v))=\bigl(\eta_W(f(v))\bigr)(\psi).\]
+      因对所有 \(\psi\) 相等，故 \(f^{\ast\ast}(\eta_V(v))=\eta_W(f(v))\)，自然性成立。<span class="qed">∎</span></div>
+  </div>
+  <div class="prop"><span class="lbl">例 1.5.4（\(V\cong V^\ast\) 不自然——你要的辨析）</span>　对每个<strong>有限维</strong>向量空间 \(V\)，取一组基即可得同构 \(V\cong V^\ast\)；但这些同构<strong>不能</strong>拼成自然同构 \(1\Rightarrow(-)^\ast\)。
+    <div class="proof"><span class="pl">证明（反证）：</span>注意 \((-)^\ast:\mathbf{Vect}_k\to\mathbf{Vect}_k\) 是<strong>反变</strong>函子（见例 1.4.5），故不能与协变的 \(1\) 直接构成自然变换。正确的表述是在有限维范畴 \(\mathbf{fdVect}_k\) 上比较协变函子 \(1\) 与协变函子 \((-)^{\ast\ast}\)（例 1.5.3），它们自然同构；而若想把 \(V\to V^\ast\) 做成自然的，需考察 \(\mathbf{fdVect}_k\) 上的"自对偶"结构。<br>
+      直接反证：设存在一族同构 \(\eta_V:V\to V^\ast\) 对任意线性同构 \(f:V\to W\) 满足 \(f^\ast\circ\eta_W\circ f=\eta_V\)（这是反变情形的自然性方块）。取 \(V=W=k^1\)，\(f=\lambda\cdot\mathrm{id}\)（\(\lambda\in k^\times\)）。则 \(f^\ast=\lambda\cdot\mathrm{id}_{(k^1)^\ast}\)，于是左边 \(=\lambda\cdot\eta_{k^1}(\lambda x)=\lambda^2\eta_{k^1}(x)\)，须等于 \(\eta_{k^1}(x)\)。取 \(\lambda\) 使 \(\lambda^2\ne1\)（如 \(k=\mathbb{R},\lambda=2\)），且 \(\eta_{k^1}\ne0\)，矛盾。<span class="qed">∎</span></div>
+  </div>
+  <div class="rmk"><strong>自然同构 vs 普通同构——核心辨析：</strong>普通同构是"两个对象之间存在双边逆箭头"，它可以是偶然的、依赖任意选择的；自然同构是"一族同构，且与所有结构映射相容"。\(V\cong V^\ast\) 对每个 \(V\) 都成立（普通同构），但选基的方式没有统一规则，换一组基就换一个同构，因此无法自然化。而 \(V\to V^{\ast\ast}\) 由公式 \(\varphi\mapsto\varphi(v)\) 无条件给出，不依赖任何选择，故自然。<strong>自然性的实质是"不依赖任意选择"</strong>——这一点在你研究"证明同一性"时尤其关键：自然同构给出了一种<strong>典范</strong>的同一，而普通同构只是<strong>存在</strong>一种同一。</div>
+
+  <h3 class="sub">1.5.3　自然变换的复合</h3>
+  <div class="prop"><span class="lbl">命题 1.5.5</span>　设 \(F,G,H:\mathbf{C}\to\mathbf{D}\) 是函子，\(\eta:F\Rightarrow G\)、\(\theta:G\Rightarrow H\) 是自然变换。逐分量定义
+    \[\theta\circ\eta:=(\theta_A\circ\eta_A)_{A\in\mathbf{C}}:F\Rightarrow H.\]
+    则 \(\theta\circ\eta\) 是自然变换（称为<strong>竖直复合</strong>），且 \(1_G\circ\eta=\eta=\eta\circ1_F\)。
+    <div class="proof"><span class="pl">证明：</span>逐分量类型正确：\(\eta_A:F(A)\to G(A)\)，\(\theta_A:G(A)\to H(A)\)，故 \(\theta_A\circ\eta_A:F(A)\to H(A)\)。验证自然性：对 \(f:A\to B\)，
+      \[H(f)\circ(\theta_A\circ\eta_A)=(H(f)\circ\theta_A)\circ\eta_A=(\theta_B\circ G(f))\circ\eta_A=\theta_B\circ(G(f)\circ\eta_A)=\theta_B\circ(\eta_B\circ F(f))=(\theta_B\circ\eta_B)\circ F(f),\]
+      第一步与末步用结合律，中间两次分别用 \(\theta\) 与 \(\eta\) 的自然性。单位律逐分量化为 \(\mathrm{id}\circ\eta_A=\eta_A=\eta_A\circ\mathrm{id}\)。<span class="qed">∎</span></div>
+  </div>
+  <div class="prop"><span class="lbl">命题 1.5.6（自然同构的逆是自然的）</span>　若 \(\eta:F\Rightarrow G\) 是自然同构，则逐分量取逆得到 \(\eta^{-1}:G\Rightarrow F\) 是自然变换，且 \(\eta^{-1}\circ\eta=1_F,\ \eta\circ\eta^{-1}=1_G\)。
+    <div class="proof"><span class="pl">证明：</span>设 \(\eta_A\) 的逆为 \((\eta_A)^{-1}\)。需验证 \(F(f)\circ(\eta_A)^{-1}=(\eta_B)^{-1}\circ G(f)\)。由 \(\eta_B\circ F(f)=G(f)\circ\eta_A\)，两边左乘 \((\eta_B)^{-1}\)、右乘 \((\eta_A)^{-1}\)：
+      \[F(f)\circ(\eta_A)^{-1}=(\eta_B)^{-1}\circ G(f).\]
+      这正是所需。单位律逐分量即 \((\eta_A)^{-1}\circ\eta_A=\mathrm{id}\)。<span class="qed">∎</span></div>
+  </div>
+
+  <h3 class="sub">1.5.4　函子范畴 \([\mathbf{J},\mathbf{C}]\)</h3>
+  <div class="prop"><span class="lbl">定义/命题 1.5.7</span>　设 \(\mathbf{J},\mathbf{C}\) 是范畴。定义 \([\mathbf{J},\mathbf{C}]\)：
+    <ul>
+      <li>对象：函子 \(F:\mathbf{J}\to\mathbf{C}\)；</li>
+      <li>箭头 \(F\to G\)：自然变换 \(\eta:F\Rightarrow G\)；</li>
+      <li>复合：命题 1.5.5 的竖直复合；</li>
+      <li>恒等箭头：\(1_F\)（例 1.5.2）。</li>
+    </ul>
+    则 \([\mathbf{J},\mathbf{C}]\) 是范畴，称为<strong>函子范畴</strong>（也称 \(\mathbf{C}^{\mathbf{J}}\)）。
+    <div class="proof"><span class="pl">证明：</span>复合封闭由命题 1.5.5；结合律：逐分量化为 \(\mathbf{C}\) 中复合的结合律；单位律同。注意：\([\mathbf{1},\mathbf{C}]\cong\mathbf{C}\)（对象对应对象，自然变换在唯一对象处给出一个箭头，且自然性方块因只有恒等箭头而自动成立）。<span class="qed">∎</span></div>
+  </div>
+  <div class="rmk">函子范畴是把"一族对象 + 一族箭头"打包成单个范畴的标准手法。第 13 章的函子范畴 \(\mathbf{Sets}^{\mathbf{C}^{\mathrm{op}}}\)（预层范畴）正是 \([\mathbf{C}^{\mathrm{op}},\mathbf{Set}]\)，它将成为拓扑斯理论的基本舞台。</div>
+
+  <div class="prop"><span class="lbl">命题 1.5.8（表示函子的自然变换由像决定——Yoneda 的种子）</span>　设 \(\mathbf{C}\) 局部小，\(A\in\mathbf{C}\)，记 \(yA=\operatorname{Hom}(A,-):\mathbf{C}\to\mathbf{Set}\) 为协变表示函子。对任意函子 \(F:\mathbf{C}\to\mathbf{Set}\)，映射
+    \[\Phi:\operatorname{Nat}(yA,F)\longrightarrow F(A),\qquad \Phi(\eta)=\eta_A(\mathrm{id}_A)\]
+    是双射。
+    <div class="proof"><span class="pl">证明：</span><strong>单射：</strong>设 \(\Phi(\eta)=\Phi(\theta)\)，即 \(\eta_A(\mathrm{id}_A)=\theta_A(\mathrm{id}_A)\)。对任意对象 \(B\) 与箭头 \(f:A\to B\)（即 \(f\in yA(A)\) 的元素——注意 \(yA(A)=\operatorname{Hom}(A,A)\)），由 \(F(f)\circ\eta_A=\eta_B\circ yA(f)\) 得在 \(\mathrm{id}_A\) 处：
+      \[\eta_B\bigl(yA(f)(\mathrm{id}_A)\bigr)=F(f)\bigl(\eta_A(\mathrm{id}_A)\bigr).\]
+      而 \(yA(f)(\mathrm{id}_A)=f\circ\mathrm{id}_A=f\)，故 \(\eta_B(f)=F(f)(\eta_A(\mathrm{id}_A))\)。同理 \(\theta_B(f)=F(f)(\theta_A(\mathrm{id}_A))\)。因 \(\eta_A(\mathrm{id}_A)=\theta_A(\mathrm{id}_A)\)，得 \(\eta_B(f)=\theta_B(f)\) 对一切 \(f\in\operatorname{Hom}(A,B)\) 成立，故 \(\eta_B=\theta_B\)，即 \(\eta=\theta\)。<br>
+      <strong>满射：</strong>给定 \(a\in F(A)\)，定义 \(\eta^B:\operatorname{Hom}(A,B)\to F(B)\) 为 \(\eta^B(f)=F(f)(a)\)。验证自然性：对 \(g:B\to C\)、\(f:A\to B\)，\(F(g)(\eta^B(f))=F(g)(F(f)(a))=F(g\circ f)=\eta^C(g\circ f)=\eta^C(yA(g)(f))\)。且 \(\eta^A(\mathrm{id}_A)=F(\mathrm{id}_A)(a)=a\)，故 \(\Phi(\eta)=a\)。<span class="qed">∎</span></div>
+  </div>
+  <div class="rmk">这就是 Yoneda 引理的协变版本（第 6.4 节会给出完整形式与全部推论）。它说明：一个自然变换 \(\eta:yA\Rightarrow F\) 完全由单个元素 \(\eta_A(\mathrm{id}_A)\in F(A)\) 决定——"由一点决定全体"，这是范畴论最有力的技术之一。</div>
+
+  <div class="box exer">
+    <h4>③ ✅ 课后练习题</h4>
+    <div class="grp">（一）基础巩固题</div>
+    <ol>
+      <li id="q151">设 \(F,G:\mathbf{1}\to\mathbf{C}\) 是两个函子，对应对象 \(F(\ast),G(\ast)\in\mathbf{C}\)。证明：自然变换 \(F\Rightarrow G\) 与箭头 \(\operatorname{Hom}_{\mathbf{C}}(F(\ast),G(\ast))\) 一一对应。</li>
+      <li id="q152">验证例 1.5.3 中 \(\eta_V\) 的线性性与自然性方块的交换性（逐元素写出）。</li>
+      <li id="q153">设 \(\eta:F\Rightarrow G\) 是自然同构。证明：对每个对象 \(A\)，\(\eta_A:F(A)\to G(A)\) 是普通同构；并说明逆命题不成立（用 1.5.2 的辨析）。</li>
+    </ol>
+    <div class="grp">（二）进阶思考题</div>
+    <ol start="4">
+      <li id="q154">设 \(\mathbf{C}\) 是群 \(G\) 的分类范畴 \(\mathbf{B}G\)，\(\mathbf{D}=\mathbf{B}H\)。函子 \(F,G:\mathbf{B}G\to\mathbf{B}H\) 对应群同态 \(\varphi,\psi:G\to H\)。证明：自然变换 \(F\Rightarrow G\) 恰对应元素 \(h\in H\) 使 \(\psi(g)=h\,\varphi(g)\,h^{-1}\) 对所有 \(g\in G\) 成立（即群同态的<strong>共轭</strong>）。由此说明自然同构对应内的共轭。</li>
+      <li id="q155">证明：若 \(\eta:F\Rightarrow G\) 与 \(\theta:G\Rightarrow H\) 都是自然同构，则 \(\theta\circ\eta:F\Rightarrow H\) 是自然同构，且 \((\theta\circ\eta)^{-1}=\eta^{-1}\circ\theta^{-1}\)。</li>
+      <li id="q156">用命题 1.5.8 证明：对局部小范畴 \(\mathbf{C}\)，映射 \(A\mapsto yA=\operatorname{Hom}(A,-)\)（对象）与 \(f:A\to B\mapsto yf:=f\circ-:yA\Rightarrow yB\)（自然变换）给出函子 \(y:\mathbf{C}^{\mathrm{op}}\to[\mathbf{C},\mathbf{Set}]\)，且 \(y\) 是满忠实函子（Yoneda 嵌入）。</li>
+    </ol>
+  </div>
+
+  <div class="box ans">
+    <h4>④ ✅ 习题参考答案</h4>
+    <div class="item"><b>1.5.1</b>　设 \(\ast\) 是 \(\mathbf{1}\) 的唯一对象。自然变换 \(\eta\) 只有一个分量 \(\eta_\ast:F(\ast)\to G(\ast)\)。自然性方块对应 \(\mathbf{1}\) 的唯一箭头 \(\mathrm{id}_\ast\)：\(G(\mathrm{id}_\ast)\circ\eta_\ast=\eta_\ast\circ F(\mathrm{id}_\ast)\)，即 \(\mathrm{id}\circ\eta_\ast=\eta_\ast\circ\mathrm{id}\)，自动成立。故任意箭头 \(\eta_\ast\in\operatorname{Hom}_{\mathbf{C}}(F(\ast),G(\ast))\) 唯一确定一个自然变换，反之亦然。<span class="qed">∎</span></div>
+    <div class="item"><b>1.5.2</b>　线性性：\((\eta_V(v_1+\lambda v_2))(\varphi)=\varphi(v_1+\lambda v_2)=\varphi(v_1)+\lambda\varphi(v_2)=\eta_V(v_1)(\varphi)+\lambda\eta_V(v_2)(\varphi)\)。自然性：对 \(f:V\to W\)、\(\psi\in W^\ast\)，\((f^{\ast\ast}\eta_V(v))(\psi)=\eta_V(v)(\psi\circ f)=\psi(f(v))=(\eta_W f(v))(\psi)\)。因 \(\psi\) 任意，两箭头相等。<span class="qed">∎</span></div>
+    <div class="item"><b>1.5.3</b>　自然同构的定义即要求每个分量 \(\eta_A\) 是同构，故正向平凡。逆命题不成立：有限维情形中每个 \(V\) 都有普通同构 \(V\cong V^\ast\)（选基），例 1.5.4 证明这些同构无法自然化，即存在逐对象同构但不构成自然同构。<span class="qed">∎</span></div>
+    <div class="item"><b>1.5.4</b>　\(\mathbf{B}G\) 只有一个对象 \(\ast\)，故自然变换 \(\eta:F\Rightarrow G\) 只有一个分量 \(\eta_\ast\in H\)（一个箭头 \(\ast\to\ast\) 就是 \(H\) 的元素）。自然性方块对应每个 \(g\in G\)（箭头 \(\ast\to\ast\)）：需 \(G(g)\circ\eta_\ast=\eta_\ast\circ F(g)\)，即 \(\psi(g)h=h\varphi(g)\)，等价于 \(\psi(g)=h\varphi(g)h^{-1}\)。若 \(\eta\) 是自然同构则 \(h\in H\) 可逆（群中元素皆可逆），故 \(\psi=h\varphi h^{-1}\) 为共轭；反之给定的共轭 \(h\) 给出自然同构。<span class="qed">∎</span></div>
+    <div class="item"><b>1.5.5</b>　由命题 1.5.5，\(\theta\circ\eta\) 是自然变换；逐分量 \((\theta_A\circ\eta_A)\) 是两个同构之复合，故为同构，所以 \(\theta\circ\eta\) 是自然同构。逆分量逐分量计算：\(((\eta^{-1}\circ\theta^{-1})\circ(\theta\circ\eta))_A=(\eta_A^{-1}\circ\theta_A^{-1})\circ(\theta_A\circ\eta_A)=\eta_A^{-1}\circ\mathrm{id}\circ\eta_A=\mathrm{id}_{F(A)}\)，另一方向同理。<span class="qed">∎</span></div>
+    <div class="item"><b>1.5.6</b>　先验证 \(yf\) 是自然变换：对 \(h:X\to Y\)，需方块 \(yA(X)\xrightarrow{yf_X}yB(X)\) 等交换。\(yf_X(g)=f\circ g\)。则 \(yB(h)(yf_X(g))=f\circ g\circ h=yf_Y(g\circ h)=yf_Y(yA(h)(g))\)，故自然。函子性：\(y(\mathrm{id}_A)=\mathrm{id}_{yA}\) 显然；\(y(g\circ f)_X(h)=(g\circ f)\circ h=g\circ(f\circ h)=(yg\circ yf)_X(h)\)。满忠实：由命题 1.5.8，\(\operatorname{Nat}(yA,yB)\cong yB(A)=\operatorname{Hom}(B,A)\)，恰是 \(\operatorname{Hom}_{\mathbf{C}^{\mathrm{op}}}(A,B)\)，且该双射由 \(f\mapsto yf\) 给出，故 \(y\) 满忠实（Yoneda 嵌入）。<span class="qed">∎</span></div>
+  </div>
+
+  <div class="box phil">
+    <h4>选读拓展（哲学联系，非正文）</h4>
+    <p>你此前专门问过"自然同构 vs 普通同构"，这里的例 1.5.4 给出了标准答案：普通同构只问"存在吗"，自然同构还要问"选择是否典范、是否与所有结构映射相容"。用 \(V\cong V^\ast\) 与 \(V\cong V^{\ast\ast}\) 的对照可以看到，数学里确实存在两种强弱不同的"同一"：一种靠任意选择建立，一种由公式无条件给出。</p>
+    <p>这个差别对<strong>证明同一性</strong>是直接相关的：两个证明可以被判为"同一"，或是"存在某个变换把一个变成另一个"，或是"存在一个不依赖任意选择的典范变换"。后者才是范畴论认可的强同一性。习题 1.5.4  reveals 了一个有趣事实：在群的分类范畴上，自然变换恰是共轭——也就是说，范畴论意义上的"两个表示的同一方式"正是群论里的共轭等价。这为你研究"不同描述何时指向同一对象"提供了一个精确模型。</p>
+  </div>
+</section>
+
+
+<footer>
+  <a href="范畴论-逻辑-拓扑斯_教材总目录.html">← 返回总目录</a>　｜　第 1 章 · 范畴与函子 · 共 5 节　｜　正文遵循"学习目标—讲授—习题—答案"四块结构，哲学内容均在选读拓展。
+</footer>
+
+</div>
+</body>
+</html>

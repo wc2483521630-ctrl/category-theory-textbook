@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-page-node-id="dbWo47Gp8SLv845rZpp4Gi">
+<head data-page-node-id="XcwokwPuKtr3Qqy6gYSS3L">
+<meta charset="UTF-8" data-page-node-id="3gu3TnrmFT5wRmoEVrqVZS">
+<meta name="viewport" content="width=device-width, initial-scale=1.0" data-page-node-id="Uw0cKa1hGQu4D34tMZ3132">
+<title>第 4 章 极限与余极限 —— 三书递进自学教材</title>
+<script>
+window.MathJax = {
+  tex: { inlineMath: [['\\(','\\)']], displayMath: [['\\[','\\]']], processEscapes: true },
+  options: { ignoreHtmlClass: 'no-tex' },
+  svg: { fontCache: 'global' }
+};
+</script>
+<script async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
+<style>
+  :root{
+    --bg:#f6f7f9; --card:#fff; --ink:#1b1f27; --ink2:#4d5461; --ink3:#7a8190;
+    --line:#e5e8ed; --soft:#f0f2f5;
+    --c1:#2563eb; --c1bg:#eef4ff; --gold:#b45309; --goldbg:#fdf3e3;
+    --ok:#15803d; --okbg:#eefaf1; --phil:#7c3aed; --philbg:#f6f1ff;
+    --radius:12px;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;
+    line-height:1.75;-webkit-font-smoothing:antialiased;}
+  .wrap{max-width:920px;margin:0 auto;padding:0 22px 80px;}
+
+  header.top{padding:34px 0 22px;border-bottom:1px solid var(--line);margin-bottom:26px;}
+  .breadcrumb{font-size:12.5px;color:var(--ink3);margin-bottom:10px;}
+  .breadcrumb a{color:var(--c1);text-decoration:none;}
+  h1{font-size:29px;margin:0 0 8px;letter-spacing:-.02em;}
+  .lede{color:var(--ink2);font-size:14.5px;margin:0 0 16px;}
+  .jump{display:flex;gap:8px;flex-wrap:wrap;}
+  .jump a{font-size:12.5px;font-weight:650;text-decoration:none;color:var(--ink2);
+    background:var(--card);border:1px solid var(--line);border-radius:99px;padding:6px 13px;}
+  .jump a:hover{border-color:var(--c1);color:var(--c1);}
+
+  section.sec{margin:0 0 52px;scroll-margin-top:16px;}
+  .sec-h{display:flex;align-items:baseline;gap:12px;border-bottom:2px solid var(--c1);padding-bottom:10px;margin-bottom:22px;}
+  .sec-no{font-size:13px;font-weight:800;color:#fff;background:var(--c1);border-radius:7px;padding:3px 10px;white-space:nowrap;}
+  .sec-h h2{font-size:22px;margin:0;letter-spacing:-.01em;}
+  .src{font-size:11.5px;color:var(--ink3);margin-left:auto;white-space:nowrap;}
+
+  .box{border-radius:var(--radius);padding:16px 20px;margin:18px 0;border:1px solid var(--line);}
+  .box h4{margin:0 0 10px;font-size:14px;letter-spacing:.01em;}
+
+  .learn{background:var(--c1bg);border-color:#cfe0ff;}
+  .learn h4{color:var(--c1);}
+  .learn ol{margin:0;padding-left:22px;} .learn li{margin:4px 0;font-size:14px;}
+
+  .defn{background:#fafbfc;border-left:4px solid var(--ink2);padding:14px 18px;margin:16px 0;border-radius:0 10px 10px 0;}
+  .defn .lbl{font-weight:800;font-size:13.5px;color:var(--ink);}
+  .prop{background:#fbfcfe;border:1px solid #dbe6f8;border-left:4px solid var(--c1);padding:14px 18px;margin:16px 0;border-radius:0 10px 10px 0;}
+  .prop .lbl{font-weight:800;font-size:13.5px;color:var(--c1);}
+  .rmk{font-size:13.5px;color:var(--ink2);background:var(--soft);padding:11px 16px;border-radius:9px;margin:12px 0;}
+
+  .proof{margin:10px 0 4px;padding-left:16px;border-left:2px solid var(--line);font-size:14px;color:var(--ink2);}
+  .proof .pl{font-weight:700;color:var(--ink);}
+  .qed{float:right;font-style:normal;color:var(--ink3);}
+
+  .exer{background:var(--goldbg);border-color:#f2dfbb;}
+  .exer h4{color:var(--gold);}
+  .exer .grp{font-size:12.5px;font-weight:750;color:var(--gold);margin:12px 0 4px;}
+  .exer ol{margin:0;padding-left:22px;} .exer li{margin:9px 0;font-size:14px;}
+
+  .ans{background:var(--okbg);border-color:#c9ecd3;}
+  .ans h4{color:var(--ok);}
+  .ans .item{margin:14px 0 18px;font-size:14px;}
+  .ans .item:last-child{margin-bottom:0;}
+  .ans .item b{color:var(--ok);}
+  .ans .proof{border-left-color:#bfe6c9;}
+
+  .phil{background:var(--philbg);border-color:#e3d5ff;}
+  .phil h4{color:var(--phil);}
+  .phil p{font-size:14px;color:#5b3a8e;margin:8px 0;}
+
+  h3.sub{font-size:16px;margin:26px 0 6px;color:var(--ink);}
+  p{margin:9px 0;} .math{overflow-x:auto;}
+
+  footer{border-top:1px solid var(--line);margin-top:30px;padding-top:20px;font-size:13px;color:var(--ink3);}
+  footer a{color:var(--c1);text-decoration:none;}
+
+  @media(max-width:640px){
+    h1{font-size:23px;} .wrap{padding:0 14px 60px;}
+    .sec-h{flex-wrap:wrap;} .src{margin-left:0;}
+    .box{padding:14px 15px;}
+  }
+  @media print{body{background:#fff;}.jump{display:none;}.box{break-inside:avoid;}}
+</style>
+</head>
+<body data-page-node-id="jra4mkFbGovGGiD1NQjPVC">
+<div class="wrap" data-page-node-id="cC6Dp6zp7alAagDH4W7NoU">
+
+<header class="top" data-page-node-id="Yt28whwQMjAueSNWY7hIFS">
+  <div class="breadcrumb" data-page-node-id="5A77vEECondv6rX7DMzgpz"><a href="范畴论-逻辑-拓扑斯_教材总目录.html" data-page-node-id="GzpCSc1EEuPIkFGly842Aj">← 返回总目录</a> ｜ 第一部分 · Awodey《Category Theory》（第二版）</div>
+  <h1 data-page-node-id="De4Fg22PzZvlb9Rebn2VH5">第 4 章　极限与余极限</h1>
+  <p class="lede" data-page-node-id="H1ZmaajVdflrGeR92DrWSr">前两章我们逐个造出了积、等化子、余积、余等化子；本章把它们统一到"图上的锥"这一个概念之下。§4.1 先用单态的等价类给出子对象，这是极限语言最贴近逻辑的一侧；§4.2 讲最重要的极限——拉回，它是"改变基底"的技术核心；§4.3 给出极限的一般定义与有限极限的存在性定理，并引入"保持极限"；§4.4 对偶地得到余极限与推外。这一章是后续全部内容的施工工具：第 6 章 Yoneda、第 7 章伴随、以及第三部分的层与拓扑斯都要反复调用它。对应 Awodey 第二版第 5 章。</p>
+  <nav class="jump" data-page-node-id="izuMVcDgBZ1aQP84mdzbCU">
+    <a href="#s4-1" data-page-node-id="nFumsjMmI1hPCxbqeOp2uN">4.1 子对象</a>
+    <a href="#s4-2" data-page-node-id="nRgmGzDletMCHAVPLfaHnn">4.2 拉回及其性质</a>
+    <a href="#s4-3" data-page-node-id="tKnsrQ6SA9rFZHpWhxzuWJ">4.3 极限与极限的保持</a>
+    <a href="#s4-4" data-page-node-id="o6DQoHjvB4WSNkZGKsJGBD">4.4 余极限</a>
+  </nav>
+</header>
+
+<section class="sec" id="s4-1" data-page-node-id="bZrvQtq54WJesfeGVBfalE">
+  <div class="sec-h" data-page-node-id="1ruf0X77r8sTy85wUmAAhz"><span class="sec-no" data-page-node-id="EqKbC0X0n3KnYo7ZuFi9eb">4.1</span><h2 data-page-node-id="s9xwBA5KmifokVONa3yF0W">子对象</h2><span class="src" data-page-node-id="KwUfL79EiZgNpODNNQLDja">A §5.1, p.95–97</span></div>
+
+  <div class="box learn" data-page-node-id="bQsd956ADl8xTE8YMLFuSj">
+    <h4 data-page-node-id="dOmvS0Lo4mFt9g11oLfWWC">① 本节学习目标</h4>
+    <ol data-page-node-id="IcfpSE4WIs3zWE2N3CYWG2">
+      <li data-page-node-id="UUj0d5kDteOLY4WgQ1FDIw">把集合论中的"子集"改写为范畴语言：<strong data-page-node-id="oR1vYnfaY8l74mcyG0BaIn">到 \(A\) 的单态的等价类</strong>，并说明为何必须取等价类；</li>
+      <li data-page-node-id="4kxqricsP408jV9UlNQzfh">严格定义 \(\operatorname{Sub}_{\mathbf C}(A)\) 上的偏序，逐条证明良定性、自反、传递、反对称；</li>
+      <li data-page-node-id="jojFpFxKP6YJ989pRQLR3F">证明 \(\operatorname{Sub}_{\mathbf{Set}}(A)\cong\mathcal P(A)\)（作为偏序集的同构）；</li>
+      <li data-page-node-id="K8kRuaZwjaPlQkMRhUOCol">理解"子对象只认嵌入、不认载体"这一范畴论立场，以及它与你熟悉的格论中"下闭集/理想"的关系；</li>
+      <li data-page-node-id="OrFitfEXQSvk9me6YhYOrP">为 §4.2 的拉回函子 \(f^\ast:\operatorname{Sub}(B)\to\operatorname{Sub}(A)\) 与第 13 章的子对象分类子预作铺垫。</li>
+    </ol>
+  </div>
+
+  <h3 class="sub" data-page-node-id="joimyTLruxg5GlnVXvQx2f">4.1.1　动机："子集"到底是什么</h3>
+  <p data-page-node-id="6XAseRvXcmC6APqcacVJqr">在 \(\mathbf{Set}\) 中，说"\(U\) 是 \(A\) 的子集"最直接；但在一般范畴里对象没有元素，不能写 \(U\subseteq A\)。可用的替代只有一个：<strong data-page-node-id="lmvbHOL9neNWuE4rEdM9y5">箭头</strong>。回忆 2.1 节，单态 \(m:S\to A\) 正是"把 \(S\) 无丢失地放进 \(A\)"的范畴化。于是自然的尝试是把"子对象"定义为单态本身。</p>
+  <p data-page-node-id="4RGFBKecTN5fOpCuyGg2CN">但这个尝试马上过头。集合 \(U=\{1,2\}\subseteq\{1,2,3\}\) 作为子集只有一个；可把它装进 \(\{1,2,3\}\) 的单射却有无穷多个（换个与 \(U\) 等势的载体集合，再任意双射过去）。这些单射在范畴眼里应当算作"同一个子对象"。因此正确的定义必须<strong data-page-node-id="40AD4ZbYeFI3v69XZqW7bI">商掉载体的重新标号</strong>：只保留"嵌入到 \(A\) 中"这件事，忘掉源对象具体是什么。</p>
+  <div class="rmk" data-page-node-id="iZ0HXYOPmD5APh5ASxkDIA"><strong data-page-node-id="eixqUyCyVsuE4PReh5HZQF">与你背景的连接。</strong>这与泛代数中用同余关系给代数作商是同一个动作的两种用法：那里把"元素"认同，这里把"载体"认同。你熟悉的格论里，一个格元素的下闭集 \(\downarrow a\) 也是靠"哪些元素被纳入"来标识，而不靠下闭集自己是什么集合。</div>
+
+  <h3 class="sub" data-page-node-id="tWOb0gHNytIl6MwJaJECuV">4.1.2　子对象的定义</h3>
+  <div class="defn" data-page-node-id="oLSHkDYtrYpOvsPJwCwCl6"><span class="lbl" data-page-node-id="ziLGzrnfj4nhADv0HmDcXw">定义 4.1.1（等价的单态，子对象）</span>　设 \(\mathbf C\) 为范畴，\(A\in\operatorname{ob}(\mathbf C)\)。固定 \(\mathbf C\) 中到 \(A\) 的单态（称为<strong data-page-node-id="OnaPCtQDyJyCSrUkLmdTxz">子对象候选</strong>）
+    \[m:S\to A,\qquad m':S'\to A.\]
+    (i) 称 \(m\) 与 \(m'\) <strong data-page-node-id="kX1MDkKsFcAIyFHmrBr0vx">等价</strong>，记作 \(m\sim m'\)，若存在同构 \(i:S\to S'\) 使
+    \[m'\circ i=m.\]
+    (ii) 等价类 \([m]\) 称为 \(A\) 的一个<strong data-page-node-id="RKpVUoU5azBTYfCjg9oxdq">子对象</strong>（subobject）。全体子对象之集记作
+    \[\operatorname{Sub}_{\mathbf C}(A):=\{\,m:S\to A\mid m\ \text{单态}\,\}/\!\sim.\]
+    当 \(\mathbf C\) 明确时简写为 \(\operatorname{Sub}(A)\)。　【A §5.1, p.95】
+  </div>
+  <div class="prop" data-page-node-id="6xCX0nw30Xwt9iSFGSYK4F"><span class="lbl" data-page-node-id="jtNgG5mJhixe8psCPxjJ5m">命题 4.1.2</span>　关系 \(\sim\) 是子对象候选上的等价关系；且若 \(m\sim m'\)，使 \(m'\circ i=m\) 的同构 \(i\) 唯一。
+    <div class="proof" data-page-node-id="PsdNSzDx4Rjk3dpco1DYaj"><span class="pl" data-page-node-id="djp0pQTtnjfwxaSlETd7sn">证明：</span><strong data-page-node-id="lJMaKyFwgAs5u6RnApi8ax">自反</strong>：取 \(i=\operatorname{id}_S\)，则 \(m\circ\operatorname{id}_S=m\)。<strong data-page-node-id="IoRYpOtNras5wiMkU54f2R">对称</strong>：若 \(m'\circ i=m\) 且 \(i\) 同构，则 \(m=m'\circ i\) 给出 \(m\circ i^{-1}=m'\)，故 \(m\sim m'\) 的逆 witness 是 \(i^{-1}\)。<strong data-page-node-id="hNelhGQ6g8a7FGDCnudy0D">传递</strong>：若 \(m'\circ i=m\)、\(m''\circ j=m'\)（\(i:S\to S'\)、\(j:S'\to S''\) 同构），则 \(m''\circ(j\circ i)=(m''\circ j)\circ i=m'\circ i=m\)，而 \(j\circ i\) 是同构。
+      <br data-page-node-id="iyUGhcAN0qHTg057rsKZC0"><strong data-page-node-id="yADT7HFve0GfxMAmMu5LXZ">唯一性：</strong>设 \(i,i':S\to S'\) 都满足 \(m'\circ i=m=m'\circ i'\)。因 \(m'\) 是单态，由 2.1 节定义 2.1.1 的消去律得 \(i=i'\)。<span class="qed" data-page-node-id="m9T8lTq3rs0x12VholJyeY">∎</span></div>
+  </div>
+  <div class="rmk" data-page-node-id="UQodHEiXZZXSbLUhLzEP1k">唯一性保证了"等价类里的同构相容"，从而商集上的后续定义不依赖代表元的任意选择——这是下面良定性证明的关键。</div>
+
+  <h3 class="sub" data-page-node-id="QcdWqOVAhIRPCcLIgWsKcA">4.1.3　\(\operatorname{Sub}(A)\) 上的偏序</h3>
+  <p data-page-node-id="5DGJIRA3mrXsNZEHbOW2oD">子集之间有包含关系 \(\subseteq\)；在范畴里，"\(m\) 的像包含在 \(m'\) 的像里"应当翻译成"\(m\) 因子过 \(m'\)"。</p>
+  <div class="defn" data-page-node-id="5Ge13tklSI0imzbKBmDlUL"><span class="lbl" data-page-node-id="FG2w0aMrVICzKdrwyXkr3B">定义 4.1.3（子对象的序）</span>　设 \([m],[m']\in\operatorname{Sub}(A)\)。定义
+    \[[m]\le[m']\quad:\Longleftrightarrow\quad \exists\,f:S\to S'\ \text{使}\ m'\circ f=m.\]
+    由命题 4.1.2 的唯一性，若这样的 \(f\) 存在则唯一（因 \(m'\) 单态），记作 \(f=m/m'\)。　【A §5.1, p.96】
+  </div>
+  <div class="prop" data-page-node-id="JGcTgY7Lzg89vJZTZAMlM4"><span class="lbl" data-page-node-id="HSH94nfZLCYXJuBeWqTQQ7">命题 4.1.4</span>　\(\le\) 不依赖代表元的选择，且是 \(\operatorname{Sub}(A)\) 上的偏序。
+    <div class="proof" data-page-node-id="rUqq3htA9jdnPNYmviQIGE"><span class="pl" data-page-node-id="HqxQNXR5Wf3aiitdU12lrT">证明：</span>分四步。
+      <br data-page-node-id="HhI9Ts0RjKQ3jLLjcR1LOW"><strong data-page-node-id="9cSSNc1KCuSQDO8HYS9ptZ">(1) 良定性。</strong>设 \(m\sim m_1\)、\(m'\sim m_1'\)，即取同构 \(i:S\to S_1\)、\(i':S'\to S_1'\) 使 \(m_1\circ i=m\)、\(m_1'\circ i'=m'\)。设存在 \(f:S\to S'\) 使 \(m'\circ f=m\)。定义
+      \[f_1:=i'\circ f\circ i^{-1}:S_1\to S_1'.\]
+      则
+      \[m_1'\circ f_1=m_1'\circ i'\circ f\circ i^{-1}=m'\circ f\circ i^{-1}=m\circ i^{-1}=m_1\circ i\circ i^{-1}=m_1.\]
+      故 \([m_1]\le[m_1']\)。反向同理（用 \(i^{-1},(i')^{-1}\)），故关系良定义于等价类上。
+      <br data-page-node-id="aZTrgU86MmjaBTHf6tt9kI"><strong data-page-node-id="JT3ZAilueEofm1Ry70pWsI">(2) 自反。</strong>\(m\circ\operatorname{id}_S=m\)，故 \([m]\le[m]\)。
+      <br data-page-node-id="bvbHF3kstdQt5iVGrR5ZOn"><strong data-page-node-id="wDnKwogjiw4xPxq317gJXQ">(3) 传递。</strong>若 \(m'\circ f=m\)、\(m''\circ g=m'\)（\(g:S'\to S''\)），则 \(m''\circ(g\circ f)=(m''\circ g)\circ f=m'\circ f=m\)，故 \([m]\le[m'']\)。
+      <br data-page-node-id="oaxOihtQ8FGw5VNm6SYf2z"><strong data-page-node-id="sVWRmhpzGD7CFF9QoSkmGt">(4) 反对称。</strong>设 \([m]\le[m']\) 且 \([m']\le[m]\)，取 \(f:S\to S'\)、\(g:S'\to S\) 使
+      \[m'\circ f=m,\qquad m\circ g=m'.\]
+      于是
+      \(m\circ(g\circ f)=(m\circ g)\circ f=m'\circ f=m=m\circ\operatorname{id}_S\)，因 \(m\) 单态得 \(g\circ f=\operatorname{id}_S\)；同理由 \(m'\circ(f\circ g)=(m'\circ f)\circ g=m\circ g=m'\) 且 \(m'\) 单态得 \(f\circ g=\operatorname{id}_{S'}\)。故 \(f\) 同构（逆为 \(g\)）且 \(m'\circ f=m\)，即 \(m\sim m'\)，两个等价类相等。<span class="qed" data-page-node-id="sMJ6kl9k0d7DIPTVuRkS7K">∎</span></div>
+  </div>
+  <div class="rmk" data-page-node-id="to6qaBDcAlt6hC2YcUmfJE"><strong data-page-node-id="DTz1gKWfB1tkXvWyveKRYA">反对称处最容易漏。</strong>必须用"单态可消"才能从 \(m\circ(g\circ f)=m\circ\operatorname{id}\) 推出 \(g\circ f=\operatorname{id}\)。这正是单态定义（消去律）的用武之地，也是为什么子对象要用<em data-page-node-id="pAESsnLm9O3QwCNRn2P5Jm">单态</em>而非任意箭头来定义。</div>
+
+  <h3 class="sub" data-page-node-id="AcXoUBArehdI4jfCiosHHk">4.1.4　\(\mathbf{Set}\) 中的子对象</h3>
+  <div class="prop" data-page-node-id="HivGJTUER9QVeLZk5hiLy8"><span class="lbl" data-page-node-id="DLExd6tHpWHxtTeF3bus1R">命题 4.1.5</span>　映射
+    \[\Phi:\operatorname{Sub}_{\mathbf{Set}}(A)\longrightarrow\mathcal P(A),\qquad \Phi([m])=\operatorname{im}(m)=\{\,m(s)\mid s\in S\,\}\]
+    是良定义的偏序集同构（\(\mathcal P(A)\) 按通常的 \(\subseteq\) 排序）。
+    <div class="proof" data-page-node-id="aPsy2ynaGDQgkpQESC1RXa"><span class="pl" data-page-node-id="FQFLPT5EQhgZlPcFOutzeU">证明：</span><strong data-page-node-id="agFZBAJ6XuYuGuBe3D37Q9">良定义：</strong>若 \(m'\circ i=m\) 且 \(i:S\to S'\) 是双射（\(\mathbf{Set}\) 中同构即双射，命题 1.3.4），则
+    \[\operatorname{im}(m)=\{\,m'(i(s))\mid s\in S\,\}=\{\,m'(s')\mid s'\in S'\,\}=\operatorname{im}(m'),\]
+    因 \(i\) 满。故 \(\Phi\) 只依赖等价类。
+      <br data-page-node-id="vvWcy3hoHYjELEDjCZ0Cak"><strong data-page-node-id="VaixhuDNSyf4CpPYRMcTdA">保序：</strong>若 \(m'\circ f=m\)，则 \(\operatorname{im}(m)=\{\,m'(f(s))\mid s\in S\,\}\subseteq\operatorname{im}(m')\)。故 \([m]\le[m']\Rightarrow\Phi([m])\subseteq\Phi([m'])\)。
+      <br data-page-node-id="z2jayTWJ3uT0VpYcklEFqS"><strong data-page-node-id="3DqK8C6aQ3PmjAvAzItes8">反映序：</strong>若 \(\operatorname{im}(m)\subseteq\operatorname{im}(m')\)，对每个 \(s\in S\)，\(m(s)\in\operatorname{im}(m')\)，存在 \(s'\in S'\) 使 \(m'(s')=m(s)\)；因 \(m'\) 单射，此 \(s'\) 唯一，故得函数 \(f:S\to S'\) 满足 \(m'\circ f=m\)，即 \([m]\le[m']\)。
+      <br data-page-node-id="t16arTqR7WwkCDjDazyv2f"><strong data-page-node-id="Ad2GfHRxN0MUVoff8bNjuT">满：</strong>对任意 \(U\subseteq A\)，取包含 \(j:U\hookrightarrow A\)（它是单态），则 \(\Phi([j])=U\)。
+      <br data-page-node-id="FRmiputXfw8oq0Gwe7wvRK"><strong data-page-node-id="ZpLQcR8NVnfNtJpFrNPLo9">单：</strong>若 \(\Phi([m])=\Phi([m'])=U\)，由反映序的论证得 \(m'\circ f=m\) 与 \(m\circ g=m'\)；在 \(\mathbf{Set}\) 中按命题 4.1.4 (4) 的论证，\(f,g\) 互为逆双射，故 \(m\sim m'\)。（这也直接由 \(\Phi\) 保序且反映序、且 \(\mathcal P(A)\) 是偏序推出。）
+      <br data-page-node-id="MPvyNRghTHy5b5GiI59wGo">综上 \(\Phi\) 是偏序集同构。<span class="qed" data-page-node-id="JjZnu3eHJSXJKTAwNkpNrA">∎</span></div>
+  </div>
+  <div class="rmk" data-page-node-id="uBFFO1oVeolwtZSxaGgr6x">命题 4.1.5 说明范畴定义没有"走样"：它在 \(\mathbf{Set}\) 上精确还原我们熟悉的幂集格。但它的价值在于对 \(\mathbf{Grp}\)、\(\mathbf{Top}\)、以及没有元素的拓扑斯同样成立——在那里 \(\operatorname{Sub}(A)\) 不再是布尔代数而是 Heyting 代数（第 16 章）。</div>
+
+  <h3 class="sub" data-page-node-id="n4MMBWd7X5ARVZUGVSgpes">4.1.5　向拉回过渡</h3>
+  <p data-page-node-id="kuGCR8yZu2zbmrX0FOn5IC">子对象不只是静态的格。给定任意箭头 \(f:A\to B\)，我们希望能把 \(B\) 的子对象"拉回"成 \(A\) 的子对象——集合论中就是原像 \(U\mapsto f^{-1}(U)\)。在范畴中这个操作要到下节定义的<strong data-page-node-id="X1EVJG4s1VmYOKRDVkgyGX">拉回</strong>才能给出，记作
+    \[f^\ast:\operatorname{Sub}(B)\longrightarrow\operatorname{Sub}(A).\]
+  §4.2 命题 4.2.6 将证明 \(f^\ast\) 良定义（核心是"单态的拉回仍是单态"）。随后第 13 章会证明：在拓扑斯中 \(f^\ast\) 有左、右伴随 \(\exists_f\dashv f^\ast\dashv\forall_f\)，它们正是存在量词与全称量词——你会在那里看到本节的 \(\operatorname{Sub}(A)\) 升级为内部逻辑的真值格。</p>
+
+  <div class="box exer" data-page-node-id="F9Tar1yLHMkORzQFdt604R">
+    <h4 data-page-node-id="JbycFYIfhHGtQca1cGr3K5">③ ✅ 课后练习题</h4>
+    <div class="grp" data-page-node-id="WPV0Y89mFnx54WZkgIPsuB">（一）基础巩固题</div>
+    <ol data-page-node-id="FLGZ3YSZu1RXTtSdCkBW9w">
+      <li id="q411" data-page-node-id="e5FvMlQzd7sgugQxetjQQY">设 \(m:S\to A\) 与 \(m':S'\to A\) 是 \(\mathbf{Set}\) 中的单态。证明：\(m\sim m'\) 当且仅当 \(\operatorname{im}(m)=\operatorname{im}(m')\)。（要求双向写出，不得引用命题 4.1.5 的结论。</li>
+      <li id="q412" data-page-node-id="5dtSzgTWBMCysfRJWAeCxc">设 \(m:S\xrightarrow{\sim}A\) 是同构。证明 \([m]\) 是 \(\operatorname{Sub}(A)\) 的最大元。又问：若只设 \([m]\le[m']\) 且 \(m'\) 是同构，能否推出 \([m]=[m']\)？给出证明或反例。</li>
+      <li id="q413" data-page-node-id="jkB1PP8U0mE4HwifAbApAR">设 \(m:S\hookrightarrow A\) 是包含映射。验证 \([m]\) 在 \(\operatorname{Sub}_{\mathbf{Set}}(A)\) 中对应的元素恰是 \(S\)（提示：用命题 4.1.5 的映射 \(\Phi\)）。</li>
+      <li id="q414" data-page-node-id="EjxhFKvmFyJnkO0VQqVd1N">在格 \(L\) 视为范畴（\(x\to y\iff x\le y\)，见习题 1.1.5）时，描述 \(\operatorname{Sub}_L(x)\)，并说明它何时与 \(L\) 的区间 \([0,x]\) 一致。</li>
+    </ol>
+    <div class="grp" data-page-node-id="wAMZmnHmQGIOhe7tohq2BF">（二）进阶思考题</div>
+    <ol start="5" data-page-node-id="aRezktgVEViKyhsI8xDiXh">
+      <li id="q415" data-page-node-id="B4Lg7laQBamjsr5VdALZ3E">设 \(f:A\to B\) 为 \(\mathbf{Set}\) 中的函数，定义 \(f^{-1}:\mathcal P(B)\to\mathcal P(A)\) 为通常的逆像。证明 \(f^{-1}\) 保序（\(U\subseteq V\Rightarrow f^{-1}(U)\subseteq f^{-1}(V)\)），并判断是否保任意并与任意交，给出证明或反例。</li>
+      <li id="q416" data-page-node-id="Jf0HBrbuZXLFlzntwHTAvt">考虑"单态"定义中的消去律：命题 4.1.4 的反对称证明与命题 4.1.2 的唯一性证明都用到了它。请具体指出：若把定义 4.1.1 中的"单态"放宽为"任意箭头"，上述证明各在哪一步失败？并举一个 \(\mathbf{Set}\) 中的例子说明此时 \(\operatorname{Sub}(A)\) 不再是偏序集。</li>
+    </ol>
+  </div>
+
+  <div class="box ans" data-page-node-id="Mg6OmSa7VDXXkNlFnBJoAV">
+    <h4 data-page-node-id="pjwLvwGFasPCs5BVcHPTLm">④ ✅ 习题参考答案</h4>
+    <div class="item" data-page-node-id="Oy5GifekeiuazxL5lpUFxt"><b data-page-node-id="bJH5SuIALAc6ejHLAoaKTk">4.1.1</b>　"⟹"：设 \(m'\circ i=m\)，\(i\) 双射。则 \(\operatorname{im}(m)=\{m'(i(s))\mid s\in S\}\)。因 \(i\) 满，\(\{i(s)\mid s\in S\}=S'\)，故该集等于 \(\{m'(s')\mid s'\in S'\}=\operatorname{im}(m')\)。
+      <br data-page-node-id="GrhAPoPLZBt6590vM4fC69">"⟸"：设两像相同，记为 \(U\)。对 \(s\in S\)，\(m(s)\in U=\operatorname{im}(m')\)，存在 \(s'\in S'\) 使 \(m'(s')=m(s)\)；因 \(m'\) 单射，此 \(s'\) 唯一，记为 \(i(s)\)。这给出函数 \(i:S\to S'\) 满足 \(m'\circ i=m\)。\(i\) 单射：若 \(i(s_1)=i(s_2)\)，则 \(m(s_1)=m'(i(s_1))=m'(i(s_2))=m(s_2)\)，\(m\) 单射得 \(s_1=s_2\)。\(i\) 满射：对 \(s'\in S'\)，\(m'(s')\in U=\operatorname{im}(m)\)，存在 \(s\in S\) 使 \(m(s)=m'(s')\)，由 \(i\) 的定义（唯一性）得 \(i(s)=s'\)。故 \(i\) 是双射即\(\mathbf{Set}\) 中的同构，\(m\sim m'\)。<span class="qed" data-page-node-id="Iag9x2e2ARQO7MJyRbllkA">∎</span></div>
+    <div class="item" data-page-node-id="YICzcCCv8QNiw6Yvbn8bZD"><b data-page-node-id="t8z8zHwtbkBRcWEX60FCAB">4.1.2</b>　(1) 设 \(n:T\to A\) 是任一子对象候选。因 \(m\) 同构，令 \(f:=m^{-1}\circ n:T\to S\)，则
+      \[m\circ f=m\circ m^{-1}\circ n=n,\]
+      故 \([n]\le[m]\)，即 \([m]\) 是 \(\operatorname{Sub}(A)\) 的最大元（它对应 \(\mathbf{Set}\) 中的全集 \(A\)）。
+      <br data-page-node-id="UrQGTE1tSLgVAJyrafpwdV">(2) <strong data-page-node-id="IJyj7bKO7MErQajzCCpZ01">不能</strong>。取 \(\mathbf C=\mathbf{Set}\)，\(A=\{1,2\}\)，\(m'=\operatorname{id}_A:A\to A\)（同构）。取 \(m:\{1\}\hookrightarrow A\) 为包含，\(f:\{1\}\to A\) 为包含，则 \(m'\circ f=m\)，故 \([m]\le[m']\)。但 \(\operatorname{im}(m)=\{1\}\ne A=\operatorname{im}(m')\)，由命题 4.1.5 得 \([m]\ne[m']\)。<span class="qed" data-page-node-id="ahiAgDjV63jYmQDk6eUShX">∎</span></div>
+    <div class="item" data-page-node-id="nISmgxFdSuAmLvoZ8NaDGU"><b data-page-node-id="QFdoFVO2551glXUFGfBcEc">4.1.3</b>　包含 \(j:S\hookrightarrow A\) 的像 \(\operatorname{im}(j)=S\)（作为 \(A\) 的子集），故 \(\Phi([j])=S\)。<span class="qed" data-page-node-id="F6LPzfEqDDm47ZF3psy4h3">∎</span></div>
+    <div class="item" data-page-node-id="JJQT2UCM47XCfAZbSqZo8n"><b data-page-node-id="m5jYHQtoM68slkRpgKYAiU">4.1.4</b>　格 \(L\) 视为范畴时，到 \(x\) 的箭头 \(m:s\to x\) 存在当且仅当 \(s\le x\)；此类箭头至多一条（因 Hom 集是单元集或空集）。单态的判定：在此范畴中任意箭头都是单态（因为若 \(m\circ f=m\circ g\)，只要复合有定义就唯一，故 \(f=g\)）。等价关系 \(\sim\)：\(m\sim m'\) 当且仅当 \(s=s'\)（同构在偏序范畴中即相等，见习题 1.1.5(b)）。故 \(\operatorname{Sub}_L(x)=\{\,s\in L\mid s\le x\,\}\)，即主理想 \(\downarrow x\)（区间 \([0,x]\)，若 \(L\) 有底元 \(0\)）；若 \(L\) 无底元，则它就是区间 \((-\infty,x]\)。<span class="qed" data-page-node-id="j0u9y98WUEJ5EXFQdNedfO">∎</span></div>
+    <div class="item" data-page-node-id="p8ZDx8mLZJz8yA50HmKVN4"><b data-page-node-id="0aeUqzLXEzE2LMvUSUfCbL">4.1.5</b>　保序：若 \(U\subseteq V\)，则 \(a\in f^{-1}(U)\Rightarrow f(a)\in U\subseteq V\Rightarrow a\in f^{-1}(V)\)。保任意并：\(a\in f^{-1}(\bigcup_i U_i)\iff f(a)\in\bigcup_i U_i\iff\exists i,f(a)\in U_i\iff a\in\bigcup_i f^{-1}(U_i)\)。保任意交：同理，把 \(\exists i\) 换成 \(\forall i\)。故 \(f^{-1}\) 同时保任意并与任意交（它是格同态，甚至帧同态）。<span class="qed" data-page-node-id="xVTvDl0WdaewDjLMN1uOio">∎</span></div>
+    <div class="item" data-page-node-id="WXmjlnp0KW2yZRUIO1rN4f"><b data-page-node-id="hCcLTVPQpjOI5tiziDyvsd">4.1.6</b>　命题 4.1.2 的唯一性证明："因 \(m'\) 单态，由消去律得 \(i=i'\)"——若 \(m'\) 只是任意箭头，由此不能推出 \(i=i'\)。命题 4.1.4 反对称："由 \(m\) 单态得 \(g f=\operatorname{id}_S\)"同样失效。
+      <br data-page-node-id="rdNXDVnMs5il1TwFDtyf3x">具体反例：取 \(\mathbf C=\mathbf{Set}\)，\(A=\{*\}\)。所有到 \(A\) 的函数都是候选（不再要求单态）。对任意非空集合 \(S\)，唯一函数 \(!:S\to A\)。取 \(S=\{1\}\)、\(S'=\{1,2\}\)，唯一函数 \(m:S\to A\)、\(m':S'\to A\) 都是满射到单元集。二之间存在函数 \(f:S\to S'\)（\(f(1)=1\)）使 \(m'\circ f=m\)，但不存在同构 \(S\cong S'\)（基数不同），故 \(m\not\sim m'\)。同时反向也存在 \(g:S'\to S\)（常值 \(1\)）使 \(m\circ g=m'\)，故按定义 4.1.3 有 \([m]\le[m']\) 且 \([m']\le[m]\) 而 \([m]\ne[m']\)——反对称失败，"偏序"退化成预序。<span class="qed" data-page-node-id="KDMoXaA2fPfSRexHlQ8AZ4">∎</span></div>
+  </div>
+
+  <div class="box phil" data-page-node-id="T3jSKl4hzSwlZCp41CJ3Em">
+    <h4 data-page-node-id="mPaAjjRHWCfN6zJBsnjFZd">选读拓展（哲学联系，非正文）</h4>
+    <p data-page-node-id="8Dq2BvB8W826lQrEetiAZh">本节的核心动作——"取等价类以忘掉载体的重新标号"——在哲学语义里有直接的回声。一个性质（命题）的外延不该依赖于我们用哪个集合来充当它的实例集合；把单态 \(S\hookrightarrow A\) 视为"一个性质在 \(A\) 上的实现"，取等价类就是承认：实现方式可以不同，只要嵌入到 \(A\) 的方式相同，就是同一个子对象。这与结构主义对数学对象的理解一致：对象由它在结构中的位置（这里是到 \(A\) 的嵌入）识别，而非由内在材料识别。</p>
+    <p data-page-node-id="po63UZVbWSQDcFU42P7pLF">与你研究主题更近的是下一步：在拓扑斯中 \(\operatorname{Sub}(A)\) 是 Heyting 代数，其元素可以读作"在阶段/情境 \(A\) 下可断言的命题"，而 \(\le\) 是蕴含的强度序。第 18 章的 Kripke–Joyal 语义会把这个序展开为"随情境细化而单调"的强制关系。于是本节看似纯技术的"商掉载体"，实为后面把命题做成可变真值的第一块基石——但要再次强调：这里只是铺垫，尚无真值语义，只有嵌入关系。</p>
+  </div>
+</section>
+
+<section class="sec" id="s4-2" data-page-node-id="0dfQni9MkuoaXu72TeKkhi">
+  <div class="sec-h" data-page-node-id="zUVR9BWxnwkHCXljZq6Y5V"><span class="sec-no" data-page-node-id="YUQC3BXWAfaN07wXyAcduD">4.2</span><h2 data-page-node-id="2X2jlXoODwE5f4A8IIAi5H">拉回及其性质</h2><span class="src" data-page-node-id="mqbT7SByJeWI79HrBxzDVG">A §5.2–5.3, p.97–104</span></div>
+
+  <div class="box learn" data-page-node-id="WEQAdAsHphDuYdTI61LriT">
+    <h4 data-page-node-id="ltPLM4G8F5PRTTAfPoD6Ha">① 本节学习目标</h4>
+    <ol data-page-node-id="RkzIwqUwbRRigLd8H6hbRR">
+      <li data-page-node-id="DH7OYN5Y8PWPVKD56iTRYQ">严格定义拉回（纤维积）方块，说清它作为"方程 \(f(a)=g(b)\) 的泛性质解"的含义；</li>
+      <li data-page-node-id="riDCwhRq6wFD571o0ZlcXS">证明拉回唯一到唯一同构；</li>
+      <li data-page-node-id="edReeW5D9I7khY0X3sc27E">在 \(\mathbf{Set}\) 中显式构造拉回并验证泛性质；</li>
+      <li data-page-node-id="qGA1wlbC5xflWW6vZK4hKI">证明存在性定理：有积与等化子的范畴必有拉回（这是把前两章零件组装起来的第一个成品）；</li>
+      <li data-page-node-id="pE8gdViKLHJdcZOz8kIfmD">证明"单态的拉回仍是单态"，并由此说明 §4.1 预告的拉回函子 \(f^\ast:\operatorname{Sub}(B)\to\operatorname{Sub}(A)\) 良定义；</li>
+      <li data-page-node-id="vZYZDXcF9d12Asr6gHghvi">掌握拉回的粘贴律（进阶习题），它会在第 17 章 Beck–Chevalley 条件中重现。</li>
+    </ol>
+  </div>
+
+  <h3 class="sub" data-page-node-id="B6xQODnDeGajuCTHLe2is6">4.2.1　动机：同一底上的两个对象如何"对齐"</h3>
+  <p data-page-node-id="Pvn64GryTaFtl1tIHkzlgW">设 \(f:A\to C\)、\(g:B\to C\) 是两个箭头，把它们想象成"两个对象各自带有到共同基底 \(C\) 的坐标"。我们想在 \(A\) 与 \(B\) 之间比较那些<strong data-page-node-id="3rJOznCGnpJJHVA6WG4Lro">坐标相同</strong>的片段：在 \(\mathbf{Set}\) 中就是
+    \[A\times_C B=\{\,(a,b)\in A\times B\mid f(a)=g(b)\,\}.\]
+    这个集合连同两投影， 恰好满足如下泛性质：从任意 \(X\) 同时给出 \(x:X\to A\)、\(y:X\to B\) 且 \(fx=gy\)，唯一因子过它。把这个性质抽象出来即得拉回。</p>
+  <div class="rmk" data-page-node-id="5XhPDFerSb700owuBe7WNK"><strong data-page-node-id="mqFjv8jkIRs1mBQGFqYYsA">为什么叫"拉回"。</strong>§4.1 末尾预告的 \(f^\ast\) 把 \(B\) 的子对象沿 \(f\) 拉到 \(A\)；执行这个"拉"的正是本节的方块。在几何里它叫纤维积，在逻辑里它对应"沿上下文替换"，在代数里它是基变换（base change）——同一个构造的不同外衣。</div>
+
+  <h3 class="sub" data-page-node-id="EZtadnB2sQWeJUBqvEGFV3">4.2.2　拉回的定义</h3>
+  <div class="defn" data-page-node-id="yjPzeKIeLJ60ADVvc6Gtce"><span class="lbl" data-page-node-id="RCw6eZzrvFxZsiRy4lLTcf">定义 4.2.1（拉回 / 纤维积）</span>　设 \(\mathbf C\) 为范畴，\(f:A\to C\)、\(g:B\to C\) 为箭头。一个<strong data-page-node-id="mtmlMhxtycQBTWqps13hzc">拉回</strong>（pullback）是对象 \(P\) 连同箭头 \(p_1:P\to A\)、\(p_2:P\to B\)，满足
+    \[f\circ p_1=g\circ p_2,\]
+    并且对任意对象 \(X\) 与箭头 \(x:X\to A\)、\(y:X\to B\) 满足 \(f\circ x=g\circ y\)，存在<strong data-page-node-id="1rn0HuLP6J5YsPTSxD241t">唯一</strong>箭头 \(u:X\to P\) 使
+    \[p_1\circ u=x,\qquad p_2\circ u=y.\]
+    图示：
+    \[
+      \begin{array}{ccc}
+        P & \xrightarrow{\ p_2\ } & B\\[2pt]
+        \downarrow{\scriptstyle p_1} & & \downarrow{\scriptstyle g}\\[2pt]
+        A & \xrightarrow{\ f\ } & C
+      \end{array}
+    \]
+    此时称方块为<strong data-page-node-id="vwOQXikTtz83PnnDXBT7qH">拉回方块</strong>，记 \(P=A\times_C B\)（\(p_1,p_2\) 常省略不写）。　【A §5.2, p.97】
+  </div>
+  <div class="prop" data-page-node-id="WQQXLehYwC0sAjW03bbdjk"><span class="lbl" data-page-node-id="hu1DAN3IBYTT2C0xd88Gd6">命题 4.2.2（拉回唯一到唯一同构）</span>　若两个方块 \((P,p_1,p_2)\) 与 \((P',p_1',p_2')\) 都是 \(f,g\) 的拉回，则存在唯一同构 \(\theta:P\to P'\) 使 \(p_1'\circ\theta=p_1\)、\(p_2'\circ\theta=p_2\)。
+    <div class="proof" data-page-node-id="bMJEpLP1bA8jut5ThJFgHx"><span class="pl" data-page-node-id="TcXlC5EP72fK0gUW7Mqrvv">证明：</span>把 \((P',p_1',p_2')\) 当作拉回、把 \(x=p_1,y=p_2\) 代入其泛性质（注意 \(fp_1=gp_2\)），得唯一 \(\theta:P\to P'\) 使 \(p_1'\theta=p_1\)、\(p_2'\theta=p_2\)。对称地得唯一 \(\phi:P'\to P\) 使 \(p_1\phi=p_1'\)、\(p_2\phi=p_2'\)。
+      则 \(p_1'(\theta\phi)=p_1\phi=p_1'=p_1'\operatorname{id}_{P'}\)，且 \(p_2'(\theta\phi)=p_2'=p_2'\operatorname{id}_{P'}\)。而 \(\operatorname{id}_{P'}\) 与 \(\theta\phi\) 都满足拉回泛性质中对 \(x=p_1',y=p_2'\) 的条件，由唯一性 \(\theta\phi=\operatorname{id}_{P'}\)。同理 \(\phi\theta=\operatorname{id}_P\)。故 \(\theta\) 同构。<span class="qed" data-page-node-id="wctyWwwWwuw38lD6ifBY2z">∎</span></div>
+  </div>
+
+  <h3 class="sub" data-page-node-id="ZJZcbEeqNCRYWQO7HI1nXG">4.2.3　\(\mathbf{Set}\) 中的拉回</h3>
+  <div class="prop" data-page-node-id="uvGETw9zgesFXKhXx5619B"><span class="lbl" data-page-node-id="4JEIRawCvZ2zHPcy2eZ1ly">命题 4.2.3</span>　在 \(\mathbf{Set}\) 中，取
+    \[P=\{\,(a,b)\in A\times B\mid f(a)=g(b)\,\},\quad p_1(a,b)=a,\quad p_2(a,b)=b,\]
+    则 \((P,p_1,p_2)\) 是 \(f:A\to C,\ g:B\to C\) 的拉回。
+    <div class="proof" data-page-node-id="OATwuJAew8BUv8IDnjAIVx"><span class="pl" data-page-node-id="3G6PeQZsbY1en1RUFCdSKB">证明：</span>首先 \(f(p_1(a,b))=f(a)=g(b)=g(p_2(a,b))\)，方块交换。
+      给定 \(x:X\to A\)、\(y:X\to B\) 满足 \(f(x(t))=g(y(t))\) 对一切 \(t\in X\)。定义
+      \[u:X\to P,\qquad u(t)=(x(t),y(t)).\]
+      此定义合法，正因 \(f(x(t))=g(y(t))\) 保证 \((x(t),y(t))\in P\)。则 \(p_1u=x\)、\(p_2u=y\)。
+      唯一性：若 \(u':X\to P\) 也满足 \(p_1u'=x\)、\(p_2u'=y\)，写 \(u'(t)=(a_t,b_t)\)，则 \(a_t=p_1u'(t)=x(t)\)、\(b_t=p_2u'(t)=y(t)\)，故 \(u'(t)=(x(t),y(t))=u(t)\)。<span class="qed" data-page-node-id="ZiG5I2A5UVHuArnPYQuErg">∎</span></div>
+  </div>
+
+  <h3 class="sub" data-page-node-id="rVtcIEGlGxkeGpXLzgwSub">4.2.4　存在性：用积与等化子拼出拉回</h3>
+  <p data-page-node-id="lXL6GvmD4fjJ88oZLdhNPV">现在把前两章的零件组装起来。这个定理说明"有积 + 有等化子"已经很强——它蕴含所有有限极限的存在（§4.3 会推广这一点）。</p>
+  <div class="prop" data-page-node-id="eBKHEPszZkYU97tyVGI1aP"><span class="lbl" data-page-node-id="THleqxQrO0kaJNWEPktYIa">命题 4.2.4（拉回的存在性）</span>　若范畴 \(\mathbf C\) 有任意两个对象的积与任意两个平行箭头的等化子，则 \(\mathbf C\) 中任意两个有共同值域的箭头 \(f,g\) 都有拉回。
+    <div class="proof" data-page-node-id="ZaprTUECHQ9svOQit4BW0s"><span class="pl" data-page-node-id="oHuyZlDjpTMXAFmJtD2fMx">证明：</span>取积 \(A\xleftarrow{\pi_1}A\times B\xrightarrow{\pi_2}B\)。考虑平行箭头
+      \[f\circ\pi_1,\ g\circ\pi_2:\ A\times B\rightrightarrows C.\]
+      取其等化子 \(e:P\to A\times B\)，即 \(f\pi_1 e=g\pi_2 e\)，且 \(e\) 对拉平 \(f\pi_1,g\pi_2\) 的箭头泛。令
+      \[p_1:=\pi_1\circ e:P\to A,\qquad p_2:=\pi_2\circ e:P\to B.\]
+      则 \(fp_1=f\pi_1e=g\pi_2e=gp_2\)，方块交换。
+      <br data-page-node-id="na05OZHeMMDQiBUEoZiqq7"><strong data-page-node-id="FiL5BOFAegIRnA3Q9c46hm">泛性质：</strong>设 \(x:X\to A\)、\(y:X\to B\) 满足 \(fx=gy\)。由积的泛性质得唯一 \(\langle x,y\rangle:X\to A\times B\) 使 \(\pi_1\langle x,y\rangle=x\)、\(\pi_2\langle x,y\rangle=y\)。计算
+      \[f\pi_1\langle x,y\rangle=fx=gy=g\pi_2\langle x,y\rangle,\]
+      故 \(\langle x,y\rangle\) 拉平 \(f\pi_1,g\pi_2\)。由等化子泛性质，存在唯一 \(u:X\to P\) 使 \(e\,u=\langle x,y\rangle\)。于是
+      \[p_1u=\pi_1eu=\pi_1\langle x,y\rangle=x,\qquad p_2u=\pi_2eu=y.\]
+      <strong data-page-node-id="YSFubkoxC8kXhMriRFDNQZ">唯一性：</strong>若 \(u':X\to P\) 也满足 \(p_1u'=x\)、\(p_2u'=y\)，则
+      \[\pi_1(eu')=p_1u'=x=\pi_1\langle x,y\rangle,\qquad \pi_2(eu')=p_2u'=y=\pi_2\langle x,y\rangle.\]
+      由积的泛性质 \(eu'=\langle x,y\rangle\)；又 \(\langle x,y\rangle=eu\)，故 \(eu'=eu\)。等化子 \(e\) 是单态（命题 3.3.2），消去得 \(u'=u\)。<span class="qed" data-page-node-id="mY5CV04uEIN0eLGSrAPmc5">∎</span></div>
+  </div>
+
+  <h3 class="sub" data-page-node-id="oL81FI2eIDjvFq25WN054R">4.2.5　单态在拉回下保持</h3>
+  <p data-page-node-id="qwrpYIo3EIWqwTcUf9Une5">这是本节的技术核心：它保证 §4.1 的 \(f^\ast\) 确有定义。</p>
+  <div class="prop" data-page-node-id="ZbHrivU605JBvU1hmLbzi1"><span class="lbl" data-page-node-id="AZqyR7qHIaam5uKlcJliMy">命题 4.2.5（拉回稳定单态）</span>　设方块
+    \[
+      \begin{array}{ccc}
+        P & \xrightarrow{\ p_2\ } & B\\[2pt]
+        \downarrow{\scriptstyle p_1} & & \downarrow{\scriptstyle g}\\[2pt]
+        A & \xrightarrow{\ f\ } & C
+      \end{array}
+    \]
+    是拉回。若 \(g\) 是单态，则 \(p_1\) 是单态。（对偶地，若 \(f\) 单态则 \(p_2\) 单态。）
+    <div class="proof" data-page-node-id="N3ChDnfoJIRnZtTrOFYja5"><span class="pl" data-page-node-id="4KicjwxI4Eg6H8TVgZANr5">证明：</span>设 \(r,s:X\to P\) 满足 \(p_1r=p_1s\)，需证 \(r=s\)。先看第二个分量：
+      \[g\circ p_2\circ r=f\circ p_1\circ r=f\circ p_1\circ s=g\circ p_2\circ s.\]
+      因 \(g\) 单态，消去得 \(p_2r=p_2s\)。
+      于是 \(r\) 与 \(s\) 都满足拉回泛性质中关于 \(x=p_1r(=p_1s)\)、\(y=p_2r(=p_2s)\) 的条件：确实 \(f(p_1r)=g(p_2r)\) 由方块交换保证。由该泛性质中"唯一"的结论，\(r=s\)。故 \(p_1\) 单态。<span class="qed" data-page-node-id="5eKjorqhkl0P8TOvS96tJb">∎</span></div>
+  </div>
+  <div class="prop" data-page-node-id="XeiHcFbaplWkb72ghjq57x"><span class="lbl" data-page-node-id="bHgAv3I7WTB9ik0TQi7GBX">命题 4.2.6（拉回函子良定义）</span>　设 \(f:A\to B\) 为任意箭头。对每个 \([m]\in\operatorname{Sub}(B)\)，取 \(m:S\to B\) 的代表，作拉回
+    \[
+      \begin{array}{ccc}
+        P & \xrightarrow{\ } & S\\[2pt]
+        \downarrow{\scriptstyle p} & & \downarrow{\scriptstyle m}\\[2pt]
+        A & \xrightarrow{\ f\ } & B
+      \end{array}
+    \]
+    并定义 \(f^\ast([m]):=[p]\)。则 \(f^\ast:\operatorname{Sub}(B)\to\operatorname{Sub}(A)\) 良定义且保序。
+    <div class="proof" data-page-node-id="1J9nHVvQkKODPwEjw6m5Z1"><span class="pl" data-page-node-id="GLnaR9lHgL4SA4YMPnDsxQ">证明：</span><strong data-page-node-id="E6KhwbjRwDQ9H3ljHJV8AM">良定义之"确是子对象"：</strong>\(m\) 单态，由命题 4.2.5（这里 \(g=m\)、\(p_1=p\)）得 \(p\) 单态，故 \([p]\in\operatorname{Sub}(A)\)。
+      <br data-page-node-id="29VyQdImK7RCvLRygPnr0f"><strong data-page-node-id="QXmpEj4QwSADbpgPEyu67S">良定义之"不依赖代表元"：</strong>若 \(m\sim m'\)（同构 \(i:S\to S'\) 使 \(m'i=m\)），在拉回方块上把 \(i\) 与 \(\operatorname{id}_A\) 代入彼此的泛性质，得唯一同构 \(\theta:P\to P'\) 使 \(p'\theta=p\)，故 \([p]=[p']\)。
+      <br data-page-node-id="AFypaBvRo0pBNbDjPAoOFG"><strong data-page-node-id="sjTUwjcbJaiT8RrsF0c6zT">保序：</strong>若 \([m]\le[m']\)，取 \(h:S\to S'\) 使 \(m'h=m\)。拉回得到 \(k:P\to P'\) 满足 \(p'k=p\)（因两边都因子过同一拉回数据），故 \([p]\le[p']\)。<span class="qed" data-page-node-id="XiPqDM0KQVUMh1QLonhJSm">∎</span></div>
+  </div>
+  <div class="rmk" data-page-node-id="1ImkOg1JWPcXfizk3GcEXR">\(f^\ast\) 保序已经证明；它是否有左、右伴随，是第 13 章的核心问题之一。答案是：在拓扑斯中 \(\exists_f\dashv f^\ast\dashv\forall_f\)，即量词就是拉回函子的伴随。</div>
+
+  <h3 class="sub" data-page-node-id="4ZvRAQJi8AfSFPjAPOKAzz">4.2.6　粘贴律</h3>
+  <p data-page-node-id="Y4uRcFdlz77OXMj4INTfNS">拉回可以按方块"粘贴"。它在 §16.3 的 Beck–Chevalley 条件里是主角；本节先陈述，证明留作进阶习题。</p>
+  <div class="prop" data-page-node-id="J698sWgS6TNMYOQ6xfogg7"><span class="lbl" data-page-node-id="7FbuljEvvHfpOmOk6GvY5J">命题 4.2.7（粘贴律，pasting lemma）</span>　设有交换图
+    \[
+      \begin{array}{ccc}
+        R & \xrightarrow{\ } & S & \xrightarrow{\ } & T\\[2pt]
+        \downarrow{\scriptstyle} & & \downarrow{\scriptstyle} & & \downarrow{\scriptstyle}\\[2pt]
+        A & \xrightarrow{\ } & B & \xrightarrow{\ } & C
+      \end{array}
+    \]
+    (i) 若右方块与左方块都是拉回，则外围大方块也是拉回。
+    (ii) 若右方块与外围大方块都是拉回，则左方块也是拉回。
+  </div>
+
+  <div class="box exer" data-page-node-id="oLSfm2C0p2Dprg8UIoVXNv">
+    <h4 data-page-node-id="zwPxzBphhKHZx4VkP4nbXz">③ ✅ 课后练习题</h4>
+    <div class="grp" data-page-node-id="zsIwSf7fbYyHkuBYkKFmAv">（一）基础巩固题</div>
+    <ol data-page-node-id="aysK0kgj9mE6ceqqdZqtpc">
+      <li id="q421" data-page-node-id="1QljrNTnxTDpmMxxY4AUtf">在 \(\mathbf{Set}\) 中，设 \(f:A\to C\)、\(g:B\to C\)。证明：若 \(f\) 是单射，则投影 \(p_2:A\times_C B\to B\) 是单射。（请分别用命题 4.2.5 与元素计算给出两种证明。）</li>
+      <li id="q422" data-page-node-id="A6tKJ6XZJc1zFQMglVWP1u">证明拉回与积的关系：若 \(C=1\) 是终末对象，则 \(A\times_1 B\cong A\times B\)。</li>
+      <li id="q423" data-page-node-id="MzalJlvxN7EGmncBbO8Ku8">设 \(f:A\to C\)。证明对角线 \(\delta:A\to A\times_C A\) 是单态；并证明：\(\delta\) 是同构当且仅当 \(f\) 是单态。（提示：核对 \(p_1,p_2:A\times_C A\rightrightarrows A\) 满足 \(p_1\delta=\operatorname{id}_A=p_2\delta\)。）</li>
+      <li id="q424" data-page-node-id="Bfox2yHAd8aomgoE0LlGHh">证明：若 \(g:B\to C\) 是同构，则对任意 \(f:A\to C\)，拉回 \(A\times_C B\cong A\)，且投影 \(p_1\) 是同构。</li>
+    </ol>
+    <div class="grp" data-page-node-id="RKUW7sikOazV8iYWmsxwJS">（二）进阶思考题</div>
+    <ol start="5" data-page-node-id="STDmgznM9SeGMtccQCZaTf">
+      <li id="q425" data-page-node-id="hckiieEbV2gEQ7HJ30l1Dy">证明命题 4.2.7 的 (i)（两个拉回方块粘成拉回）。提示：把待证大方块的泛性质展开，依次使用右方块、左方块的唯一提升。</li>
+      <li id="q426" data-page-node-id="KEAudhxjc4QBdjxwMUEnAp">设 \(f:A\to B\)。证明 §4.1 定义的 \(f^\ast:\operatorname{Sub}(B)\to\operatorname{Sub}(A)\) 保任意交：即若 \(\operatorname{Sub}(B)\) 有二元交（下确界），则 \(f^\ast([m]\wedge[m'])=f^\ast([m])\wedge f^\ast([m'])\)。提示：用 \(\mathbf{Set}\) 中 \(f^{-1}(U\cap V)=f^{-1}(U)\cap f^{-1}(V)\) 的范畴化，但请注意一般范畴中交是拉回。</li>
+    </ol>
+  </div>
+
+  <div class="box ans" data-page-node-id="5br31kqIaPMEBx0Vqy5iji">
+    <h4 data-page-node-id="M6pPT9X8lxAxtBO9xqxD58">④ ✅ 习题参考答案</h4>
+    <div class="item" data-page-node-id="D9hkB3HDEgDMMix0Pe5B2H"><b data-page-node-id="UAxluhJQ2qD1HNaJbNl6wb">4.2.1</b>　<strong data-page-node-id="nJnCEZ1006NJh06SoMqa42">法一（命题 4.2.5）：</strong>在命题 4.2.5 中把 \(f\) 与 \(g\) 对调角色：那里证明"若 \(g\) 单则 \(p_1\) 单"；对偶地（把 \(A\leftrightarrow B\)，\(p_1\leftrightarrow p_2\)）"若 \(f\) 单则 \(p_2\) 单"。这里 \(f\) 单射即 \(\mathbf{Set}\) 中单态，故 \(p_2\) 单态即单射。
+      <br data-page-node-id="0hPzI74KWaea5EcsBrX9Va"><strong data-page-node-id="3W5CYFShfbILOj9EBj26g3">法二（元素）：</strong>设 \((a,b_1),(a,b_2)\in A\times_C B\) 且 \(p_2\) 取值相同：\(b_1=b_2\)。则两元素本身就是同一个有序对。更一般地，若 \(p_2(a_1,b)=p_2(a_2,b)=b\)，则 \(f(a_1)=g(b)=f(a_2)\)，\(f\) 单射得 \(a_1=a_2\)，故 \((a_1,b)=(a_2,b)\)。<span class="qed" data-page-node-id="m0z7ye7xVpV2i91oXMaSTV">∎</span></div>
+    <div class="item" data-page-node-id="YqCIsRhkP7Jtuua1ueOXBD"><b data-page-node-id="Vq4iTFdlFmEmEsFT5YF08d">4.2.2</b>　因 \(C=1\) 终末，从 \(A\) 与 \(B\) 到 \(C\) 的箭头唯一，记为 \(!_A,!_B\)。拉回 \(A\times_1 B=\{(a,b)\mid !_A(a)=!_B(b)\}=A\times B\)（条件空真）。范畴地：拉回方块
+      \[
+        \begin{array}{ccc}
+          P & \to & B\\
+          \downarrow & & \downarrow\\
+          A & \to & 1
+        \end{array}
+      \]
+      的泛性质：给定 \(x:X\to A,y:X\to B\)，条件 \(!_Ax=!_By\) 自动成立（到 \(1\) 的箭头唯一），故唯一 \(u:X\to P\) 使两投影成立——这正是积 \(A\times B\) 的泛性质。由唯一同构（命题 4.2.2 与积的唯一同构）得 \(A\times_1B\cong A\times B\)。<span class="qed" data-page-node-id="DgG0YactTTR7bkroIhG0L2">∎</span></div>
+    <div class="item" data-page-node-id="Ei2Uip3HtMFxvoN2WFBRXF"><b data-page-node-id="UuPvUlNOLq3kd2nga4xHhH">4.2.3</b>　拉回 \(A\times_C A=\{(a_1,a_2)\mid f(a_1)=f(a_2)\}\) 正是 \(f\) 的核对，投影 \(p_1,p_2\) 满足 \(p_1\delta=\operatorname{id}_A=p_2\delta\)。
+      <br data-page-node-id="7UP3Ad9SCHVKgZHGqsrbNL"><strong data-page-node-id="vFfP3CYyoRP53nowmrgLyV">\(\delta\) 单态：</strong>由 \(p_1\delta=\operatorname{id}_A\)，\(\delta\) 有左逆 \(p_1\)，故单态（若 \(\delta x=\delta y\)，左乘 \(p_1\) 得 \(x=y\)）。
+      <br data-page-node-id="oNf6nOFWyp5BLXUyw9oCa6"><strong data-page-node-id="cDzmCFtrY8ymC3EzNsNC4H">"⟸"设 \(f\) 单态：</strong>在 \(\mathbf{Set}\) 中 \(f(a_1)=f(a_2)\Rightarrow a_1=a_2\)，故 \(A\times_C A=\{(a,a)\mid a\in A\}\)，\(\delta:a\mapsto(a,a)\) 是双射即同构。范畴地：因 \(f\) 单态，\(p_1=p_2\)（对任意 \((a_1,a_2)\in A\times_C A\) 有 \(f(a_1)=f(a_2)\Rightarrow a_1=a_2\)，故 \(p_1(a_1,a_2)=p_2(a_1,a_2)\)），而 \(p_1\delta=\operatorname{id}\)；又核对拉回的泛性质给出 \(\delta p_1=\operatorname{id}_{A\times_CA}\)（因为 \(p_1=p_2\)，对角箭头满足拉回条件且唯一），故 \(\delta\) 同构，逆为 \(p_1\)。
+      <br data-page-node-id="PCNM82CtanMQejoIkidzZv"><strong data-page-node-id="50rcYj8qp0FSEE9ibDWhgg">"⟹"设 \(\delta\) 同构：</strong>由 \(p_1\delta=\operatorname{id}=p_2\delta\) 右乘 \(\delta^{-1}\) 得 \(p_1=p_2\)。于是对任意 \(a_1,a_2\) 满足 \(f(a_1)=f(a_2)\)，对应元素 \((a_1,a_2)\in A\times_C A\)，有 \(a_1=p_1(a_1,a_2)=p_2(a_1,a_2)=a_2\)，故 \(f\) 单态（\(\mathbf{Set}\) 中）。一般范畴中，\(p_1=p_2\) 即核对退化，等价于 \(f\) 单态（因为核对的泛性质使 \(f\) 单态 ⟺ 对角是同构）。<span class="qed" data-page-node-id="Im8CGrYAqRq1G21ccfT0rS">∎</span></div>
+    <div class="item" data-page-node-id="A4VYHqrbGCk1JUYvwCw7mC"><b data-page-node-id="Cc2FUddYwtV1xbb9QobF8J">4.2.4</b>　把 \(g:B\to C\) 视为同构，其逆 \(g^{-1}:C\to B\)。断言 \(P:=A\times_C B\cong A\)，投影 \(p_1:P\to A\) 为同构。构造：定义 \(h:A\to B\) 为 \(h:=g^{-1}\circ f\)。则 \(g\circ h=g\circ g^{-1}\circ f=f\)，故 \((A,\operatorname{id}_A,h)\) 满足拉回方块的条件（以 \(p_1=\operatorname{id}_A\)、\(p_2=h\)）。验证泛性质：给定 \(x:X\to A,y:X\to B\) 使 \(fx=gy\)，则 \(y=g^{-1}fx=hx\)，故唯一 \(u=x\) 使 \(\operatorname{id}_A u=x\)、\(h u=y\)。故 \((A,\operatorname{id},h)\) 是拉回，由唯一同构 \(P\cong A\)，且在此同构下 \(p_1\) 对应 \(\operatorname{id}_A\)，故 \(p_1\) 是同构。<span class="qed" data-page-node-id="YEDdUH4B6ygBdxb1AOppWF">∎</span></div>
+    <div class="item" data-page-node-id="xDsWtDmeagJBsgIvYNEx8w"><b data-page-node-id="W7kDRLBT3I7QHbTTvhCm8u">4.2.5</b>　设右方块（\(S\to T/B\to C\)）与左方块（\(R\to S/A\to B\)）都是拉回。记大方块顶点 \(R,A,T,C\)。给定 \(x:X\to A\)、\(z:X\to T\) 使（大）\(t\circ z=b\circ a\circ x\)（其中 \(b:B\to C\)、\(a:A\to B\)）。因右方块是拉回，由 \(b\circ(a x)=t z\) 得唯一 \(v:X\to S\) 使（右下方块投影）\(S\to B\) 的复合为 \(a x\)、\(S\to T\) 的复合为 \(z\)。再因左方块是拉回，由 \(a x\)（作为 \(X\to B\)）与 \(x\) 满足左方块交换条件，得唯一 \(u:X\to R\) 使 \(R\to A\) 投影为 \(x\)、\(R\to S\) 投影为 \(v\)。则 \(u\) 到大方块两投影分别为 \(x\) 与 \(z\)（后者经 \(v\) 的 \(S\to T\) 投影为 \(z\)）。唯一性：若 \(u'\) 也满足大方块条件，则 \(R\to S\) 的投影 \(v':=q u'\) 满足右方块的 \(B\)-投影 \(=a x\)、\(T\)-投影 \(=z\)，由右方块唯一性 \(v'=v\)；再由左方块唯一性 \(u'=u\)。故大方块是拉回。<span class="qed" data-page-node-id="ErhaAypdsSwup6iWG9iHl7">∎</span></div>
+    <div class="item" data-page-node-id="lt2EgBmvlPcEHaJuHJvTKu"><b data-page-node-id="iPXsvF1uS8J5jzE7uIFuyG">4.2.6</b>　设 \([m]\le[m']\) 与 \([m]\le[m'']\) 的最大下界 \([m']\wedge[m'']\) 在 \(\operatorname{Sub}(B)\) 中存在。范畴中两个子对象的交由拉回给出：对 \(m':S'\to B\)、\(m'':S''\to B\)，取拉回 \(S'\times_B S''\to B\)，其像（因子过的单态）即交的代表。
+      拉回函子 \(f^\ast\) 保留这个构造：因拉回的拉回仍是拉回（粘贴律，习题 4.2.5），方块
+      \[
+        \begin{array}{ccc}
+          P'\times_A P'' & \to & S'\times_B S''\\
+          \downarrow & & \downarrow\\
+          A & \xrightarrow{f} & B
+        \end{array}
+      \]
+      是拉回。而 \(P'=A\times_B S'\)、\(P''=A\times_B S''\)，故 \(P'\times_A P''\cong A\times_B(S'\times_B S'')\)。于是 \(f^\ast([m']\wedge[m''])=[f^\ast[m']\wedge f^\ast[m'']]\)。<span class="qed" data-page-node-id="bWD5SZKXnFbEWpuynMYrP4">∎</span></div>
+  </div>
+
+  <div class="box phil" data-page-node-id="wyAKAehMCzEYNRrNgU49XB">
+    <h4 data-page-node-id="bj6lzA0ZkNchriEudUzNx0">选读拓展（哲学联系，非正文）</h4>
+    <p data-page-node-id="dm8nTquHDMvFCirOtNLK1O">拉回的交换条件 \(f(a)=g(b)\) 是"两个描述在同一基底上相容"的精确写法。这在因果哲学里有一个直接可读的影子：把 \(f:A\to C\)、\(g:B\to C\) 想成两种测量协议对同一隐变量 \(C\) 的读数，拉回 \(A\times_C B\) 就是"在每个可能的隐变量值上对齐的成对结果"。你研究中的 \(do(X)\) 干预与反事实条件，其数学骨架正是这种"固定基底后重新配对"的操作——但要谨慎：这是一个结构类比，不是归纳定义，范畴拉回本身不编码时间或干预语义。</p>
+    <p data-page-node-id="TcwLDuxDP8irxKYhzv1DGn">更贴近你课题的是 \(f^\ast\) 的量词解释。在拓扑斯中 \(\exists_f\dashv f^\ast\dashv\forall_f\) 把"沿上下文 \(f\) 替换"夹在存在与全称之间；第 18 章 Kripke–Joyal 语义据此把 \(\forall\) 解释为"对所有细化成立"、\(\exists\) 解释为"局部有一段成立"。本节证明的 \(f^\ast\) 保序与保交，正是那套语义的代数先声。此处先立技术，语义留到第三部分。</p>
+  </div>
+</section>
+
+<section class="sec" id="s4-3" data-page-node-id="3ig6zbVekyBQVMDE5EFVr7">
+  <div class="sec-h" data-page-node-id="FqAx1ZtxLVapTRfQoMSitn"><span class="sec-no" data-page-node-id="TfIJnCXHu850HLMzHt05mZ">4.3</span><h2 data-page-node-id="GfGazwl482rFngWrhBfaXq">极限与极限的保持</h2><span class="src" data-page-node-id="Ak5uYMkteLrWKNASOZZQz9">A §5.4–5.5, p.104–113</span></div>
+
+  <div class="box learn" data-page-node-id="F5Dsutk7a2H2sYyjf0N45M">
+    <h4 data-page-node-id="P75GHPmUJCZb1Lz8k39NwT">① 本节学习目标</h4>
+    <ol data-page-node-id="ueNkbcOjP8bRbm1A1hL83W">
+      <li data-page-node-id="AyCjKSL7E1ZytEbWgEDISw">严格定义图 \(J\xrightarrow{F}\mathbf C\)、锥、极限锥，把积/等化子/拉回/终对象统一识别为极限的特例；</li>
+      <li data-page-node-id="NhrGB7F1Ne6ajWvsnuiTgY">证明极限唯一到唯一同构；</li>
+      <li data-page-node-id="ZMakwI5jJOVMBJt2GIge3o">证明核心定理：\(\mathbf C\) 有全部有限极限 ⟺ 有终对象 + 二元积 + 二元等化子；</li>
+      <li data-page-node-id="fcHzRkpAADPnlYJhI8fT4L">引入完备性（complete / finitely complete）与函子保持极限（连续函子）；</li>
+      <li data-page-node-id="wS4a0hgO5o09w8mNm5Y2lh">证明 Hom 函子 \(\operatorname{Hom}(A,-)\) 保所有极限，这是第 6 章 Yoneda 引理的技术前身；</li>
+      <li data-page-node-id="BSTQCCOyr19yQovaulvNCW">说明"极限"的哲学读法：它是满足一族约束的"最一般解"，为第 13 章极限作为语义组合原理铺垫。</li>
+    </ol>
+  </div>
+
+  <h3 class="sub" data-page-node-id="mvKkWYtY3Tbh2vmmWDvWdq">4.3.1　动机：把四种构造统一成一种</h3>
+  <p data-page-node-id="s6KT9aHYiItbaukpD2YhfP">回顾已学：终对象是"从空图出发的极限"；积是"离散两点图的极限"；等化子是"两条平行箭头图的极限"；拉回是"三对象 V 形图的极限"。它们都是"给一张图，找一个最一般的对象去'接收'这张图，且任何其它接收方式都唯一因子过它"。把这张图一般化，就得到极限。</p>
+
+  <h3 class="sub" data-page-node-id="dDVVM7wmE8xOhjJD9h8eBe">4.3.2　图、锥与极限</h3>
+  <div class="defn" data-page-node-id="KBvznGhxtFCwqTDTZJ9abx"><span class="lbl" data-page-node-id="k5DHHVWQQBAl3A40rDarC9">定义 4.3.1（图）</span>　一个<strong data-page-node-id="5RhPW6ZZQGxrF2UAdNLrEi">图</strong>是小范畴 \(J\)（称为指标范畴）到 \(\mathbf C\) 的函子 \(F:J\to\mathbf C\)。\(J\) 的对象称为顶点，箭头称为边。小性保证 \(J\) 的对象与箭头都成集合。　【A §5.4, p.104】
+  </div>
+  <div class="defn" data-page-node-id="N9KQwysf0fq6XmK4CNjwkK"><span class="lbl" data-page-node-id="aZvi6h6fNPps07Z8Q39VrA">定义 4.3.2（锥，极限锥）</span>　设 \(F:J\to\mathbf C\) 为图。
+    (i) 一个从对象 \(X\in\mathbf C\) 到 \(F\) 的<strong data-page-node-id="7cPRUPjfyWFqfucMLjZRBJ">锥</strong>（cone）是一族箭头
+    \[\lambda=(\lambda_j:X\to F(j))_{j\in\operatorname{ob}J},\]
+    使得对 \(J\) 中每条箭头 \(\alpha:j\to k\)，有 \(F(\alpha)\circ\lambda_j=\lambda_k\)（即下图交换）。
+    (ii) \(F\) 的一个<strong data-page-node-id="GOoaY4Fpq1PZmLFBD3LPVJ">极限锥</strong>（limiting cone）是一个锥 \((L,\lambda)\)（\(L\in\mathbf C\)），使得对任意锥 \((X,\mu)\) 存在唯一箭头 \(u:X\to L\) 满足
+    \[\lambda_j\circ u=\mu_j\quad\text{对一切 }j\in\operatorname{ob}J.\]
+    此时称 \(L\) 为 \(F\) 的<strong data-page-node-id="qwFo3fQIB1FaGnzLdAxDIV">极限</strong>，记 \(L=\varprojlim F\)。　【A §5.4, p.104–105】
+  </div>
+  <div class="prop" data-page-node-id="Kl91aS4YuPNsDxzb9wWFR6"><span class="lbl" data-page-node-id="fkcD0W3KsCXbagrpEX6Qs5">命题 4.3.3（极限唯一到唯一同构）</span>　若 \((L,\lambda)\)、\((L',\lambda')\) 都是 \(F\) 的极限锥，则存在唯一同构 \(\theta:L\to L'\) 使 \(\lambda'_j\circ\theta=\lambda_j\) 对一切 \(j\)。
+    <div class="proof" data-page-node-id="P5w4zVKqNtS4kSDu76JZkU"><span class="pl" data-page-node-id="mcZTFcjxbGlFK59izNsq7A">证明：</span>与命题 4.2.2 完全同构：把 \((L',\lambda')\) 当极限、锥 \((L,\lambda)\) 代入其泛性质得唯一 \(\theta\)；对称得 \(\phi\)；再用唯一性证 \(\theta\phi=\operatorname{id}\)、\(\phi\theta=\operatorname{id}\)。<span class="qed" data-page-node-id="kHCA8TMPtVaMfdYwJMrgPw">∎</span></div>
+  </div>
+
+  <h3 class="sub" data-page-node-id="YjQcNLymiP5N69OXpusuNs">4.3.3　四种构造作为极限的特例</h3>
+  <div class="prop" data-page-node-id="eolxwKT1ySKE1pwF5dHnut"><span class="lbl" data-page-node-id="pFkHhFExBJeskzDgt93ijl">命题 4.3.4</span>　(1) \(J=\varnothing\)（空范畴）时，\(\varprojlim F\) 就是终对象；(2) \(J\) 为两个孤立对象的离散范畴时，极限是积；(3) \(J\) 为 \(0\rightrightarrows1\)（两条平行箭头）时，极限是等化子；(4) \(J\) 为 V 形 \(1\to0\leftarrow2\) 时，极限是拉回。
+    <div class="proof" data-page-node-id="keysHRIp7n1znrLipLmUGq"><span class="pl" data-page-node-id="NtoxSWiBdZMtX4Qr0PQppB">证明：</span>逐一对照定义 4.3.2 与各自定义。
+      <br data-page-node-id="wHjFcpPJ8qv2CBHgQrOc7f">(1) 空图时锥的定义无组件、无交换条件，故一个锥就是"一个对象 \(X\)"；极限锥即对象 \(L\) 使任意 \(X\) 存在唯一 \(X\to L\)——正是终对象。
+      <br data-page-node-id="DDxnHCECekdP3EeXS8pfAh">(2) \(J\) 离散两点 \(j_1,j_2\)：锥是 \(\lambda_{j_1}:X\to F(j_1)\)、\(\lambda_{j_2}:X\to F(j_2)\)，无交换条件（无箭头）。极限锥即积的泛性质。
+      <br data-page-node-id="oJmy7gi0tAmok0ymzZJRCk">(3) \(J\) 有两对象与两平行箭头 \(\alpha,\beta:j\rightrightarrows k\)：锥是 \(\lambda_j:X\to F(j)\)、\(\lambda_k:X\to F(k)\) 且 \(F(\alpha)\lambda_j=\lambda_k=F(\beta)\lambda_j\)，即 \(\lambda_j\) 拉平 \(F(\alpha),F(\beta)\)，且 \(\lambda_k\) 由 \(\lambda_j\) 唯一决定。故极限就是 \(F(\alpha),F(\beta)\) 的等化子。
+      <br data-page-node-id="mJtoHZ78ceFLsDFMjEaiKk">(4) V 形可重新标定为 \(1\xrightarrow{f}0\xleftarrow{g}2\)：锥是 \(\lambda_1:X\to F(1)\)、\(\lambda_2:X\to F(2)\)、\(\lambda_0:X\to F(0)\) 且 \(F(f)\lambda_1=\lambda_0=F(g)\lambda_2\)，即 \(F(f)\lambda_1=F(g)\lambda_2\)（\(\lambda_0\) 由之决定），故极限是 \(F(1)\times_{F(0)}F(2)\)。<span class="qed" data-page-node-id="75jTgaZDF7sHhezEUhE88e">∎</span></div>
+  </div>
+
+  <h3 class="sub" data-page-node-id="Kr636t2SgrM4qPW6tlwleF">4.3.4　有限极限的存在性定理</h3>
+  <div class="defn" data-page-node-id="KU0vpb0CiZKeEHUQCgBZxw"><span class="lbl" data-page-node-id="M7r3524rXiX9HqDAjvkp8t">定义 4.3.5（完备性）</span>　范畴 \(\mathbf C\) 称<strong data-page-node-id="sgYvOqvTmigexq4XBlAL0l">有有限极限</strong>（finitely complete），若对每个有限图 \(J\)（对象与箭头都有限）与每个 \(F:J\to\mathbf C\)，极限存在。称<strong data-page-node-id="K3p6NoFZFi87uQxFYH2Wb8">完备</strong>（complete），若对所有小图极限都存在。　【A §5.5, p.109】
+  </div>
+  <div class="prop" data-page-node-id="ROAWBDNQqyBwJRZZa4lYjO"><span class="lbl" data-page-node-id="lAMJdhLD18BQF3MDCH2qEF">命题 4.3.6（有限极限存在性定理）</span>　\(\mathbf C\) 有有限极限，当且仅当 \(\mathbf C\) 满足：
+    <ol style="margin:6px 0;padding-left:24px;">
+      <li>有终对象；</li>
+      <li>任意两对象有积；</li>
+      <li>任意两平行箭头有等化子。</li>
+    </ol>
+    <div class="proof" data-page-node-id="E0QWXLN91KH5HIWoauGikx"><span class="pl" data-page-node-id="NEdKRRW72hK8sboZbLBTKC">证明：</span>"⟹"由命题 4.3.4，三种构造都是有限极限的特例，故有限极限存在时它们存在。
+      <br data-page-node-id="VrP8MvKCFBoBwmmHAVFCoM">"⟸"设三条件成立，\(F:J\to\mathbf C\) 为有限图，记 \(J\) 的对象为 \(j_1,\dots,j_n\)，箭头有限。
+      <br data-page-node-id="QFkCsBq2pvsEnbKGYOQxv7"><strong data-page-node-id="55XpDwEqgDWRDe5pTehY4y">第一步：造候选对象。</strong>取积
+      \[P=\prod_{i=1}^{n}F(j_i),\qquad \pi_i:P\to F(j_i).\]
+      <br data-page-node-id="o7FOBIqeJgGHkZlknyqVf9"><strong data-page-node-id="rekInCIWwMbsXWePY2Z8rx">第二步：施加所有箭头约束。</strong>对 \(J\) 中每条箭头 \(\alpha:j_i\to j_k\)，要求 \(\pi_k=F(\alpha)\pi_i\)。把 \(\pi_k\) 与 \(F(\alpha)\pi_i\) 视为 \(P\rightrightarrows F(j_k)\) 的平行箭头，取其等化子 \(e_{\alpha}:P_\alpha\to P\)。依次对所有箭头取等化子（有限次），得对象 \(L\) 与箭头 \(e:L\to P\) 使对每个 \(\alpha:j_i\to j_k\) 有
+      \[\pi_k e=F(\alpha)\pi_i e.\]
+      <br data-page-node-id="NbI4EkyfNXomvahTB2NwSO"><strong data-page-node-id="mR6MnqiuIePFOCmJbcEPEu">第三步：验证极限泛性质。</strong>令 \(\lambda_i:=\pi_i e:L\to F(j_i)\)。上述等式说明 \((\lambda_i)\) 是锥。给定任意锥 \((X,(\mu_i))\)，由积的泛性质得唯一 \(\bar u:X\to P\) 使 \(\pi_i\bar u=\mu_i\)。对每个 \(\alpha:j_i\to j_k\)，
+      \[\pi_k\bar u=\mu_k=F(\alpha)\mu_i=F(\alpha)\pi_i\bar u,\]
+      故 \(\bar u\) 拉平 \(F(\alpha)\pi_i\) 与 \(\pi_k\)；由等化子泛性质 \(\bar u\) 唯一因子过所有 \(e_\alpha\)，从而唯一因子过复合 \(e:L\to P\)：存在唯一 \(u:X\to L\) 使 \(e u=\bar u\)，于是 \(\lambda_i u=\pi_i e u=\pi_i\bar u=\mu_i\)。唯一性由 \(e\) 单态与各泛性质逐层保证。<span class="qed" data-page-node-id="uW73XdKUmysYDi5BFTixBq">∎</span></div>
+  </div>
+  <div class="rmk" data-page-node-id="g2Qk7DPCKT8aNfuKpPSq8E"><strong data-page-node-id="1JC2qXps5BcPFr83fePGe0">有限性的用处。</strong>证明中"依次对所有箭头取等化子"只对有限条箭头合法；无穷图一般无法由有限极限拼出，这正是"完备"需要单独公理（如 \(\mathbf{Set}\) 完备性）的原因。你熟悉的格论中"有限交封闭"与"任意交完备"的界限，与此同构。</div>
+
+  <h3 class="sub" data-page-node-id="8Kbd38hIqpLtbzEv5gnrLi">4.3.5　函子保持极限</h3>
+  <div class="defn" data-page-node-id="bUQVoys6t77CaNypRvHFxz"><span class="lbl" data-page-node-id="lABon8rFgkf1lOHyqFdgFo">定义 4.3.7（保持极限，连续函子）</span>　函子 \(G:\mathbf C\to\mathbf D\) <strong data-page-node-id="I36ZoH0FLbV3xsEtSpFSyk">保持</strong> \(F:J\to\mathbf C\) 的极限，若 \((L,\lambda)\) 是 \(F\) 的极限锥蕴含 \((G(L),G\lambda)\) 是 \(GF\) 的极限锥。若 \(G\) 保持所有小极限，称 \(G\) <strong data-page-node-id="PU7gGYmhUI1ctKZUiKE175">连续</strong>（continuous）。　【A §5.5, p.110】
+  </div>
+  <div class="prop" data-page-node-id="u4cfLs4kF77YDawyl6bsu1"><span class="lbl" data-page-node-id="ZsghQIxr4EMX5xbBrEHli0">命题 4.3.8（Hom 函子保极限）</span>　对任意 \(A\in\mathbf C\)，协变 Hom 函子
+    \[\operatorname{Hom}(A,-):\mathbf C\to\mathbf{Set}\]
+    保持 \(\mathbf C\) 中存在的所有极限。即若 \(L=\varprojlim F\)，则自然同构
+    \[\operatorname{Hom}(A,L)\;\cong\;\varprojlim\,\operatorname{Hom}(A,F-).\]
+    <div class="proof" data-page-node-id="6C8DoDk7M9e2sKq53pNYr7"><span class="pl" data-page-node-id="3hR6NV7TWwYgBvWXC8GESQ">证明：</span>先证右边在 \(\mathbf{Set}\) 中的极限可具体写出：图 \(j\mapsto \operatorname{Hom}(A,F(j))\) 的极限是
+    \[\{\,(\mu_j)_{j}\in\prod_j\operatorname{Hom}(A,F(j))\mid \forall\alpha:j\to k,\ F(\alpha)\mu_j=\mu_k\,\},\]
+    即所有锥的集合（作为 \(\prod_j\) 的子集，带投影）。定义映射
+    \[\Phi:\operatorname{Hom}(A,L)\to\varprojlim\operatorname{Hom}(A,F-),\qquad \Phi(u)=(\lambda_j\circ u)_j.\]
+    <strong data-page-node-id="90qDrDBn9nPynWAlKAxfYz">良定义：</strong>\((\lambda_j u)_j\) 是锥，因 \(F(\alpha)\lambda_j u=\lambda_k u\)。
+    <strong data-page-node-id="AdY1q1mPHTPknMNHJtvoZM">单：</strong>若 \(\Phi(u)=\Phi(v)\)，则 \(\lambda_j u=\lambda_j v\) 对一切 \(j\)；极限锥的泛性质中"唯一"用于锥 \((A,\lambda_j u)\) 得 \(u=v\)。
+    <strong data-page-node-id="6SiJas3rQ5n4CjLHVGTj7R">满：</strong>给定锥 \((\mu_j)_j\)，极限泛性质给出唯一 \(u:A\to L\) 使 \(\lambda_j u=\mu_j\)，故 \(\Phi(u)=(\mu_j)\)。
+    <strong data-page-node-id="CeWKqkCelDRPtIABOhQe45">自然性：</strong>对 \(J\) 中箭头 \(\alpha:j\to k\)，两边投影都给出 \(F(\alpha)\lambda_j u=\lambda_k u\)，方块交换。故 \(\Phi\) 是自然同构。<span class="qed" data-page-node-id="LzpBYT0xeqG9eXuL7rK4ic">∎</span></div>
+  </div>
+  <div class="rmk" data-page-node-id="nVsCpGG8tLDXiQC5cGtt9M">命题 4.3.8 是第 6 章 Yoneda 引理的雏形：Yoneda 引理说一个对象被"所有到它的 Hom-集"完全决定，而这里说的是 Hom-集已经"看见"了所有极限结构。</div>
+
+  <div class="box exer" data-page-node-id="zsEcif0rMyToaISaHSdBhB">
+    <h4 data-page-node-id="weJRxxoEpcvuZDp0LRSkjj">③ ✅ 课后练习题</h4>
+    <div class="grp" data-page-node-id="qUjY8LfMgIKVg2PVRADX9P">（一）基础巩固题</div>
+    <ol data-page-node-id="0aiypOkd4rXUN0TFNYnIa5">
+      <li id="q431" data-page-node-id="TmPTeoiwBMn0wfhhTbjVr6">设 \(F:J\to\mathbf C\) 有极限锥 \((L,\lambda)\)。证明：若 \(J\) 只有两个对象 \(j,k\) 且无箭头，则命题 4.3.3 的唯一同构 \(\theta:L\to L'\) 就是积的唯一同构。</li>
+      <li id="q432" data-page-node-id="zshI1uWc9KAeraWJgigtMB">验证 \(\mathbf{Set}\) 完备：对任意小图 \(F:J\to\mathbf{Set}\)，写出极限 \(\varprojlim F\) 的显式构造（提示：用命题 4.3.8 证明中的"锥集合"），并验证泛性质。</li>
+      <li id="q433" data-page-node-id="aeDW3LGtjrAwYqOyZLDFnS">证明：终止对象 \(1\) 是空图的极限；并用命题 4.3.6 说明为什么"只有终对象"不足以有全部有限极限（给出一个具体范畴的反例，如只有两个对象与恒等箭头的离散范畴）。</li>
+    </ol>
+    <div class="grp" data-page-node-id="HEV4iSS3FDIX90DBYf4qq1">（二）进阶思考题</div>
+    <ol start="4" data-page-node-id="G4KO33Tas6IW0ndZ4aDh18">
+      <li id="q434" data-page-node-id="NpIBVMe0C073gUZaGJGZhD">证明：函子 \(G:\mathbf C\to\mathbf D\) 保终对象，当且仅当 \(G\) 把 \(\mathbf C\) 的终对象映为 \(\mathbf D\) 的终对象。并用此结论说明遗忘函子 \(U:\mathbf{Top}\to\mathbf{Set}\) 保终对象（单点空间映为单元集），但不保余极限中的某类（提示：考虑余积/不交并的底层集合）。</li>
+      <li id="q435" data-page-node-id="1EojWq9YYwlUHAQAYIPs4m">设 \(F:J\to\mathbf C\)、极限 \((L,\lambda)\)。证明：对任意 \(A\in\mathbf C\)，映射 \(\Phi:\operatorname{Hom}(A,L)\to\{\text{锥 }(A,\mu)\}\)（命题 4.3.8 中构造）是双射，且这个双射在 \(A\) 上自然（即 \(\operatorname{Hom}(-,L)\) 与"锥函子"自然同构）。</li>
+    </ol>
+  </div>
+
+  <div class="box ans" data-page-node-id="oWRj9CdYqAm3Ucbv5NTxgL">
+    <h4 data-page-node-id="aY5YLwJeJmBTeRGbZqWAGB">④ ✅ 习题参考答案</h4>
+    <div class="item" data-page-node-id="OIyw0F0aWNTmJIrUNUCkuc"><b data-page-node-id="HbVE8BkXAn74vcBwIoXqAe">4.3.1</b>　\(J\) 离散两点时极限是积 \(F(j)\times F(k)\)，极限锥是两投影。命题 4.3.3 给出唯一 \(\theta:L\to L'\) 使两投影交换，这正是 §2.4 中积的唯一同构。<span class="qed" data-page-node-id="DAJrZHyQdrgvvz5RSfBzdp">∎</span></div>
+    <div class="item" data-page-node-id="FqxRgX7cnrLBxHiCd0nHZi"><b data-page-node-id="BukHUWMFyqIA2gsq28lhIE">4.3.2</b>　定义
+      \[L=\{\,(\mu_j)\in\prod_{j\in J}F(j)\mid \forall\alpha:j\to k,\ F(\alpha)(\mu_j)=\mu_k\,\}\subseteq\prod_j F(j),\]
+      投影 \(\lambda_k:L\to F(k)\) 为第 \(k\) 分量。交换性由 \(L\) 的定义保证。给定任意锥 \((X,(\nu_j))\)，定义 \(u:X\to L\)，\(u(x)=(\nu_j(x))_j\)；因 \((\nu_j(x))\) 是锥（逐点），\(u(x)\in L\)，且 \(\lambda_j u=\nu_j\)。唯一性：若 \(u'\) 也满足，则对每个 \(x\)、每个 \(j\)，\(\lambda_j u'(x)=\nu_j(x)\)，故 \(u'(x)=(\nu_j(x))=u(x)\)。故 \(L\cong\varprojlim F\)，\(\mathbf{Set}\) 完备。<span class="qed" data-page-node-id="KZYR6ycc6MVp9DxLOGqxJc">∎</span></div>
+    <div class="item" data-page-node-id="wQh5FwGaDUrKkPrMS6I4sA"><b data-page-node-id="57Ho8ix0zpWQzioc5S1swC">4.3.3</b>　<strong data-page-node-id="OOeZZ0555DbsIUGvpn5B4J">空图极限 = 终对象：</strong>空图 \(F:\varnothing\to\mathbf C\) 时，锥无分量、无交换条件，故一个锥就是一个对象 \(X\)，极限锥即对象 \(L\) 使每个 \(X\) 存在唯一箭头 \(X\to L\)——正是终对象。
+      <br data-page-node-id="dWdBVCynKzpWEHD4pSebPt"><strong data-page-node-id="ufUApDXtwEVIs2QFhPVo9j">仅终对象不足以有全部有限极限：</strong>取偏序集 \(P=\{a,b,c,t\}\)，关系为 \(a\le t,\ b\le t,\ c\le t\) 及自反（\(a,b,c\) 两两不可比），视为范畴（习题 1.1.5）。则 \(t\) 是终对象（每个对象到 \(t\) 有唯一箭头）。但对象 \(a,b\) 的积应是既 \(\le a\) 又 \(\le b\) 的最大元（下确界 \(a\wedge b\)）；满足 \(x\le a\) 且 \(x\le b\) 的只有 \(a\) 自身需 \(a\le b\)（否）与 \(b\) 自身需 \(b\le a\)（否），故不存在这样的 \(x\)，积不存在。因此有终对象却无二元积，有限极限不全在。<span class="qed" data-page-node-id="vH0m2HqquCKVxI3kTHopK3">∎</span></div>
+    <div class="item" data-page-node-id="F1D4hxkCGhxTcx5gicUdQ1"><b data-page-node-id="Cfk08mGX2PVVsbFQp8bZ9n">4.3.4</b>　<strong data-page-node-id="nYRVFwz5u45tYBSl2HBhvF">保终对象的刻画：</strong>终对象是空图的极限。\(G\) 保它，当且仅当 \(G(1_\mathbf C)\) 是 \(\mathbf D\) 中空图的极限即终对象。
+      <br data-page-node-id="LGsFF44jhnYDKp7MoDAWtC">\(\mathbf{Top}\) 的终对象是单点空间 \(*\)，遗忘函子 \(U(*)=\{*\}\) 是 \(\mathbf{Set}\) 的终对象，故 \(U:\mathbf{Top}\to\mathbf{Set}\) 保终对象。
+      <br data-page-node-id="RJ9boxn0NvguwCwVCV0v6m"><strong data-page-node-id="WT3nkbKRtZfPxaOE7G6mIR">保终对象不蕴含保余极限：</strong>取遗忘函子 \(U:\mathbf{Grp}\to\mathbf{Set}\)。群范畴 \(\mathbf{Grp}\) 的终对象（也是零对象）是平凡群 \(1\)，\(U(1)=\{e\}\) 是 \(\mathbf{Set}\) 终对象，故保终对象。但 \(\mathbf{Grp}\) 中两群 \(G,H\) 的余积是自由积 \(G\ast H\)，其底层集合远大于不交并 \(U(G)\sqcup U(H)\)（例如 \(G=H=\mathbb Z\)，\(\mathbb Z\ast\mathbb Z\) 含字 \(abab^{-1}\dots\) 无穷多个），而 \(U(G)\sqcup U(H)\) 才是 \(\mathbf{Set}\) 中的余积。故 \(U(\mathbb Z\ast\mathbb Z)\ne \mathbb Z\sqcup\mathbb Z=U(\mathbb Z)\amalg U(\mathbb Z)\)，\(U\) 不保余积。<span class="qed" data-page-node-id="6DP4T1qE7ZqW4v5Li3YaEe">∎</span></div>
+    <div class="item" data-page-node-id="mohMhdnH5goGIP0KismIUO"><b data-page-node-id="NP9GI8KfDIHoZhndvbokDN">4.3.5</b>　命题 4.3.8 的 \(\Phi\) 已是双射。自然性：对 \(g:A'\to A\)，需证方块
+      \[\operatorname{Hom}(A,L)\xrightarrow{\Phi_A}\mathrm{Cone}(A,F)\]
+      与 \(\operatorname{Hom}(A',L)\xrightarrow{\Phi_{A'}}\mathrm{Cone}(A',F)\) 在 \(-\circ g\) 下交换：对 \(u:A\to L\)，\(\Phi_{A'}(u\circ g)=(\lambda_j u g)_j=(\lambda_j u)_j\circ g=\Phi_A(u)\circ g\)。故自然，得 \(\operatorname{Hom}(-,L)\cong\mathrm{Cone}(-,F)\)（锥函子）。<span class="qed" data-page-node-id="D88pefH4ZYiOh0Bk4BwUhz">∎</span></div>
+  </div>
+
+  <div class="box phil" data-page-node-id="L4tXBGD88Vxh6q7f1WBZdi">
+    <h4 data-page-node-id="RT9hApnVBncCR2dqX94PBy">选读拓展（哲学联系，非正文）</h4>
+    <p data-page-node-id="Pm9uXFSPQucDFSCYeC0izC">极限的泛性质——"最一般的解，任何其它解都唯一因子过它"——是一种极强的经济性原则：一个概念由它必须满足的关系完全确定，而无需指定它"由什么做成"。这与你在数学哲学中关心的结构主义论题直接相接：对象同一于它在关系网络中的位置。命题 4.3.3 的唯一同构正是这种同一性的技术版本，值得与洛谢（Parfit）式的人格同一性判据对照——不过请注意，范畴的"同构"是可替换性（功能等价），不是数值相等。</p>
+    <p data-page-node-id="5YP54kpT6MJoM38UVXAXIQ">命题 4.3.8 说"Hom 函子看见所有极限"，可以读成：一个对象的全部关系信息（所有到它的箭头）已经编码了它参与的任何组合结构。这是第 6 章 Yoneda 引理的哲学内核——一个东西由它与其他东西的全部关系决定。在语义研究中，这提示把"意义"做成关系结构而非内在内容；但本节只给技术准备，这个解释要等到 Yoneda 与拓扑斯的内部语言才真正展开。</p>
+  </div>
+</section>
+
+<section class="sec" id="s4-4" data-page-node-id="6r7BB6HvMzlZOXCexy7x0r">
+  <div class="sec-h" data-page-node-id="6ffCzVXL7BmgldhW7VBP0a"><span class="sec-no" data-page-node-id="CxZGM8Sg9JhojcdDPjio5m">4.4</span><h2 data-page-node-id="Z9xDuxyZC7TNX8nqc1ZeWt">余极限</h2><span class="src" data-page-node-id="oiLw4OeNwYznyx19smSiYU">A §5.6, p.113–120</span></div>
+
+  <div class="box learn" data-page-node-id="wJDbR2im8XKJhPegdAnwWZ">
+    <h4 data-page-node-id="gzMTmKVmGifBCGAUVLpkFt">① 本节学习目标</h4>
+    <ol data-page-node-id="06aW2S3mheB6GVFOUFWYKg">
+      <li data-page-node-id="LwCLjkZy0lUrMWcNZ881od">由对偶原理（§3.1）从极限定义直接得到余锥、余极限锥的定义；</li>
+      <li data-page-node-id="I7a2OWk6IzbHAAQ3ZiPPdl">识别初对象、余积、余等化子、推外为余极限的特例；</li>
+      <li data-page-node-id="vSABwtyiseiopCqtEOPHd0">证明余极限唯一到唯一同构，以及"有初对象 + 二元余积 + 二元余等化子 ⟹ 有全部有限余极限"；</li>
+      <li data-page-node-id="7XD1yruZYPpNoDyWEkCl3l">在 \(\mathbf{Set}\) 中显式构造推外（pushout）并给出 \(\mathbf{Top}\)、\(\mathbf{Grp}\) 中的对照；</li>
+      <li data-page-node-id="8NZJWJgjlK5QEkBe7gVJoj">证明余等化子作为"把不同东西认作同一"的泛构造，与 §3.3 呼应，并理解它在证明同一性研究中的位置；</li>
+      <li data-page-node-id="CFns9HF61l2GtlHGiLG5qz">（进阶）说明协变 Hom 函子一般不保余极限，而 \(\operatorname{Hom}(-,A)\) 把余极限变为极限。</li>
+    </ol>
+  </div>
+
+  <h3 class="sub" data-page-node-id="yP9t0kjNxu8tNrfQEwluCW">4.4.1　对偶地定义余极限</h3>
+  <p data-page-node-id="x5fPecpufaYQIQsy4gwYTi">把定义 4.3.2 中所有箭头掉头即得。我们完整写出，以便不依赖对偶原理也能阅读。</p>
+  <div class="defn" data-page-node-id="Z0DNhHDYeFPdqNfNa5xSDp"><span class="lbl" data-page-node-id="whL9rI8vWqElQPHSLik8lN">定义 4.4.1（余锥，余极限锥）</span>　设 \(F:J\to\mathbf C\) 为图。
+    (i) 一个从 \(F\) 到对象 \(X\) 的<strong data-page-node-id="7GyycHiyeFHJS6Deybe3J4">余锥</strong>（cocone）是一族箭头
+    \[\kappa=(\kappa_j:F(j)\to X)_{j\in\operatorname{ob}J},\]
+    使得对 \(J\) 中每条箭头 \(\alpha:j\to k\)，有 \(\kappa_k\circ F(\alpha)=\kappa_j\)。
+    (ii) 一个<strong data-page-node-id="RoLqv5Gz0CX5icrdT6gL9C">余极限锥</strong>是余锥 \((\kappa:C\to F)\)（即 \((C,(\kappa_j))\)），使得对任意余锥 \((X,(\nu_j))\) 存在唯一箭头 \(u:C\to X\) 满足
+    \[u\circ\kappa_j=\nu_j\quad\text{对一切 }j.\]
+    称 \(C=\varinjlim F\) 为 \(F\) 的<strong data-page-node-id="x5prhnE7fWKiGZnLLEVDpk">余极限</strong>（colimit，亦称 inductive limit）。　【A §5.6, p.113】
+  </div>
+  <div class="prop" data-page-node-id="kXvszsspp0fgR2bXt2BhC7"><span class="lbl" data-page-node-id="RhwnXrfTtAXxRuJOTMnH22">命题 4.4.2</span>　(1) 空图的余极限是初对象；(2) 离散两点图的余极限是余积；(3) \(0\rightrightarrows1\) 图的余极限是余等化子；(4) \(1\leftarrow0\to2\) 图的余极限是推外。
+    <div class="proof" data-page-node-id="aWa3YnBTrEE2FEk1yetHoI"><span class="pl" data-page-node-id="en94TgSozzXDpoQ4SEOgHa">证明：</span>对定义 4.4.1 逐一取 \(J\)：空图给出初对象（每个 \(X\) 存在唯一 \(0\to X\)）；离散两点给出余积（两注入）；平行箭头图给出余等化子（拉平条件掉头）；\(1\leftarrow0\to2\) 给出推外（定义见 4.4.3）。细节与命题 4.3.4 对偶。<span class="qed" data-page-node-id="HA7n3ygBfnGpgT7NI7vTL1">∎</span></div>
+  </div>
+
+  <h3 class="sub" data-page-node-id="QTFOPPKvHOYfEm8XHZiYe0">4.4.2　有限余极限的存在性</h3>
+  <div class="prop" data-page-node-id="krsH1DpAKClLJh52pDqzzr"><span class="lbl" data-page-node-id="CuZSkBkCFITza29QCG2F6x">命题 4.4.3（有限余极限存在性）</span>　\(\mathbf C\) 有全部有限余极限，当且仅当它有初对象、二元余积与二元余等化子。
+    <div class="proof" data-page-node-id="DGiiuX6FyT7RWUEPfBf4Ci"><span class="pl" data-page-node-id="RLUrh2WCpSme3HhH6MW13b">证明：</span>对命题 4.3.6 取对偶即可。直接地：设三条件成立，对有限图 \(F:J\to\mathbf C\)，先取余积 \(Q=\coprod_j F(j)\)（带注入 \(\iota_j\)），再对每条边 \(\alpha:j\to k\) 取余等化子，强制 \(\iota_k\circ F(\alpha)=\iota_j\)；有限次后得余极限。反之三个构造都是有限余极限特例。<span class="qed" data-page-node-id="ar1mYzj5msxoMfuZL6pbKR">∎</span></div>
+  </div>
+
+  <h3 class="sub" data-page-node-id="prgHCL0SXS9VyGd1ZxWtgw">4.4.3　推外（pushout）</h3>
+  <p data-page-node-id="dN9wu37MaOB4XX4LaFJdut">推外是余积与余等化子的组合，也是拉回的对偶。它在 \(\mathbf{Set}\) 里就是"沿共同部分粘合两个集合"。</p>
+  <div class="defn" data-page-node-id="QeJ6HcVhmzc61iJCrUIG1T"><span class="lbl" data-page-node-id="RtUILe39QSWfP72yCMMPzb">定义 4.4.4（推外）</span>　设 \(f:C\to A\)、\(g:C\to B\)。它们的<strong data-page-node-id="pc9mFRre55SGgYnsgTUq38">推外</strong>是对象 \(Q\) 连同 \(i_A:A\to Q\)、\(i_B:B\to Q\)，满足 \(i_A f=i_B g\)，且对任意 \(X\) 与 \(u:A\to X\)、\(v:B\to X\) 满足 \(u f=v g\)，存在唯一 \(w:Q\to X\) 使 \(w i_A=u\)、\(w i_B=v\)。图示：
+    \[
+      \begin{array}{ccc}
+        C & \xrightarrow{\ g\ } & B\\[2pt]
+        \downarrow{\scriptstyle f} & & \downarrow{\scriptstyle i_B}\\[2pt]
+        A & \xrightarrow{\ i_A\ } & Q
+      \end{array}
+    \]
+    记 \(Q=A\amalg_C B\)。　【A §5.6, p.115】
+  </div>
+  <div class="prop" data-page-node-id="kEaqpXwPw2kXZHuqdYsiLi"><span class="lbl" data-page-node-id="BDDe5J4P4xMdhTUmYoMSrq">命题 4.4.5（\(\mathbf{Set}\) 中的推外）</span>　取
+    \[Q=(A\sqcup B)/\!\sim,\]
+    其中 \(\sim\) 是由 \(f(c)\sim g(c)\ (c\in C)\) 生成的最小等价关系；\(i_A,i_B\) 为商映射与包含的复合。则 \(Q\) 是 \(f,g\) 的推外。
+    <div class="proof" data-page-node-id="MWLA2oRmOPSUpfc1BRtobW"><span class="pl" data-page-node-id="ciSzhxPIgCc6rBGDrnKFdP">证明：</span>由构造 \(i_A f=i_B g\)（因 \(f(c)\sim g(c)\)）。给定 \(u:A\to X\)、\(v:B\to X\) 满足 \(uf=vg\)，定义 \(w:Q\to X\)：对 \(q=[a]\) 令 \(w(q)=u(a)\)，对 \(q=[b]\) 令 \(w(q)=v(b)\)。<strong data-page-node-id="om6TA0Gy3Lci5L5WbQ9FYA">良定义</strong>：等价关系由 \(f(c)\sim g(c)\) 生成，而 \(u(f(c))=v(g(c))\)，故互相认同的元素在 \(X\) 中像相同；对生成的等价关系作归纳即得良定义。唯一性：因 \(A\sqcup B\to Q\) 满（商映射），\(w\) 在 \(A,B\) 上的值已定，故唯一。<span class="qed" data-page-node-id="Dn9rxmgNK7b8gVlgLVqKay">∎</span></div>
+  </div>
+  <div class="rmk" data-page-node-id="KWfyBOpm9vzSf5rL4E2E7R"><strong data-page-node-id="BKRhKG2aGnprPBFmRVt0XX">推外的三大领域实例：</strong>\(\mathbf{Top}\) 中推外是粘合计空间（如把两个圆盘沿边界粘合得球面）；\(\mathbf{Grp}\) 中推外是融合自由积（amalgamated free product）\(A\ast_C B\)；\(\mathbf{Ring}\) 中推外是张量积。它们的共同结构都是"沿共同子对象 glue"。</div>
+
+  <h3 class="sub" data-page-node-id="ME4Hk6n9qwaVUd4vlytAQZ">4.4.4　余等化子：把不同认作同一</h3>
+  <p data-page-node-id="3R6oDPog3HVsu3CUPZ5cZY">回到 §3.3 的余等化子：对平行箭头 \(p,q:A\rightrightarrows B\)，其余等化子 \(e:B\to Q\) 满足 \(ep=eq\)，且对任何把 \(p,q\) 拉平的箭头唯一因子过 \(Q\)。用关系语言说，\(Q\) 是商 \(B/\!\sim\)，其中 \(\sim\) 是包含所有 \((p(a),q(a))\) 的最小同余。</p>
+  <div class="rmk" data-page-node-id="ZrUAqITcYi4K7JmNFGNZ93"><strong data-page-node-id="aS6F8US5CaS1JP9tvaQovk">与证明同一性的接口。</strong>若把两个证明视为平行箭头 \(p,q:1\rightrightarrows\varphi\)（同一命题 \(\varphi\) 的两个证明），其余等化子就是把二者"认作同一证明"的最经济商对象。你研究的证明同一性判据（何时 \(p\sim q\)）在范畴语言里恰是"取哪个同余"的问题：商得越多（同余越粗），认作同一的证明越多。§3.3 已铺垫，这里从极限角度再确认其泛性质地位——注意这仍是结构类比，具体的证明同一性判据（如 proof nets 的 bureaucracy）需要额外理论。</div>
+
+  <h3 class="sub" data-page-node-id="sDNqLEOXotMFCbopQrBo3g">4.4.5　Hom 函子与余极限</h3>
+  <div class="prop" data-page-node-id="b4gm5LFxDTgEuHcPNMyjYK"><span class="lbl" data-page-node-id="YXCBhyH3OHIQtdSzo2eL2W">命题 4.4.6</span>　对任意 \(A\in\mathbf C\)，反变 Hom 函子
+    \[\operatorname{Hom}(-,A):\mathbf C^{op}\to\mathbf{Set}\]
+    保持 \(\mathbf C\) 中的余极限（即把余极限变为极限）：若 \(C=\varinjlim F\)，则
+    \[\operatorname{Hom}(C,A)\;\cong\;\varprojlim\,\operatorname{Hom}(F-,A).\]
+    <div class="proof" data-page-node-id="kxfBLYshUtQcF2K5UGvHuZ"><span class="pl" data-page-node-id="OrsqDvqkSATbh8ZMEpuGyW">证明：</span>这是命题 4.3.8 的对偶：把 4.3.8 应用于 \(\mathbf C^{op}\)，其中 \(\operatorname{Hom}_{\mathbf C^{op}}(A,-)=\operatorname{Hom}_{\mathbf C}(-,A)\)，\(\mathbf C^{op}\) 中的极限即 \(\mathbf C\) 中的余极限。<span class="qed" data-page-node-id="lTFDBswtX0zCFv8fwzJepP">∎</span></div>
+  </div>
+  <div class="rmk" data-page-node-id="j9IZr4dYwfoZFZftw0VVdB"><strong data-page-node-id="8xm4tcpMN6iOhzjB6N8L7K">方向辨析（易错）：</strong>协变 \(\operatorname{Hom}(A,-)\) 保极限（4.3.8），反变 \(\operatorname{Hom}(-,A)\) 把余极限变极限（4.4.6）。协变 Hom 函子<strong data-page-node-id="CCc5oO7GxnrN9Q2zwSrdEK">一般既不保余极限</strong>——例如 \(\operatorname{Hom}(\mathbb Z,-):\mathbf{Ab}\to\mathbf{Set}\) 不保推出（自由积），这从 4.3 习题 4.3.4 遗忘函子的例子可得。</div>
+
+  <div class="box exer" data-page-node-id="v1llYfAcOxSt84ZIzi6jc7">
+    <h4 data-page-node-id="LpP1jpea3WELaIK4jmB3d0">③ ✅ 课后练习题</h4>
+    <div class="grp" data-page-node-id="t9IgOdAlPChxHkMkqKeJ8P">（一）基础巩固题</div>
+    <ol data-page-node-id="YZ3xSJmkhbOmraNXU0lAXh">
+      <li id="q441" data-page-node-id="ddcHtQYKSaF7bGILEDDAeA">证明命题 4.4.2 (4)：\(1\leftarrow0\to2\) 图的余极限是推外（写出余锥条件与推外泛性质的逐字对照）。</li>
+      <li id="q442" data-page-node-id="WhP8I3LvM1aIVatdIW7meb">在 \(\mathbf{Set}\) 中计算：设 \(C=\{*\}\)，\(f:C\to A=\{1,2\}\) 取 \(f(*)=1\)，\(g:C\to B=\{3,4\}\) 取 \(g(*)=3\)。求推外 \(A\amalg_C B\) 的元素个数，并写出等价关系。</li>
+      <li id="q443" data-page-node-id="TdCSqwEYWw1RKa9RgIy7dC">证明：余等化子箭头 \(e:B\to Q\) 是满态。（提示：对偶于"等化子是单态"，命题 3.3.2。）</li>
+      <li id="q444" data-page-node-id="sXQgICZYvARB0I4kk1HtXW">证明余极限唯一到唯一同构（命题 4.4.2 的极限版对偶），写出与命题 4.3.3 对偶的证明。</li>
+    </ol>
+    <div class="grp" data-page-node-id="o76t4kBXuke7ahmrJlpCv9">（二）进阶思考题</div>
+    <ol start="5" data-page-node-id="LdHtnjFb0mmKJdjZGYjmqE">
+      <li id="q445" data-page-node-id="qaLAdfPkntB6B4xTuiyM6q">证明：在 \(\mathbf{Set}\) 中，推出稳定满态——若 \(f\) 是满射，则推外中的 \(i_B:B\to A\amalg_C B\) 是满射。（提示：用商的描述，任取 \(q\in Q\)，它来自 \(A\) 或 \(B\)；若来自 \(A\) 的 \([a]\)，由 \(f\) 满取 \(c\) 使 \(f(c)=a\)，则 \([a]=[g(c)]=i_B(g(c))\)。）</li>
+      <li id="q446" data-page-node-id="8BQylQz4W4Dmkg2h6AbMmo">设 \(p,q:A\rightrightarrows B\) 是 \(\mathbf{Set}\) 中两函数，其余等化子 \(e:B\to Q\)。证明：\(e(p(a))=e(q(a))\) 对一切 \(a\)，且 \(Q\) 满足"对任何使 \(hp=hq\) 的 \(h\)，存在唯一 \(h'\) 使 \(h=h'e\)"。并解释为何这说明余等化子是"把 \(p,q\) 的像认作同一"的最小商。</li>
+    </ol>
+  </div>
+
+  <div class="box ans" data-page-node-id="vpONyXhxP8gnWGdRFgSjgC">
+    <h4 data-page-node-id="q9EaKBqPJOC4XE3Azj4pK4">④ ✅ 习题参考答案</h4>
+    <div class="item" data-page-node-id="GwHx4VT6S6JuY9mzOxUMbt"><b data-page-node-id="REFOvCsiOsaAEeKNWFNoo1">4.4.1</b>　图 \(J:1\xleftarrow{\alpha}0\xrightarrow{\beta}2\)，函子 \(F\) 给出 \(F(0)=C\)、\(F(1)=A\)、\(F(2)=B\)、\(F(\alpha)=f:C\to A\)、\(F(\beta)=g:C\to B\)。余锥 \((X,(\nu_1,\nu_0,\nu_2))\) 满足对 \(\alpha:0\to1\)：\(\nu_1\circ F(\alpha)=\nu_0\)，即 \(\nu_1 f=\nu_0\)；对 \(\beta:0\to2\)：\(\nu_2 g=\nu_0\)。故 \(\nu_1 f=\nu_2 g\)，且 \(\nu_0\) 由 \(\nu_1,\nu_2\) 决定。余极限锥 \((Q,\kappa)\) 即 \(i_A:A\to Q\)、\(i_B:B\to Q\) 满足 \(i_Af=i_Bg\)，且对任意满足 \(uf=vg\) 的 \(u,v\) 存在唯一 \(w:Q\to X\) 使 \(wi_A=u,wi_B=v\)——正是推外定义 4.4.4。<span class="qed" data-page-node-id="0YHXQ1BJyAAUdThbNksURt">∎</span></div>
+    <div class="item" data-page-node-id="lnYJM3qcc5QUZdclUw3Ewv"><b data-page-node-id="SxFsBao5KJtg3taCrJyIIN">4.4.2</b>　\(A\sqcup B=\{1,2,3,4\}\)，等价关系由 \(f(*)=1\sim g(*)=3\) 生成，即最小等价关系含序对 \((1,3)\)（及其对称、传递闭包）。商中 \(1\sim3\) 合并为一类，\(\{1,3\},\{2\},\{4\}\)，故 \(Q=A\amalg_C B\) 有 3 个元素。<span class="qed" data-page-node-id="mrypqTdZAdUtZAO332TdmN">∎</span></div>
+    <div class="item" data-page-node-id="bDwPKezR0OLb2SZO7CdvK5"><b data-page-node-id="pLSAlJLQbPuzRFdkwGOCFu">4.4.3</b>　设 \(e:B\to Q\) 是 \(p,q:A\rightrightarrows B\) 的余等化子。取 \(r,s:Q\to X\) 使 \(re=se\)。令 \(h:=re=se:B\to X\)。则 \(hp=rep=sep=hq\)（因 \(ep=eq\)），即 \(h\) 拉平 \(p,q\)。由余等化子泛性质，存在唯一 \(t:Q\to X\) 使 \(te=h\)。而 \(r\) 与 \(s\) 都满足 \((-)\circ e=h\)，由唯一性 \(r=t=s\)。故 \(e\) 满态。<span class="qed" data-page-node-id="CZ99oBS1HTzKOl6kq82WFd">∎</span></div>
+    <div class="item" data-page-node-id="fOduVKMk7hZR02sO7Y11dE"><b data-page-node-id="1OniBREibYX0RtWsaMoGNs">4.4.4</b>　设 \((C,\kappa)\)、\((C',\kappa')\) 都是 \(F\) 的余极限锥。把 \((C',\kappa')\) 当余极限、余锥 \((C,\kappa)\) 代入其泛性质（注意 \(\kappa_j:F(j)\to C\) 构成余锥），得唯一 \(\theta:C\to C'\) 使 \(\theta\kappa_j=\kappa_j'\)。对称得 \(\phi:C'\to C\) 使 \(\phi\kappa_j'=\kappa_j\)。则 \((\theta\phi)\kappa_j'=\theta\kappa_j=\kappa_j'\)，而 \(\operatorname{id}_{C'}\) 也满足，由余极限唯一性 \(\theta\phi=\operatorname{id}_{C'}\)；同理 \(\phi\theta=\operatorname{id}_C\)。故 \(\theta\) 同构。<span class="qed" data-page-node-id="CVJ6LihdRKyzxDAJj5F2MT">∎</span></div>
+    <div class="item" data-page-node-id="umI3m0rczXhZmBoM8zjPTc"><b data-page-node-id="CbwhEcRMLeQSsXT9E6pdIT">4.4.5</b>　由命题 4.4.5，\(Q=(A\sqcup B)/\!\sim\)，\(i_B\) 把 \(b\in B\) 送到其等价类。任取 \(q=[x]\in Q\)：若 \(x\in B\) 则 \(q=i_B(x)\)，已在像中；若 \(x\in A\)，因 \(f\) 满，存在 \(c\in C\) 使 \(f(c)=x\)，则 \(x=f(c)\sim g(c)\)，故 \([x]=[g(c)]=i_B(g(c))\)，也在 \(i_B\) 的像中。故 \(i_B\) 满射。<span class="qed" data-page-node-id="hBooj4ibNkAmEAGn0g1phf">∎</span></div>
+    <div class="item" data-page-node-id="9rhzGAWWHErBLbbXEdln9k"><b data-page-node-id="GRjFWpQU5FHZd3Fnw17jn0">4.4.6</b>　由余等化子定义 \(ep=eq\)，即 \(e(p(a))=e(q(a))\)。对任意 \(h:B\to X\) 使 \(hp=hq\)，余等化子泛性质给出唯一 \(h':Q\to X\) 使 \(h'e=h\)（注意 \(e:B\to Q\)，故 \(h'= \bar h\) 满足 \(\bar h\circ e=h\)）。"最小商"的含义：\(\sim\) 是包含所有 \((p(a),q(a))\) 的<strong data-page-node-id="ryEYxjcrnRnWThQ9JZVsuZ">最小</strong>等价关系，故 \(Q=B/\!\sim\) 只认同必须认同的；任何其它把 \(p,q\) 像认同的商 \(h\) 都由 \(Q\) 唯一因子给出，即 \(Q\) 是这类商中的泛初始者。<span class="qed" data-page-node-id="0cRkhovz3DLuznsmJS9dXy">∎</span></div>
+  </div>
+
+  <div class="box phil" data-page-node-id="45WRbVFAVKrGG43nnxRHno">
+    <h4 data-page-node-id="xRh4yIq6qEoJpwGpYEAhna">选读拓展（哲学联系，非正文）</h4>
+    <p data-page-node-id="HQYlouLOWNYi04F0NrcOFz">推外的"沿共同部分粘合"是处理同一性问题的有力模型。当你问"两个不同描述是否指向同一对象"时，推外提供了把两个结构沿被认定的共同部分 glue 成一个更大结构的标准方法——商掉的正是被认同的部分。这与 §3.3 余等化子的"认同一"互为表里：余等化子在单个对象内部压平两条箭头，推外则在两个对象之间粘合。</p>
+    <p data-page-node-id="HvJwhQ7ppEF0hLgUoREdgl">回到你的自由意志与责任主题：一个行动者在多个可能世界中做出选择，"同一行动者"的跨世界同一性正是需要沿某个共同部分（同一意向、同一理由集）做粘合。推外的泛性质说：粘合后的整体是"最经济"的——不额外认同任何东西。这为"最小偏离原则"式的反事实推理提供了一个可计算的数学类比（但仍是类比：范畴推外不编码因果或时间方向，把这些语义加进去需要额外结构，如第 18 章的拓扑斯内部语言）。</p>
+  </div>
+</section>
+
+<footer data-page-node-id="EcjrJRBCisaraPIIaZKbf1">
+  <p data-page-node-id="NKLDGXOFwbwXybD7k6FrQn"><a href="范畴论-逻辑-拓扑斯_教材总目录.html" data-page-node-id="koNfrJgkke3507eL2O0DCx">← 返回总目录</a> ｜ 上一章：<a href="范畴论-逻辑-拓扑斯_教材第3章.html" data-page-node-id="VeTBawX7tMZNpmgBCwBYHT">第 3 章 对偶、余积与等化子</a> ｜ 下一章：<a href="范畴论-逻辑-拓扑斯_教材第5章.html">第 5 章 指数对象与笛卡尔闭范畴</a></p>
+  <p data-page-node-id="OIvR67DYYwMV1CtVgqsD2A">本章对应 Awodey, <em data-page-node-id="q3xup4zrcwnZckUar0wFSO">Category Theory</em>, 2nd ed., §5.1–§5.6。公式由 MathJax 渲染，需联网加载。</p>
+</footer>
+
+</div>
+</body>
+</html>

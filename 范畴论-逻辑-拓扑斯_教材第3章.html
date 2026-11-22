@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>第 3 章 对偶、余积与等化子 —— 三书递进自学教材</title>
+<script>
+window.MathJax = {
+  tex: { inlineMath: [['\\(','\\)']], displayMath: [['\\[','\\]']], processEscapes: true },
+  options: { ignoreHtmlClass: 'no-tex' },
+  svg: { fontCache: 'global' }
+};
+</script>
+<script async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
+<style>
+  :root{
+    --bg:#f6f7f9; --card:#fff; --ink:#1b1f27; --ink2:#4d5461; --ink3:#7a8190;
+    --line:#e5e8ed; --soft:#f0f2f5;
+    --c1:#2563eb; --c1bg:#eef4ff; --gold:#b45309; --goldbg:#fdf3e3;
+    --ok:#15803d; --okbg:#eefaf1; --phil:#7c3aed; --philbg:#f6f1ff;
+    --radius:12px;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;
+    line-height:1.75;-webkit-font-smoothing:antialiased;}
+  .wrap{max-width:920px;margin:0 auto;padding:0 22px 80px;}
+
+  header.top{padding:34px 0 22px;border-bottom:1px solid var(--line);margin-bottom:26px;}
+  .breadcrumb{font-size:12.5px;color:var(--ink3);margin-bottom:10px;}
+  .breadcrumb a{color:var(--c1);text-decoration:none;}
+  h1{font-size:29px;margin:0 0 8px;letter-spacing:-.02em;}
+  .lede{color:var(--ink2);font-size:14.5px;margin:0 0 16px;}
+  .jump{display:flex;gap:8px;flex-wrap:wrap;}
+  .jump a{font-size:12.5px;font-weight:650;text-decoration:none;color:var(--ink2);
+    background:var(--card);border:1px solid var(--line);border-radius:99px;padding:6px 13px;}
+  .jump a:hover{border-color:var(--c1);color:var(--c1);}
+
+  section.sec{margin:0 0 52px;scroll-margin-top:16px;}
+  .sec-h{display:flex;align-items:baseline;gap:12px;border-bottom:2px solid var(--c1);padding-bottom:10px;margin-bottom:22px;}
+  .sec-no{font-size:13px;font-weight:800;color:#fff;background:var(--c1);border-radius:7px;padding:3px 10px;white-space:nowrap;}
+  .sec-h h2{font-size:22px;margin:0;letter-spacing:-.01em;}
+  .src{font-size:11.5px;color:var(--ink3);margin-left:auto;white-space:nowrap;}
+
+  .box{border-radius:var(--radius);padding:16px 20px;margin:18px 0;border:1px solid var(--line);}
+  .box h4{margin:0 0 10px;font-size:14px;letter-spacing:.01em;}
+
+  .learn{background:var(--c1bg);border-color:#cfe0ff;}
+  .learn h4{color:var(--c1);}
+  .learn ol{margin:0;padding-left:22px;} .learn li{margin:4px 0;font-size:14px;}
+
+  .defn{background:#fafbfc;border-left:4px solid var(--ink2);padding:14px 18px;margin:16px 0;border-radius:0 10px 10px 0;}
+  .defn .lbl{font-weight:800;font-size:13.5px;color:var(--ink);}
+  .prop{background:#fbfcfe;border:1px solid #dbe6f8;border-left:4px solid var(--c1);padding:14px 18px;margin:16px 0;border-radius:0 10px 10px 0;}
+  .prop .lbl{font-weight:800;font-size:13.5px;color:var(--c1);}
+  .rmk{font-size:13.5px;color:var(--ink2);background:var(--soft);padding:11px 16px;border-radius:9px;margin:12px 0;}
+
+  .proof{margin:10px 0 4px;padding-left:16px;border-left:2px solid var(--line);font-size:14px;color:var(--ink2);}
+  .proof .pl{font-weight:700;color:var(--ink);}
+  .qed{float:right;font-style:normal;color:var(--ink3);}
+
+  .exer{background:var(--goldbg);border-color:#f2dfbb;}
+  .exer h4{color:var(--gold);}
+  .exer .grp{font-size:12.5px;font-weight:750;color:var(--gold);margin:12px 0 4px;}
+  .exer ol{margin:0;padding-left:22px;} .exer li{margin:9px 0;font-size:14px;}
+
+  .ans{background:var(--okbg);border-color:#c9ecd3;}
+  .ans h4{color:var(--ok);}
+  .ans .item{margin:14px 0 18px;font-size:14px;}
+  .ans .item:last-child{margin-bottom:0;}
+  .ans .item b{color:var(--ok);}
+  .ans .proof{border-left-color:#bfe6c9;}
+
+  .phil{background:var(--philbg);border-color:#e3d5ff;}
+  .phil h4{color:var(--phil);}
+  .phil p{font-size:14px;color:#5b3a8e;margin:8px 0;}
+
+  h3.sub{font-size:16px;margin:26px 0 6px;color:var(--ink);}
+  p{margin:9px 0;} .math{overflow-x:auto;}
+
+  footer{border-top:1px solid var(--line);margin-top:30px;padding-top:20px;font-size:13px;color:var(--ink3);}
+  footer a{color:var(--c1);text-decoration:none;}
+
+  @media(max-width:640px){
+    h1{font-size:23px;} .wrap{padding:0 14px 60px;}
+    .sec-h{flex-wrap:wrap;} .src{margin-left:0;}
+    .box{padding:14px 15px;}
+  }
+  @media print{body{background:#fff;}.jump{display:none;}.box{break-inside:avoid;}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="top">
+  <div class="breadcrumb"><a href="范畴论-逻辑-拓扑斯_教材总目录.html">← 返回总目录</a> ｜ 第一部分 · Awodey《Category Theory》（第二版）</div>
+  <h1>第 3 章　对偶、余积与等化子</h1>
+  <p class="lede">本章做两件事。先把上一章反复暗中使用的"对偶"提升为一条严格的元定理（§3.1），再用它一次性得到"余积"（§3.2）与"余等化子"（§3.3）。至此我们手中的构造从"积"这一侧补齐到"余积"一侧，下一章就能把二者统一为极限与余极限。对应 Awodey 第二版第 3 章。</p>
+  <nav class="jump">
+    <a href="#s3-1">3.1 对偶原理</a>
+    <a href="#s3-2">3.2 余积</a>
+    <a href="#s3-3">3.3 等化子与余等化子</a>
+  </nav>
+</header>
+
+<section class="sec" id="s3-1">
+  <div class="sec-h"><span class="sec-no">3.1</span><h2>对偶原理</h2><span class="src">A §3.1, p.41–43</span></div>
+
+  <div class="box learn">
+    <h4>① 本节学习目标</h4>
+    <ol>
+      <li>严格定义对偶范畴 \(\mathbf C^{\mathrm{op}}\)，并逐条验证它确是范畴；</li>
+      <li>把对偶性表述为一条<strong>元定理</strong>（而不是"镜像类比"），并能说清它的证明为什么依赖于 \(\mathbf C^{\mathrm{op}}\) 本身也是范畴；</li>
+      <li>熟练使用对偶词典：单态↔满态、初↔终、积↔余积、等化子↔余等化子；</li>
+      <li>辨认对偶原理最常见的误用：从 \(\mathbf{Set}\) 的某性质推出 \(\mathbf{Set}\) 的对偶性质；</li>
+      <li>判断一个范畴何时自对偶，并验证 \(\mathbf{Rel}\) 与单对象范畴 \(\mathbf{B}G\) 的自对偶性。</li>
+    </ol>
+  </div>
+
+  <h3 class="sub">3.1.1　动机：上一章我们免费得到了什么</h3>
+  <p>回想 2.1 节命题 2.1.3：我们只证明了"\(f\) 单态 ⟺ \(f^{\mathrm{op}}\) 在 \(\mathbf C^{\mathrm{op}}\) 中满态"，然后就宣布"凡关于单态的定理倒过来即得关于满态的定理，证明无需重写"。2.2 节的终对象与初对象、2.4 节即将对偶出的余积，都在用同一个动作：<strong>把箭头全部掉头</strong>。本节要给这个动作一个精确定义，并证明它为什么总是合法的。</p>
+  <p>这件事看似只是省笔墨，实则是范畴论方法论的核心。范畴公理（定义 1.1.7）在"箭头掉头"下是<strong>自对偶的</strong>：结合律与单位律掉头后仍是结合律与单位律。于是整个理论天然带一个对称性，任何定理都成双出现。理解这一点，你就理解了为什么范畴论能用极少的公理覆盖极多的对偶概念对。</p>
+  <div class="rmk"><strong>术语约定。</strong>本节说的"对偶"是范畴论内部的 <em>opposite</em> 构造，与向量空间对偶 \(V^\ast\)、格论中对偶偏序 \(\le^{\mathrm{op}}\) 是同一家族的想法，但对象不同。不要混淆。</div>
+
+  <h3 class="sub">3.1.2　对偶范畴的定义</h3>
+  <div class="defn"><span class="lbl">定义 3.1.1（对偶范畴）</span>　设 \(\mathbf C\) 是范畴。定义范畴 \(\mathbf C^{\mathrm{op}}\) 如下：
+    <ul>
+      <li>\(\operatorname{ob}(\mathbf C^{\mathrm{op}})=\operatorname{ob}(\mathbf C)\)；</li>
+      <li>对 \(A,B\in\operatorname{ob}(\mathbf C)\)，令 \(\operatorname{Hom}_{\mathbf C^{\mathrm{op}}}(A,B)=\operatorname{Hom}_{\mathbf C}(B,A)\)；</li>
+      <li>对 \(\mathbf C\) 中箭头 \(f:A\to B\)，记 \(f^{\mathrm{op}}:B\to A\) 为同一箭头在 \(\mathbf C^{\mathrm{op}}\) 中的身份；</li>
+      <li>若 \(f:A\to B,\ g:B\to C\) 在 \(\mathbf C\) 中，则在 \(\mathbf C^{\mathrm{op}}\) 中有 \(g^{\mathrm{op}}:C\to B\)、\(f^{\mathrm{op}}:B\to A\)，定义复合
+        \[f^{\mathrm{op}}\circ^{\mathrm{op}} g^{\mathrm{op}}\;:=\;(g\circ f)^{\mathrm{op}}:C\to A;\]</li>
+      <li>每个对象 \(A\) 的恒等箭头取 \(\operatorname{id}_A^{\mathrm{op}}:=(\operatorname{id}_A)^{\mathrm{op}}:A\to A\)。</li>
+    </ul>
+    这里 \((g\circ f)^{\mathrm{op}}\) 的类型检查：\(g\circ f:A\to C\)，故其对偶是 \(C\to A\)，与链 \(C\xrightarrow{g^{\mathrm{op}}}B\xrightarrow{f^{\mathrm{op}}}A\) 及复合 \(f^{\mathrm{op}}\circ^{\mathrm{op}}g^{\mathrm{op}}\) 的首尾一致。
+  </div>
+  <div class="prop"><span class="lbl">命题 3.1.2</span>　若 \(\mathbf C\) 是范畴，则 \(\mathbf C^{\mathrm{op}}\) 是范畴，且 \((\mathbf C^{\mathrm{op}})^{\mathrm{op}}=\mathbf C\)（严格相等，不止同构）。
+    <div class="proof"><span class="pl">证明：</span>逐条验证定义 1.1.7 的四项数据与两条公理。数据齐备是定义 3.1.1 直接给出的，只需验证复合闭合、两条公理。
+      <br><strong>复合闭合：</strong>已由上述类型检查确认。
+      <br><strong>结合律：</strong>取 \(\mathbf C\) 中 \(A\xrightarrow{f}B\xrightarrow{g}C\xrightarrow{h}D\)，则 \(\mathbf C^{\mathrm{op}}\) 中可复合链为 \(h^{\mathrm{op}}:D\to C,\ g^{\mathrm{op}}:C\to B,\ f^{\mathrm{op}}:B\to A\)。按定义逐步计算：
+      \[f^{\mathrm{op}}\circ^{\mathrm{op}}g^{\mathrm{op}}=(g\circ f)^{\mathrm{op}},\]
+      \[(f^{\mathrm{op}}\circ^{\mathrm{op}}g^{\mathrm{op}})\circ^{\mathrm{op}}h^{\mathrm{op}}=(g\circ f)^{\mathrm{op}}\circ^{\mathrm{op}}h^{\mathrm{op}}=\bigl(h\circ(g\circ f)\bigr)^{\mathrm{op}};\]
+      另一方面
+      \[g^{\mathrm{op}}\circ^{\mathrm{op}}h^{\mathrm{op}}=(h\circ g)^{\mathrm{op}},\]
+      \[f^{\mathrm{op}}\circ^{\mathrm{op}}(g^{\mathrm{op}}\circ^{\mathrm{op}}h^{\mathrm{op}})=f^{\mathrm{op}}\circ^{\mathrm{op}}(h\circ g)^{\mathrm{op}}=\bigl((h\circ g)\circ f\bigr)^{\mathrm{op}}.\]
+      由 \(\mathbf C\) 的结合律 \(h\circ(g\circ f)=(h\circ g)\circ f\)，两式右端相同。
+      <br><strong>单位律：</strong>对 \(f:A\to B\)，在 \(\mathbf C^{\mathrm{op}}\) 中 \(f^{\mathrm{op}}:B\to A\)。则
+      \[f^{\mathrm{op}}\circ^{\mathrm{op}}\operatorname{id}_B^{\mathrm{op}}=(\operatorname{id}_B\circ f)^{\mathrm{op}}=f^{\mathrm{op}},\qquad \operatorname{id}_A^{\mathrm{op}}\circ^{\mathrm{op}}f^{\mathrm{op}}=(f\circ\operatorname{id}_A)^{\mathrm{op}}=f^{\mathrm{op}},\]
+      用的正是 \(\mathbf C\) 的单位律。
+      <br><strong>二次对偶：</strong>\(\operatorname{ob}((\mathbf C^{\mathrm{op}})^{\mathrm{op}})=\operatorname{ob}(\mathbf C)\)；且
+      \[\operatorname{Hom}_{(\mathbf C^{\mathrm{op}})^{\mathrm{op}}}(A,B)=\operatorname{Hom}_{\mathbf C^{\mathrm{op}}}(B,A)=\operatorname{Hom}_{\mathbf C}(A,B).\]
+      复合与恒等逐字还原，故二者严格相等。<span class="qed">∎</span></div>
+  </div>
+
+  <h3 class="sub">3.1.3　对偶原理：一条元定理</h3>
+  <p>现在陈述那条我们一直在用的原理。先约定语言：范畴论语言只谈对象、箭头、复合、恒等、等于号及逻辑连接词与量词，不谈元素。对这样一个语句 \(\sigma\)，记 \(\sigma^{\mathrm{op}}\) 为把所有箭头掉头、复合次序反转所得的语句。</p>
+  <div class="prop"><span class="lbl">命题 3.1.3（对偶原理，principle of duality）</span>
+    <p style="margin:6px 0">(i)（语义引理）对任意范畴 \(\mathbf C\) 与任意范畴论语句 \(\sigma\)：
+      \[\mathbf C\models\sigma\quad\Longleftrightarrow\quad \mathbf C^{\mathrm{op}}\models\sigma^{\mathrm{op}}.\]
+    (ii)（元定理）若 \(\sigma\) 对<strong>一切</strong>范畴成立，则 \(\sigma^{\mathrm{op}}\) 也对一切范畴成立。</p>
+    <div class="proof"><span class="pl">证明 (i)：</span>对语句 \(\sigma\) 的结构作归纳。原子语句形如"\(f:A\to B\)""\(g\circ f=h\)""\(\operatorname{id}_A=f\)"。在 \(\mathbf C\) 中给这些原子语句一个赋值（即指定具体对象与箭头），把每个箭头 \(f\) 换成 \(f^{\mathrm{op}}\)，就得到 \(\mathbf C^{\mathrm{op}}\) 中的一个赋值；定义 3.1.1 的复合规则保证"\(g\circ f=h\)"被精确翻译为"\(f^{\mathrm{op}}\circ^{\mathrm{op}}g^{\mathrm{op}}=h^{\mathrm{op}}\)"——注意次序反转正是复合掉头的必然结果。等号、\(\wedge\)、\(\neg\)、\(\forall\) 等在翻译下保持。故 \(\sigma\) 在 \(\mathbf C\) 中成立当且仅当 \(\sigma^{\mathrm{op}}\) 在 \(\mathbf C^{\mathrm{op}}\) 中成立。
+      <br><span class="pl">证明 (ii)：</span>设 \(\sigma\) 对一切范畴成立，任取范畴 \(\mathbf C\)，要证 \(\mathbf C\models\sigma^{\mathrm{op}}\)。因 \(\mathbf C^{\mathrm{op}}\) 也是范畴（命题 3.1.2），由假设得 \(\mathbf C^{\mathrm{op}}\models\sigma\)。对范畴 \(\mathbf C^{\mathrm{op}}\) 与语句 \(\sigma\) 应用 (i)，得 \((\mathbf C^{\mathrm{op}})^{\mathrm{op}}\models\sigma^{\mathrm{op}}\)。再用命题 3.1.2 的 \((\mathbf C^{\mathrm{op}})^{\mathrm{op}}=\mathbf C\)，即得 \(\mathbf C\models\sigma^{\mathrm{op}}\)。<span class="qed">∎</span></div>
+  </div>
+  <div class="rmk"><strong>为什么强调"一切范畴"？</strong>证明 (ii) 的关键一步是"对 \(\mathbf C^{\mathrm{op}}\) 应用假设"，这要求 \(\sigma\) 对<em>包括 \(\mathbf C^{\mathrm{op}}\) 在内</em>的所有范畴成立。若 \(\sigma\) 只对某个特定范畴（如 \(\mathbf{Set}\)）成立，这一步就失效。这正是 3.1.5 要处理的陷阱。</div>
+
+  <h3 class="sub">3.1.4　对偶词典</h3>
+  <p>以下每一对概念都由对偶原理配对。左栏的定义掉头即得右栏的定义，左栏的定理掉头即得右栏的定理：</p>
+  <table style="width:100%;border-collapse:collapse;font-size:13.5px;margin:12px 0">
+    <tr style="background:var(--soft)"><th style="text-align:left;padding:8px 12px">原概念</th><th style="text-align:left;padding:8px 12px">对偶概念</th><th style="text-align:left;padding:8px 12px">首次出现</th></tr>
+    <tr><td style="padding:7px 12px;border-top:1px solid var(--line)">单态（左消去）</td><td style="padding:7px 12px;border-top:1px solid var(--line)">满态（右消去）</td><td style="padding:7px 12px;border-top:1px solid var(--line)">§2.1</td></tr>
+    <tr><td style="padding:7px 12px;border-top:1px solid var(--line)">初对象</td><td style="padding:7px 12px;border-top:1px solid var(--line)">终对象</td><td style="padding:7px 12px;border-top:1px solid var(--line)">§2.2</td></tr>
+    <tr><td style="padding:7px 12px;border-top:1px solid var(--line)">积 \(A\times B\)</td><td style="padding:7px 12px;border-top:1px solid var(--line)">余积 \(A+B\)</td><td style="padding:7px 12px;border-top:1px solid var(--line)">§2.4 / §3.2</td></tr>
+    <tr><td style="padding:7px 12px;border-top:1px solid var(--line)">等化子</td><td style="padding:7px 12px;border-top:1px solid var(--line)">余等化子</td><td style="padding:7px 12px;border-top:1px solid var(--line)">§3.3</td></tr>
+    <tr><td style="padding:7px 12px;border-top:1px solid var(--line)">拉回</td><td style="padding:7px 12px;border-top:1px solid var(--line)">推外</td><td style="padding:7px 12px;border-top:1px solid var(--line)">§4.2</td></tr>
+    <tr><td style="padding:7px 12px;border-top:1px solid var(--line)">极限</td><td style="padding:7px 12px;border-top:1px solid var(--line)">余极限</td><td style="padding:7px 12px;border-top:1px solid var(--line)">§4.3–4.4</td></tr>
+    <tr><td style="padding:7px 12px;border-top:1px solid var(--line)">monad</td><td style="padding:7px 12px;border-top:1px solid var(--line)">comonad</td><td style="padding:7px 12px;border-top:1px solid var(--line)">§7.5</td></tr>
+  </table>
+  <div class="rmk"><strong>操作口诀：</strong>把 \(\to\) 换成 \(\leftarrow\)，把 \(g\circ f\) 换成 \(f^{\mathrm{op}}\circ^{\mathrm{op}}g^{\mathrm{op}}\)，"存在唯一"不变，"对任意对象/箭头"不变。剩下的不动。凡按此规则翻译过的证明，自动成立。</div>
+
+  <h3 class="sub">3.1.5　一个必须避开的陷阱：\(\mathbf C\) 与 \(\mathbf C^{\mathrm{op}}\) 不同</h3>
+  <p>命题 3.1.3 (ii) 只对"对每个范畴都成立的定理"有效。若命题 \(\sigma\) 只描述某个具体范畴，则 \(\sigma^{\mathrm{op}}\) 描述的是<strong>那个范畴的对偶范畴</strong>，未必是该范畴自身。最常见的错误推理是：</p>
+  <div class="rmk" style="background:#fff4f2;border-color:#f4cfc8;color:#8a3324">
+    <strong>错误：</strong>"\(\mathbf{Set}\) 有终对象 \(1\)，故由对偶原理 \(\mathbf{Set}\) 有初对象。"
+    <br><strong>诊断：</strong>对偶原理给出的正确结论是"\(\mathbf{Set}^{\mathrm{op}}\) 有初对象 \(1\)"。虽然 \(\mathbf{Set}\) 确实有初对象 \(\varnothing\)，但那是<strong>另行验证</strong>的事实，不是对偶原理的推论。前提"\(\mathbf{Set}\) 有终对象"并不是一个对所有范畴成立的定理，命题 3.1.3 (ii) 的假设不满足。
+  </div>
+  <p>用一个反例说明为什么不能想当然：取 \(\mathbf C\) 为只有一个对象 \(\ast\)、箭头仅 \(\operatorname{id}_\ast\) 的范畴。它有终对象也有初对象（同一个），此处无差别。但取 \(\mathbf C=\mathbf{Set}\)，终对象 \(1\) 与初对象 \(\varnothing\) 差别巨大：\(\operatorname{Hom}(\varnothing,A)\) 恒为单元集，\(\operatorname{Hom}(A,1)\) 也恒为单元集——二者在 Hom 集数量上碰巧一样，却在 \(\operatorname{Hom}(1,\varnothing)=\varnothing\) 与 \(\operatorname{Hom}(\varnothing,1)=\{\ast\}\) 上分道扬镳。对偶原理不会替你判断一个具体范畴是否自对偶；那是 3.1.6 的工作。</p>
+
+  <h3 class="sub">3.1.6　自对偶范畴</h3>
+  <div class="defn"><span class="lbl">定义 3.1.4（自对偶）</span>　范畴 \(\mathbf C\) 称为<strong>自对偶</strong>的，若存在同构函子 \(F:\mathbf C\to\mathbf C^{\mathrm{op}}\)（即 \(F\) 有逆函子；函子与同构的定义见 §1.4）。</div>
+  <div class="prop"><span class="lbl">命题 3.1.5（三个自对偶例子）</span>
+    <p style="margin:6px 0">(a) \(\mathbf{Rel}\) 自对偶：令 \(F\) 在对象上为恒等，在箭头（关系）上取逆关系 \(R\mapsto R^{\smile}=\{(y,x)\mid (x,y)\in R\}\)。
+    (b) 群 \(G\) 作为单对象范畴 \(\mathbf{B}G\)（§1.2）自对偶：令 \(F\) 把每个箭头 \(g\) 送到 \(g^{-1}\)。
+    (c) 偏序范畴 \(\mathbf P\) 的对偶是偏序范畴 \(\mathbf P^{\mathrm{op}}\)（序关系反转）；\(\mathbf P\) 自对偶当且仅当偏序 \((P,\le)\) 存在保序双射到其对偶（反序自同构）。</p>
+    <div class="proof"><span class="pl">证明 (a)：</span>在对象上 \(F\) 恒等。若 \(R:X\to Y\)（即 \(R\subseteq X\times Y\)），则 \(R^{\smile}\subseteq Y\times X\)，故 \(F(R):Y\to X\) 是 \(\mathbf{Rel}^{\mathrm{op}}\) 中 \(X\to Y\) 的箭头。检查复合：\(\mathbf{Rel}\) 中 \(S\circ R=\{(x,z)\mid\exists y,\ (x,y)\in R,\ (y,z)\in S\}\)。则 \((S\circ R)^{\smile}=\{(z,x)\mid\exists y,\ (x,y)\in R,(y,z)\in S\}=R^{\smile}\circ S^{\smile}\)（右边是在 \(\mathbf{Rel}\) 中的复合，正好等于 \(\mathbf{Rel}^{\mathrm{op}}\) 中的 \(F(S)\circ^{\mathrm{op}}F(R)\)）。恒等关系 \(\Delta_X\) 的逆仍是 \(\Delta_X\)。故 \(F\) 是函子，且其自身即逆（\((R^{\smile})^{\smile}=R\)），是同构。
+      <br><span class="pl">证明 (b)：</span>\(\mathbf{B}G\) 只有一个对象 \(\ast\)，箭头集为 \(G\)，复合为群乘法。映射 \(g\mapsto g^{-1}\) 满足 \((gh)^{-1}=h^{-1}g^{-1}\)，即它把复合掉了头——正是函子 \(\mathbf{B}G\to(\mathbf{B}G)^{\mathrm{op}}\) 所需。它自身的平方是恒等，故是同构。注意：\(g\mapsto g^{-1}\) 一般是<strong>反</strong>自同构而非自同构，这恰与"对偶"匹配。
+      <br><span class="pl">证明 (c)：</span>偏序范畴中 \(\operatorname{Hom}(p,q)\) 非空当且仅当 \(p\le q\)，故对偶范畴对应序 \(\le^{\mathrm{op}}\)（即 \(q\le p\)）。同构函子即保序双射 \(\varphi:P\to P\) 且 \(\varphi(p)\le\varphi(q)\iff q\le p\)，这正是反序自同构。<span class="qed">∎</span></div>
+  </div>
+  <div class="rmk"><strong>连带结论：</strong>因为 \(\mathbf{Rel}\) 自对偶，它的"积"与"余积"必定重合（都由不交并给出，见 §3.2 习题）；因为 \(\mathbf{B}G\) 自对偶，群论中每个"左"表述都有对应的"右"表述。这些都是命题 3.1.3 加上自对偶性的结果，而非凭直觉类比。</div>
+
+  <h3 class="sub">习题</h3>
+  <div class="box exer">
+    <div class="grp">基础巩固题</div>
+    <ol>
+      <li id="q301">设 \(\mathbf C\) 为范畴。按定义 3.1.1 写出 \(\mathbf C^{\mathrm{op}}\) 的数据，并验证：若 \(f:A\to B\) 是 \(\mathbf C\) 中的单态，则 \(f^{\mathrm{op}}\) 是 \(\mathbf C^{\mathrm{op}}\) 中的满态。（要求展开 \(\operatorname{Hom}\) 集与量词，不得只写结论。）</li>
+      <li id="q302">在 \((\mathbf C^{\mathrm{op}})^{\mathrm{op}}\) 中，箭头 \(f^{\mathrm{op}}\) 的记号应如何写？证明 \((\mathbf C^{\mathrm{op}})^{\mathrm{op}}\) 的复合与 \(\mathbf C\) 的复合完全一致（写出等式链）。</li>
+      <li id="q303">命题 2.2.2 断言"初对象唯一到唯一同构"，它对一切范畴成立。用对偶原理推出"终对象唯一到唯一同构"，并写出对偶后的证明草稿。</li>
+      <li id="q304">把下列概念对偶化：(a) \(f\) 是满态；(b) \(A\) 是终对象；(c) "存在从 \(A\) 到 \(B\) 的箭头"；(d) "\(\operatorname{Hom}(A,B)\) 是单元集"。</li>
+      <div class="grp">进阶思考题</div>
+      <li id="q305">判断正误并给出严格说明："\(\mathbf{Set}\) 有终对象 \(1\)，故由对偶原理 \(\mathbf{Set}\) 有初对象。"若错误，指出正确结论是什么，以及 \(\mathbf{Set}\) 确有初对象这一事实应如何获得。</li>
+      <li id="q306">证明 \(\mathbf{Rel}\) 自对偶（命题 3.1.5(a) 的完整证明），并据此解释为什么"\(\mathbf{Rel}\) 中积 = 余积"可以从对偶原理 + 自对偶性推出，而不能只对偶原理单独推出。</li>
+      <li id="q307">设 \((P,\le)\) 为格（你熟悉的格论对象）。证明：作为范畴的 \(\mathbf P\) 自对偶当且仅当 \((P,\le)\) 有反序自同构。并说明为何有补格自动满足这一点。</li>
+    </ol>
+  </div>
+
+  <h3 class="sub">习题参考答案</h3>
+  <div class="box ans">
+    <h4>④ 完整参考答案</h4>
+    <div class="item"><b>3.1.1</b>　\(\mathbf C^{\mathrm{op}}\) 的数据：对象类与 \(\mathbf C\) 相同；\(\operatorname{Hom}_{\mathbf C^{\mathrm{op}}}(A,B)=\operatorname{Hom}_{\mathbf C}(B,A)\)；复合由 \(f^{\mathrm{op}}\circ^{\mathrm{op}}g^{\mathrm{op}}=(g\circ f)^{\mathrm{op}}\) 给出；恒等为 \((\operatorname{id}_A)^{\mathrm{op}}\)。
+      现设 \(f:A\to B\) 在 \(\mathbf C\) 中单态，证 \(f^{\mathrm{op}}:B\to A\) 在 \(\mathbf C^{\mathrm{op}}\) 中满态。按定义 2.1.2，需证：对 \(\mathbf C^{\mathrm{op}}\) 中任意对象 \(Y\) 与任意 \(g^{\mathrm{op}},h^{\mathrm{op}}:A\to Y\)，若 \(g^{\mathrm{op}}\circ^{\mathrm{op}}f^{\mathrm{op}}=h^{\mathrm{op}}\circ^{\mathrm{op}}f^{\mathrm{op}}\) 则 \(g^{\mathrm{op}}=h^{\mathrm{op}}\)。注意 \(g^{\mathrm{op}}:A\to Y\) 在 \(\mathbf C^{\mathrm{op}}\) 中意味着 \(\mathbf C\) 中 \(g:Y\to A\)，同理 \(h:Y\to A\)。由复合定义
+      \[g^{\mathrm{op}}\circ^{\mathrm{op}}f^{\mathrm{op}}=(f\circ g)^{\mathrm{op}},\qquad h^{\mathrm{op}}\circ^{\mathrm{op}}f^{\mathrm{op}}=(f\circ h)^{\mathrm{op}},\]
+      （这里 \(f:A\to B\)、\(g:Y\to A\)，故 \(f\circ g:Y\to B\)，其对偶是 \(B\to Y\)，类型吻合）。二者相等当且仅当 \(f\circ g=f\circ h\)。由 \(f\) 在 \(\mathbf C\) 中单态得 \(g=h\)，从而 \(g^{\mathrm{op}}=h^{\mathrm{op}}\)。故 \(f^{\mathrm{op}}\) 满。<span class="qed">∎</span></div>
+    <div class="item"><b>3.1.2</b>　在 \((\mathbf C^{\mathrm{op}})^{\mathrm{op}}\) 中，\(\mathbf C\) 的箭头 \(f:A\to B\) 先变成 \(f^{\mathrm{op}}:B\to A\)（在 \(\mathbf C^{\mathrm{op}}\) 中），再取一次对偶变成 \((f^{\mathrm{op}})^{\mathrm{op}}:A\to B\)。可简记为 \(f^{\mathrm{op\,op}}=f\)。
+      复合：设 \(\mathbf C\) 中 \(A\xrightarrow{f}B\xrightarrow{g}C\)。在 \(\mathbf C^{\mathrm{op}}\) 中 \(f^{\mathrm{op}}\circ^{\mathrm{op}}g^{\mathrm{op}}=(g\circ f)^{\mathrm{op}}\)。再取一次对偶，按定义 3.1.1 用于 \(\mathbf C^{\mathrm{op}}\)：
+      \[(f^{\mathrm{op}})^{\mathrm{op}}\circ^{\mathrm{op\,op}}(g^{\mathrm{op}})^{\mathrm{op}}=\bigl(f^{\mathrm{op}}\circ^{\mathrm{op}}g^{\mathrm{op}}\bigr)^{\mathrm{op\,op}}=\bigl((g\circ f)^{\mathrm{op}}\bigr)^{\mathrm{op\,op}}=g\circ f.\]
+      右端正是 \(\mathbf C\) 中的复合。故二次对偶的复合与 \(\mathbf C\) 一致，恒等同理由 \((\operatorname{id}_A^{\mathrm{op}})^{\mathrm{op\,op}}=\operatorname{id}_A\)。<span class="qed">∎</span></div>
+    <div class="item"><b>3.1.3</b>　"初对象唯一到唯一同构"对一切范畴成立（命题 2.2.2），故可应用命题 3.1.3(ii)。其对偶语句为"终对象唯一到唯一同构"。
+      对偶证明草稿：设 \(T,T'\) 都是 \(\mathbf C\) 的终对象。由终对象定义，存在唯一 \(f:T\to T'\) 与唯一 \(g:T'\to T\)。则 \(f\circ g:T'\to T'\) 是 \(T'\to T'\) 的箭头，而 \(\operatorname{id}_{T'}\) 也是；由 \(T'\) 的终性（到 \(T'\) 的箭头唯一）得 \(f\circ g=\operatorname{id}_{T'}\)。同理 \(g\circ f=\operatorname{id}_T\)。故 \(f\) 是同构，且由唯一性它是唯一的同构。
+      （对比：原初对象证明中用的是"从初对象出发的箭头唯一"，对偶后变成"到终对象的箭头唯一"，完全对仗。）<span class="qed">∎</span></div>
+    <div class="item"><b>3.1.4</b>　(a) \(f\) 是满态 ⟺ \(f^{\mathrm{op}}\) 是单态。
+      (b) \(A\) 是终对象 ⟺ \(A\) 是 \(\mathbf C^{\mathrm{op}}\) 中的初对象。
+      (c) "存在 \(A\to B\) 的箭头" ⟺ "在 \(\mathbf C^{\mathrm{op}}\) 中存在 \(B\to A\) 的箭头" —— 注意翻译时对象位置交换。
+      (d) "\(\operatorname{Hom}(A,B)\) 是单元集" 对偶为 "\(\operatorname{Hom}_{\mathbf C^{\mathrm{op}}}(B,A)=\operatorname{Hom}_{\mathbf C}(A,B)\) 是单元集"。因 Hom 集本身作为集合未变，这一条在把对象位置对调后<strong>内容相同</strong>——这说明"某 Hom 集是单元集"是<strong>自对偶</strong>的陈述。<span class="qed">∎</span></div>
+    <div class="item"><b>3.1.5</b>　<strong>推理错误，结论碰巧为真。</strong>前提"\((*)\) \(\mathbf{Set}\) 有终对象 \(1\)"是一个关于特定范畴的陈述，不是一个对所有范畴成立的模式。命题 3.1.3(ii) 要求 \(\sigma\) 对一切范畴成立，此处不满足，故不可套用。
+      正确使用对偶原理得到的结论是："\(\mathbf{Set}^{\mathrm{op}}\) 有初对象（即对象 \(1\) 在 \(\mathbf{Set}^{\mathrm{op}}\) 中为初）"。把这句话用 \(\mathbf C=\mathbf{Set}\) 代入命题 3.1.3(i) 检验：\(\mathbf{Set}\models\sigma\) 其中 \(\sigma=\)"有终对象"，于是 \(\mathbf{Set}^{\mathrm{op}}\models\sigma^{\mathrm{op}}=\)"有初对象"，正确。
+      至于 \(\mathbf{Set}\) 确有初对象 \(\varnothing\)，那是独立验证的事实：对任意集合 \(X\)，从 \(\varnothing\) 到 \(X\) 的函数恰有一个（习题 1.1.1），故 \(\varnothing\) 满足初对象的定义。<strong>方法论教训：</strong>对偶原理产生的是"对每个范畴都成立的成对定理"，不是"某范畴的性质自动有对偶版本"。问"\(\mathbf C\) 是否有对偶性质"必须单独检查 \(\mathbf C\cong\mathbf C^{\mathrm{op}}\) 与否。<span class="qed">∎</span></div>
+    <div class="item"><b>3.1.6</b>　定义 \(F:\mathbf{Rel}\to\mathbf{Rel}^{\mathrm{op}}\) 为对象恒等、\(F(R)=R^{\smile}\)。验证它是函子：须证 \(F(S\circ R)=F(S)\circ^{\mathrm{op}}F(R)\)。右端按 \(\mathbf{Rel}^{\mathrm{op}}\) 的复合定义等于 \(F(R)\circ F(S)\)（\(\mathbf{Rel}\) 中的复合），即 \(R^{\smile}\circ S^{\smile}\)。逐点计算：
+      \[(x,z)\in(S\circ R)^{\smile}\iff (z,x)\in S\circ R\iff \exists y,\ (z,y)\in R,\ (y,x)\in S.\]
+      而
+      \[(x,z)\in R^{\smile}\circ S^{\smile}\iff \exists y,\ (x,y)\in S^{\smile},\ (y,z)\in R^{\smile}\iff \exists y,\ (y,x)\in S,\ (z,y)\in R.\]
+      两式条件相同，故 \(F(S\circ R)=F(R)\circ F(S)=F(S)\circ^{\mathrm{op}}F(R)\)。恒等关系 \(\Delta_X^{\smile}=\Delta_X\)。于是 \(F\) 是函子；又 \((R^{\smile})^{\smile}=R\)，故 \(F\) 自我求逆，是同构，\(\mathbf{Rel}\) 自对偶。
+      由此，"\(\mathbf{Rel}\) 中积 = 不交并"这一<strong>对所有范畴成立的定理</strong>的对偶定理说"\(\mathbf{Rel}\) 中余积 = 余不交并"，因 \(\mathbf{Rel}\) 自对偶（\(F\) 在对象上恒等），二者落在同一对象上，故积与余积重合。若 \(\mathbf C\) 不自对偶，对偶定理给出的是 \(\mathbf C^{\mathrm{op}}\) 中的余积，与 \(\mathbf C\) 中的积没有理由同物。<span class="qed">∎</span></div>
+    <div class="item"><b>3.1.7</b>　按习题 1.1.5，\((P,\le)\) 作为范畴 \(\mathbf P\) 时 \(\operatorname{Hom}(p,q)\) 非空当且仅当 \(p\le q\)，且至多一箭头。反序自同构 \(\varphi:P\to P\)（即 \(p\le q\iff\varphi(q)\le\varphi(p)\)）给出函子 \(F:\mathbf P\to\mathbf P^{\mathrm{op}}\)：对象上 \(F(p)=\varphi(p)\)，箭头 \(p\le q\) 映到 \(\varphi(q)\le\varphi(p)\)，正是 \(\mathbf P^{\mathrm{op}}\) 中 \(\varphi(p)\to\varphi(q)\) 的箭头。\(\varphi\) 双射且有逆（逆仍是反序自同构），故 \(F\) 是同构。反之若有同构 \(F:\mathbf P\to\mathbf P^{\mathrm{op}}\)，其在对象上的映射 \(p\mapsto F(p)\) 满足 \(p\le q\iff\) 存在 \(\mathbf P\) 中 \(p\to q\) 的箭头 \(\iff\) 存在 \(\mathbf P^{\mathrm{op}}\) 中 \(F(p)\to F(q)\) 的箭头 \(\iff F(q)\le F(p)\)，故为反序自同构。
+      有补格 \((\neg:P\to P)\) 满足 \(p\le q\iff\neg q\le\neg p\)（由格的对偶律；在布尔格中是德摩根律的直接结果），且 \(\neg\neg=\operatorname{id}\)，故是有逆的反序自同构，于是有补格作为范畴自对偶。<span class="qed">∎</span></div>
+  </div>
+
+  <div class="box phil">
+    <h4>选读拓展（哲学联系，非正文）</h4>
+    <p><strong>对偶不是修辞上的"反过来讲"，而是一种可检验的形式操作。</strong>这一点值得单独强调，因为哲学写作里"对称""镜像""反转"常被用作比喻，而这里的对偶有严格判据：把箭头掉头后，范畴公理逐条保持成立（命题 3.1.2），因此每个定理都免费附赠一个对偶定理（命题 3.1.3）。你若在论文里用"对偶"一词，可以要求自己给出对应的 \(\mathbf C^{\mathrm{op}}\) 与翻译规则；做不到时，那多半只是类比。</p>
+    <p><strong>与因果哲学的一个对照。</strong>因果讨论中常问："把时间方向反转，理论还成立吗？"这和对偶原理形似而实不同。范畴对偶反转的是<em>箭头方向</em>（可理解为"关系/依赖的朝向"），并不反转任何时间参数；而且对偶原理是<em>无条件的元定理</em>——它不要求理论具有时间反演对称性，只要求你接受 \(\mathbf C^{\mathrm{op}}\) 也是范畴。若要把"因→果"的反转做成有实质内容的命题，需要额外结构（例如因果范畴中额外的独立性条件），此时是否自对偶才是真正需要论证的实质问题（对应本节定义 3.1.4）。</p>
+    <p><strong>自由意志问题上的一个提醒。</strong>"选择"在范畴论中会以两种对偶面孔出现：初对象的唯一射出（自由地、无约束地给定）与终对象的唯一射入（被唯一地收束）。这两者在 \(\mathbf{Set}\) 中碰巧都由 Hom 集为单元集刻画，却指向相反的行为。这提示：谈论"自由"时先说清是哪种泛性质在起作用，比争论词义更有收获。此处只是视角，不是论证；把它做成正式结论需要 §3.2 与第 18 章 Kripke–Joyal 语义的支撑。</p>
+  </div>
+</section>
+
+<section class="sec" id="s3-2">
+  <div class="sec-h"><span class="sec-no">3.2</span><h2>余积</h2><span class="src">A §3.2, pp.43–46</span></div>
+
+  <div class="box learn">
+    <h4>① 本节学习目标</h4>
+    <ol>
+      <li>由 §2.4 积的定义用对偶原理写出余积的严格定义，并能逐条对照两者；</li>
+      <li>证明余积唯一到唯一同构，并证明 Hom 集同构 \(\operatorname{Hom}(A+B,X)\cong\operatorname{Hom}(A,X)\times\operatorname{Hom}(B,X)\)；</li>
+      <li>在 \(\mathbf{Set}\)、偏序范畴、\(\mathbf{Rel}\)、\(\mathbf{Grp}\) 中逐一识别余积；</li>
+      <li>用基数比较说明 \(\mathbf{Set}\) 中积对余积的分配律成立、反向不成立；</li>
+      <li>理解初对象为何是"空余积"，为 §4.4 的一般余极限作准备。</li>
+    </ol>
+  </div>
+
+  <h3 class="sub">3.2.1　定义：把积的箭头全部掉头</h3>
+  <p>回顾 §2.4 定义 2.4.1：积 \(A\times B\) 由对象连同两根<strong>射出</strong>箭头 \(\pi_1:A\times B\to A\)、\(\pi_2:A\times B\to B\) 给出，泛性质说：给任意 \(X\) 与 \(f:X\to A,\ g:X\to B\)，存在唯一 \(\langle f,g\rangle:X\to A\times B\) 使 \(\pi_1\langle f,g\rangle=f,\ \pi_2\langle f,g\rangle=g\)。按 §3.1 的对偶词典，把每根箭头掉头、复合次序反转，得到：</p>
+  <div class="defn"><span class="lbl">定义 3.2.1（余积，coproduct）</span>　范畴 \(\mathbf C\) 中对象 \(A,B\) 的<strong>余积</strong>是三元组 \((A+B,\ i_A,\ i_B)\)，其中 \(i_A:A\to A+B\)、\(i_B:B\to A+B\) 为箭头（称为<strong>注入</strong>，injection），满足如下泛性质：
+    <p style="margin:8px 0">对任意对象 \(X\) 与任意箭头 \(f:A\to X,\ g:B\to X\)，存在<strong>唯一</strong>箭头 \([f,g]:A+B\to X\)（也记作 \(\binom{f}{g}\)），使
+    \[[f,g]\circ i_A=f,\qquad [f,g]\circ i_B=g.\]</p>
+    图示：
+    \[
+      \begin{array}{ccccc}
+        && X &&\\[2pt]
+        & \swarrow{\scriptstyle f} & \downarrow{\scriptstyle [f,g]} & \searrow{\scriptstyle g} &\\[2pt]
+        A & \xrightarrow{\ i_A\ } & A+B & \xleftarrow{\ i_B\ } & B
+      \end{array}
+    \]
+    说 \(\mathbf C\) <strong>有余积</strong>，指每对对象都存在余积。
+  </div>
+  <div class="rmk"><strong>读法对照。</strong>积的泛性质从 \(X\) "读出"两个分量（投影）；余积的泛性质向 \(X\) "汇入"两种可能（注入 + 按情形 merger）。下标记号也成对称：\(\langle f,g\rangle\) 是<strong>配对</strong>，\([f,g]\) 是<strong>按情形定义</strong>（case），方括号正是编程语言中模式匹配的记号来源。</div>
+
+  <h3 class="sub">3.2.2　唯一性与 Hom 集刻画</h3>
+  <div class="prop"><span class="lbl">命题 3.2.2（余积唯一到唯一同构）</span>　若 \((C,i_A,i_B)\) 与 \((C',i'_A,i'_B)\) 都是 \(A,B\) 的余积，则存在唯一同构 \(\varphi:C\to C'\) 使 \(\varphi\circ i_A=i'_A\)、\(\varphi\circ i_B=i'_B\)。
+    <div class="proof"><span class="pl">证明：</span>因 \(C'\) 是余积，对 \(f=i'_A:A\to C'\)、\(g=i'_B:B\to C'\)，存在唯一 \(\varphi:C\to C'\) 满足 \(\varphi i_A=i'_A,\ \varphi i_B=i'_B\)。对称地，因 \(C\) 是余积，存在唯一 \(\psi:C'\to C\) 满足 \(\psi i'_A=i_A,\ \psi i'_B=i_B\)。
+      考察 \(\psi\circ\varphi:C\to C\)：有 \((\psi\varphi)i_A=\psi i'_A=i_A\)、\((\psi\varphi)i_B=\psi i'_B=i_B\)。而 \(\operatorname{id}_C\) 也满足这两式。由 \(C\) 的泛性质中"唯一"一条，\(\psi\varphi=\operatorname{id}_C\)。同理 \(\varphi\psi=\operatorname{id}_{C'}\)。故 \(\varphi\) 是同构，唯一性已由泛性质保证。<span class="qed">∎</span></div>
+  </div>
+  <div class="prop"><span class="lbl">命题 3.2.3（Hom 集刻画）</span>　若 \(A+B\) 是余积，则对任意对象 \(X\)，映射
+    \[\Phi:\operatorname{Hom}(A+B,X)\longrightarrow\operatorname{Hom}(A,X)\times\operatorname{Hom}(B,X),\qquad h\mapsto(h\circ i_A,\ h\circ i_B)\]
+    是双射（且其逆为 \((f,g)\mapsto[f,g]\)）。因此余积由 Hom 集的同构完全刻画。
+    <div class="proof"><span class="pl">证明：</span>单射：若 \(h\circ i_A=h'\circ i_A\) 且 \(h\circ i_B=h'\circ i_B\)，则 \(h\) 与 \(h'\) 都满足定义 3.2.1 中对 \(f=h i_A,\ g=h i_B\) 的要求，由唯一性 \(h=h'\)。满射：给定 \((f,g)\)，定义 \(h=[f,g]\)，则 \(\Phi(h)=(f,g)\) 由定义的两条等式。故 \(\Phi\) 双射，逆即 \([f,g]\)。<span class="qed">∎</span></div>
+  </div>
+  <div class="rmk">这是 §2.4 命题 2.4.3 的对偶。对偶后 Hom 函子的位置从 \(\operatorname{Hom}(X,-)\) 换到 \(\operatorname{Hom}(-,X)\)（反变），这正是"余积由射出箭头刻画"在 Hom 层面的投影。</div>
+
+  <h3 class="sub">3.2.3　例子</h3>
+  <div class="prop"><span class="lbl">例 3.2.4（\(\mathbf{Set}\)：不交并）</span>　取 \(A+B=A\sqcup B=(\{0\}\times A)\cup(\{1\}\times B)\)，\(i_A(a)=(0,a)\)、\(i_B(b)=(1,b)\)。对 \(f:A\to X,\ g:B\to X\)，定义
+    \[[f,g](0,a)=f(a),\qquad [f,g](1,b)=g(b).\]
+    这是良定义的函数（两支的标签不同，无冲突），且显然满足两条等式。唯一性：任何 \(h:A+B\to X\) 由它在两分支上的取值完全决定，故若满足等式则必与 \([f,g]\) 相同。故不交并是余积。<span class="qed">∎</span></div>
+  <div class="rmk"><strong>为什么必须用不交并而非并 \(A\cup B\)？</strong>若 \(A\cap B\ne\varnothing\)，则并集里同一元素无法区分来自哪一侧，\(f,g\) 在交上取值不同时无法定义 \([f,g]\)。可见"余积保留来源信息"这一要求，在 \(\mathbf{Set}\) 中强制使用带标签的构造。这与 §2.4 的积 \(A\times B\) 形成有趣对照：积必须配对，余积必须带标签。</div>
+  <div class="prop"><span class="lbl">例 3.2.5（偏序范畴：上确界）</span>　设 \(\mathbf P\) 是格（作为范畴，见习题 1.1.5）。\(A,B\) 的余积即最小上界 \(A\vee B\)：注入 \(i_A:A\to A\vee B\) 即不等式 \(A\le A\vee B\)，\(i_B\) 同理。泛性质翻译成：若 \(X\) 满足 \(A\le X\) 且 \(B\le X\)，则 \(A\vee B\le X\)，且这样的箭头至多一条——正是上确界的定义。对偶地，积是下确界 \(A\wedge B\)。<span class="qed">∎</span></div>
+  <div class="prop"><span class="lbl">例 3.2.6（\(\mathbf{Grp}\)：自由积；\(\mathbf{Rel}\)：不交并）</span>
+    <p style="margin:6px 0">(a) 在群范畴 \(\mathbf{Grp}\) 中，余积是自由积 \(A\ast B\)：注入为自然嵌入，泛性质说任意两个同态 \(f:A\to X,\ g:B\to X\) 唯一延拓为 \([f,g]:A\ast B\to X\)。它一般不等于直积 \(A\times B\)（例如 \(\mathbb Z\ast\mathbb Z\) 非阿贝尔，而 \(\mathbb Z\times\mathbb Z\) 阿贝尔）。
+    (b) 在 \(\mathbf{Rel}\) 中，积与余积都由不交并实现（习题 3.2.4 验证），这是命题 3.1.5(a) 自对偶性的直接后果。</p>
+  </div>
+
+  <h3 class="sub">3.2.4　积与余积的不对称：分配律</h3>
+  <p>既然 \(\mathbf{Set}\) 同时有积与余积，自然问两者如何互动。这里有一个初学者常犯的错：以为"对偶原理"保证凡积满足的等式余积都满足。不是的——对偶原理给出的是关于 \(\mathbf C^{\mathrm{op}}\) 的等式，若 \(\mathbf C\not\cong\mathbf C^{\mathrm{op}}\)，所得等式落在另一个范畴里。</p>
+  <div class="prop"><span class="lbl">命题 3.2.7（\(\mathbf{Set}\) 中的分配律）</span>　对任意集合 \(A,B,C\)，存在自然同构
+    \[A\times(B+C)\;\cong\;(A\times B)+(A\times C).\]
+    但对一般集合，\(A+(B\times C)\not\cong(A+B)\times(A+C)\)。
+    <div class="proof"><span class="pl">证明第一式：</span>显式构造。用不交并的标签记号，
+      \[A\times(B+C)=\{(a,(0,b))\mid a\in A,b\in B\}\cup\{(a,(1,c))\mid a\in A,c\in C\}.\]
+      定义 \(\varphi(a,(0,b))=(0,(a,b))\)，\(\varphi(a,(1,c))=(1,(a,c))\)。它显然双射（逆为 \((0,(a,b))\mapsto(a,(0,b))\)、\((1,(a,c))\mapsto(a,(1,c))\)）。
+      <br><span class="pl">证明第二式不成立：</span>取 \(A=B=C=1=\{\ast\}\)。左边 \(1+(1\times1)\cong1+1\)，有 2 个元素。右边 \((1+1)\times(1+1)\) 有 \(2\times2=4\) 个元素。基数不同，故不同构。<span class="qed">∎</span></div>
+  </div>
+  <div class="rmk"><strong>深层原因（预告 §7.3）。</strong>在 \(\mathbf{Set}\) 中，函子 \(-\times A\) 有右伴随 \(A\Rightarrow-\)（指数对象，§5.1），而左伴随函子保余极限，故 \(-\times A\) 保余积，即得第一式。反过来 \(A+-\) 没有类似的"保积"性质，故第二式失败。这一不对称在逻辑上对应"合取对析取分配"，而析取对合取不分配——不是审美选择，是结构事实。</div>
+
+  <h3 class="sub">3.2.5　空余积与初对象</h3>
+  <p>余积运算也可作用在空族上。空族余积的泛性质变为：对象 \(0\) 连同"零根注入"，使得对任意 \(X\) 存在唯一箭头 \(0\to X\)。这正是初对象的定义（定义 2.2.1）。因此：</p>
+  <div class="prop"><span class="lbl">命题 3.2.8</span>　初对象即空族余积；终对象即空族积。<span class="qed">∎</span></div>
+  <p>证明是将定义逐字比对，留作习题 3.2.7。这条观察把"特殊对象"统一进"极限/余极限"的框架，是 §4.3–4.4 的起点。</p>
+
+  <h3 class="sub">习题</h3>
+  <div class="box exer">
+    <div class="grp">基础巩固题</div>
+    <ol>
+      <li id="q308">在 \(\mathbf{Set}\) 中验证不交并是余积（例 3.2.4）：写出 \([f,g]\) 的定义，逐条证明两条三角等式与唯一性。并说明为什么普通的并 \(A\cup B\) 在 \(A\cap B\ne\varnothing\) 时不行（给出具体反例）。</li>
+      <li id="q309">证明命题 3.2.3：\(\operatorname{Hom}(A+B,X)\cong\operatorname{Hom}(A,X)\times\operatorname{Hom}(B,X)\)。并说明这个同构在 \(X\) 中自然（提示：对 \(u:X\to Y\)，考察 \((h\circ i_A,h\circ i_B)\mapsto u\circ h\) 是否交换相应方块）。</li>
+      <li id="q310">证明余积唯一到唯一同构（命题 3.2.2），要求写出 \(\psi\varphi=\operatorname{id}_C\) 与 \(\varphi\psi=\operatorname{id}_{C'}\) 的完整推导。</li>
+      <li id="q311">在偏序范畴 \(\mathbf P\) 中证明：余积存在当且仅当任意两元素有上确界，且余积对象就是上确界。（对照 §2.4 中积=下确界。）</li>
+      <div class="grp">进阶思考题</div>
+      <li id="q312">证明 \(\mathbf{Rel}\) 中积与余积都是不交并：分别验证定义 2.4.1 与定义 3.2.1，明确写出投影/注入关系与配对/按情形定义的关系。</li>
+      <li id="q313">证明命题 3.2.7 的分配同构，并解释为何把 \(A=B=C=1\) 代入反向同构时基数不匹配。进一步：找出使 \(A+(B\times C)\cong(A+B)\times(A+C)\) 成立的平凡条件（提示：考虑某个集合为空）。</li>
+      <li id="q314">证明命题 3.2.8：初对象 iff 空族余积，终对象 iff 空族积。（提示：把定义中"对任意 \(f,g\)"的空族情形写清楚，注意"唯一箭头"从何而来。）</li>
+    </ol>
+  </div>
+
+  <h3 class="sub">习题参考答案</h3>
+  <div class="box ans">
+    <h4>④ 完整参考答案</h4>
+    <div class="item"><b>3.2.1</b>　设 \(A+B=\{0\}\times A\cup\{1\}\times B\)，\(i_A(a)=(0,a)\)、\(i_B(b)=(1,b)\)。给定 \(f:A\to X,\ g:B\to X\)，定义
+      \[[f,g](0,a)=f(a),\quad [f,g](1,b)=g(b).\]
+      良定义性：任一元素 \((t,x)\) 的标签 \(t\in\{0,1\}\) 唯一，故两支不会同时适用。两条等式：\([f,g](i_A(a))=[f,g](0,a)=f(a)\)，故 \([f,g]i_A=f\)；同理 \([f,g]i_B=g\)。唯一性：设 \(h:A+B\to X\) 满足 \(h i_A=f,\ h i_B=g\)。对任意 \((0,a)\in A+B\)，\(h(0,a)=h(i_A(a))=(h i_A)(a)=f(a)=[f,g](0,a)\)；对 \((1,b)\) 同理。故 \(h=[f,g]\)。
+      普通并的反例：取 \(A=\{1,2\}, B=\{2,3\}\)，则 \(A\cup B=\{1,2,3\}\)。取 \(X=\{0\}\)，\(f:A\to X\)、\(g:B\to X\) 只能常值 0，此处不显问题。改取 \(X=\{0,1\}\)，令 \(f(1)=f(2)=0\)，\(g(2)=1,\ g(3)=0\)。若存在 \(h:A\cup B\to X\) 使 \(h(1)=f(1)=0,\ h(2)=f(2)=0\) 且 \(h(2)=g(2)=1\)，则要求 \(0=1\)，矛盾。故普通并在此情形不满足泛性质。<span class="qed">∎</span></div>
+    <div class="item"><b>3.2.2</b>　映射 \(\Phi(h)=(h i_A,h i_B)\)。由命题 3.2.3 已证双射，其逆为 \(\Psi(f,g)=[f,g]\)。验证自然性：对 \(u:X\to Y\)，记 \(\Phi_X:\operatorname{Hom}(A+B,X)\to\operatorname{Hom}(A,X)\times\operatorname{Hom}(B,X)\)。需证方块
+      \[\begin{array}{ccc}\operatorname{Hom}(A+B,X)&\xrightarrow{\ \Phi_X\ }&\operatorname{Hom}(A,X)\times\operatorname{Hom}(B,X)\\ \downarrow u\circ- &&\downarrow (u\circ-,u\circ-)\\ \operatorname{Hom}(A+B,Y)&\xrightarrow{\ \Phi_Y\ }&\operatorname{Hom}(A,Y)\times\operatorname{Hom}(B,Y)\end{array}\]
+      交换。左下路径：\(h\mapsto u h\mapsto(uh i_A,uh i_B)\)。右下路径：\(h\mapsto(hi_A,hi_B)\mapsto(u hi_A,u hi_B)\)。由复合结合律二者相同。故 \(\Phi\) 关于 \(X\) 自然（严格地，\(\Phi\) 是反变 Hom 函子之间的自然变换，因 \(u:X\to Y\) 诱导的是 \(\operatorname{Hom}(A+B,X)\to\operatorname{Hom}(A+B,Y)\) 的前复合）。<span class="qed">∎</span></div>
+    <div class="item"><b>3.2.3</b>　设 \((C,i_A,i_B)\)、\((C',i'_A,i'_B)\) 均为余积。由 \(C'\) 的泛性质取唯一 \(\varphi:C\to C'\) 使 \(\varphi i_A=i'_A,\ \varphi i_B=i'_B\)；由 \(C\) 的泛性质取唯一 \(\psi:C'\to C\) 使 \(\psi i'_A=i_A,\ \psi i'_B=i_B\)。
+      验证 \(\psi\varphi=\operatorname{id}_C\)：\((\psi\varphi)i_A=\psi(\varphi i_A)=\psi i'_A=i_A\)，同理 \((\psi\varphi)i_B=i_B\)。而 \(\operatorname{id}_C i_A=i_A\)、\(\operatorname{id}_C i_B=i_B\)。由 \(C\) 的泛性质中满足这两等式的箭头<strong>唯一</strong>，得 \(\psi\varphi=\operatorname{id}_C\)。
+      验证 \(\varphi\psi=\operatorname{id}_{C'}\)：\((\varphi\psi)i'_A=\varphi(\psi i'_A)=\varphi i_A=i'_A\)，同理 \((\varphi\psi)i'_B=i'_B\)，与 \(\operatorname{id}_{C'}\) 相同；由 \(C'\) 的唯一性得 \(\varphi\psi=\operatorname{id}_{C'}\)。故 \(\varphi\) 是同构。<span class="qed">∎</span></div>
+    <div class="item"><b>3.2.4</b>　(⟹) 设 \(A,B\) 有余积 \(A\vee B\)（记 \(c=A\vee B\)）。注入 \(i_A:A\to c\) 即 \(A\le c\)。对任意 \(X\) 与 \(f:A\to X\)（即 \(A\le X\)）、\(g:B\to X\)（即 \(B\le X\)），余积泛性质给出唯一 \([f,g]:c\to X\)（即 \(c\le X\)）。"存在"说明 \(c\) 是上界，"唯一"说明它最小：任一上界 \(X\) 都满足 \(c\le X\)。故 \(c\) 是上确界。
+      (⟸) 设 \(c=A\vee B\) 存在。则 \(A\le c,\ B\le c\) 给出注入 \(i_A,i_B\)。对任意 \(X\) 及 \(A\le X,\ B\le X\)，由上确界定义 \(c\le X\)，即存在箭头 \(h:c\to X\)；又因偏序范畴中两对象间至多一箭头，\(h\) 唯一。这正是余积泛性质。<span class="qed">∎</span></div>
+    <div class="item"><b>3.2.5</b>　\(\mathbf{Rel}\) 中箭头 \(R:X\to Y\) 即关系 \(R\subseteq X\times Y\)，复合为 \(S\circ R=\{(x,z)\mid\exists y,\ (x,y)\in R,\ (y,z)\in S\}\)。记 \(A\sqcup B=(\{0\}\times A)\cup(\{1\}\times B)\)。
+      <br><strong>积：</strong>定义投影关系 \(\pi_A=\{((0,a),a)\mid a\in A\}\subseteq(A\sqcup B)\times A\)，\(\pi_B=\{((1,b),b)\mid b\in B\}\)。给定 \(f:X\to A\)、\(g:X\to B\)，令
+      \[\langle f,g\rangle=\{(x,(0,a))\mid(x,a)\in f\}\cup\{(x,(1,b))\mid(x,b)\in g\}\subseteq X\times(A\sqcup B).\]
+      验证：\((x,a)\in\pi_A\circ\langle f,g\rangle\iff \exists z,\ (x,z)\in\langle f,g\rangle,\ (z,a)\in\pi_A\iff z=(0,a)\) 且 \((x,a)\in f\iff(x,a)\in f\)，故 \(\pi_A\langle f,g\rangle=f\)；同理 \(\pi_B\langle f,g\rangle=g\)。唯一性：若 \(h:X\to A\sqcup B\) 满足两等式，则 \((x,(0,a))\in h\iff(x,a)\in f\)，\((x,(1,b))\in h\iff(x,b)\in g\)，即 \(h=\langle f,g\rangle\)。
+      <br><strong>余积：</strong>定义注入 \(i_A=\{(a,(0,a))\mid a\in A\}\subseteq A\times(A\sqcup B)\)，\(i_B=\{(b,(1,b))\mid b\in B\}\)。给定 \(f:A\to X,\ g:B\to X\)，令
+      \[[f,g]=\{((0,a),x)\mid(a,x)\in f\}\cup\{((1,b),x)\mid(b,x)\in g\}\subseteq(A\sqcup B)\times X.\]
+      验证：\((a,x)\in[f,g]\circ i_A\iff \exists z,\ (a,z)\in i_A,\ (z,x)\in[f,g]\iff z=(0,a)\) 且 \(((0,a),x)\in[f,g]\iff(a,x)\in f\)，故 \([f,g]i_A=f\)；同理 \([f,g]i_B=g\)。唯一性同理。故积与余积都由不交并实现。<span class="qed">∎</span></div>
+    <div class="item"><b>3.2.6</b>　第一式见命题 3.2.7 的构造。反向：取 \(A=B=C=1\)，左边 \(\cong 2\)，右边 \(\cong4\)，不等势。
+      使反向成立的平凡条件：若 \(A=\varnothing\)，则左边 \(\varnothing+(B\times C)\cong B\times C\)，右边 \((\varnothing+B)\times(\varnothing+C)\cong B\times C\)，成立。若 \(B=\varnothing\)，左边 \(A+\varnothing\cong A\)，右边 \((A+\varnothing)\times(A+C)\cong A\times(A+C)\)，一般不等于 \(A\)（除非 \(C=\varnothing\) 或 \(A\) 至多一元等特殊情形）。故最干净的充分条件是 \(A=\varnothing\)（或对称地 \(B=C=\varnothing\) 等退化情形）。<span class="qed">∎</span></div>
+    <div class="item"><b>3.2.7</b>　把定义 2.4.1 与 3.2.1 中的一族对象取为空族。空族余积要求：一个对象 \(0\)，没有注入箭头，使得对任意 \(X\) 与"空族箭头"（无数据），存在唯一箭头 \([\,]:0\to X\)。即：从 \(0\) 到任意 \(X\) 存在唯一箭头——这正是定义 2.2.1 中初对象的条件。反之若 \(0\) 是初对象，则它对空族的泛性质自动成立（因为"对所有 \(f,g\)"的量化范围为空，唯一需给出的是那根唯一箭头）。故初对象 = 空余积。
+      对偶地，空族积要求对任意 \(X\) 存在唯一箭头 \(X\to1\)，即终对象；反向同理。故终对象 = 空积。<span class="qed">∎</span></div>
+  </div>
+
+  <div class="box phil">
+    <h4>选读拓展（哲学联系，非正文）</h4>
+    <p><strong>余积是"析取"的范畴影子。</strong>在 Curry–Howard–Lambek 对应中（第 9–10 章详述），积对应合取 \(\wedge\)：\(\langle f,g\rangle\) 是构造一对证明；余积对应析取 \(\vee\)：注入 \(i_A,i_B\) 是"左引入""右引入"，而 \([f,g]\) 是按情形的消去（case analysis）。所以"余积"不是抽象定义游戏，而是你熟悉的"或"的结构本质：给出一个 \(A\vee B\) 的证明，就是给出它来自哪一侧。</p>
+    <p><strong>这与"证明同一性"直接相关。</strong>你关心的核心问题是：同一个命题的两个证明何时算同一个。对析取 \(A\vee B\)，范畴论给出第一个判据：由左注入得到的证明与由右注入得到的证明，只要两侧非空，就<strong>不同</strong>（因为 \(i_A\) 与 \(i_B\) 是不同的注入）。但在同一侧内部，"先证 \(A\) 再注入"与"换个证明路径再注入"是否同一？这取决于底层证明范畴中哪些箭头被识别。在 proof nets 理论中，这正对应加性连接词与所谓 bureaucracy（置换转换）问题：某些表面不同的推导只在无关紧要的次序上不同。余积的泛性质本身不回答这个问题——它只告诉你"两侧可区分"；要 finer 或 coarser 的判据，需要给证明范畴加商结构（见 §10.3 与第 19 章的分类拓扑斯视角）。此处把问题定位清楚，不越界给答案。</p>
+    <p><strong>因果建模中的一个可能用途。</strong>若把"原因 \(A\) 发生"与"原因 \(B\) 发生"视为两种互斥情形，则结果空间自然取余积 \(A+B\)，而一个从两种原因到同一结果的机制，正是箭头 \([f,g]\)。这里有个易错点：现实中的因果往往不是互斥的（\(A\cap B\ne\varnothing\)），此时不能直接用余积，因为不交并强制标签化——这与 §3.2.3 里"为什么必须用不交并"是同一个技术问题。看清这一点，能避免把"多因"错误地形式化为"析取"。</p>
+  </div>
+</section>
+
+<section class="sec" id="s3-3">
+  <div class="sec-h"><span class="sec-no">3.3</span><h2>等化子与余等化子</h2><span class="src">A §3.3–3.4, pp.46–52</span></div>
+
+  <div class="box learn">
+    <h4>① 本节学习目标</h4>
+    <ol>
+      <li>严格定义等化子与余等化子，并把后者由对偶原理写出；</li>
+      <li>证明等化子箭头必为单态、余等化子箭头必为满态；</li>
+      <li>在 \(\mathbf{Set}\) 中完整构造二者：等化子为解集、余等化子为由关系生成的商集；</li>
+      <li>理解正则单态的概念：为何 \(\mathbf{Set}\) 中每个单态都是等化子，而一般范畴不然；</li>
+      <li>知道"积 + 等化子 ⟹ 有限极限""余积 + 余等化子 ⟹ 有限余极限"，为第 4 章作准备；</li>
+      <li>（选读）把余等化子识别为"证明同一性判据"的范畴论原型。</li>
+    </ol>
+  </div>
+
+  <h3 class="sub">3.3.1　动机：方程的解与强制的同一</h3>
+  <p>给定两个函数 \(f,g:A\to B\)，有两个自然的问题。第一：<strong>哪些输入使二者相等</strong>？即集合 \(E=\{a\in A\mid f(a)=g(a)\}\)。第二：<strong>若强迫二者相等，\(B\) 会变成什么</strong>？即在 \(B\) 上把每对 \(f(a),g(a)\) 认同，取商。前者是"相等的条件"，后者是"强制同一"。本节要说明，这两个操作都不依赖元素，而由纯箭头的泛性质刻画，且互为对偶。</p>
+  <div class="rmk"><strong>预告。</strong>第二个问题就是你研究方向的范畴论雏形：若把两个证明看作两条箭头 \(f,g:1\to P\)，"这两个证明是否同一"正是问它们是否应被商掉。§3.3.5 与选读拓展会把这一点定位清楚。</div>
+
+  <h3 class="sub">3.3.2　等化子</h3>
+  <div class="defn"><span class="lbl">定义 3.3.1（等化子，equalizer）</span>　范畴 \(\mathbf C\) 中，对一对平行箭头 \(f,g:A\to B\)，其<strong>等化子</strong>是箭头 \(e:E\to A\)，满足：
+    <ol style="margin:6px 0 0;padding-left:20px">
+      <li>\(f\circ e=g\circ e\)（\(e\) 把 \(f,g\) 拉平）；</li>
+      <li>对任意箭头 \(h:X\to A\)，若 \(f\circ h=g\circ h\)，则存在<strong>唯一</strong> \(u:X\to E\) 使 \(e\circ u=h\)。</li>
+    </ol>
+    图示：\(E\xrightarrow{e}A\stackrel{f}{\underset{g}{\rightrightarrows}}B\)，且 \(h\) 唯一地因子过 \(e\)。
+  </div>
+  <div class="prop"><span class="lbl">命题 3.3.2（等化子是单态）</span>　若 \(e:E\to A\) 是 \(f,g\) 的等化子，则 \(e\) 是单态。
+    <div class="proof"><span class="pl">证明：</span>设 \(u,v:X\to E\) 满足 \(e\circ u=e\circ v\)，记 \(h:=e\circ u=e\circ v:X\to A\)。则 \(f\circ h=f\circ(e\circ u)=(f\circ e)\circ u=(g\circ e)\circ u=g\circ h\)，故 \(h\) 满足定义 3.3.2 中的前提。\(u,v\) 都满足 \(e\circ(-)=h\)，由唯一性得 \(u=v\)。按定义 2.1.1，\(e\) 是单态。<span class="qed">∎</span></div>
+  </div>
+  <div class="prop"><span class="lbl">命题 3.3.3（\(\mathbf{Set}\) 中的等化子）</span>　设 \(f,g:A\to B\)。令 \(E=\{a\in A\mid f(a)=g(a)\}\)，\(e:E\hookrightarrow A\) 为包含映射。则 \(e\) 是 \(f,g\) 在 \(\mathbf{Set}\) 中的等化子。
+    <div class="proof"><span class="pl">证明：</span>(1) 对 \(a\in E\)，\(f(e(a))=f(a)=g(a)=g(e(a))\)，故 \(fe=ge\)。
+      (2) 设 \(h:X\to A\) 满足 \(fh=gh\)。对每个 \(x\in X\)，\(f(h(x))=g(h(x))\)，故 \(h(x)\in E\)。定义 \(u:X\to E,\ u(x)=h(x)\)（值域限制到 \(E\) 合法）。则 \((e\circ u)(x)=e(h(x))=h(x)\)，故 \(eu=h\)。唯一性：若 \(u':X\to E\) 也满足 \(eu'=h\)，则对每个 \(x\)，\(e(u'(x))=h(x)=e(u(x))\)，而 \(e\) 是包含（单射），故 \(u'(x)=u(x)\)，即 \(u'=u\)。<span class="qed">∎</span></div>
+  </div>
+  <div class="rmk"><strong>唯一到唯一同构。</strong>与积、余积同理：等化子若存在则唯一到唯一同构（证明留作习题 3.3.4）。因此可记作 \(\mathrm{Eq}(f,g)\)。</div>
+
+  <h3 class="sub">3.3.3　余等化子：全部掉头</h3>
+  <p>对定义 3.3.1 应用对偶原理（把 \(e:E\to A\) 掉头为 \(q:B\to Q\)，把复合次序反转）：</p>
+  <div class="defn"><span class="lbl">定义 3.3.4（余等化子，coequalizer）</span>　对平行箭头 \(f,g:A\to B\)，其<strong>余等化子</strong>是箭头 \(q:B\to Q\)，满足：
+    <ol style="margin:6px 0 0;padding-left:20px">
+      <li>\(q\circ f=q\circ g\)；</li>
+      <li>对任意 \(h:B\to Y\)，若 \(h\circ f=h\circ g\)，则存在<strong>唯一</strong> \(u:Q\to Y\) 使 \(u\circ q=h\)。</li>
+    </ol>
+    图示：\(A\stackrel{f}{\underset{g}{\rightrightarrows}}B\xrightarrow{q}Q\)。
+  </div>
+  <div class="prop"><span class="lbl">命题 3.3.5（余等化子是满态）</span>　余等化子箭头 \(q\) 必为满态。
+    <div class="proof"><span class="pl">证明：</span>由命题 3.3.2 对偶立即得到；这里直接写出：设 \(u,v:Q\to Y\) 满足 \(u\circ q=v\circ q\)，记 \(h:=u q=v q:B\to Y\)。则 \(h f=u q f=u q g=h g\)，故 \(h\) 满足定义 3.3.4 的前提，\(u,v\) 都满足 \((-\,)q=h\)，由唯一性 \(u=v\)。故 \(q\) 右消去，是满态。<span class="qed">∎</span></div>
+  </div>
+  <div class="prop"><span class="lbl">命题 3.3.6（\(\mathbf{Set}\) 中的余等化子）</span>　设 \(f,g:A\to B\)。在 \(B\) 上定义关系
+    \[R=\{(f(a),g(a))\mid a\in A\}\cup\{(g(a),f(a))\mid a\in A\}\cup\Delta_B,\]
+    令 \(\sim\) 为 \(R\) 的等价闭包（包含 \(R\) 的最小等价关系），\(Q=B/{\sim}\)，\(q:B\to Q\) 为商映射。则 \(q\) 是 \(f,g\) 的余等化子。
+    <div class="proof"><span class="pl">证明：</span>(1) 对任意 \(a\in A\)，\((f(a),g(a))\in R\subseteq{\sim}\)，故 \(q(f(a))=q(g(a))\)，即 \(qf=qg\)。
+      (2) 设 \(h:B\to Y\) 满足 \(hf=hg\)。先证 \(h\) 在 \(R\) 的每条边上取值相同：对 \((f(a),g(a))\)，\(h(f(a))=(hf)(a)=(hg)(a)=h(g(a))\)；对称边同理；对角边平凡。再证 \(h\) 在 \(\sim\) 的同一等价类上取值相同：若 \(b\sim c\)，则存在有限链 \(b=b_0\,R\,b_1\,R\cdots R\,b_n=c\)，逐边传递得 \(h(b)=h(c)\)。故可定义 \(u:Q\to Y\) 为 \(u([b])=h(b)\)，良定义性正由前述保证。则 \((u q)(b)=u([b])=h(b)\)，故 \(uq=h\)。唯一性：若 \(u'q=h\)，则对任意类 \([b]\)，\(u'([b])=u'(q(b))=h(b)=u([b])\)，故 \(u'=u\)。<span class="qed">∎</span></div>
+  </div>
+  <div class="rmk"><strong>与群论的对照。</strong>在 \(\mathbf{Grp}\) 中，\(f,g:G\to H\) 的余等化子是商群 \(H/N\)，其中 \(N\) 是由 \(\{f(x)g(x)^{-1}\mid x\in G\}\) 生成的<strong>正规</strong>子群（正规闭包）。差别在于：集合上的最小等价关系就够了，群上则必须保证商仍为群，故要取正规闭包。这个差别说明"余等化子"是统一框架，具体范畴里它落实为什么构造要另行计算。</div>
+
+  <h3 class="sub">3.3.4　正则单态：一个重要的分层</h3>
+  <p>命题 3.3.2 说"等化子 ⟹ 单态"。反过来的问题在 \(\mathbf{Set}\) 中答案为真，在一般范畴中为假——这正是你此前问过的"内部/外部单态"分层的一个具体实例。</p>
+  <div class="prop"><span class="lbl">命题 3.3.7（\(\mathbf{Set}\) 中单态都是等化子）</span>　设 \(f:A\to B\) 是单射。定义两个函数 \(r,s:B\to\{0,1\}\)：
+    \[r(b)=0\ \ (\forall b\in B),\qquad s(b)=\begin{cases}0,& b\in f(A),\\ 1,& b\notin f(A).\end{cases}\]
+    则 \(f\) 同构于 \(r,s\) 的等化子，故是正则单态。
+    <div class="proof"><span class="pl">证明：</span>先计算满足 \(r(b)=s(b)\) 的元素：因 \(r\) 恒为 \(0\)，故 \(r(b)=s(b)\iff s(b)=0\iff b\in f(A)\)。于是 \(\{b\in B\mid r(b)=s(b)\}=f(A)\)，由命题 3.3.3，\(r,s\) 的等化子为包含 \(j:f(A)\hookrightarrow B\)。
+      因 \(f\) 单射，其限制 \(f':A\to f(A)\) 是双射，即 \(\mathbf{Set}\) 中的同构（命题 1.3.5），设逆为 \(f'^{-1}\)。则 \(j\circ f'=f\)（即原箭头 \(f\)），所以 \(f\) 与等化子 \(j\) 只差同构 \(f'\)。按定义 3.3.8，\(f\) 是正则单态。<span class="qed">∎</span></div>
+  </div>
+  <div class="rmk"><strong>核对（kernel pair）与同余。</strong>对任意 \(f:A\to B\)，集合 \(A\times_B A=\{(a_1,a_2)\in A\times A\mid f(a_1)=f(a_2)\}\) 连同两投影 \(p_1,p_2:A\times_B A\to A\) 称为 \(f\) 的<strong>核对</strong>——它正是你熟悉的<strong>同余关系</strong>在范畴论中的化身：\(a_1\sim a_2\iff f(a_1)=f(a_2)\)。当 \(f\) 单射时该同余平凡（只有对角），核对的等化子只给出 \(A\) 本身；核对的<strong>余等化子</strong>才给出 \(f\) 的正则像（§16.3）。习题 3.3.5 把这件事严格化。</div>
+  <div class="defn"><span class="lbl">定义 3.3.8（正则单态）</span>　范畴中的单态 \(f\) 若同构于某对平行箭头的等化子，称为<strong>正则单态</strong>（regular monomorphism）。命题 3.3.7 说明：\(\mathbf{Set}\) 中单态 = 正则单态。在 \(\mathbf{Top}\) 中，正则单态恰为到其像的嵌入（比一般单态=连续单射更强）；在一般范畴中，"单态"严格弱于"正则单态".</div>
+  <div class="rmk"><strong>与"内部单态"的分工。</strong>§2.1 的外部单态是箭头消去律；§2.3 的广义元素是 Hom-集层面的判定；这里的正则单态是"由等化子实现"的结构性要求，属于拓扑斯内部语言可表达的条件（第 16–18 章）。三者不在同一层，不能互相替代。记住这条分层，是理解后面拓扑斯内部逻辑的关键。</div>
+
+  <h3 class="sub">3.3.5　通往极限：本章的收束</h3>
+  <p>现在可以回答本章开头的设计：为什么先讲积与余积，再讲等化子与余等化子？因为二者合起来恰好生成所有有限（余）极限。</p>
+  <div class="prop"><span class="lbl">命题 3.3.9（有限极限的生成）</span>
+    <p style="margin:6px 0">(a) 若范畴 \(\mathbf C\) 有终对象、有任意两个对象的积、有任意一对平行箭头的等化子，则 \(\mathbf C\) 有所有有限极限。
+    (b)（对偶）若 \(\mathbf C\) 有初对象、有余积、有余等化子，则 \(\mathbf C\) 有所有有限余极限。</p>
+    <div class="proof"><span class="pl">证明思路（(a)，完整构造见 §4.3）：</span>有限图 \(J\) 上的极限可逐步构造：先用积把 \(J\) 的全部对象收成一个对象 \(\prod_{j\in J}F(j)\)，再用等化子强制所有箭头给出的等式条件（对每条箭头 \(u:j\to k\)，要求 \(\pi_k=F(u)\circ\pi_j\)；把所有这类条件合并为一对平行箭头，取其等化子）。终对象处理 \(J=\varnothing\) 的退化情形。这个构造的正确性由泛性质的逐条验证得到，§4.3 会给出完整细节。(b) 由对偶原理立得。<span class="qed">∎</span></div>
+  </div>
+  <div class="rmk"><strong>本部分知识链。</strong>第 1 章给出语言（范畴、函子、自然变换）；第 2 章给出第一批泛性质（单/满、初/终、广义元素、积）；第 3 章补齐对偶侧（余积、等化子/余等化子）并把对偶法严格化；第 4 章将二者统一为极限/余极限；第 5 章用极限的一个特例得到指数对象与笛卡尔闭范畴——后者正是 Lambek & Scott 范畴逻辑的起点。</div>
+
+  <h3 class="sub">习题</h3>
+  <div class="box exer">
+    <div class="grp">基础巩固题</div>
+    <ol>
+      <li id="q315">证明命题 3.3.2：等化子箭头是单态。再对偶地证明命题 3.3.5：余等化子箭头是满态。</li>
+      <li id="q316">在 \(\mathbf{Set}\) 中构造 \(f,g:A\to B\) 的等化子（命题 3.3.3），逐条验证两条泛性质；并证明等化子唯一到唯一同构。</li>
+      <li id="q317">在 \(\mathbf{Set}\) 中构造 \(f,g:A\to B\) 的余等化子（命题 3.3.6）。取 \(A=\{1\}, B=\{a,b,c\}\)，\(f(1)=a,\ g(1)=b\)，写出商集 \(Q\) 的具体元素与商映射 \(q\)，并验证泛性质。</li>
+      <li id="q318">设 \(e:E\to A\) 是 \(f,g:A\to B\) 的等化子。证明 \(e\) 唯一到唯一同构：若 \(e':E'\to A\) 也是等化子，则存在唯一同构 \(\varphi:E\to E'\) 使 \(e'\varphi=e\)。</li>
+      <div class="grp">进阶思考题</div>
+      <li id="q319">设 \(f:A\to B\)，其核对为 \(p_1,p_2:A\times_B A\to A\)。证明：\(f\) 是单态当且仅当 \(p_1=p_2\)（等价地，对角箭头 \(\delta:A\to A\times_B A,\ \delta(a)=(a,a)\) 是同构）。并说明为何核对的<strong>等化子</strong>只回到 \(A\)，而核对的<strong>余等化子</strong>才给出 \(f\) 的像（§16.3）。</li>
+      <li id="q320">在 \(\mathbf{Grp}\) 中，设 \(f,g:G\to H\) 为群同态，\(N\) 为由 \(\{f(x)g(x)^{-1}\mid x\in G\}\) 生成的正规子群。证明 \(q:H\to H/N\) 是 \(f,g\) 的余等化子。（提示：验证 \(qf=qg\)；对任意 \(h:H\to K\) 满足 \(hf=hg\)，证明 \(N\subseteq\ker h\)，从而 \(h\) 因子过商。）</li>
+      <li id="q321">（对接研究主题）设 \(\mathcal P\) 是一个"证明范畴"：对象为命题，箭头为证明。若 \(p,q:1\to\varphi\) 是同一命题 \(\varphi\) 的两个证明，试说明：把 \(p,q\) 视为一对平行箭头并取余等化子 \(Q\)，在何种意义上给出了"把二者认作同一证明"的形式操作？并讨论：余等化子所强制的等价关系是"最小的"还是"最大的"？这对证明同一性判据的粗细意味着什么？</li>
+    </ol>
+  </div>
+
+  <h3 class="sub">习题参考答案</h3>
+  <div class="box ans">
+    <h4>④ 完整参考答案</h4>
+    <div class="item"><b>3.3.1</b>　等化子情形见命题 3.3.2 的证明，不再重复。余等化子情形：设 \(q:B\to Q\) 是 \(f,g:A\to B\) 的余等化子，\(u,v:Q\to Y\) 满足 \(u q=v q\)，记 \(h=uq=vq\)。则 \(hf=u q f=u q g=h g\)，故 \(h\) 通过定义 3.3.4 的前提；\(u,v\) 都满足 \((-\,)q=h\)，由唯一性 \(u=v\)，故 \(q\) 满。<span class="qed">∎</span></div>
+    <div class="item"><b>3.3.2</b>　构造见命题 3.3.3，此处补全唯一到唯一同构：设 \(e:E\hookrightarrow A\)、\(e':E'\hookrightarrow A\) 都是等化子（故 \(E=E'=\{a\mid f(a)=g(a)\}\) 作为集合，且都是包含映射），则取 \(\varphi=\operatorname{id}_E\) 即可。一般范畴的唯一到同构见习题 3.3.4。<span class="qed">∎</span></div>
+    <div class="item"><b>3.3.3</b>　\(A=\{1\}\)，\(B=\{a,b,c\}\)，\(f(1)=a,\ g(1)=b\)。关系 \(R=\{(a,b),(b,a)\}\cup\Delta_B\)，其等价闭包 \(\sim\) 只有两个类：\(\{a,b\}\) 与 \(\{c\}\)。故 \(Q=B/{\sim}=\{[a],[c]\}\)，其中 \([a]=[b]=\{a,b\}\)，\([c]=\{c\}\)。商映射 \(q(a)=q(b)=[a]\)，\(q(c)=[c]\)。
+      验证 \(qf=qg\)：\((qf)(1)=q(a)=[a]=q(b)=(qg)(1)\)。
+      验证泛性质：设 \(h:B\to Y\) 满足 \(hf=hg\)，即 \(h(a)=h(b)\)。则 \(h\) 在 \(\{a,b\}\) 上常值，在 \(\{c\}\) 上显然常值，故因子过 \(\sim\)，定义 \(u([a])=h(a),\ u([c])=h(c)\)，良定义。则 \(uq=h\)，且因 \(q\) 满射，\(u\) 唯一。<span class="qed">∎</span></div>
+    <div class="item"><b>3.3.4</b>　设 \(e:E\to A\)、\(e':E'\to A\) 均为 \(f,g\) 的等化子。因 \(e'\) 满足 \(fe'=ge'\)，由 \(e\) 的泛性质（令其中 \(h=e'\)）得唯一 \(\varphi:E'\to E\) 使 \(e\varphi=e'\)。对称地，由 \(e'\) 的泛性质得唯一 \(\psi:E\to E'\) 使 \(e'\psi=e\)。
+      则 \(e(\varphi\psi)=e'\psi=e\)，而 \(e\circ\operatorname{id}_E=e\)；由 \(e\) 的泛性质中"唯一"一条，\(\varphi\psi=\operatorname{id}_E\)。同理 \(e'(\psi\varphi)=e\varphi=e'\)，得 \(\psi\varphi=\operatorname{id}_{E'}\)。故 \(\varphi\) 是同构且唯一。<span class="qed">∎</span></div>
+    <div class="item"><b>3.3.5</b>　记核对 \(P=A\times_B A=\{(a_1,a_2)\mid f(a_1)=f(a_2)\}\)，投影 \(p_1(a_1,a_2)=a_1,\ p_2(a_1,a_2)=a_2\)。
+      <br>(⟹) 设 \(f\) 单态。由核对定义 \(f p_1=f p_2\)（对每个 \((a_1,a_2)\in P\)，两值都等于 \(f(a_1)=f(a_2)\)）。由 \(f\) 的左消去性得 \(p_1=p_2\)。
+      <br>(⟸) 设 \(p_1=p_2\)。若 \(u,v:X\to A\) 满足 \(f u=f v\)，由拉回泛性质存在唯一 \(w:X\to P\) 使 \(p_1w=u,\ p_2w=v\)。由 \(p_1=p_2\) 得 \(u=p_1w=p_2w=v\)。故 \(f\) 单态。
+      <br>对角箭头 \(\delta:A\to P,\ \delta(a)=(a,a)\) 满足 \(p_1\delta=\operatorname{id}_A=p_2\delta\)；当 \(p_1=p_2\) 时 \(P\cong A\)（因 \(p_1=p_2\) 意味着每个 \((a_1,a_2)\in P\) 满足 \(a_1=p_1(a_1,a_2)=p_2(a_1,a_2)=a_2\)），故 \(\delta\) 是同构。
+      <br>核对的等化子：当 \(p_1=p_2\) 时，使 \(p_1 h=p_2 h\) 的箭头是全部 \(A\to P\) 的箭头，等化子为 \(\operatorname{id}:A\to A\)，只回到 \(A\) 本身，并未给出 \(f:A\to B\) 的像。要得到像须改用核对的<strong>余等化子</strong> \(p:P\rightrightarrows A\to \operatorname{im}f\)，这将在 §16.3（正则像分解）中处理。<span class="qed">∎</span></div>
+    <div class="item"><b>3.3.6</b>　(1) 对 \(x\in G\)，\(q(f(x))=f(x)N=g(x)N=q(g(x))\)（因 \(f(x)g(x)^{-1}\in N\)），故 \(qf=qg\)。
+      (2) 设 \(h:H\to K\) 为群同态且 \(hf=hg\)。对任意 \(x\in G\)，\(h(f(x)g(x)^{-1})=h(f(x))h(g(x))^{-1}=e_K\)，故生成元集 \(\{f(x)g(x)^{-1}\}\) 含于 \(\ker h\)。因 \(\ker h\) 是正规子群，它包含这些元素生成的正规闭包 \(N\)，即 \(N\subseteq\ker h\)。由群同态基本定理，存在唯一群同态 \(u:H/N\to K\) 使 \(u\circ q=h\)，其中 \(u(hN)=h(h)\)。唯一性由 \(q\) 满射保证。故 \(q\) 满足余等化子的两条要求。<span class="qed">∎</span></div>
+    <div class="item"><b>3.3.7</b>　把 \(p,q:1\to\varphi\) 看作一对<strong>平行</strong>箭头（定义域同为 \(1\)，值域同为 \(\varphi\)），取余等化子 \(q_0:\varphi\to Q\)。按定义 3.3.4，\(q_0p=q_0q\)，即在商对象 \(Q\) 中两者被强制相等；且 \(q_0\) 对任何同样拉平 \(p,q\) 的箭头 \(h:\varphi\to Y\) universal——\(h\) 因子过 \(Q\)。因此在"所有把 \(p,q\) 视为同一的语义"中，\(Q\) 是<strong>最一般</strong>的一个。
+      关于"最小还是最大"要分层说：作为商，\(Q\) 强制的等价关系是包含 \(\{(p,q)\}\) 的<strong>最小</strong>同余（在 \(\mathbf{Set}\) 中是最小等价关系），即"只认必须认的"。但作为对象，它接收到的箭头是最一般的：任何把 \(p,q\) 认作同一的语义都由 \(Q\) 因子给出，故 \(Q\) 在"语义覆盖面"上是<strong>最大</strong>的。这两个说法不矛盾——前者说的是被商掉的内容最少，后者说的是它能承载的解释最多。
+      对证明同一性的意义：一个"判据"就是决定商掉哪些证明对。若取余等化子只商掉显式给定的 \(p,q\)，得到最细的非平凡识别；若事先给定更大的一族要识别的证明对，取相应的余等化子得到更粗的判据。于是"证明同一性判据的粗细"被归约为"选取哪一族平行箭头作商"——这正是 proof nets 与 \(\beta\eta\)-理论差异的范畴论表述（第 10.3–10.4 节）。<span class="qed">∎</span></div>
+  </div>
+
+  <div class="box phil">
+    <h4>选读拓展（哲学联系，非正文）</h4>
+    <p><strong>等化子与余等化子是一对哲学意味不同的操作。</strong>等化子回答"在何处二者已经相同"——它不改变任何东西，只是把满足等式的部分挑出来；余等化子回答"若坚持二者相同，世界变成什么样"——它主动改变对象，把差异商掉。前者像发现，后者像约定。这个区分对研究"同一性"很要紧：说"两个证明本来就同一"，是在做等化子式的断言；说"我们把两个证明当作同一"，是在做余等化子式的构造。两者的数学性质完全不同，不该混为一谈。</p>
+    <p><strong>关于"强制同一"的哲学代价。</strong>余等化子构造的商 \(B/{\sim}\) 丢失了信息：从商对象无法恢复原对象 \(B\)（除非商映射可逆，即 \(f=g\) 的情形）。因此每一个"证明同一性判据"都是有代价的：你认作同一的证明越多，剩下的结构越粗，能区分的现象越少。这提示在哲学论证中不要追求"最粗的同一性"——那会把要解释的差别一起商掉；也不要固守"最细"——那会让任何实质推理都无法进行。范畴论把这种权衡硬化为"选哪一族箭头取余等化子"的技术问题。</p>
+    <p><strong>与因果哲学的接触点。</strong>在因果建模中，"同一结果由不同原因产生"是常态。若把不同原因路径视为箭头 \(p,q:1\to\varphi\)，那么"结果是否相同"的问题与本节完全同构：取余等化子相当于宣布这些路径通向同一结果；而不取商、保留差异，则是在做"因果信息的精细追踪"（类似 do-演算中保留干预路径的动机）。哪一层的同一合适，取决于你的问题是要预测结果还是要归因责任——后者通常需要更细的区分。这仍是一个研究提案，不是本章的定理；把它做实需要第 18 章的层语义工具。</p>
+  </div>
+</section>
+
+<footer>
+  <p><a href="范畴论-逻辑-拓扑斯_教材总目录.html">← 返回总目录</a> ｜ 下一章：第 4 章　极限与余极限（把积、等化子、余积、余等化子统一到泛性质的一般框架）。</p>
+  <p>本章引用：Awodey, <em>Category Theory</em>, 2nd ed., OUP 2010, §3.1–3.4。所有定义、命题、证明按原书陈述；"选读拓展"为结合研究主题的延伸，不属原书内容。</p>
+</footer>
+
+</div>
+</body>
+</html>

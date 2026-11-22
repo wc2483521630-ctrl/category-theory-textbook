@@ -1,0 +1,756 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-page-node-id="1nddw4mWokx9WAfisCuVm3">
+<head data-page-node-id="BRC6KQMy52a7nF2SE0VoAh">
+<meta charset="UTF-8" data-page-node-id="FnctQFv5CtgSTlnlMbmc0h">
+<meta name="viewport" content="width=device-width, initial-scale=1.0" data-page-node-id="zj2RBSOleIiNUM7jbSw6VJ">
+<title>第 7 章 伴随与 Monad —— 三书递进自学教材</title>
+<script>
+window.MathJax = {
+  tex: {
+    inlineMath: [['\\(','\\)']], displayMath: [['\\[','\\]']], processEscapes: true,
+    macros: {
+      llbracket: '\\lbrack\\lbrack',
+      rrbracket: '\\rbrack\\rbrack'
+    }
+  },
+  options: { ignoreHtmlClass: 'no-tex' },
+  svg: { fontCache: 'global' }
+};
+</script>
+<script async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
+<style>
+  :root{
+    --bg:#f6f7f9; --card:#fff; --ink:#1b1f27; --ink2:#4d5461; --ink3:#7a8190;
+    --line:#e5e8ed; --soft:#f0f2f5;
+    --c1:#2563eb; --c1bg:#eef4ff; --gold:#b45309; --goldbg:#fdf3e3;
+    --ok:#15803d; --okbg:#eefaf1; --phil:#7c3aed; --philbg:#f6f1ff;
+    --radius:12px;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;
+    line-height:1.75;-webkit-font-smoothing:antialiased;}
+  .wrap{max-width:920px;margin:0 auto;padding:0 22px 80px;}
+
+  header.top{padding:34px 0 22px;border-bottom:1px solid var(--line);margin-bottom:26px;}
+  .breadcrumb{font-size:12.5px;color:var(--ink3);margin-bottom:10px;}
+  .breadcrumb a{color:var(--c1);text-decoration:none;}
+  h1{font-size:29px;margin:0 0 8px;letter-spacing:-.02em;}
+  .lede{color:var(--ink2);font-size:14.5px;margin:0 0 16px;}
+  .jump{display:flex;gap:8px;flex-wrap:wrap;}
+  .jump a{font-size:12.5px;font-weight:650;text-decoration:none;color:var(--ink2);
+    background:var(--card);border:1px solid var(--line);border-radius:99px;padding:6px 13px;}
+  .jump a:hover{border-color:var(--c1);color:var(--c1);}
+
+  section.sec{margin:0 0 52px;scroll-margin-top:16px;}
+  .sec-h{display:flex;align-items:baseline;gap:12px;border-bottom:2px solid var(--c1);padding-bottom:10px;margin-bottom:22px;}
+  .sec-no{font-size:13px;font-weight:800;color:#fff;background:var(--c1);border-radius:7px;padding:3px 10px;white-space:nowrap;}
+  .sec-h h2{font-size:22px;margin:0;letter-spacing:-.01em;}
+  .src{font-size:11.5px;color:var(--ink3);margin-left:auto;white-space:nowrap;}
+
+  .box{border-radius:var(--radius);padding:16px 20px;margin:18px 0;border:1px solid var(--line);}
+  .box h4{margin:0 0 10px;font-size:14px;letter-spacing:.01em;}
+
+  .learn{background:var(--c1bg);border-color:#cfe0ff;}
+  .learn h4{color:var(--c1);}
+  .learn ol{margin:0;padding-left:22px;} .learn li{margin:4px 0;font-size:14px;}
+
+  .defn{background:#fafbfc;border-left:4px solid var(--ink2);padding:14px 18px;margin:16px 0;border-radius:0 10px 10px 0;}
+  .defn .lbl{font-weight:800;font-size:13.5px;color:var(--ink);}
+  .prop{background:#fbfcfe;border:1px solid #dbe6f8;border-left:4px solid var(--c1);padding:14px 18px;margin:16px 0;border-radius:0 10px 10px 0;}
+  .prop .lbl{font-weight:800;font-size:13.5px;color:var(--c1);}
+  .rmk{font-size:13.5px;color:var(--ink2);background:var(--soft);padding:11px 16px;border-radius:9px;margin:12px 0;}
+
+  .proof{margin:10px 0 4px;padding-left:16px;border-left:2px solid var(--line);font-size:14px;color:var(--ink2);}
+  .proof .pl{font-weight:700;color:var(--ink);}
+  .qed{float:right;font-style:normal;color:var(--ink3);}
+
+  .exer{background:var(--goldbg);border-color:#f2dfbb;}
+  .exer h4{color:var(--gold);}
+  .exer .grp{font-size:12.5px;font-weight:750;color:var(--gold);margin:12px 0 4px;}
+  .exer ol{margin:0;padding-left:22px;} .exer li{margin:9px 0;font-size:14px;}
+
+  .ans{background:var(--okbg);border-color:#c9ecd3;}
+  .ans h4{color:var(--ok);}
+  .ans .item{margin:14px 0 18px;font-size:14px;}
+  .ans .item:last-child{margin-bottom:0;}
+  .ans .item b{color:var(--ok);}
+  .ans .proof{border-left-color:#bfe6c9;}
+
+  .phil{background:var(--philbg);border-color:#e3d5ff;}
+  .phil h4{color:var(--phil);}
+  .phil p{font-size:14px;color:#5b3a8e;margin:8px 0;}
+
+  h3.sub{font-size:16px;margin:26px 0 6px;color:var(--ink);}
+  p{margin:9px 0;} .math{overflow-x:auto;}
+
+  .figcap{font-size:12.5px;color:var(--ink3);margin:2px 0 12px;text-align:center;font-style:italic;}
+
+  footer{border-top:1px solid var(--line);margin-top:30px;padding-top:20px;font-size:13px;color:var(--ink3);}
+  footer a{color:var(--c1);text-decoration:none;}
+
+  @media(max-width:640px){
+    h1{font-size:23px;} .wrap{padding:0 14px 60px;}
+    .sec-h{flex-wrap:wrap;} .src{margin-left:0;}
+    .box{padding:14px 15px;}
+  }
+  @media print{body{background:#fff;}.jump{display:none;}.box{break-inside:avoid;}}
+  /* ---- 范畴交换图 SVG（浅色主题）---- */
+  svg.cd{display:block;margin:16px auto 2px;max-width:100%;height:auto;
+    font-family:"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;}
+  svg.cd rect.node{fill:#eef4ff;stroke:#2563eb;stroke-width:1.5;rx:7;}
+  svg.cd rect.node2{fill:#f6f1ff;stroke:#7c3aed;stroke-width:1.5;rx:7;}
+  svg.cd rect.nodeg{fill:#eefaf1;stroke:#15803d;stroke-width:1.5;rx:7;}
+  svg.cd rect.nodey{fill:#fdf3e3;stroke:#b45309;stroke-width:1.5;rx:7;}
+  svg.cd text.nt{fill:#1b1f27;font-size:13.5px;font-weight:600;}
+  svg.cd text.lb{fill:#334155;font-size:12.5px;}
+  svg.cd text.hb{fill:#2563eb;font-size:12.5px;font-weight:600;}
+  svg.cd text.hg{fill:#15803d;font-size:12.5px;font-weight:600;}
+  svg.cd text.hp{fill:#7c3aed;font-size:12.5px;font-weight:600;}
+  svg.cd line.ar,svg.cd path.ar{stroke:#475569;stroke-width:1.6;fill:none;marker-end:url(#cdArr);}
+  svg.cd line.arb,svg.cd path.arb{stroke:#2563eb;stroke-width:1.8;fill:none;marker-end:url(#cdArrB);}
+  svg.cd line.arg,svg.cd path.arg{stroke:#15803d;stroke-width:1.8;fill:none;marker-end:url(#cdArrG);}
+  svg.cd line.arp,svg.cd path.arp{stroke:#7c3aed;stroke-width:1.8;fill:none;marker-end:url(#cdArrP);}
+  svg.cd line.ard,svg.cd path.ard{stroke:#475569;stroke-width:1.5;fill:none;stroke-dasharray:5 4;marker-end:url(#cdArr);}
+  svg.cd line.noa{stroke:#475569;stroke-width:1.5;fill:none;stroke-dasharray:5 4;}
+</style>
+</head>
+<body data-page-node-id="b3JaRnTPtMEDKbNtxdlJiv">
+
+<svg width="0" height="0" style="position:absolute;width:0;height:0;overflow:hidden" aria-hidden="true" data-page-node-id="4BirTqiGzMiCmIjalsQj8D">
+<defs data-page-node-id="gpTIRnznneRfPKbpoYmCCE">
+  <marker id="cdArr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse" data-page-node-id="c9fGclkfqaICD6tOXrdyES">
+    <path d="M 0 0 L 10 5 L 0 10 z" fill="#475569" data-page-node-id="qJa1hbzFTwdeUcEZEDJrCj"/>
+  </marker>
+  <marker id="cdArrB" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse" data-page-node-id="Win7uCUaSRsEqzqCHfvuuS">
+    <path d="M 0 0 L 10 5 L 0 10 z" fill="#2563eb" data-page-node-id="atoOBcnWxkEkLKdEjjRqUA"/>
+  </marker>
+  <marker id="cdArrG" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse" data-page-node-id="xbkhOOb5NCggww3fCeDlOx">
+    <path d="M 0 0 L 10 5 L 0 10 z" fill="#15803d" data-page-node-id="c0LVSwhvek4cXAFGW62Ubp"/>
+  </marker>
+  <marker id="cdArrP" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse" data-page-node-id="GILSpfiPPyabKpPXo4c6sS">
+    <path d="M 0 0 L 10 5 L 0 10 z" fill="#7c3aed" data-page-node-id="y0kyMFmd3UGX6Jg0KLmKbE"/>
+  </marker>
+</defs>
+</svg>
+<div class="wrap" data-page-node-id="bwSydtLyvtNaCyANIcLLAK">
+
+<header class="top" data-page-node-id="Tad209QoSY0IPe6C1aI5s6">
+  <div class="breadcrumb" data-page-node-id="eVJrb185cUB0zAWsCby7jb"><a href="范畴论-逻辑-拓扑斯_教材总目录.html" data-page-node-id="2eYQCkOmngyGEMJywBBr2O">← 返回总目录</a> ｜ 第一部分 · Awodey《Category Theory》（第二版）</div>
+  <h1 data-page-node-id="dgCuM0sTZ0oPLIrDlmDtyC">第 7 章　伴随与 Monad</h1>
+  <p class="lede" data-page-node-id="gRfd92cDfA53sKuoGCUZpK">如果说 Yoneda 引理是"用关系确定对象"，那么伴随就是"用一个最优构造回答一类普遍问题"。从自由群到积、指数、量词，这些看似无关的结构其实都是同一现象：两个函子之间的自然双射 \(\operatorname{Hom}(F A,B)\cong\operatorname{Hom}(A,G B)\)。本章是 Awodey 全书的高潮——它把前六章所有泛性质统一到一个概念之下；而由伴随提炼出的 Monad，则是通往后面 lambek–Scott 类型论与拓扑斯语义的代数骨架。</p>
+  <div class="rmk" style="margin-top:14px;" data-page-node-id="9rVZKM4t0RAKIRucw06IqA"><strong data-page-node-id="vLBmPOoeECt1qSFVommqZI">全章地图（抽象形式 ↔ 直观含义）。</strong>
+    7.1 <strong data-page-node-id="0WcZUTrgDC5l6mLemo750t">伴随的 Hom-集刻画</strong>：\(F\dashv G\) 即 \(\operatorname{Hom}(FA,B)\cong\operatorname{Hom}(A,GB)\) 对 \(A,B\) 自然 ↔ "从自由对象出发的箭头"与"进入遗忘对象的箭头"是同一件事；
+    7.2 <strong data-page-node-id="z6Yt3sxziG2ZW8y9PGVgkx">伴随的例子</strong>：自由⊣遗忘、积⊣对角线、柯里化、完备化 ↔ "最佳逼近"在两个方向各出现一次；
+    7.3 <strong data-page-node-id="luDA7K1mOsyghyI0J8An8v">偏序伴随与量词</strong>：\(\exists_f\dashv f^{\ast}\dashv\forall_f\) ↔ 存在、代入、全称是同一个三角关系的三顶点；
+    7.4 <strong data-page-node-id="ylE0oCXlYl73YRXsB6yGoe">伴随函子定理 RAPL</strong>：右伴随保持极限，加上解集条件即可构造左伴随 ↔ "保持结构"+"规模可控"才保证最优解存在；
+    7.5 <strong data-page-node-id="LiVh86Q1QSUUAZGCbFjo9O">三角恒等式与 Monad</strong>：单位/余单位满足三角恒等式，伴随诱导 \(T=GF\) 是 Monad ↔ "走一个来回再走一次等于没走"。
+    读图时记住图 7.1 的同构双射三角：本章几乎每个例子都是把某个泛性质读成这个双射。</div>
+  <nav class="jump" data-page-node-id="jtfuMjNQcW4Uc4AO5eLvxJ">
+    <a href="#s7-1" data-page-node-id="2oPWtq7wuMNsBkfCH8twDE">7.1 伴随的定义与 Hom-集刻画</a>
+    <a href="#s7-2" data-page-node-id="0TkVaN998KEA4VzWgpJFC2">7.2 伴随的例子</a>
+    <a href="#s7-3" data-page-node-id="AlmduOcekJBuUeDgfWAw8e">7.3 偏序伴随与量词</a>
+    <a href="#s7-4" data-page-node-id="f3czHtb5RJFPNXQWwIuvjw">7.4 伴随函子定理</a>
+    <a href="#s7-5" data-page-node-id="zVetCSDjwleV90e4n1XJ2E">7.5 三角恒等式、Monad 与代数</a>
+  </nav>
+</header>
+
+<section class="sec" id="s7-1" data-page-node-id="uMb1vviVx2evHSXQ0zo1xv">
+  <div class="sec-h" data-page-node-id="bacj5PvOEIGfAhKDe1XY1K"><span class="sec-no" data-page-node-id="BbGuUC9oHAzL2XyjgHe7lr">7.1</span><h2 data-page-node-id="EA7avHQ0putlKeUeWWkl4Y">伴随的定义与 Hom-集刻画</h2><span class="src" data-page-node-id="ZHvH5HoAmiSt7dzpEEogBe">A §9.1–9.2, p.199–208</span></div>
+
+  <div class="box learn" data-page-node-id="iEeE4PBODv9D2RSFpuHdGa">
+    <h4 data-page-node-id="DbuF5yK1uRQ5vdnfGSZUYf">① 本节学习目标</h4>
+    <ol data-page-node-id="xNbyTZ3vjmyveg8KPa1UxH">
+      <li data-page-node-id="xSjN3rzZ0R6JC1mqln9m0S">从自由单子的泛性质出发，理解"伴随"是对一类普遍映射性质的统一抽象；</li>
+      <li data-page-node-id="0pBQCW3oQNFObnwkHEQ2bg">掌握伴随的三种等价表述：Hom-集自然同构、单位/余单位 + 三角恒等式、泛映射性质；</li>
+      <li data-page-node-id="QTGrIyOh9wXAGYwf2vviQz">会构造伴随转置 \(\varphi,\psi\)，并验证它们互逆；</li>
+      <li data-page-node-id="xnesK58sbSmUb4AgSlG1XL">能从 Hom-集同构推出单位 \(\eta\) 与余单位 \(\varepsilon\)，反之亦然；</li>
+      <li data-page-node-id="JeywLC3R9ATev3N6zx7Fiv">证明伴随唯一到自然同构，并理解左伴随保余极限、右伴随保极限的第一个推论。</li>
+    </ol>
+  </div>
+
+  <h3 class="sub" data-page-node-id="odCiZi06Uvhyd5fO1X30P9">7.1.1 动机：自由构造的泛性质</h3>
+  <p data-page-node-id="j42s81jHV30iFGSEbQCpVk">先把一个熟悉的例子摆到台面上。设 \(U:\mathbf{Mon}\to\mathbf{Set}\) 是 forgetful 函子（忘掉乘法，只留下集合），\(F:\mathbf{Set}\to\mathbf{Mon}\) 是自由幺半群函子（\(F(X)=X^{\ast}\)，所有有限字）。从集合 \(X\) 到某个幺半群 \(M\) 的底层集合的函数 \(f:X\to U(M)\)，与从自由幺半群 \(F(X)\) 到 \(M\) 的幺半群同态 \(g:F(X)\to M\)，是一一对应的——只要指定每个生成元去哪，同态就被唯一决定：</p>
+  \[
+    \operatorname{Hom}_{\mathbf{Mon}}(F(X),M)\;\cong\;\operatorname{Hom}_{\mathbf{Set}}(X,U(M)).
+  \]
+  <p data-page-node-id="JlbMvc7oEr4cl3AZxRm2e8">这个双射的形式 \( \operatorname{Hom}_{\mathbf D}(F X,Y)\cong\operatorname{Hom}_{\mathbf C}(X,G Y) \) 就是伴随的定义。它把"在 \(\mathbf D\) 里从 \(FX\) 出发"翻译成"在 \(\mathbf C\) 里进入 \(GY\)"，像一台翻译机，在两个范畴间搬运箭头。</p>
+  <div class="rmk" data-page-node-id="P98f5rB4EVf2utQp74suH9"><strong data-page-node-id="mYdkq7cVzGT8DfOgcqgEPo">直观。</strong>把 \(F\) 想成"免费搭建"：给一堆材料 \(X\)，搭出最一般的结构 \(F X\)（除结构公理外不额外强加关系）。把 \(G\) 想成"忘掉结构、只看材料"。那么"从搭好的东西 \(F X\) 出发去 \(Y\)"和"用原材料 \(X\) 去往 \(Y\) 的材料 \(GY\)"是同一件事——因为 \(FX\) 没有任何多余约束，它的每个元素都由 \(X\) 生成。</div>
+
+  <h3 class="sub" data-page-node-id="gDmL4D5fPvgxv2wXXBXVlF">7.1.2 Hom-集定义与伴随转置</h3>
+  <div class="defn" data-page-node-id="TzRZMNwofEOY4vaHEEKHkb">
+    <span class="lbl" data-page-node-id="UxWIQEcoDFzJRdqanPUBsK">定义 7.1.1（伴随，Hom-集定义；A Def. 9.6）</span>
+    <p data-page-node-id="xY54qGM74wUHl4hJn3W7Js">设 \(\mathbf C,\mathbf D\) 为范畴，\(F:\mathbf C\to\mathbf D\) 与 \(G:\mathbf D\to\mathbf C\) 为函子。称 \(F\) <strong data-page-node-id="xgLH8UEK0KtAaA8cz4W2ax">左伴随</strong>于 \(G\)（\(G\) <strong data-page-node-id="Px6C7WXkHqQCMsnEtXxHa5">右伴随</strong>于 \(F\)），记作 \(F\dashv G\)，若存在一族双射</p>
+    \[
+      \varphi_{A,B}:\operatorname{Hom}_{\mathbf D}(F A,B)\;\xrightarrow{\;\cong\;}\;\operatorname{Hom}_{\mathbf C}(A,G B),
+    \]
+    对 \(A\in\mathbf C,\ B\in\mathbf D\) 有定义，且关于 \(A\) 与 \(B\) <strong data-page-node-id="2kokGEkgeVn3AoYFJ8IZJF">自然</strong>：即 \(\varphi\) 是函子
+    \[
+      \operatorname{Hom}_{\mathbf D}(F(-),-),\ \operatorname{Hom}_{\mathbf C}(-,G(-)):\mathbf C^{op}\times\mathbf D\to\mathbf{Set}
+    \]
+    之间的自然同构。记 \(\psi_{A,B}=\varphi_{A,B}^{-1}\)，\(\varphi(f)\) 称为 \(f\) 的（右）伴随转置。<p data-page-node-id="6ByJMHSFzFghFOq8T2n7Xv"></p>
+  </div>
+  <p data-page-node-id="TJS6yrN6UxpaL4w5Zb53Qg">把"对 \(A,B\) 自然"展开成两个方块：对 \(a:A'\to A\) 与 \(b:B\to B'\)，有</p>
+  \[
+    \varphi_{A',B'}\big(b\circ f\circ F a\big)\;=\;G b\circ \varphi_{A,B}(f)\circ a .
+  \tag{7.1}
+  \]
+  <svg class="cd" viewBox="0 0 620 300" width="620" height="300" role="img" aria-label="伴随 Hom-集双射的自然性方块" data-page-node-id="WMQiygk0xLFzK4gfBMKkIm">
+    <text class="nt" x="310" y="22" text-anchor="middle" data-page-node-id="oogRutGT7oZt4PSDYePzYV">Hom-集双射的自然性</text>
+    <rect class="node" x="30" y="60" width="180" height="40" rx="7" data-page-node-id="8K87m3ku9GCq1Z0v3ZV8Sv"/><text class="nt" x="120" y="86" text-anchor="middle" data-page-node-id="Oj6iWM6jwSqZWjF90dQxkK">Hom_D(FA, B)</text>
+    <rect class="node" x="400" y="60" width="195" height="40" rx="7" data-page-node-id="GOaUlDHwVF0o2kP5SbMNQh"/><text class="nt" x="497" y="86" text-anchor="middle" data-page-node-id="g8TouzpiY6PsEvXf1zJw8C">Hom_C(A, GB)</text>
+    <rect class="node" x="30" y="200" width="180" height="40" rx="7" data-page-node-id="49Gcy12rafdZyuJL2GhiYE"/><text class="nt" x="120" y="226" text-anchor="middle" data-page-node-id="JeuEWWCevl2H95l2SEUYZb">Hom_D(FA′, B′)</text>
+    <rect class="node" x="400" y="200" width="195" height="40" rx="7" data-page-node-id="syAbbGMHrKyItIByRs9Qej"/><text class="nt" x="497" y="226" text-anchor="middle" data-page-node-id="4MIFcFI1yYEGr8So0BKtsY">Hom_C(A′, GB′)</text>
+    <line class="arb" x1="210" y1="80" x2="398" y2="80" data-page-node-id="trq322M7uuphTvCV95I6sS"/><text class="hb" x="304" y="72" text-anchor="middle" data-page-node-id="B1skjf0fEnayYIyDdoA3E4">φ_{A,B}</text>
+    <line class="arb" x1="210" y1="220" x2="398" y2="220" data-page-node-id="bgoUQcZtHmzzHdGwF6wZwI"/><text class="hb" x="304" y="212" text-anchor="middle" data-page-node-id="nuIkBD0qFkuuUN1ghewBE5">φ_{A′,B′}</text>
+    <line class="ar" x1="120" y1="100" x2="120" y2="198" data-page-node-id="CTxR3EkfC1jfy8tOxRTdWC"/><text class="lb" x="128" y="152" data-page-node-id="YDxsZozBCqRMV2dmIK069o">b∘(−)∘Fa</text>
+    <line class="ar" x1="497" y1="100" x2="497" y2="198" data-page-node-id="nZk8Bh650OjiYIoz4AiM4x"/><text class="lb" x="505" y="152" data-page-node-id="SGtw1lNz3ATDn2U9c60CgG">Gb∘(−)∘a</text>
+    <text class="lb" x="310" y="278" text-anchor="middle" data-page-node-id="uZtJpdr1HC2lJnoHAVR7in">两条路径给出同一结果，即式 (7.1)</text>
+  </svg>
+  <p class="figcap" data-page-node-id="lmB0yoOrFWyHLVyYZ59ujs">图 7.1　伴随双射对 \(A,B\) 的自然性方块（左列在 \(\mathbf D\)，右列在 \(\mathbf C\)）</p>
+
+  <h3 class="sub" data-page-node-id="9yBouAKvtIKn20GOIQX6tE">7.1.3 单位与余单位</h3>
+  <p data-page-node-id="dmt80hbvePf3y0wD654DTE">把定义中的恒等箭头代入，就得到伴随最有用的两个"配件"。令 \(A=GB\)、取 \(f=\mathrm{id}_{GB}\)，定义<strong data-page-node-id="Q4Or2N55bECnmjzCDTa0uR">余单位</strong>（counit）为</p>
+  \[
+    \varepsilon_B:=\psi_{GB,B}(\mathrm{id}_{GB}):FGB\to B\quad(B\in\mathbf D),
+  \]
+  对偶地，令 \(B=FA\)、取 \(g=\mathrm{id}_{FA}\)，定义<strong data-page-node-id="4uvoKtXUksbwNrVeqgUJQS">单位</strong>（unit）为
+  \[
+    \eta_A:=\varphi_{A,FA}(\mathrm{id}_{FA}):A\to GFA\quad(A\in\mathbf C).
+  \]
+  <p data-page-node-id="5Y1weFLVGTQeqEHzd1kJQI">它们都是自然的（\(\eta:1_{\mathbf C}\Rightarrow GF\)，\(\varepsilon:FG\Rightarrow 1_{\mathbf D}\)），并且满足两条<strong data-page-node-id="ro0nnZH6pgMJymqplwaHDV">三角恒等式</strong>：</p>
+  \[
+    \varepsilon_{F A}\circ F(\eta_A)=\mathrm{id}_{F A},\qquad G(\varepsilon_B)\circ \eta_{G B}=\mathrm{id}_{G B}.
+  \tag{7.2}
+  \]
+  <div class="prop" data-page-node-id="Zbmr7DXHugoCwreSn62HBI">
+    <span class="lbl" data-page-node-id="ztfHcOuNJaLqH4VWc3rF2F">命题 7.1.2（转置公式；A §9.2）</span>
+    <p data-page-node-id="4TpJGQDNAGGCnMOCDiJKh5">对任意 \(f:FA\to B\) 与 \(g:A\to GB\)，有</p>
+    \[
+      \varphi(f)=G f\circ \eta_A,\qquad \psi(g)=\varepsilon_B\circ F g .
+  \]
+    <div class="proof" data-page-node-id="qZYh5mnM6DmcTSTavi1To2"><span class="pl" data-page-node-id="CYkfYYynCVgyhhqbzU3ygE">证明：</span>只用自然性式 (7.1)。对 \(f:FA\to B\)，取 \(A'=A,\ B'=B,\ a=\mathrm{id}_A\)，并把 \(f\) 看作从 \(FA\to B\)；由 \(\eta_A=\varphi(\mathrm{id}_{FA})\) 与自然性得
+    \[
+      \varphi(f)=\varphi(f\circ \mathrm{id}_{FA})=G f\circ \varphi(\mathrm{id}_{FA})=G f\circ \eta_A .
+    \]
+    同理，对 \(g:A\to GB\)，取余单位 \(\varepsilon_B=\psi(\mathrm{id}_{GB})\)，自然性给出
+    \[
+      \psi(g)=\psi(\mathrm{id}_{GB}\circ g)=\psi(\mathrm{id}_{GB})\circ F g=\varepsilon_B\circ F g .\qquad \blacksquare
+    \]
+    </div>
+  </div>
+  <div class="rmk" data-page-node-id="js1pox1npdhj1ksJeugrUN"><strong data-page-node-id="FbJdIb5ikCgbmyQIoKJqDy">读公式。</strong>\(\varphi(f)=Gf\circ\eta_A\) 说：要把"从 \(FA\) 出发的 \(f\)"翻译成"进入 \(GB\) 的箭头"，只需先把 \(A\) 用单位 \(\eta_A\) 送进 \(GF A\)，再用 \(Gf\) 送到 \(GB\)。对称地 \(\psi(g)=\varepsilon_B\circ Fg\) 用余单位把 \(g\) 翻译回去。</div>
+
+  <svg class="cd" viewBox="0 0 620 210" width="620" height="210" role="img" aria-label="三角恒等式" data-page-node-id="bgqo5ArDaJG1DkZsrW6L8A">
+    <text class="nt" x="310" y="22" text-anchor="middle" data-page-node-id="ap7YEpnyTdgaQDWV3f8r1m">三角恒等式（zig-zag）：绕一圈等于没绕</text>
+    <rect class="node" x="40" y="80" width="90" height="38" rx="7" data-page-node-id="w6H7D2hqOZIuzFi6VJU8Sr"/><text class="nt" x="85" y="104" text-anchor="middle" data-page-node-id="adKrbPHvyZlMq8S4BhRQJy">F A</text>
+    <rect class="node2" x="265" y="80" width="90" height="38" rx="7" data-page-node-id="8iPHvFUu23VynAfrf0j8Bi"/><text class="nt" x="310" y="104" text-anchor="middle" data-page-node-id="L27a0FnCohWvNvScsUFhx5">F G F A</text>
+    <rect class="node" x="490" y="80" width="90" height="38" rx="7" data-page-node-id="GCcXKaFb5Nf5Pzvfpvwz3N"/><text class="nt" x="535" y="104" text-anchor="middle" data-page-node-id="YlTC8WyXxoSsfxO1WbbuQL">F A</text>
+    <line class="arb" x1="130" y1="99" x2="263" y2="99" data-page-node-id="C1YYpb9g6FgHzLc64RrMA2"/><text class="hb" x="196" y="91" text-anchor="middle" data-page-node-id="UIKdGaEwUjBEnV6yrNTJNB">Fη_A</text>
+    <line class="arg" x1="355" y1="99" x2="488" y2="99" data-page-node-id="YwWBb6g78UEKkcWFDqBN4C"/><text class="hg" x="421" y="91" text-anchor="middle" data-page-node-id="WGLhXZDSXzIToOVqcpRr6w">ε_{FA}</text>
+    <path class="ar" d="M 85,122 Q 310,178 535,122" data-page-node-id="7YxcrBwTZqg7hfq3QaUPi2"/><text class="lb" x="310" y="168" text-anchor="middle" data-page-node-id="pHylH8nikDCXn5dKfCgjw2">ε_{FA}∘Fη_A = id_{FA}</text>
+  </svg>
+  <p class="figcap" data-page-node-id="Ubad1LR0ezm3lGRtitELhS">图 7.2　第一条三角恒等式：先单位后余单位，复合回去是恒等</p>
+
+  <h3 class="sub" data-page-node-id="dBwWtu4olitTNCXEtGyibh">7.1.4 三种定义等价与伴随的唯一性</h3>
+  <div class="prop" data-page-node-id="5gUqWgv0PPMu8azkYEgBGZ">
+    <span class="lbl" data-page-node-id="lAMI3wFN3aDGAL4sKCC39r">命题 7.1.3（定义的等价性；A §9.2）</span>
+    <p data-page-node-id="zY8UbeonT69xFCBxdPxkNQ">以下三者等价：(i) Hom-集自然同构 \(F\dashv G\)；(ii) 自然变换 \(\eta:1_{\mathbf C}\Rightarrow GF\)、\(\varepsilon:FG\Rightarrow 1_{\mathbf D}\) 满足三角恒等式 (7.2)；(iii) 对每个 \(A\) 存在泛映射 \(\eta_A:A\to GFA\)（即命题 7.1.2 的 UMP），或对偶地对每个 \(B\) 存在泛映射 \(\varepsilon_B:FGB\to B\)。</p>
+    <div class="proof" data-page-node-id="zVn4mM2W28jAUCGs7f0XMp"><span class="pl" data-page-node-id="3cLg4YAJkyRg0GWNaSjDxq">证明（(i)⇔(ii)）：</span>(i)⇒(ii) 已由上面构造 \(\eta,\varepsilon\) 并验证三角恒等式得到（把 \(\varphi,\psi\) 互逆代入转置公式即还原恒等）。反之，给定满足 (7.2) 的 \(\eta,\varepsilon\)，定义
+    \[
+      \varphi(f):=G f\circ\eta_A,\qquad \psi(g):=\varepsilon_B\circ F g .
+    \]
+    验证互逆：对 \(f:FA\to B\)，
+    \[
+      \psi(\varphi(f))=\varepsilon_B\circ F(Gf\circ\eta_A)=\varepsilon_B\circ FGf\circ F\eta_A
+      =f\circ\varepsilon_{FA}\circ F\eta_A\;\overset{(7.2)}{=}\;f .
+    \]
+    这里用了 \(\varepsilon\) 的自然性 \( \varepsilon_B\circ FGf=f\circ\varepsilon_{FA} \)。对 \(g\) 的验证完全对偶，用第二条三角恒等式。故 \(\varphi\) 是双射，其自然性直接来自 \(F,G\) 的函子性与 \(\eta\) 的自然性。(iii) 与 (i) 的等价是把双射在 \(\mathrm{id}\) 处取值与 UMP 互相翻译，同命题 7.1.2。<span class="qed" data-page-node-id="ICZBfK8dreVkTDuBmHSP0V">∎</span></div>
+  </div>
+  <div class="prop" data-page-node-id="J9eebOzACh979Kg6B6rqTp">
+    <span class="lbl" data-page-node-id="VqUW94wUTEyazLP9WQcSma">推论 7.1.4（伴随唯一到唯一同构）</span>
+    <p data-page-node-id="5sW2ntC0Pd01dtH13cNVVJ">若 \(F\dashv G\) 且 \(F'\dashv G\)（同一个右伴随），则 \(F\cong F'\) 自然同构；若 \(F\dashv G\) 且 \(F\dashv G'\)，则 \(G\cong G'\)。</p>
+    <div class="proof" data-page-node-id="bHBY152NG6yXMaHhjunjwA"><span class="pl" data-page-node-id="igJAm2GzUYm71k6StNkG4w">证明：</span>由 Hom-集同构，对所有 \(A,B\)，
+    \[
+      \operatorname{Hom}_{\mathbf D}(FA,B)\cong\operatorname{Hom}_{\mathbf C}(A,GB)\cong\operatorname{Hom}_{\mathbf D}(F'A,B).
+    \]
+    取 \(\mathbf D\) 上的表示函子观察，由 Yoneda（第 6 章定理 6.3.x）表示唯一到唯一同构，得 \(FA\cong F'A\)，且对 \(A\) 自然，即 \(F\cong F'\)。<span class="qed" data-page-node-id="JVMlZ9PVuFC0dlFOBDHbVH">∎</span></div>
+  </div>
+
+  <h3 class="sub" data-page-node-id="rI7YFMSq4QzSYQbySYxEoc">7.1.5 极限的伴随描述</h3>
+  <p data-page-node-id="sXnUBNJ39Y0CUEH9i8SXpS">伴随语言把第 4 章的极限统一起来。设 \(\mathbf J\) 小，\(\mathbf C\) 有 \(\mathbf J\)-型极限。对角线函子 \(\Delta:\mathbf C\to\mathbf C^{\mathbf J}\) 把对象送到恒等形状的图表。则</p>
+  \[
+    \operatorname{Hom}_{\mathbf C^{\mathbf J}}(\Delta X,D)\cong\operatorname{Hom}_{\mathbf C}(X,\lim_{\leftarrow} D),
+  \]
+  即 <strong data-page-node-id="FOSg1c3V0Pba16c3HNzG06">\(\Delta\dashv\lim_\leftarrow\)</strong>（极限是右伴随）；对偶地 \(\varinjlim\dashv\Delta\)（余极限是左伴随）。单位 \(\eta\) 是极限锥的顶点箭头，余单位是余极限锥——第 4 章的泛性质正是这里的单位/余单位。特别地，终对象是 \( !:\mathbf C\to\mathbf 1 \) 的右伴随，初对象是左伴随；积是 \(\Delta:\mathbf C\to\mathbf C\times\mathbf C\) 的右伴随；指数是 \(-\times A\) 的右伴随（下一节详述）。<p data-page-node-id="ZMM68iEzwLyA9EJeR04cYN"></p>
+
+  <div class="box exer" data-page-node-id="huNhUedyJ1gfTXSmb4e8vE">
+    <h4 data-page-node-id="uqPoCE0dvDPnx1f31fddS1">③ 习题</h4>
+    <div class="grp" data-page-node-id="QcLDIPJZyV63EcYPkxhOeI">基础巩固</div>
+    <ol data-page-node-id="JYcbrFJMUAefEM8vIRihnA">
+      <li id="q71a" data-page-node-id="i2eunIh8GYwoTvE3cI7ANv">写出自由群函子 \(F:\mathbf{Set}\to\mathbf{Grp}\) 与遗忘函子 \(U:\mathbf{Grp}\to\mathbf{Set}\) 之间的伴随同构，并指出单位 \(\eta_X:X\to UFX\) 把元素送到哪里。</li>
+      <li id="q71b" data-page-node-id="0irKNUaGOktXGOoD6duH6D">设 \(F\dashv G\)，\(\varphi:\operatorname{Hom}(FA,B)\to\operatorname{Hom}(A,GB)\)。用定义验证：对 \(f:FA\to B\)，\(\varphi(f)=Gf\circ\eta_A\)。（不可直接引用命题 7.1.2，需从自然性推出。）</li>
+      <li id="q71c" data-page-node-id="sUgThsHlgoowc9zpJJYmAv">证明单位 \(\eta:1_{\mathbf C}\Rightarrow GF\) 是自然变换：对 \(a:A\to A'\)，验证 \(GF a\circ\eta_A=\eta_{A'}\circ a\)。</li>
+      <li id="q71d" data-page-node-id="oS3JaxqA42ykq9W07nfKxL">把"终对象"表述为某个函子的右伴随，并写出对应的单位/余单位。</li>
+    </ol>
+    <div class="grp" data-page-node-id="4pCIVbowaRDwighXDIbjdy">进阶思考</div>
+    <ol start="5" data-page-node-id="MMqSXL0wVgUiHBWpGebJ04">
+      <li id="q71e" data-page-node-id="hSzIasGu7JDNGP0AwBwg3g">证明：若 \(F\dashv G\)，则 \(F\) 保余极限、\(G\) 保极限。提示：对任意图表 \(D:J\to\mathbf D\)，用 Hom-集同构把 \(\operatorname{Hom}(F\lim^{\mathbf C}D_j, X)\) 逐项搬过去。</li>
+      <li id="q71f" data-page-node-id="gt3NNrujKixGts5gto1kQc">证明命题 7.1.3 中"给定满足三角恒等式的 \(\eta,\varepsilon\) 可定义伴随"这一步里，\(\varphi\) 的自然性确实成立（对 \(a:A'\to A\) 与 \(b:B\to B'\) 分别验证）。</li>
+    </ol>
+  </div>
+
+  <div class="box ans" data-page-node-id="PXiEfSOEO48IwbROXZezMq">
+    <h4 data-page-node-id="98rM5EEwOOIhFuqGSz9Qq0">④ 参考答案</h4>
+    <div class="item" data-page-node-id="lxtbCmFaoMCmozN4uSnSdE"><b data-page-node-id="0t7rsoWOc0ol5lCJm1X4BO">7.1.1</b>　伴随同构为 \(\operatorname{Hom}_{\mathbf{Grp}}(F X,G)\cong\operatorname{Hom}_{\mathbf{Set}}(X,U G)\)：群同态 \(FX\to G\) 由生成元的像唯一决定，给定任意函数 \(X\to UG\) 都可唯一延拓。单位 \(\eta_X:X\to U F X\) 把 \(x\in X\) 送到自由群里对应的单字母词（生成元）。<span class="qed" data-page-node-id="itumtgi7hwCsEXtnwceFKW">∎</span></div>
+    <div class="item" data-page-node-id="ItybFFGsSEXnKDoLjA6QCO"><b data-page-node-id="7gNp1CVEHyRLYfcKpmEWNT">7.1.2</b>　把 \(f:FA\to B\) 写成 \(f\circ\mathrm{id}_{FA}\)。在自然性式 (7.1) 中令 \(A'=A,\ B'=B,\ a=\mathrm{id}_A,\ b=f\)，得
+    \[
+      \varphi(f\circ \mathrm{id}_{FA})=G f\circ \varphi(\mathrm{id}_{FA})\circ \mathrm{id}_A .
+    \]
+    而 \(\varphi(\mathrm{id}_{FA})=\eta_A\)，故 \(\varphi(f)=G f\circ\eta_A\)。<span class="qed" data-page-node-id="Kru1hYOfrfAvRY8CKFl9EO">∎</span></div>
+    <div class="item" data-page-node-id="lFwbx60SEQZ3iGWyDCxLyC"><b data-page-node-id="GxALlK8LvQwA07FruaQSnE">7.1.3</b>　由 \(\eta_A=\varphi_{A,FA}(\mathrm{id}_{FA})\)。对 \(a:A\to A'\)，考虑自然性 (7.1) 取 \(B=FA,\ B'=FA',\ b=Fa,\ a=a\)：\(\varphi_{A',FA'}(Fa\circ\mathrm{id}_{FA}\circ a)=G(Fa)\circ\varphi_{A,FA}(\mathrm{id}_{FA})\circ a\)。左边 \(=\varphi_{A',FA'}(Fa\circ a)=\varphi_{A',FA'}(\mathrm{id}_{FA'}\circ Fa\circ a)\)，用转置公式化为 \(GFa\circ\eta_A\)；右边 \(=GFa\circ\eta_A\)。整理得 \(GFa\circ\eta_A=\eta_{A'}\circ a\)。<span class="qed" data-page-node-id="bQWsNjlYHW5Ml1p5nZ603l">∎</span></div>
+    <div class="item" data-page-node-id="nvuMwxSDS6xo6kBepeECYi"><b data-page-node-id="UlbqPznOvBM1Bg24ds8bI6">7.1.4</b>　取 \(!:\mathbf C\to\mathbf 1\)（唯一函子）。终对象是右伴随：\(!\dashv t\)，其中 \(t:\mathbf 1\to\mathbf C\) 选中终对象 \(1\)。余单位 \(\varepsilon:!\,t\Rightarrow 1_{\mathbf 1}\) 是 \(\mathbf 1\) 上唯一的箭头；单位 \(\eta:1_{\mathbf C}\Rightarrow t!\) 在每个 \(X\) 处是唯一箭头 \(X\to 1\)。Hom-集同构 \(\operatorname{Hom}_{\mathbf 1}(!X,\ast)\cong\operatorname{Hom}_{\mathbf C}(X,1)\)（两边都是单点集）。<span class="qed" data-page-node-id="pkoyVzY5W9r1OP8AeeNN8g">∎</span></div>
+    <div class="item" data-page-node-id="VlZlW5G5dD3DBpGdAIA5Lv"><b data-page-node-id="Kf4BTx0SDuqELKBfS0AwdG">7.1.5</b>　证右伴随保极限：设 \(G\dashv F\)（\(G\) 右伴随），\(D:J\to\mathbf D\) 有极限 \(\lim D\)。对任意 \(X\in\mathbf C\)，
+    \[
+      \operatorname{Hom}_{\mathbf C}(X,G\lim D)\cong\operatorname{Hom}_{\mathbf D}(F X,\lim D)\cong\lim_J\operatorname{Hom}_{\mathbf D}(F X,D_j)\cong\lim_J\operatorname{Hom}_{\mathbf C}(X,G D_j)\cong\operatorname{Hom}_{\mathbf C}(X,\lim G D).
+    \]
+    第二个同构用 \(\operatorname{Hom}(Y,\lim D)=\lim\operatorname{Hom}(Y,D_j)\)（极限由 hom 刻画），对 \(X\) 自然；由 Yoneda 得 \(G\lim D\cong\lim GD\)。左伴随保余极限完全对偶。<span class="qed" data-page-node-id="yxASgAGxZgJufb0VNal3p4">∎</span></div>
+    <div class="item" data-page-node-id="2x2sGuhPmnA9TxRBSoFFh8"><b data-page-node-id="dioKx9fE6tkQpfyKeYDHKV">7.1.6</b>　对 \(a:A'\to A\)：需证 \(\varphi_{A',B}(f\circ Fa)=G f\circ\eta_A\circ a\)，而右边由 \(\eta\) 自然性 \(=GF a\) 参与的结果，代入转置公式 \(\varphi(f\circ Fa)=G(f\circ Fa)\circ\eta_{A'}=Gf\circ GFa\circ\eta_{A'}=Gf\circ\eta_A\circ a\)（末步用 \(\eta\) 的自然性）。对 \(b:B\to B'\)：\(\varphi_{A,B'}(b\circ f)=G(b\circ f)\circ\eta_A=Gb\circ Gf\circ\eta_A=Gb\circ\varphi_{A,B}(f)\)。两式合起来即 (7.1)，故 \(\varphi\) 自然。<span class="qed" data-page-node-id="p8WF1qBsg3Y7q2ChkEkgaA">∎</span></div>
+  </div>
+
+  <div class="box phil" data-page-node-id="0uS5lrrm2vbOgs6So6AQuv">
+    <h4 data-page-node-id="5iwkcaJ0iiBanxAPg5h0hv">选读拓展 · 哲学联系（可略读）</h4>
+    <p data-page-node-id="OrysApsL52YIIXwaTXTmZG">伴随把"最优解"变成一个可搬运的结构：一个泛性质一旦被识别为伴随，它的所有形式性质（保极限、唯一性、与极限交换）都免费继承。这与"证明同一性"主题呼应：不同的构造（自由群、积、完备化）表面毫无关系，但在伴随这一结构约束下被判定为"同一个"——同一性来自结构位置，而非构造材料。</p>
+  </div>
+</section>
+
+<section class="sec" id="s7-2" data-page-node-id="u7dCq2dSZNsOlKPJsADqvA">
+  <div class="sec-h" data-page-node-id="GOyI8XdCoxKt0tDVfsANfr"><span class="sec-no" data-page-node-id="bv68llcgLy90mgzM0vfjuv">7.2</span><h2 data-page-node-id="r390a5EE4z08qyG8bdlxV5">伴随的例子</h2><span class="src" data-page-node-id="bdJAsK5D3o5Nmt8SOQvFzZ">A §9.3, p.208–216</span></div>
+
+  <div class="box learn" data-page-node-id="z8tDlkozGH30H8xb1Ct62U">
+    <h4 data-page-node-id="6BRPNjfPOLU8gwSSQgIsUY">① 本节学习目标</h4>
+    <ol data-page-node-id="b7MHp1fxrxDNawkx6jj4lw">
+      <li data-page-node-id="UftBb22eujtxdIUtDENBoT">把自由/遗忘、积/对角线、指数/乘积、离散/凝聚等构造逐一读成伴随；</li>
+      <li data-page-node-id="zQJh8NQszCSFg16GnAI8z7">对每个例子写出具体的 Hom-集双射，并辨认单位与余单位；</li>
+      <li data-page-node-id="zUclgKbAmyc1DCbo0hKKa8">理解"左伴随建模自由添加结构，右伴随建模遗忘结构"的一般范式；</li>
+      <li data-page-node-id="Cf9HvbH50MBmiKCYv6eGa9">通过 abelianization、完备化等例子体会伴随在代数与拓扑中的普遍存在；</li>
+      <li data-page-node-id="JM3GVrnqrPly3M3PeF6D1A">学会由已知的伴随组合出新的伴随（伴随的复合）。</li>
+    </ol>
+  </div>
+
+  <h3 class="sub" data-page-node-id="UpaK21NYBauXy6Yy2RucmM">7.2.1 自由 ⊣ 遗忘：原型</h3>
+  <p data-page-node-id="Bg7z98097UAl3lcoiyX9Hn">这是最重要的范式。对一大类"代数结构范畴" \(\mathbf C\)（群、环、幺半群、模、格……），遗忘函子 \(U:\mathbf C\to\mathbf{Set}\) 通常有左伴随 \(F:\mathbf{Set}\to\mathbf C\)，即"自由 \(\mathbf C\)-对象"函子：</p>
+  \[
+    \operatorname{Hom}_{\mathbf C}(F X,C)\;\cong\;\operatorname{Hom}_{\mathbf{Set}}(X,U C).
+  \]
+  <p data-page-node-id="DnpiRyDYpPN4GWGf1H5BUn">具体例子：自由群 \(F(X)\) 是字母表 \(X\cup X^{-1}\) 上所有化简约字；自由 \(R\)-模 \(F(X)=\bigoplus_{x\in X}R\)；自由幺半群 \(F(X)=X^{\ast}\)；自由格、自由布尔代数等。单位 \(\eta_X:X\to U F X\) 是"把生成元嵌入自由对象"，余单位 \(\varepsilon_C:FUC\to C\) 是"把由底层元素拼成的自由对象求值回 \(C\)"。</p>
+  <div class="rmk" data-page-node-id="3LUMAsmj7FghDchEFtocvl"><strong data-page-node-id="JeaipvPQ7nQv52tsfKR1oA">为什么自由对象是左伴随。</strong>同态 \(FX\to C\) 由它在生成元上的值完全决定，而生成元就是 \(X\)——所以给出这样的同态，等价于给出任意函数 \(X\to UC\)。自由性（除公理外无额外关系）正是让这个双射成立的秘密：如果 \(FX\) 上有多余关系，并非任意函数都能延拓。</div>
+
+  <h3 class="sub" data-page-node-id="9xlJTq31afvG5Y4rJLEbZY">7.2.2 积 ⊣ 对角线，余极限 ⊣ 对角线</h3>
+  <p data-page-node-id="MLbNjfPPl0clFhildtnJip">设 \(\mathbf C\) 有二元积。对角线函子 \(\Delta:\mathbf C\to\mathbf C\times\mathbf C\)，\(\Delta(X)=(X,X)\)。则积函子 \(\times:\mathbf C\times\mathbf C\to\mathbf C\) 是 \(\Delta\) 的右伴随：</p>
+  \[
+    \operatorname{Hom}_{\mathbf C\times\mathbf C}(\Delta X,(A,B))\;\cong\;\operatorname{Hom}_{\mathbf C}(X,A\times B).
+  \]
+  因为左边 \(=\operatorname{Hom}(X,A)\times\operatorname{Hom}(X,B)\)，正是积的泛性质。单位 \(\eta_X:X\to X\times X\) 是对角线箭头 \(\langle\mathrm{id},\mathrm{id}\rangle\)，余单位是投影对。对偶地，若 \(\mathbf C\) 有余积，则余积函子 \(+:\mathbf C\times\mathbf C\to\mathbf C\) 是 \(\Delta\) 的左伴随：\(\operatorname{Hom}(A+B,X)\cong\operatorname{Hom}_{\mathbf C\times\mathbf C}((A,B),\Delta X)\)。<p data-page-node-id="EC19jiuqQ3X8HPO7UIMCZz"></p>
+
+  <h3 class="sub" data-page-node-id="hvKXSdpMi7mFUUIzeMFsQB">7.2.3 指数：柯里化作为伴随</h3>
+  <p data-page-node-id="NmNe35EvrEd1uKcqtnLb4N">第 5 章的指数对象现在有了伴随的读法。对固定对象 \(A\)，函子 \(-\times A:\mathbf C\to\mathbf C\) 有右伴随 \((-)^A:\mathbf C\to\mathbf C\)（在笛卡尔闭范畴中）：</p>
+  \[
+    \operatorname{Hom}_{\mathbf C}(B\times A,C)\;\cong\;\operatorname{Hom}_{\mathbf C}(B,C^A).
+  \tag{7.3}
+  \]
+  <p data-page-node-id="HgB1SMEyFX8zqoxBFxg46f">这个双射就是柯里化：一个二元箭头 \(B\times A\to C\) 对应一个"以 \(B\) 为参数、返回 \(A\to C\) 函数"的箭头。单位 \(\eta_B:B\to (B\times A)^A\) 把 \(b\) 送到"给定 \(a\mapsto(b,a)\)"，余单位是求值 \(\varepsilon_C:C^A\times A\to C\)。</p>
+  <svg class="cd" viewBox="0 0 640 250" width="640" height="250" role="img" aria-label="柯里化伴随的 Hom-集同构" data-page-node-id="got5iiEseiw05IluXieLMP">
+    <text class="nt" x="320" y="22" text-anchor="middle" data-page-node-id="NZNbpQ4VtWkY3y6mllknl4">柯里化：−×A ⊣ (−)^A</text>
+    <rect class="node" x="40" y="80" width="220" height="46" rx="7" data-page-node-id="EiPdlUmCmWNvtsQRYqxq0J"/><text class="nt" x="150" y="108" text-anchor="middle" data-page-node-id="R1A3CvvivjIEcMYNiYRgUb">Hom(B×A, C)</text>
+    <rect class="node2" x="380" y="80" width="220" height="46" rx="7" data-page-node-id="46BCG9KYkWNH0nzUGbqtHo"/><text class="nt" x="490" y="108" text-anchor="middle" data-page-node-id="lwrQLS9WsxPXv29bcmMCcL">Hom(B, C^A)</text>
+    <line class="arb" x1="262" y1="103" x2="378" y2="103" data-page-node-id="pIOVoLEAG3uBFk0VDfBurK"/><text class="hb" x="320" y="95" text-anchor="middle" data-page-node-id="DGMan92WPQbbc8k5pTEl0s">λ（柯里化）</text>
+    <line class="arb" x1="378" y1="125" x2="262" y2="125" data-page-node-id="fjRGG1iNtVAp6VjgWYtQWL"/><text class="hb" x="320" y="145" text-anchor="middle" data-page-node-id="HWMnFdXmBYFMyHLgYbiQMK">ε∘(−×id)</text>
+    <text class="lb" x="320" y="190" text-anchor="middle" data-page-node-id="XWlJMg5sXemBEKtjsKcuSh">f:B×A→C　↔　λf:B→C^A，　(λf)(b)(a)=f(b,a)</text>
+    <text class="lb" x="320" y="220" text-anchor="middle" data-page-node-id="36A6k0MoJYYP8Uk9XLwggn">单位 η_B(b)(a)=(b,a)；余单位 ε_C(g,a)=g(a)</text>
+  </svg>
+  <p class="figcap" data-page-node-id="SrngoN8PSyYM0cBGRLKI0L">图 7.3　柯里化伴随：hom-set 双射把二元箭头与"返回函数"的箭头对应起来</p>
+
+  <h3 class="sub" data-page-node-id="b9vIkfJrk5D2EElmXgpk7x">7.2.4 拓扑中的伴随三明治</h3>
+  <p data-page-node-id="tUG19ByhDxSiMaDRYCXudg">设 \(U:\mathbf{Top}\to\mathbf{Set}\) 为遗忘函子。它两侧都有伴随：</p>
+  \[
+    \mathbf{Disc}\;\dashv\;U\;\dashv\;\mathbf{Indisc},
+  \]
+  其中 \(\mathbf{Disc}\) 赋予离散拓扑（所有子集开），\(\mathbf{Indisc}\) 赋予凝聚拓扑（只有 \(\varnothing,X\) 开）。验证：从离散空间出发的连续映射就是任意函数（因为定义域任何子集都开），而到凝聚空间去的连续映射也是任意函数（因为值域几乎无开集需要保持）。这是"左伴随添加尽可能多的结构、右伴随添加尽可能少的结构"的绝佳例证。<p data-page-node-id="gzAZrOkAGjCwOYXniANfTC"></p>
+
+  <h3 class="sub" data-page-node-id="brIShNe3Is0iVBfQ0fg8co">7.2.5 更多例子与小结论</h3>
+  <ul data-page-node-id="Vjud1Wxk9gXbR0oqRIAnwi">
+    <li data-page-node-id="MlL7kVORWsOOrpQctE6xed"><strong data-page-node-id="IliHxszfGl0gfg2mwmdFAL">Abelianization.</strong> 交换化函子 \(ab:\mathbf{Grp}\to\mathbf{Ab}\) 是包含函子 \(i:\mathbf{Ab}\hookrightarrow\mathbf{Grp}\) 的左伴随：\(\operatorname{Hom}_{\mathbf{Ab}}(ab\,G,A)\cong\operatorname{Hom}_{\mathbf{Grp}}(G,iA)\)。</li>
+    <li data-page-node-id="fGps2OLAVa8KeoQMPLCy7E"><strong data-page-node-id="upxPaAmS3qlFUJhTtN2VRl">完备化.</strong> 把度量空间送到其完备化的函子是"从完备度量空间包含进来"的左伴随。</li>
+    <li data-page-node-id="8N0WRcczKTB72ezm0A6dK6"><strong data-page-node-id="1UDlEn409IGIGiBrDO5kT6">张量–Hom 伴随.</strong> 对 \(R\)-模，\(-\otimes_R M\dashv\operatorname{Hom}_R(M,-)\)：\(\operatorname{Hom}(A\otimes M,B)\cong\operatorname{Hom}(A,\operatorname{Hom}(M,B))\)。这是线性代数版本的柯里化。</li>
+    <li data-page-node-id="QrEZWdSepvMo8RVsDyGWRa"><strong data-page-node-id="Xp5KZNih02L3O9akBGUCZt">伴随的复合.</strong> 若 \(F\dashv G\)（\(\mathbf C\leftrightarrows\mathbf D\)）、\(F'\dashv G'\)（\(\mathbf D\leftrightarrows\mathbf E\)），则 \(F'F\dashv GG'\)。因为 \(\operatorname{Hom}_{\mathbf E}(F'F A,C)\cong\operatorname{Hom}_{\mathbf D}(FA,G'C)\cong\operatorname{Hom}_{\mathbf C}(A,GG'C)\)。</li>
+  </ul>
+  <div class="rmk" data-page-node-id="gOO5orDFshcJHYQuJDDB2F"><strong data-page-node-id="LavuRBf1qDARiEZThupTEY">范式总结。</strong>左伴随 = "自由地加上结构"（离散拓扑、自由群、张积、余积），右伴随 = "忘掉或限制结构"（遗忘、凝聚拓扑、Hom、积）。看到自然的 hom-set 双射就应怀疑有伴随；反过来，一旦确认伴随，一整套形式性质自动到位。</div>
+
+  <div class="box exer" data-page-node-id="wvhkEppl2LuumfCME7ISl5">
+    <h4 data-page-node-id="IMf9F5OxecWW9rd8Xjn5JY">③ 习题</h4>
+    <div class="grp" data-page-node-id="4CSJlbIeGLCX6olGwjPGci">基础巩固</div>
+    <ol data-page-node-id="t9ynDw1SpZ9wRhB889Ouya">
+      <li id="q72a" data-page-node-id="SAiSwRikqA6lywJtk1jHi0">验证 \(\mathbf{Disc}\dashv U\)：写出 \(\operatorname{Hom}_{\mathbf{Top}}(\mathbf{Disc}\,X,Y)\cong\operatorname{Hom}_{\mathbf{Set}}(X,UY)\) 并说明为何左边的连续映射就是任意函数。</li>
+      <li id="q72b" data-page-node-id="ZFTYz1nr5uwOWoTio0yaCI">写出自由 \(R\)-模函子与遗忘函子 \(U:\mathbf{Mod}_R\to\mathbf{Set}\) 的伴随同构，并描述单位。</li>
+      <li id="q72c" data-page-node-id="uypn6KAL7RqvepRK9mxI5L">验证积是 \(\Delta:\mathbf C\to\mathbf C\times\mathbf C\) 的右伴随：写出 \(\operatorname{Hom}_{\mathbf C\times\mathbf C}(\Delta X,(A,B))\cong\operatorname{Hom}_{\mathbf C}(X,A\times B)\)。</li>
+      <li id="q72d" data-page-node-id="n33VPTQ8fh9mLNBbPg2Xyn">写出张量–Hom 伴随的双射，并说明它如何是柯里化 (7.3) 的线性版本。</li>
+    </ol>
+    <div class="grp" data-page-node-id="XZofbh0WGCAMEp89GrAv73">进阶思考</div>
+    <ol start="5" data-page-node-id="XnHzRS5gPxSYPqCHKnhKvk">
+      <li id="q72e" data-page-node-id="jUjOzqY56EnoCo5TFndAXJ">证明伴随的复合：若 \(F\dashv G\)、\(F'\dashv G'\)，构造 \(F'F\dashv GG'\) 的 hom-set 同构，并说明单位如何由两者复合得到。</li>
+      <li id="q72f" data-page-node-id="5hv0JOBwIAd4S436mkgIIa">设 \(U:\mathbf{Grp}\to\mathbf{Set}\) 遗忘函子。证明 \(U\) 保极限但不保余极限（提示：底层集合的积就是积的底层集合，但余积——自由积——的底层集合不是底层集合的余积）。</li>
+    </ol>
+  </div>
+
+  <div class="box ans" data-page-node-id="m3YHwFTQM6wVGucVbafEQX">
+    <h4 data-page-node-id="pZJTleBSD5HQB2D7L3syvz">④ 参考答案</h4>
+    <div class="item" data-page-node-id="5wNRcETzEUMNXGZTVdBPxE"><b data-page-node-id="oMF3suscmxAUCkCQZ1xCNX">7.2.1</b>　\(\mathbf{Disc}\,X\) 上任何子集都是开集，故任意函数 \(f:X\to UY\) 作为映射 \(\mathbf{Disc}\,X\to Y\) 都连续（值域开集的原像必为开集）；反之连续映射限制到底层就是函数。故两 hom-set 相等，伴随成立，单位 \(\eta_X:X\to U\mathbf{Disc}\,X\) 是恒等函数。<span class="qed" data-page-node-id="0KH6z5uoDHi4meJDLL7Po4">∎</span></div>
+    <div class="item" data-page-node-id="yyjPHLWeJL9YMm15wtewY8"><b data-page-node-id="BSop5mNRb5C7snkQfYZZbN">7.2.2</b>　\(\operatorname{Hom}_{\mathbf{Mod}_R}(\bigoplus_{x\in X}R,M)\cong\operatorname{Hom}_{\mathbf{Set}}(X,UM)\)：模同态由它在基 \(X\) 上的取值唯一决定，任意函数 \(X\to UM\) 唯一延拓为模同态。单位 \(\eta_X:X\to U\bigoplus_X R\) 把 \(x\) 送到第 \(x\) 个坐标为 \(1\)、其余为 \(0\) 的基向量。<span class="qed" data-page-node-id="Y41mzneIbkFBPgWpAIfMq8">∎</span></div>
+    <div class="item" data-page-node-id="dmPbuNZICFDHZGS1lKGGoh"><b data-page-node-id="CodBUxZhdRnf7A268Asn23">7.2.3</b>　左边 \(=\operatorname{Hom}_{\mathbf C}(X,A)\times\operatorname{Hom}_{\mathbf C}(X,B)\)（函子范畴 \(\mathbf C\times\mathbf C\) 的 hom 是逐分量 hom 的积），而右边由积的泛性质恰是 \(\operatorname{Hom}(X,A)\times\operatorname{Hom}(X,B)\)。故等式成立，积是右伴随。<span class="qed" data-page-node-id="yaZqUcs3LjM1aHqXnG3i9A">∎</span></div>
+    <div class="item" data-page-node-id="xBpRWT0neK5CvMdzJEnd05"><b data-page-node-id="xgBEhv1FzBdZQxdHM4gxUL">7.2.4</b>　\(\operatorname{Hom}_R(A\otimes_R M,B)\cong\operatorname{Hom}_R(A,\operatorname{Hom}_R(M,B))\)，对应 \(f\mapsto[a\mapsto(m\mapsto f(a\otimes m))]\)。它与 (7.3) 完全同形：把 \(-\times A\) 换成 \(-\otimes M\)，把 \((-)^A\) 换成 \(\operatorname{Hom}(M,-)\)，即线性代数中"双线性映射 ↔ 到 Hom 的线性映射"。<span class="qed" data-page-node-id="U2WCBt4P9n9NzmMQcpT1DA">∎</span></div>
+    <div class="item" data-page-node-id="EEOtw4jGrdgECCW5YYbEkL"><b data-page-node-id="2VJGHJHAXPkoYQEjUF8bFs">7.2.5</b>　对 \(A\in\mathbf C,C\in\mathbf E\)，逐次用两个伴随：\(\operatorname{Hom}_{\mathbf E}(F'F A,C)\cong\operatorname{Hom}_{\mathbf D}(F A,G'C)\cong\operatorname{Hom}_{\mathbf C}(A,GG'C)\)，对 \(A,C\) 自然，故 \(F'F\dashv GG'\)。单位 \(\eta^{new}_A=G'(\eta^1_A)\circ\eta^2_{A}\)（先 \(\eta^1:A\to GFA\)，再 \(G'\) 作用于 \(\eta^2_{FA}:FA\to G'F'FA\) 并复合），核对类型即可。<span class="qed" data-page-node-id="Sw0yI6JLMPRAJIwdAG979V">∎</span></div>
+    <div class="item" data-page-node-id="KdlqU5LF7EPsrlLOqeHgjN"><b data-page-node-id="kNU3GuKh7MJ6tvhF0E05F3">7.2.6</b>　保极限：底层集合函子 \(U\) 是右伴随（\(F\dashv U\)，\(F\) 自由群），故由推论 7.1.5 保极限；具体如 \(U(G\times H)=UG\times UH\)。不保余极限：群的余积是自由积 \(G\ast H\)，其底层集合远大于 \(UG\sqcup UH\)（还含所有交错词），故 \(U(G\ast H)\not\cong UG\sqcup UH\)；这符合"左伴随保余极限、\(U\) 是右伴随不保证保余极限"。<span class="qed" data-page-node-id="SLgPX4PYFqTLVIYolTXhUQ">∎</span></div>
+  </div>
+
+  <div class="box phil" data-page-node-id="TLE2Pgh2F0CbA47iuFbetB">
+    <h4 data-page-node-id="dqCmoTffvPQDwpBTSGTgr9">选读拓展 · 哲学联系（可略读）</h4>
+    <p data-page-node-id="R0xHx84GmeEaNrlCi0OlPE">"自由 ⊣ 遗忘"是一个反复出现的认知模式：我们既需要把松散材料组织成有结构的对象（左伴随），也需要剥离结构以便比较（右伴随）。二者的自然双射说明，这两种操作并非对立，而是同一枚硬币的两面——这正是结构主义"对象由它在关系网中的位置定义"的数学化身。</p>
+  </div>
+</section>
+
+<section class="sec" id="s7-3" data-page-node-id="0yUy6VrZAiXAwAUn9SG3Kh">
+  <div class="sec-h" data-page-node-id="zZ1AJpbNNua76XZIwZ61RP"><span class="sec-no" data-page-node-id="BBGZKRXZO2uDDxzIK2bgSi">7.3</span><h2 data-page-node-id="RRN90OCDHyTp46m5rOiKkY">偏序伴随与量词作为伴随</h2><span class="src" data-page-node-id="dhkRVRXCKakySFcMYlAMe9">A §9.4–9.5, p.216–224</span></div>
+
+  <div class="box learn" data-page-node-id="1mkyE0hdH3eFtHHYyatGY0">
+    <h4 data-page-node-id="l5UsEEvlpjPaOg7tM2vJGS">① 本节学习目标</h4>
+    <ol data-page-node-id="DJkzPUIaBbk2gI2jIaxraq">
+      <li data-page-node-id="dfIqUtT2A6kH8BRlhWx9ca">把偏序集看成范畴，理解 Galois 联络就是偏序之间的伴随；</li>
+      <li data-page-node-id="hmtc5C9Cl7o9yCjS60A13X">证明"上加/下闭"映射之间的伴随判据 \(f(a)\le b\iff a\le g(b)\)；</li>
+      <li data-page-node-id="5FYRuVYw29H8GF4FLgNJE5">理解幂集函子 \(f^{-1}:\mathcal P Y\to\mathcal P X\) 两侧各有一个伴随：像 \(\exists_f\) 与全称 \(\forall_f\)；</li>
+      <li data-page-node-id="g0G1nDC7gN28TS1dGREzeq">把存在量词与全称量词识别为代入（拉回）的左、右伴随，这是范畴逻辑的基石；</li>
+      <li data-page-node-id="DuwcfaCrHOIW09qC7YAjc7">初步接触超doctrine（hyperdoctrine）思想：逻辑联结词由伴随给出。</li>
+    </ol>
+  </div>
+
+  <h3 class="sub" data-page-node-id="RBjWgz4pZZwq6SKgGZPSIl">7.3.1 偏序即范畴，伴随即 Galois 联络</h3>
+  <p data-page-node-id="oOZThp4Yaw6EBS1P5ZNtV0">偏序集 \((P,\le)\) 可视为范畴：对象是元素，\(a\to b\) 存在当且仅当 \(a\le b\)（至多一个箭头）。单调映射 \(f:P\to Q\) 就是函子。于是伴随 \(F\dashv G\) 在偏序世界里退化成一个极简条件：</p>
+  \[
+    f(a)\le b\;\Longleftrightarrow\;a\le g(b)\qquad(a\in P,b\in Q).
+  \tag{7.4}
+  \]
+  这正是经典 Galois 联络的条件。此时 \(f\) 称左伴随（下方伴随），\(g\) 右伴随（上方伴随）。单位与余单位变成 \(a\le g(f(a))\) 与 \(f(g(b))\le b\)。<p data-page-node-id="as7DiZUQBoTnQgsh979wBZ"></p>
+  <div class="rmk" data-page-node-id="tqKxFvgOpsinVVCeAD8Sj0"><strong data-page-node-id="pELLZdqe54botg3N3MFuyf">直观。</strong>在偏序里，"结构"只剩一个 \(\le\)，所以"最优逼近"变成"最接近的元素"。伴随 \(f\dashv g\) 说的是：用 \(f\) 抬高到 \(Q\) 后再比较，等价于先在 \(P\) 里比较——\(f\) 和 \(g\) 是彼此的"翻译"，把一边的问题搬到另一边问，答案一样。</div>
+
+  <h3 class="sub" data-page-node-id="Dc8omB9JgBQal8WvvGIuG7">7.3.2 幂集、像与原像</h3>
+  <p data-page-node-id="QChLpMiBtpATHR3Asz1H2T">设 \(f:X\to Y\) 是函数。取幂集偏序 \(\mathcal P X,\mathcal P Y\)（按包含 \(\subseteq\) 排序）。原像映射</p>
+  \[
+    f^{-1}:\mathcal P Y\to\mathcal P X,\qquad f^{-1}(B)=\{x\in X\mid f(x)\in B\}
+  \]
+  是单调的（保 \(\subseteq\)）。它的左伴随是<strong data-page-node-id="H07ex2xQYrq30pFFQsWeXT">像</strong>，右伴随是<strong data-page-node-id="NEMiCAbeYKkarGoV0O6CjX">全称像</strong>：<p data-page-node-id="mVvvBgQg4FeCEFOsdLF5Pj"></p>
+  \[
+    \exists_f(A)=f(A)=\{f(x)\mid x\in A\},\qquad
+    \forall_f(A)=\{y\in Y\mid \forall x.\ f(x)=y\Rightarrow x\in A\}.
+  \]
+  <div class="prop" data-page-node-id="7imbFaGcbvVLwX9rE3HyRz">
+    <span class="lbl" data-page-node-id="gfZ2EzWFIdAxNcVZ78Byxb">命题 7.3.1（量词作为伴随）</span>
+    <p data-page-node-id="niHTmlGgTXdgcbsSx1OIEM">对函数 \(f:X\to Y\) 与子集 \(A\subseteq X,\ B\subseteq Y\)，有</p>
+    \[
+      \exists_f(A)\subseteq B\;\Longleftrightarrow\;A\subseteq f^{-1}(B),\qquad
+      f^{-1}(B)\subseteq A\;\Longleftrightarrow\;B\subseteq\forall_f(A).
+    \]
+    即 \(\exists_f\dashv f^{-1}\dashv\forall_f\)。<p data-page-node-id="9EYBXChvuQEHAAFr7gQuHd"></p>
+    <div class="proof" data-page-node-id="dmxycGKiPUvGMBiCE96QUa"><span class="pl" data-page-node-id="I9nv8d9EIf1KsZZBSyWQM1">证明：</span>第一条：\(\exists_f(A)\subseteq B\) 意为"对所有 \(x\in A\)，\(f(x)\in B\)"，即"对所有 \(x\in A\)，\(x\in f^{-1}(B)\)"，即 \(A\subseteq f^{-1}(B)\)。第二条：\(f^{-1}(B)\subseteq A\) 意为"对所有 \(x\) 若 \(f(x)\in B\) 则 \(x\in A\)"，即"对所有 \(y\in B\)，所有 \(x\) 满足 \(f(x)=y\Rightarrow x\in A\)"，即"对每个 \(y\in B\)，\(y\in\forall_f(A)\)"，即 \(B\subseteq\forall_f(A)\)。两条都只是把定义展开，故成立。<span class="qed" data-page-node-id="RJ5rm00IvqFJSLnH7sjKtX">∎</span></div>
+  </div>
+  <svg class="cd" viewBox="0 0 660 230" width="660" height="230" role="img" aria-label="量词伴随三角" data-page-node-id="KBIBx4VGKMWit8aIiJo7gj">
+    <text class="nt" x="330" y="22" text-anchor="middle" data-page-node-id="gBerX4akpJCcWKtyLtQYZ8">量词伴随：∃_f ⊣ f⁻¹ ⊣ ∀_f</text>
+    <rect class="node" x="40" y="90" width="160" height="44" rx="7" data-page-node-id="ehX3Y5cSv69GYzGBMui5xF"/><text class="nt" x="120" y="118" text-anchor="middle" data-page-node-id="x11rVtHBmXFJy335YZKutP">𝒫X　（X 的子集）</text>
+    <rect class="nodeg" x="250" y="90" width="160" height="44" rx="7" data-page-node-id="TXoyLBNBgdEcDaEYXNLIFU"/><text class="nt" x="330" y="118" text-anchor="middle" data-page-node-id="ju7o1w1Kr9PPlsP5bc1AlB">f⁻¹</text>
+    <rect class="node" x="460" y="90" width="160" height="44" rx="7" data-page-node-id="mOQsqtntB60sDd0IxpAJAr"/><text class="nt" x="540" y="118" text-anchor="middle" data-page-node-id="Y3MssCWwdwDAfmvXdGfifO">𝒫Y　（Y 的子集）</text>
+    <line class="arb" x1="410" y1="112" x2="462" y2="112" data-page-node-id="jU6eFGYHODOLFStA3wWvvX"/>
+    <line class="arb" x1="458" y1="132" x2="412" y2="132" data-page-node-id="BNOt4aylPr7OjCfVCjJJdA"/>
+    <path class="arp" d="M 120,88 Q 330,30 540,88" data-page-node-id="ifGT3yWlHa4M6XMNPAFIyr"/><text class="hp" x="330" y="46" text-anchor="middle" data-page-node-id="A1AmHRukoBmTzzs6st5PDq">∃_f（像，左伴随）</text>
+    <path class="arg" d="M 540,136 Q 330,196 120,136" data-page-node-id="jhuLW6jrj6tzdb240pQ6tH"/><text class="hg" x="330" y="200" text-anchor="middle" data-page-node-id="YKqh9ih6F0sXfrDp1VmnYw">∀_f（全称像，右伴随）</text>
+    <text class="lb" x="330" y="224" text-anchor="middle" data-page-node-id="v3WBHj3g3UWGsi4674Spkz">f⁻¹ 是“代入/拉回”，两侧是存在与全称量词</text>
+  </svg>
+  <p class="figcap" data-page-node-id="IizMD1gIWD23BC411PgSMW">图 7.4　量词三角：代入 \(f^{-1}\) 居中，存在量词在左、全称量词在右</p>
+
+  <h3 class="sub" data-page-node-id="essZVKcprWwjlek0PtjrbW">7.3.3 从集合到范畴：拉回与量词</h3>
+  <p data-page-node-id="Ezeao0HThfx0SL8r25LyDJ">在一般的范畴 \(\mathbf C\)（有拉回）里，子集格 \(\mathcal P X\) 被子对象格 \(\operatorname{Sub}(X)\) 取代，原像 \(f^{-1}\) 被拉回函子</p>
+  \[
+    f^{\ast}:\operatorname{Sub}(Y)\to\operatorname{Sub}(X)
+  \]
+  取代（把 \(Y\) 的子对象沿 \(f\) 拉回成 \(X\) 的子对象）。Lawvere 的关键洞见是：一阶逻辑的量词正是这个拉回函子的伴随：<p data-page-node-id="29Cg1Ckxw1ElHddG69cDkH"></p>
+  \[
+    \exists_f\dashv f^{\ast}\dashv\forall_f .
+  \]
+  投影 \( \pi:X\times A\to X \) 的伴随 \(\exists_\pi\) 就是"对 \(A\) 这一变元作存在量化"：若 \(\varphi(x,a)\) 是 \(X\times A\) 上的谓词（子对象），则 \(\exists_\pi(\varphi)\) 是 \(X\) 上的谓词 \( \lambda x.\exists a.\varphi(x,a) \)；\(\forall_\pi\) 类似给出全称量化。这把逻辑的量化规则（含变元条件）化成了纯粹的伴随关系。<p data-page-node-id="qQ56jm9vua4yFLGyqqKfqY"></p>
+  <div class="rmk" data-page-node-id="qQrj9oULqni1l4Cxob3KDL"><strong data-page-node-id="2TFRjLkxKn9JYNLGx2pVCf">为什么这是范畴逻辑的基石。</strong>在集合论里，量词靠递归定义；一旦换到非经典的语境（如 co-Heyting 代数、拓扑斯内部），递归定义可能失效，而"作为伴随"的定义依然成立。所以 Lawvere 的分析不只是一个类比，而是能在任意合适的范畴里实例化的严格定义——这正是后面 Mac Lane–Moerdijk 拓扑斯语义的起点。</div>
+  <div class="rmk" data-page-node-id="613X6oP2tk6Kuo1u2H6j5K"><strong data-page-node-id="2CjK2Sv4466ysJVyP9rNYz">逻辑联结词的伴随家族（速览）。</strong>在同一思路下：\(\bot,\top\) 是唯一映射 \(\mathbf C\to\mathbf 1\) 的左右伴随（初/终对象）；\(\wedge\) 是对角线 \(\Delta\) 的右伴随，\(\vee\) 是左伴随；蕴含 \(U\Rightarrow -\) 是 \(-\wedge U\) 的右伴随（第 5 章 Heyting 代数）；\(\exists,\forall\) 是代入 \(f^{\ast}\) 的左右伴随。整套直觉主义逻辑的联结词都由伴随生成。</div>
+
+  <div class="box exer" data-page-node-id="813xKwnqBJxntMkDOEGS9p">
+    <h4 data-page-node-id="97TLCbSwKb22pQAbn2mceL">③ 习题</h4>
+    <div class="grp" data-page-node-id="lf0oQdFpFkmx3W8cC6oMRu">基础巩固</div>
+    <ol data-page-node-id="WVtlaBVHSdGzqPMrzOj9R1">
+      <li id="q73a" data-page-node-id="cnx7HduBq0CXd3pGlK4Tfz">设 \(f:X\to Y\)，\(A\subseteq X\)。举一个具体例子（如 \(f:\mathbb R\to\mathbb R,\ f(x)=x^2\)）计算 \(\exists_f(A)\) 与 \(\forall_f(A)\)，验证命题 7.3.1 的两条等价。</li>
+      <li id="q73b" data-page-node-id="YV0CDJ0LOA8B95loArMl47">把" ceiling 函数 \(\lceil\cdot\rceil:\mathbb R\to\mathbb Z\) 与包含 \(\mathbb Z\hookrightarrow\mathbb R\)"写成偏序之间的伴随，验证判据 (7.4)。</li>
+      <li id="q73c" data-page-node-id="yeUhBgHp4l8OATyAlMq1Z2">在偏序范畴中，证明伴随 \(f\dashv g\) 若存在则唯一到唯一同构（此处即唯一相等）。</li>
+      <li id="q73d" data-page-node-id="YheuuDYrkgkT713Je0L3w8">说明为什么投影 \(\pi:X\times A\to X\) 的原像 \(\pi^{-1}\) 把 \(X\) 的谓词看成"不依赖 \(a\) 的谓词"，并解释 \(\exists_\pi\) 如何给出 \(\exists a\)。</li>
+    </ol>
+    <div class="grp" data-page-node-id="anWiFMXBVrYPuIvmuUidPZ">进阶思考</div>
+    <ol start="5" data-page-node-id="2YkCoYeMYxwsfgFXOqlux6">
+      <li id="q73e" data-page-node-id="7lFi0G7bFwr7mvw3wS1xPp">验证：在偏序里若 \(f\dashv g\)，则 \(g\) 保 meet（交），\(f\) 保 join（并）。（提示：用 Hom-集同构 + Yoneda，或直接验证 \(g(b_1\wedge b_2)=g(b_1)\wedge g(b_2)\)。）</li>
+      <li id="q73f" data-page-node-id="8nNq7FyxAw8n3Yavm7KWnr">证明 \(\forall_f\) 满足：\(y\in\forall_f(A)\) 当且仅当纤维 \(f^{-1}(\{y\})\subseteq A\)。据此说明为何当 \(f\) 满射时 \(\forall_f(A)\) 是 \(A\) 在 \(f\) 下的"全称像"。</li>
+    </ol>
+  </div>
+
+  <div class="box ans" data-page-node-id="a3GGvutZhsVcST6rDqXvH2">
+    <h4 data-page-node-id="Qt4Ba9mQoKGFCUGmiAjMIJ">④ 参考答案</h4>
+    <div class="item" data-page-node-id="rHik0J1IPGQdKJjm75D0qP"><b data-page-node-id="lW6E8W7MHY1WMj1HhPKLPX">7.3.1</b>　取 \(f(x)=x^2\)，\(A=[1,2]\subseteq\mathbb R\)。则 \(\exists_f(A)=\{x^2\mid 1\le x\le2\}=[1,4]\)。\(\forall_f(A)=\{y\mid \forall x(x^2=y\Rightarrow x\in[1,2])\}\)：当 \(y\in(1,4)\) 时存在 \(x=-\sqrt y\notin A\)，故不满足；当 \(y\in\{1,4\}\) 时根 \(\pm1,\pm2\) 不全在 \(A\)；故 \(\forall_f(A)=\varnothing\)。验证：\(\exists_f(A)=[1,4]\subseteq B\iff A=[1,2]\subseteq f^{-1}(B)\)，两边都要求 \(B\) 含 \([1,4]\)。<span class="qed" data-page-node-id="VeF1cRfXF5vOx2oxSUd4jV">∎</span></div>
+    <div class="item" data-page-node-id="pY7ROJ94rz75EVWl94rQVM"><b data-page-node-id="3rbBYCrBrjUA0dyjcFu8eb">7.3.2</b>　取 \(f=\lceil\cdot\rceil:\mathbb R\to\mathbb Z\)（左），\(g=i:\mathbb Z\hookrightarrow\mathbb R\)（右，包含）。判据 (7.4) 在此为 \(\lceil r\rceil\le n\iff r\le n=i(n)\)（\(r\in\mathbb R,n\in\mathbb Z\)）。这正是 ceiling 的定义：不超过 \(r\) 的最小整数性质给出 \(\lceil r\rceil\le n\Leftrightarrow r\le n\)。故 \(f\dashv i\)。<span class="qed" data-page-node-id="GsI44hXHsxhLcXQSW90lMq">∎</span></div>
+    <div class="item" data-page-node-id="RU2RTBvLDcRWHtl8JI0MGN"><b data-page-node-id="NgzNx8PDNav18lOiYzgvBR">7.3.3</b>　若 \(f\dashv g\) 且 \(f\dashv g'\)，则对所有 \(a,b\)，\(a\le g(b)\iff f(a)\le b\iff a\le g'(b)\)。取 \(a=g(b)\) 得 \(g(b)\le g'(b)\)；取 \(a=g'(b)\) 得 \(g'(b)\le g(b)\)。偏序中双向 \(\le\) 即相等，故 \(g=g'\)。<span class="qed" data-page-node-id="5fyswBPdAew66rrcR38P3u">∎</span></div>
+    <div class="item" data-page-node-id="FUNP6kGp0bKj5bAfMjQyuB"><b data-page-node-id="0VOy8EYFcO2eYL0mKv3QQV">7.3.4</b>　\(\pi^{-1}(B)=B\times A\subseteq X\times A\)，即把 \(X\) 上的谓词 \(B\) 拉成"对每个 \(a\in A\) 都成立、与 \(a\) 无关"的谓词。其左伴随 \(\exists_\pi\) 作用在 \(\varphi\subseteq X\times A\) 上：\(\exists_\pi(\varphi)=\{x\in X\mid\exists a,(x,a)\in\varphi\}\)，由命题 7.3.1（把 \(f\) 换成 \(\pi\)）这等于 \( \lambda x.\exists a.\varphi(x,a)\)，正是对 \(a\) 的存在量化。<span class="qed" data-page-node-id="Bl5Y2sUQEN6LoqdzK0Hy8y">∎</span></div>
+    <div class="item" data-page-node-id="VIBlZjbZxnMOjPtSHhAC4n"><b data-page-node-id="SRJ6bv5snALHKhZjtyGWPv">7.3.5</b>　证 \(g\) 保 meet：对任意 \(c\)，\(c\le g(b_1\wedge b_2)\iff f(c)\le b_1\wedge b_2\iff f(c)\le b_1\) 且 \(f(c)\le b_2\iff c\le g(b_1)\) 且 \(c\le g(b_2)\iff c\le g(b_1)\wedge g(b_2)\)。对所有 \(c\) 成立，由偏序的反对称性 \(g(b_1\wedge b_2)=g(b_1)\wedge g(b_2)\)。对偶地 \(f\) 保 join：\(f(a_1\vee a_2)\le b\iff a_1\vee a_2\le g(b)\iff a_1\le g(b)\) 且 \(a_2\le g(b)\iff f(a_1)\le b\) 且 \(f(a_2)\le b\iff f(a_1)\vee f(a_2)\le b\)。<span class="qed" data-page-node-id="SNGet5w13vDePSKVzt9eml">∎</span></div>
+    <div class="item" data-page-node-id="pwDKEgrWCtsLS5s2Mt7kqX"><b data-page-node-id="cwCB9dM41fIFSdDEGpvdyu">7.3.6</b>　由定义 \(\forall_f(A)=\{y\mid \forall x(f(x)=y\Rightarrow x\in A)\}=\{y\mid f^{-1}(\{y\})\subseteq A\}\)。即 \(y\) 属于 \(\forall_f(A)\) 当且仅当整个纤维 \(f^{-1}(\{y\})\) 都落在 \(A\) 里。若 \(f\) 满射，每个纤维非空；此时 \(y\in\forall_f(A)\) 意味着" \(y\) 的每个原像都在 \(A\) 中"，是 \(A\) 沿 \(f\) 的"必然像"（与 \(\exists_f\) 的"存在像"对照：后者只要有一个原像在 \(A\) 中）。<span class="qed" data-page-node-id="q7aU7IXECs2cZzMjxkSGYx">∎</span></div>
+  </div>
+
+  <div class="box phil" data-page-node-id="2jSqbrVtbi2ZPGyGfrtG0i">
+    <h4 data-page-node-id="BqUiMho4Ckf8jdCjudFp3b">选读拓展 · 哲学联系（可略读）</h4>
+    <p data-page-node-id="HYH51EK0UBhzozHvwQx1zb">"量词是伴随"把逻辑常项从语法规则提升为结构关系：\(\exists\) 与 \(\forall\) 不再是两条递归造公式的规则，而是代入操作的两侧最优逼近。这一发现让逻辑可以脱离集合论的血统，在任意具备相应伴随的范畴里转录——这正是"证明同一性"的深层版本：同一个量词，在不同模型里呈现不同面貌，但由伴随这一结构关系被识别为同一个。</p>
+  </div>
+</section>
+
+<section class="sec" id="s7-4" data-page-node-id="ca0JwZ5q0Z0pU5XUdt8V5P">
+  <div class="sec-h" data-page-node-id="BlGOx7Wk3KlV8ayeqtmocB"><span class="sec-no" data-page-node-id="7OEguVlAiAHlZQSv5SEvUa">7.4</span><h2 data-page-node-id="aEs4UxLFPxPBcbCofxgqDW">伴随函子定理（RAPL）</h2><span class="src" data-page-node-id="mv6D5pxy16QaMENMr82eSA">A §9.6–9.8, p.224–236</span></div>
+
+  <div class="box learn" data-page-node-id="TKt4C498qsABa3GfHeDeEG">
+    <h4 data-page-node-id="iS1WDYIBla9It2mrYtf0F7">① 本节学习目标</h4>
+    <ol data-page-node-id="yXji2t4SC9f6CCXyTYHCvW">
+      <li data-page-node-id="nQDiwraOMy0Py0h5fzEVCp">证明"右伴随保极限"（RAPL: Right Adjoints Preserve Limits）；</li>
+      <li data-page-node-id="ZxKFQXyV7DxfnPHpFdHpxP">理解一般伴随函子定理（GAFT）的两个条件：保极限 + 解集条件；</li>
+      <li data-page-node-id="uMcJrnyuRGrPVW6vXhkpTc">掌握 GAFT 的证明思路：用极限构造候选泛对象，再用解集条件把它收敛到一个；</li>
+      <li data-page-node-id="wQ1C1JW69AmM2stCDX4Fmy">学习特殊伴随函子定理（SAFT）在完备小范畴上的简化形式；</li>
+      <li data-page-node-id="cxajqGPolcxj67cmwiQZTL">理解解集条件的作用——防止"泛对象太大"导致的规模悖论。</li>
+    </ol>
+  </div>
+
+  <h3 class="sub" data-page-node-id="jEkfCtBtOGWyWNlL2NBtrp">7.4.1 右伴随保极限（RAPL）</h3>
+  <div class="prop" data-page-node-id="BYqoc6aIPsU8FoP1OU9fL6">
+    <span class="lbl" data-page-node-id="tKKEwVx6uhReqT3fG7wnym">定理 7.4.1（RAPL）</span>
+    <p data-page-node-id="b52vT68Anwl95rOqNqEkbi">设 \(G:\mathbf D\to\mathbf C\) 是右伴随，且 \(\mathbf D\) 有 \(\mathbf J\)-型极限，则 \(G\) 保这些极限：\(G(\lim_{\leftarrow} D)\cong\lim_{\leftarrow}(G D)\)。对偶地，左伴随保余极限。</p>
+    <div class="proof" data-page-node-id="pPsqWkvf7OaUuQtsPquG44"><span class="pl" data-page-node-id="aV0CNWHFV5kssePZcSp2nB">证明：</span>设 \(G\) 的左伴随为 \(F\)。对任意 \(X\in\mathbf C\)，用 Hom-集同构与"极限由 hom 刻画"连续化简：
+    \[
+      \operatorname{Hom}_{\mathbf C}\big(X,G\lim\nolimits_{\leftarrow}D\big)
+      \cong\operatorname{Hom}_{\mathbf D}\big(F X,\lim\nolimits_{\leftarrow}D\big)
+      \cong\lim\nolimits_{\leftarrow}\operatorname{Hom}_{\mathbf D}(F X,D_j)
+      \cong\lim\nolimits_{\leftarrow}\operatorname{Hom}_{\mathbf C}(X,G D_j)
+      \cong\operatorname{Hom}_{\mathbf C}\big(X,\lim\nolimits_{\leftarrow}G D\big).
+    \]
+    这串同构对 \(X\) 自然，由 Yoneda 引理得 \(G\lim D\cong\lim GD\)。左伴随情形把 \(\lim\) 换成 \(\varinjlim\)、\(\operatorname{Hom}(X,-)\) 换成 \(\operatorname{Hom}(-,X)\) 即得。<span class="qed" data-page-node-id="pAhpV8xUiQBm6Ow2k12Fyf">∎</span></div>
+  </div>
+  <div class="rmk" data-page-node-id="hwqeDDhRLBMm08fH92eL4W"><strong data-page-node-id="X9mnJG9NjazZFe5T3VviJu">RAPL 的用法。</strong>它是"否决工具"：若某个函子不保极限，它就不可能是右伴随。例如遗忘函子 \(U:\mathbf{Grp}\to\mathbf{Set}\) 保积（底层集合的积正确），所以不违反；但若要检验某函子是否右伴随，先查它保不保积/等化子，往往一眼否决。注意 RAPL 只是必要条件，不是充分的——需要下面的 GAFT 补足。</div>
+
+  <h3 class="sub" data-page-node-id="yrV1lCdEtE9ySZzOD1Ou1Z">7.4.2 一般伴随函子定理（GAFT）</h3>
+  <p data-page-node-id="4o2JlH8slAFy9bEbwlQ22H">现在问反问题：给定 \(G:\mathbf D\to\mathbf C\)，何时它有左伴随？对每个 \(A\in\mathbf C\)，需要为每个 \(A\) 找一个泛对象 \((\eta_A:A\to GFA)\)。思路是：若 \(G\) 保极限，则泛映射问题" \(A\to GX\) "可以整合成一个极限来计算；但极限可能不存在或太大，需要规模控制。</p>
+  <div class="defn" data-page-node-id="Tk3xHysVV8XyS9hqFGbUIj">
+    <span class="lbl" data-page-node-id="uU5mHUyz5yEXIREACm2Pe6">定义 7.4.2（解集条件，solution set condition）</span>
+    <p data-page-node-id="nbX3QFoNd6jnUEdUpixfba">函子 \(G:\mathbf D\to\mathbf C\) 满足<strong data-page-node-id="jZJfN9JuUCrTi1gF69lB7m">解集条件</strong>，若对每个 \(A\in\mathbf C\)，存在一族对象 \(\{D_i\}_{i\in I}\subseteq\mathbf D\)（构成集合，非真类），使得对任意 \(D\in\mathbf D\) 与任意箭头 \(f:A\to GD\)，存在某个 \(i\in I\)、某个 \(h:D_i\to D\) 与某个 \(f_i:A\to GD_i\)，使 \(f=Gh\circ f_i\)。即"所有从 \(A\) 出发的箭头都由一小族代表生成"。</p>
+  </div>
+  <div class="prop" data-page-node-id="5htiPXX2DkTYGO078WXPj3">
+    <span class="lbl" data-page-node-id="5FATI6l5HrhmHCTmsnK1CX">定理 7.4.3（General Adjoint Functor Theorem, GAFT；A §9.7）</span>
+    <p data-page-node-id="yRvDLOT4342j76rVsCOCDX">设 \(\mathbf D\) 完备（有小极限），\(G:\mathbf D\to\mathbf C\) 保极限且满足解集条件，则 \(G\) 有左伴随。</p>
+    <div class="proof" data-page-node-id="e8WcFccu8fmocI4WAB1fJH"><span class="pl" data-page-node-id="AjwspeRhVfq5zCQAbTGau6">证明（构造思路）：</span>固定 \(A\in\mathbf C\)。先看逗号范畴 \((A\downarrow G)\)：对象是 \((X,f:A\to GX)\)，箭头 \((X,f)\to(Y,g)\) 是 \(h:X\to Y\) 使 \(Gh\circ f=g\)。\(G\) 的左伴随在 \(A\) 处的值 \(FA\) 正是 \((A\downarrow G)\) 的初对象（因为泛映射性质即"从 \((FA,\eta_A)\) 到任意 \((X,f)\) 有唯一箭头"）。
+    <p data-page-node-id="PZmTia38wmQNDasGnsAczo"><strong data-page-node-id="YrEmN8aTESn04M16Yb9Egj">第一步：</strong>\((A\downarrow G)\) 有小极限。因为 \(\mathbf D\) 有小极限且 \(G\) 保极限：对图表 \(J\to(A\downarrow G)\)，取其底层 \(\mathbf D\)-极限 \(L=\lim X_j\)，由 \(G\) 保极限得 \(GL=\lim GX_j\)，而各 \(f_j:A\to GX_j\) 与极限锥相容，诱导 \(f:A\to GL\)，即得到 \((A\downarrow G)\) 中的极限对象。</p>
+    <p data-page-node-id="iChOuYGMicCQL84w78n7cP"><strong data-page-node-id="DzPV2VQswK8aCrzy2RUsyF">第二步：</strong>解集条件把初对象的寻找压缩到一个小图表。取解集 \(\{f_i:A\to GD_i\}_{i\in I}\)，令 \(D^{\ast}=\prod_{i\in I}D_i\)（\(\mathbf D\) 中小积存在），把 \(\{f_i\}\) 整合成 \(f^{\ast}:A\to GD^{\ast}\)，得对象 \((D^{\ast},f^{\ast})\in(A\downarrow G)\)。考虑 \((D^{\ast},f^{\ast})\) 的所有"自端箭头"子对象——更精确地，取 \((D^{\ast},f^{\ast})\) 的全体自同态图表的小极限 \(\lim_{(D^{\ast},f^{\ast})\to(D^{\ast},f^{\ast})}\)，得到一个对象 \((F A,\eta_A)\)。</p>
+    <p data-page-node-id="7E7e0HOHykyPg8mMxhc0N0"><strong data-page-node-id="b2aWeDc1C9dmvrAIuxrSaY">第三步：</strong>验证 \((FA,\eta_A)\) 是初对象。任取 \((X,g:A\to GX)\)，由解集条件存在 \(i,h\) 使 \(g=Gh\circ f_i\)，而 \(f_i\) 经投影 \(\pi_i:D^{\ast}\to D_i\) 与 \(f^{\ast}\) 关联；再由极限的泛性质，从 \(h\circ\pi_i\) 经那个自同态图表的极限锥得到唯一箭头 \(FA\to X\)。唯一性来自极限锥的唯一性与解集代表的选取。故 \(G\) 在 \(A\) 处有泛映射；对 \(A\) 自然地在箭头上进行，即得函子 \(F\) 且 \(F\dashv G\)。</p><span class="qed" data-page-node-id="x7HwVAJTao94UAsKX4WNBO">∎</span></div>
+  </div>
+  <div class="rmk" data-page-node-id="oIGN5b2WqpET5VzRVEOgJR"><strong data-page-node-id="TyvR4aPnqT7ncqHOQoXVtL">规模问题的实质。</strong>若没有解集条件，\((A\downarrow G)\) 可能"太大"（是个真类而非小范畴），小极限不足以产生初对象。经典反例：\(\mathbf{Set}^{op}\to\mathbf{Set}\) 的某些函子保极限却无左伴随，根源就是泛对象需要"大到不存在"。解集条件保证只需在一小族候选中取极限，把规模压回可控范围。</div>
+
+  <h3 class="sub" data-page-node-id="r8XufwVp8fNC4NNPYQ6WkR">7.4.3 特殊伴随函子定理（SAFT）</h3>
+  <div class="prop" data-page-node-id="AKu50ZkkXSdrmB90nTinqA">
+    <span class="lbl" data-page-node-id="kyosIYXWYqfK1TukHF9B7L">命题 7.4.4（SAFT；A §9.8）</span>
+    <p data-page-node-id="g11gb1zAs2RSgjHaVyEtPR">若 \(\mathbf D\) 是完备的小范畴（或局部小且完备、且对每个 \(A\) 存在解集），则函子 \(G:\mathbf D\to\mathbf C\) 有左伴随当且仅当它保极限。</p>
+    <div class="proof" data-page-node-id="aA8wmy1Aq7ePR7yMIfpdc1"><span class="pl" data-page-node-id="ON4EMrj6XVGkJC7aY0wOjb">证明：</span>"仅当"是 RAPL。"当"：因 \(\mathbf D\) 小，对每个 \(A\in\mathbf C\)，所有箭头 \(A\to GD\)（\(D\in\mathbf D\)）构成一个集合（因为 \(\mathbf D\) 对象构成集合、每个 hom 是集合），这本身就给出解集条件。于是 GAFT 的条件全部满足，\(G\) 有左伴随。<span class="qed" data-page-node-id="oefirYWLNgIz0QFP5BfJnK">∎</span></div>
+  </div>
+  <p data-page-node-id="6q7qsRTAx3doUo0Gvs2ZGD"><strong data-page-node-id="xYhP0NqsfbuFnnLS9mB4iS">应用速览：</strong>遗忘函子 \(U:\mathbf{Grp}\to\mathbf{Set}\) 有左伴随（自由群）可由 GAFT 推出：\(\mathbf{Grp}\) 完备、\(U\) 保极限，且对集合 \(X\)，从 \(X\) 出发的箭头 \(X\to UG\) 可由大小受限于 \(X\) 的自由群代表（解集）。类似可证自由环、自由模等的存在性。Stone–Čech 紧化作为 \(\mathbf{Top}\to\mathbf{KHaus}\) 包含函子的左伴随，也是同一机制的例证。</p>
+
+  <div class="box exer" data-page-node-id="2QGIUB8Asc0Vf57PKlcBG7">
+    <h4 data-page-node-id="djnxTDURGKd25BQRNRfCmc">③ 习题</h4>
+    <div class="grp" data-page-node-id="kIXNtVr411NP1QsSIpKnFs">基础巩固</div>
+    <ol data-page-node-id="3zU28sm6Z7lAtPAPMzVRZn">
+      <li id="q74a" data-page-node-id="dXjTx33uFXBYbREokI9dE3">叙述 RAPL 并用它说明：若某函子不保等化子，则它不可能是右伴随。</li>
+      <li id="q74b" data-page-node-id="w9bPXDU2tNKXHwRf6z8bn0">把"从 \(A\) 出发的泛映射问题"翻译成逗号范畴 \((A\downarrow G)\) 的初对象问题，写出对应关系。</li>
+      <li id="q74c" data-page-node-id="zuke44d4FwslC1mqsq2T7s">在 SAFT 的证明里，为什么"\(\mathbf D\) 小"能保证解集条件？把论证写清楚。</li>
+      <li id="q74d" data-page-node-id="NsJRWGjqZ9eQVQEAiH1bsi">验证遗忘函子 \(U:\mathbf{Top}\to\mathbf{Set}\) 保极限（底层集合的积与等化子正确），并指出它的左伴随是什么。</li>
+    </ol>
+    <div class="grp" data-page-node-id="TIy5sG4Bw2NZmV99PacEMo">进阶思考</div>
+    <ol start="5" data-page-node-id="dUunBEHfp9wJm5VXX0vCO9">
+      <li id="q74e" data-page-node-id="18ToOXCn1cIwuCO9TMSirR">证明：若 \(G:\mathbf D\to\mathbf C\) 有左伴随，则 \(G\) 保所有存在于 \(\mathbf D\) 的极限（重述 RAPL 的证明并指出 Yoneda 在哪一步用）。</li>
+      <li id="q74f" data-page-node-id="KQf1QH85MgyBOuWmAr2aoU">举例说明"保极限但无左伴随"的情形为何需要解集条件：讨论为何 \((A\downarrow G)\) 可能不是小范畴。</li>
+    </ol>
+  </div>
+
+  <div class="box ans" data-page-node-id="ggE1KrQGjTKlJUdovfmmG3">
+    <h4 data-page-node-id="vVBclOLEjL2dSKwFgrk6qH">④ 参考答案</h4>
+    <div class="item" data-page-node-id="QrvSZEwnm4T5I3AkwmsS39"><b data-page-node-id="KiWYEPtEoqHt0uhpqGNi1g">7.4.1</b>　RAPL：右伴随保极限。若 \(G\) 不保等化子，即存在平行箭头 \(f,g\) 使 \(G\) 不把 \(\operatorname{eq}(f,g)\) 送到 \(\operatorname{eq}(Gf,Gg)\)，则 \(G\) 不保极限（等化子是极限），由逆否命题 \(G\) 不是右伴随。<span class="qed" data-page-node-id="NhhX62MxUf2O95saYMkAWX">∎</span></div>
+    <div class="item" data-page-node-id="bCdBBgTW2gdJkurcHcrvCQ"><b data-page-node-id="nuCRbnegjz4yM4Qf2EAm8x">7.4.2</b>　\((A\downarrow G)\) 的对象是 \((X,f:A\to GX)\)。泛映射 \((\eta_A:A\to GFA)\) 意味着对每个 \((X,f)\) 存在唯一 \(h:FA\to X\) 使 \(Gh\circ\eta_A=f\)，这正是说 \((FA,\eta_A)\) 到 \((X,f)\) 有唯一箭头，即 \((FA,\eta_A)\) 是初对象。故"对每个 \(A\) 找泛映射"="\((A\downarrow G)\) 有初对象"。<span class="qed" data-page-node-id="e3mbzAbtWBxrSvqpa7kYg5">∎</span></div>
+    <div class="item" data-page-node-id="O5bd83BWp4UL2mqvIjtA8T"><b data-page-node-id="YKS1bG1uKk47dxk1Y7CGDL">7.4.3</b>　\(\mathbf D\) 小时其对象类是一个集合 \(\mathrm{ob}\,\mathbf D\)，且局部小使每个 \(\operatorname{Hom}_{\mathbf D}(X,Y)\) 是集合。于是所有箭头 \(A\to GX\)（\(X\) 遍历 \(\mathrm{ob}\,\mathbf D\)）的并 \(\bigcup_{X\in\mathrm{ob}\,\mathbf D}\operatorname{Hom}_{\mathbf C}(A,GX)\) 是集合（集合并集合）。取这个集合本身作解集（每个成员以自身为代表），解集条件成立。<span class="qed" data-page-node-id="CNd5SmBw9ljoVfYoX6mwyo">∎</span></div>
+    <div class="item" data-page-node-id="CecvAq4IjFb75yO8hMB1pg"><b data-page-node-id="pzYoPVLu35wXEst4UAA4QW">7.4.4</b>　\(U\) 保极限：拓扑空间的积的底层集合是底层集合的积，等化子空间的底层集合是底层集合的等化子，故 \(U\) 保小极限。其左伴随是离散拓扑函子 \(\mathbf{Disc}:\mathbf{Set}\to\mathbf{Top}\)（见 §7.2.4），因为从离散空间出发的连续映射就是任意函数。<span class="qed" data-page-node-id="Kw9IcnovKPaet52sSKYrh4">∎</span></div>
+    <div class="item" data-page-node-id="dAoXK2fmgEUphaXkREzfH3"><b data-page-node-id="JTDlZLmRFG65iG3O6HA5wF">7.4.5</b>　设 \(F\dashv G\)。对 \(\mathbf D\) 中的 \(\mathbf J\)-图表 \(D\) 与其极限 \(\lim D\)，对任意 \(X\in\mathbf C\)：
+    \[
+      \begin{aligned}
+        \operatorname{Hom}_{\mathbf C}(X,G\lim D)&\cong\operatorname{Hom}_{\mathbf D}(FX,\lim D)
+        \cong\lim\nolimits_j\operatorname{Hom}_{\mathbf D}(FX,D_j)\\
+        &\cong\lim\nolimits_j\operatorname{Hom}_{\mathbf C}(X,GD_j)
+        \cong\operatorname{Hom}_{\mathbf C}(X,\lim GD).
+      \end{aligned}
+    \]
+    Yoneda 用在最后一步：对 \(X\) 自然的 hom 同构给出对象同构 \(G\lim D\cong\lim GD\)。<span class="qed" data-page-node-id="SI827ZdzLnFP5yNHue9qKR">∎</span></div>
+    <div class="item" data-page-node-id="sWzGRCdCSAuFr57dozUrdZ"><b data-page-node-id="HwxdJputSNNLlFDzJ8dMVH">7.4.6</b>　若 \(\mathbf D\) 非小，\((A\downarrow G)\) 的对象可能构成真类，此时即使它有小极限，也未必有初对象——因为 GAFT 的构造需要在解集上取小积，而真类无法取积。例如取 \(\mathbf D=\mathbf{Set}^{op}\)、\(G\) 为某保极限函子，对某些 \(A\)，箭头 \(A\to GX\) 的候选跨越所有集合的基数，无法被一个集合大小的解集代表，故左伴随不存在。这正是解集条件要排除的情形。<span class="qed" data-page-node-id="0eZE88pWfsGreyF2647Tjl">∎</span></div>
+  </div>
+
+  <div class="box phil" data-page-node-id="FRt8vx4qPqHp8cf7iybKKb">
+    <h4 data-page-node-id="aNNSSPfMAPB19R5mSNET1D">选读拓展 · 哲学联系（可略读）</h4>
+    <p data-page-node-id="WMZJHlYr8VQBDWExikzV2Q">GAFT 的证明展示了一个有趣的"有限性"要求：要让最优解存在，光有结构保持（保极限）不够，还得把搜索空间压缩到一个可控的集合（解集条件）。这在哲学上呼应"同一性"的判据：两个东西能否被认作同一个，不仅取决于它们满足的性质，还取决于我们能否在一个有界的范围内把它们比较清楚——无限膨胀的候选会让"辨认"本身失去意义。</p>
+  </div>
+</section>
+
+<section class="sec" id="s7-5" data-page-node-id="HVrCsqiNuZyVweFEp2xhN5">
+  <div class="sec-h" data-page-node-id="0MxX4XK4P6smOAalRW9Y6z"><span class="sec-no" data-page-node-id="puMDgct3JQEOXV7BJL7nt9">7.5</span><h2 data-page-node-id="HFi8w5GzWoKPnQtHuR6BQx">三角恒等式、Monad 与代数</h2><span class="src" data-page-node-id="s9qACVCKWIsE2fj7LAaeX0">A §10.1–10.3, p.238–252</span></div>
+
+  <div class="box learn" data-page-node-id="b1HVKPj6IlZZomz6X6P6NO">
+    <h4 data-page-node-id="YcS9iH0HGb1KSScrLU78ht">① 本节学习目标</h4>
+    <ol data-page-node-id="UFZVucYEDFEAzdRP10TIRM">
+      <li data-page-node-id="gxbsnIHhbUuyuD6dDW87BE">从伴随提炼出 Monad 的定义：自函子 \(T\) 加单位 \(\eta\) 与乘法 \(\mu\)；</li>
+      <li data-page-node-id="yuEhz0BCCgeTosyHRBw7eZ">理解 Monad 的结合律与单位律（它的结合律正是伴随的三角恒等式）；</li>
+      <li data-page-node-id="fTSSqAfmf6Ip38YYbqyjvp">证明每个伴随 \(F\dashv G\) 诱导一个 Monad \(T=GF\)；</li>
+      <li data-page-node-id="pw8ajvwYycduln1T8peonM">介绍 \(T\)-代数（Eilenberg–Moore 代数）与 Kleisli 范畴，理解"每个 Monad 来自某个伴随"；</li>
+      <li data-page-node-id="R2Gf3yDSZkXN0SReL06Yio">通过列表、Maybe、幂集等例子体会 Monad 作为"计算效应/代数理论签名"的角色。</li>
+    </ol>
+  </div>
+
+  <h3 class="sub" data-page-node-id="rr8N5vlljXc99y6czD6ok5">7.5.1 Monad 的定义与图</h3>
+  <div class="defn" data-page-node-id="9KgUdz07ruzBN2U6QwNWaI">
+    <span class="lbl" data-page-node-id="66WNrkCswyuWfKxizGmJeH">定义 7.5.1（Monad；A Def. 10.2）</span>
+    <p data-page-node-id="G2in63ARNcgO2juPNEhFo6">范畴 \(\mathbf C\) 上的一个 <strong data-page-node-id="PvRPpyHRhUiIP1AlJJnDrI">monad</strong>（三元组）\((T,\eta,\mu)\) 由自函子 \(T:\mathbf C\to\mathbf C\) 与两个自然变换</p>
+    \[
+      \eta:1_{\mathbf C}\Rightarrow T\ (\mathrm{unit}),\qquad \mu:T^2\Rightarrow T\ (\mathrm{mult})
+    \]
+    组成（\(\eta\) 叫<strong data-page-node-id="cflGT8TGlL9aHtt34rWy2T">单位</strong>，\(\mu\) 叫<strong data-page-node-id="7rrcnGtw1y7uBJS6wVQNAQ">乘法</strong>），满足两条公理（对每个 \(A\)）：
+    \[
+      \mu_A\circ T\eta_A=\mathrm{id}_T=\mu_A\circ\eta_{T A}\quad(\mathrm{unit}),
+      \qquad \mu_A\circ T\mu_A=\mu_A\circ\mu_{T A}\quad(\mathrm{assoc}).
+    \tag{7.5}
+    \]
+    <p data-page-node-id="Ujuy2QWYm7ut76FmcUujTQ">其中第一式是<strong data-page-node-id="yD4rNyQlKIwqlM1HXQA5sG">单位律</strong>，第二式是<strong data-page-node-id="iCtdiJaCz0p8YzGCHSAMIA">结合律</strong>。</p>
+  </div>
+  <p data-page-node-id="DDQvk3osOTlfbC470zwgIz">结合律说：从 \(T^3A\) 到 \(TA\)，先把后两个 \(T\) 乘起来（\(T\mu_A\)）再乘，或先把前两个乘起来（\(\mu_{TA}\)）再乘，结果相同——就像乘法的结合律。它可以用一张交换图完整表达：</p>
+  <svg class="cd" viewBox="0 0 640 280" width="640" height="280" role="img" aria-label="Monad 乘法结合律方块" data-page-node-id="dgPoTcUuNB12FPM0RxoW7r">
+    <text class="nt" x="320" y="22" text-anchor="middle" data-page-node-id="74SCM2zF0uc5MPxJvOEbNK">Monad 结合律：两条从 T³A 到 TA 的路径相等</text>
+    <rect class="node" x="270" y="46" width="100" height="36" rx="7" data-page-node-id="Pntqha9AFPXcwyJ6Q7uGDY"/><text class="nt" x="320" y="70" text-anchor="middle" data-page-node-id="GFE9eFhC3KiUroZX7KAHsu">T³A</text>
+    <rect class="node" x="105" y="140" width="120" height="36" rx="7" data-page-node-id="wVpgFZo4SV0d9yZnk7Luws"/><text class="nt" x="165" y="164" text-anchor="middle" data-page-node-id="ZN4u31cMEgLOSZS5xOlHwS">T²A</text>
+    <rect class="node" x="415" y="140" width="120" height="36" rx="7" data-page-node-id="qBwiDXTxSILSw6xU70PQ5q"/><text class="nt" x="475" y="164" text-anchor="middle" data-page-node-id="mdKcb27BrjydeC2B2IUYl5">T²A</text>
+    <rect class="node" x="270" y="226" width="100" height="36" rx="7" data-page-node-id="VrIomuSltDngxHjUAL9nHO"/><text class="nt" x="320" y="250" text-anchor="middle" data-page-node-id="klPH13vvAhcGFaKnjDyjqg">TA</text>
+    <line class="arb" x1="295" y1="82" x2="172" y2="138" data-page-node-id="lDZZDw3kH5DI6rEChHhuxE"/><text class="hb" x="196" y="100" text-anchor="middle" data-page-node-id="QGAfF9UhUIoxTg4GDYCsbi">Tμ_A</text>
+    <line class="arb" x1="345" y1="82" x2="468" y2="138" data-page-node-id="8Me1HPMi7mYBDU19kuqCne"/><text class="hb" x="444" y="100" text-anchor="middle" data-page-node-id="B08cLE6SdAL4BWu8bDW0jf">μ_{TA}</text>
+    <line class="arb" x1="165" y1="176" x2="292" y2="226" data-page-node-id="pkutaV2crHgflmAtVy8NEJ"/><text class="hb" x="196" y="212" text-anchor="middle" data-page-node-id="hi4A7m87lniyS1EB4LZu7s">μ_A</text>
+    <line class="arb" x1="475" y1="176" x2="348" y2="226" data-page-node-id="CD9Lzu4IBUaeG1yYvLXmS5"/><text class="hb" x="444" y="212" text-anchor="middle" data-page-node-id="n5NuamisPcOrmpBieqW7yd">μ_A</text>
+    <text class="lb" x="320" y="278" text-anchor="middle" data-page-node-id="Nc19fWgXRcSnHS1mNJGZDp">左路 μ_A∘Tμ_A ＝ 右路 μ_A∘μ_{TA}（方块交换）</text>
+  </svg>
+  <p class="figcap" data-page-node-id="DKADTISyoZlaqVyQRGLSTH">图 7.5　Monad 的乘法结合律方块：两条从 \(T^3A\) 到 \(TA\) 的路径相等</p>
+  <div class="rmk" data-page-node-id="T1cgpA9eADT7YKDXDCvt63"><strong data-page-node-id="KWmrVRBH59sM9e8kGuOvy2">名字的由来。</strong>monad 就是一个"范畴里的幺半群（monoid）"：把自函子范畴 \([\mathbf C,\mathbf C]\) 看成以函子复合为张量、自然变换为箭头的幺半范畴，则 monad 正是其中的幺半对象——\(T\) 是对象，\(\eta\) 是单位元，\(\mu\) 是乘法，单位律与结合律正是幺半群公理。</div>
+
+  <h3 class="sub" data-page-node-id="zx0l1upXs7t9ktUAH1RoXG">7.5.2 每个伴随诱导一个 Monad</h3>
+  <div class="prop" data-page-node-id="izVeVMZo21BiCGakA8uQtI">
+    <span class="lbl" data-page-node-id="5V2QNAS6ZArmTBEmxghZv3">命题 7.5.2（伴随 ⇒ Monad；A §10.2）</span>
+    <p data-page-node-id="z3tfIZETUZDcLXzbYMaXpv">设 \(F:\mathbf C\to\mathbf D\)、\(G:\mathbf D\to\mathbf C\)，\(F\dashv G\)，单位 \(\eta\)、余单位 \(\varepsilon\)。令 \(T=G F:\mathbf C\to\mathbf C\)，\(\eta^T=\eta\)，\(\mu^T=G\varepsilon F:T^2=G F G F\Rightarrow G F=T\)。则 \((T,\eta^T,\mu^T)\) 是 \(\mathbf C\) 上的 monad。</p>
+    <div class="proof" data-page-node-id="lViMdN6rC4RXeCpiNv9YsN"><span class="pl" data-page-node-id="3Ec2tCG9EoFpfZ4e2QeDIq">证明：</span>单位律来自三角恒等式。对 \(A\in\mathbf C\)，
+    \[
+      \mu^T_A\circ T\eta^T_A=G\varepsilon_{FA}\circ G F\eta_A=G(\varepsilon_{FA}\circ F\eta_A)\overset{(7.2)}{=}G(\mathrm{id}_{FA})=\mathrm{id}_{GFA},
+    \]
+    另一边 \(\mu^T_A\circ\eta^T_{TA}=G\varepsilon_{FA}\circ\eta_{GFA}\overset{(7.2)}{=}\mathrm{id}_{GFA}\)。
+    <p data-page-node-id="mdT7oiF5YE5wNsgCo6oiON">结合律来自水平复合的结合性：考虑 \(\varepsilon\) 与自身的水平复合，\(G\varepsilon F\circ G F G\varepsilon F\) 与 \(G\varepsilon F\circ G\varepsilon F G F\) 作为从 \(GFGFGF\) 到 \(GF\) 的自然变换相等（都是同一串水平复合的不同括号化），展开即 \(\mu^T\circ T\mu^T=\mu^T\circ\mu^T_T\)。</p><span class="qed" data-page-node-id="EMOu899B7FDGLs3bi630Pg">∎</span></div>
+  </div>
+  <svg class="cd" viewBox="0 0 620 220" width="620" height="220" role="img" aria-label="伴随诱导 Monad" data-page-node-id="HFKIqCsGQZWcE7w5WbZMim">
+    <text class="nt" x="310" y="22" text-anchor="middle" data-page-node-id="I2KkPvYDzGRK8rx0DVWvBv">伴随 F ⊣ G 诱导 monad T = GF</text>
+    <rect class="node" x="30" y="70" width="90" height="38" rx="7" data-page-node-id="a1MlKFyFIjlVkSfepfUS4i"/><text class="nt" x="75" y="94" text-anchor="middle" data-page-node-id="K5Lh9zfUCiB4M3N0WHHN53">C</text>
+    <rect class="nodeg" x="265" y="70" width="90" height="38" rx="7" data-page-node-id="E8sk9AYgETGEF7PSdlWaMj"/><text class="nt" x="310" y="94" text-anchor="middle" data-page-node-id="pNduIewbIRogDGQGcHtYBe">D</text>
+    <rect class="node" x="500" y="70" width="90" height="38" rx="7" data-page-node-id="mPbLkrRSPjY7yYvFktgBzX"/><text class="nt" x="545" y="94" text-anchor="middle" data-page-node-id="vpCEOxaGvJxTzwC0CYu6PV">C</text>
+    <line class="arb" x1="120" y1="86" x2="263" y2="86" data-page-node-id="CJYmcLVDCEfRpGqjPUFiyW"/><text class="hb" x="192" y="78" text-anchor="middle" data-page-node-id="GL6GozsuzbnFMm62wYOMqW">F</text>
+    <line class="arb" x1="358" y1="94" x2="498" y2="94" data-page-node-id="5Lr7C5hKwtfpKl0Li4hBYK"/><text class="hb" x="428" y="86" text-anchor="middle" data-page-node-id="NrckEW417vh2rnGRRsypzJ">G</text>
+    <line class="arg" x1="498" y1="106" x2="358" y2="106" data-page-node-id="STQlqNeDpskEu3OC1oHh51"/><text class="hg" x="428" y="126" text-anchor="middle" data-page-node-id="M7CGgBTruQkxuJnk59HJfp">F（左伴随）</text>
+    <path class="arp" d="M 75,112 Q 310,190 545,112" data-page-node-id="cylkqBUV7HpbwC8UThFOfN"/><text class="hp" x="310" y="182" text-anchor="middle" data-page-node-id="23UcmZEhFY1cT2RDj55hzh">T = GF，μ = GεF，η 是单位</text>
+    <text class="lb" x="310" y="212" text-anchor="middle" data-page-node-id="WnRCWgRUYhQFqLoogT1gEo">往返一周 GF 把 C 的对象带回 C，构成 monad</text>
+  </svg>
+  <p class="figcap" data-page-node-id="bkRUDcrfEKvVE1pwmeAFNE">图 7.6　伴随的往返 \(GF\) 就是一个 monad；三角恒等式保证它满足 monad 公理</p>
+
+  <h3 class="sub" data-page-node-id="WVYvQUpPenuKEjq3kaUj3f">7.5.3 T-代数与 Eilenberg–Moore 范畴</h3>
+  <div class="defn" data-page-node-id="oAVGgckt6nI3y6tUP7yoQG">
+    <span class="lbl" data-page-node-id="DRsiYcvcdaEBH0KksgdLJ0">定义 7.5.3（\(T\)-代数；A §10.3）</span>
+    <p data-page-node-id="w9e7tS1hGQctFBEXkbidfC">单子 \((T,\eta,\mu)\) 上的一个<strong data-page-node-id="hHHO7G54pFsIBiYjNvxF6u">代数</strong>（或 \(T\)-代数）是二元组 \((A,a:TA\to A)\)，满足</p>
+    \[
+      a\circ\eta_A=\mathrm{id}_A,\qquad a\circ T a=a\circ\mu_A .
+    \]
+    代数之间的态射 \(h:(A,a)\to(B,b)\) 是 \(\mathbf C\) 中使 \(b\circ T h=h\circ a\) 的箭头 \(h:A\to B\)。所有 \(T\)-代数与代数态射构成 <strong data-page-node-id="kRRFA4lcZKH8DUrtI3wOoU">Eilenberg–Moore 范畴</strong> \(\mathbf C^T\)。<p data-page-node-id="Bmye1yZfB7Dvzh4S73xS3t"></p>
+  </div>
+  <p data-page-node-id="toECNsAOR4IWM6mI37OQFz">直观上，monad \(T\) 描述一套"代数理论的签名"（如自由幺半群 monad 描述乘法与单位元），一个 \(T\)-代数就是这套签名的一个具体模型：\(a:TA\to A\) 是"求值"——把形式表达式 \(TA\) 解释为 \(A\) 中的值。代数公理保证了单位元与乘法的结合律在模型里成立。</p>
+
+  <h3 class="sub" data-page-node-id="ofo3bIUEnT6PeOYgR9PYA0">7.5.4 每个 Monad 来自伴随；Kleisli 范畴</h3>
+  <div class="prop" data-page-node-id="wPrm5cQAy0LzBdC3TLjSHT">
+    <span class="lbl" data-page-node-id="oIBNq1iDFjTH4HOyZwkkhb">命题 7.5.4（Monad ⇒ 伴随）</span>
+    <p data-page-node-id="PzpWPfXvPOCjAt2VGC5lnB">给定 monad \((T,\eta,\mu)\)，存在伴随 \(F^T\dashv U^T\)（Eilenberg–Moore 伴随）与 \(F_T\dashv U_T\)（Kleisli 伴随），它们都诱导原 monad。具体：\(U^T:\mathbf C^T\to\mathbf C\) 忘掉代数结构；\(F^T(A)=(TA,\mu_A)\) 是自由代数；\(F^T\dashv U^T\) 的同构为 \(\operatorname{Hom}_{\mathbf C^T}((TA,\mu_A),(B,b))\cong\operatorname{Hom}_{\mathbf C}(A,B)\)。</p>
+    <div class="proof" data-page-node-id="RPJg9JQ64u0CiBDyug5ZkK"><span class="pl" data-page-node-id="jSqIXnEaKPHVnTH7jQIMN1">证明（验证自由–遗忘伴随）：</span>由代数态射定义，\((TA,\mu_A)\to(B,b)\) 的代数态射是 \(h:TA\to B\) 使 \(b\circ Th=h\circ\mu_A\)。而任意 \(f:A\to B\)，令 \(h=b\circ T f:TA\to B\)，验证代数态射条件：\(b\circ T h=b\circ T(b\circ Tf)=b\circ Tb\circ T^2f=b\circ\mu_B\circ T^2f=b\circ Tf\circ\mu_A=h\circ\mu_A\)（其中一步用代数律 \(b\circ Tb=b\circ\mu_B\)）。反向给定代数态射 \(h\)，令 \(f=h\circ\eta_A\)，则 \(b\circ Tf=b\circ Th\circ T\eta_A=h\circ\mu_A\circ T\eta_A=h\)。两构造互逆，得所需同构，且由定义这同构对 \(A,B\) 自然，故 \(F^T\dashv U^T\)。<span class="qed" data-page-node-id="klJAtujTmSIvUB8LPXu6Aj">∎</span></div>
+  </div>
+  <p data-page-node-id="GAYH3Dw7sWlGavdFdOg9Nj"><strong data-page-node-id="ojAurGICWBRC3YlDcY42IS">Kleisli 范畴</strong> \(\mathbf C_T\) 是另一个"最小"的构造：对象同 \(\mathbf C\)，箭头 \(A\to B\) 定义为 \(\mathbf C\) 中的 \(A\to TB\)；复合用 \(\mu\) 把 \(T^2\) 压回 \(T\)。它同样给出诱导该 monad 的伴随。Eilenberg–Moore 与 Kleisli 是诱导同一 monad 的两个极端（终与初），中间还有一整族伴随。</p>
+  <div class="rmk" data-page-node-id="dcVmN3GStPmV2EFvCeiDCv"><strong data-page-node-id="gA9QIEv8bYlx955UrCspVo">例子.</strong>列表 monad \(T(X)=X^{\ast}\)（有限字）来自"自由幺半群 ⊣ 遗忘"，其代数是幺半群；Maybe monad \(T(X)=X+1\) 的代数是带基点集合；幂集 monad \(T=\mathcal P\) 的代数是完全格。"每个 monad 有一套代数理论"这句话把 monad 变成了代数理论的指纹。</div>
+
+  <div class="box exer" data-page-node-id="ZVPbzNm5ANYbg3pUR61GnY">
+    <h4 data-page-node-id="QclEw5dBP1ybBEwBzvsM8T">③ 习题</h4>
+    <div class="grp" data-page-node-id="Q6wqTWxFd2czcjT0CfQWJQ">基础巩固</div>
+    <ol data-page-node-id="MRr59fSYC1ThlUnEe09NDN">
+      <li id="q75a" data-page-node-id="fj2FiBZM1KfrXI2iFljXBk">写出 monad 定义中的单位律与结合律，并用图 7.5 说明结合律为何是"两条路径相等"。</li>
+      <li id="q75b" data-page-node-id="mkBgoUChLeLcd0E5nYRBJr">验证：伴随 \(-\times A\dashv(-)^A\)（笛卡尔闭范畴，见 §7.2.3）诱导的 monad 是什么？写出它的 \(T,\eta,\mu\)。</li>
+      <li id="q75c" data-page-node-id="IwrBGoYLJ3hnI2ggAtt2nj">证明幂集函子 \(\mathcal P:\mathbf{Set}\to\mathbf{Set}\) 带 \(\eta_X(x)=\{x\}\)、\(\mu_X(S)=\bigcup_{U\in S}U\) 是 monad。</li>
+      <li id="q75d" data-page-node-id="Cq7zg3eyzqDfYYYQJqAEiI">验证列表 monad \(T(X)=X^{\ast}\) 的单位与乘法，并说明它的代数正是幺半群。</li>
+    </ol>
+    <div class="grp" data-page-node-id="bH5ikOWUaqPk99cDPiVeFo">进阶思考</div>
+    <ol start="5" data-page-node-id="B5SR8NlUxGhGkIQW5z9iyF">
+      <li id="q75e" data-page-node-id="OoqOCPP3LDMssIEEfH9O8v">完整验证命题 7.5.2 中 \(\mu^T=G\varepsilon F\) 的结合律：把 \(G\varepsilon F\circ GFG\varepsilon F\) 与 \(G\varepsilon F\circ G\varepsilon FGF\) 写成水平复合并说明相等。</li>
+      <li id="q75f" data-page-node-id="LT8PPKufmMpMIuDuJeih4X">在 Kleisli 范畴 \(\mathbf C_T\) 中，定义箭头复合 \(g\circ_T f=\mu_C\circ Tg\circ f\)（\(f:A\to TB,\ g:B\to TC\)）。证明这个复合满足结合律（用 \(\mu\) 的结合律）。</li>
+    </ol>
+  </div>
+
+  <div class="box ans" data-page-node-id="1lSS5uFoCvO2gOcNMkipgm">
+    <h4 data-page-node-id="OptxNroMOpWrnVcxKqOPtu">④ 参考答案</h4>
+    <div class="item" data-page-node-id="G5lP6k2B4acHhGRUUoLa0L"><b data-page-node-id="UlSDPvzk2MVknwkR1NE1e5">7.5.1</b>　单位律 \(\mu_A\circ T\eta_A=\mathrm{id}=\mu_A\circ\eta_{TA}\)；结合律 \(\mu_A\circ T\mu_A=\mu_A\circ\mu_{TA}\)。图 7.5 中从 \(T^3A\) 到 \(TA\) 有两条路径：先 \(T\mu_A\) 到 \(T^2A\) 再 \(\mu_A\)，或先 \(\mu_{TA}\) 到 \(T^2A\) 再 \(\mu_A\)；方块交换即结合律。<span class="qed" data-page-node-id="HDvegTKAE3asMgG9VadaL1">∎</span></div>
+    <div class="item" data-page-node-id="iGjjst4pm2xxiW1LEArwQb"><b data-page-node-id="qe07Y2Ev8oycbQvugZDhD9">7.5.2</b>　\(F=-\times A:\mathbf C\to\mathbf C,\ G=(-)^A\)。诱导 monad \(T X=G(F X)=(X\times A)^A\)。单位 \(\eta_X:X\to(X\times A)^A\) 是 \(\eta_X(x)(a)=(x,a)\)；余单位 \(\varepsilon_Y:Y^A\times A\to Y\) 是求值 \(\varepsilon_Y(g,a)=g(a)\)。乘法 \(\mu_X=G\varepsilon_{FX}=(\varepsilon_{X\times A})^{A}\) 把 \(((X\times A)^A\times A)^A\) 映到 \((X\times A)^A\)：直观上"展平两层以 \(A\) 为参数的函数"。<span class="qed" data-page-node-id="rMdUbMWMTsnGBcjHQhBHZL">∎</span></div>
+    <div class="item" data-page-node-id="k6N7uTAPx9elCVxOoQg8Es"><b data-page-node-id="0oIOB6blzkokG0E10cjYxg">7.5.3</b>　\(\mathcal P\) 是函子（函数 \(f\) 送到像映射 \(f(-)\)）。\(\mu_X(\mathcal S)=\bigcup_{U\in\mathcal S}U\) 对 \(\mathcal S\subseteq\mathcal PX\) 定义。单位律：\(\mu_X(\eta_X(x))=\mu_X(\{x\})=x\)，而 \(\mu_X(\mathcal P\eta_X(\mathcal S))\) 对 \(\mathcal S=\{x\}\) 得 \(\{x\}\)——精确写成 \(\mu_X(\eta_{\mathcal PX}(\mathcal S))=\bigcup_{U\in\mathcal S}\{U\}=\mathcal S\)。结合律：\(\mu_X(\mathcal P\mu_X(\mathfrak S))=\bigcup_{\mathcal S\in\mathfrak S}\mu_X(\mathcal S)=\bigcup_{U\in\bigcup\mathfrak S}U=\mu_X(\mu_{\mathcal PX}(\mathfrak S))\)，两边都是"把所有集合的所有元素并起来"。<span class="qed" data-page-node-id="wiqUM7jZGzpXKq35Op1LMW">∎</span></div>
+    <div class="item" data-page-node-id="uPr2dFV4bjFSUwUJAVlOwV"><b data-page-node-id="AD1oX2QomTK77K3DfFu6Nm">7.5.4</b>　\(\eta_X(x)=[x]\)（单字母词），\(\mu_X(w_1w_2\cdots w_n)\) 把"词的列表"拼接成一个词（\(T^2X=(X^{\ast})^{\ast}\to X^{\ast}=TX\)）。结合律即词的拼接结合律。其代数 \((A,a:X^{\ast}\to A)\) 满足 \(a([x])=x\)、\(a\) 对拼接保结合——正是带单位元与结合乘法的幺半群，代数态射即幺半群同态。故列表 monad 的代数范畴是 \(\mathbf{Mon}\)。<span class="qed" data-page-node-id="FvFD2TgpANLTftjYYwWJcH">∎</span></div>
+    <div class="item" data-page-node-id="xjdm0EELepCUqnRBTgYL6l"><b data-page-node-id="FrtGk2x3Ea8Ql2Sufv3oZS">7.5.5</b>　\(T=GF\)，\(\mu^T=G\varepsilon F\)。则 \(T\mu^T=GFG\varepsilon F\)，\(\mu^T T=G\varepsilon FGF\)。两者都是 \(GFGFGF\xrightarrow{G\varepsilon FGF\ \mathrm{or}\ GFG\varepsilon F}GFGF\xrightarrow{G\varepsilon F}GF\) 的水平复合（箭头标注的两种括号化）。由水平复合的结合律与 \(\varepsilon\) 的自然性（\(\varepsilon\) 自然保证先作用哪一个 \(\varepsilon\) 给出的方块相容），这两个复合相等，即 \(\mu^T\circ T\mu^T=\mu^T\circ\mu^T_T\)。<span class="qed" data-page-node-id="C5eUdc7WsSi4aM9CCSiKWA">∎</span></div>
+    <div class="item" data-page-node-id="VbpAHEIl2ZnCbBZZKYWzSQ"><b data-page-node-id="iLvrjk0ctNT1YbbjPI0BSa">7.5.6</b>　设 \(f:A\to TB,\ g:B\to TC,\ k:C\to TD\)。先算
+    \[
+      (k\circ_T g)\circ_T f=\mu_D\circ T(\mu_D\circ Tk\circ g)\circ f=\mu_D\circ T\mu_D\circ TTk\circ Tg\circ f ,
+    \]
+    而另一边 \(k\circ_T(g\circ_T f)=\mu_D\circ Tk\circ\mu_C\circ Tg\circ f\)。用 \(\mu\) 的结合律 \(\mu_D\circ T\mu_D=\mu_D\circ\mu_{TD}\) 与 \(\mu\) 对 \(k\) 的自然性 \(Tk\circ\mu_C=\mu_{TD}\circ TTk\)，两式都化为同一箭头
+    \[
+      \mu_D\circ\mu_{TD}\circ TTk\circ Tg\circ f ,
+    \]
+    故复合满足结合律。<span class="qed" data-page-node-id="SGTrYXDJiBsmm2UwQIPI0A">∎</span></div>
+  </div>
+
+  <div class="box phil" data-page-node-id="DORh5a1KVAgaDx0qCeZK9c">
+    <h4 data-page-node-id="Tg1ASD6Un5CZ2H8a4Y3Pz3">选读拓展 · 哲学联系（可略读）</h4>
+    <p data-page-node-id="sR9ZyLb50QGqbUBo90xXGQ">Monad 把"伴随的影子"凝固成一个自足的代数结构：一旦有了 \(T,\eta,\mu\)，就不必再提原来的两个范畴，也能谈论"自由构造 + 求值"。这正呼应你的"证明同一性"主题——同一套 monad 可以由许多不同的伴随产生（Eilenberg–Moore 与 Kleisli 是两个极端），但它们被识别为同一个对象，靠的不是生成它的过程，而是它满足的结构公理。同一性再次由结构而非来源决定。</p>
+  </div>
+</section>
+
+
+<footer data-page-node-id="UBest12SnBr7kPVtCmrc82">
+  <p data-page-node-id="kUmAHBEtn4YzrksDRWQOrE"><a href="范畴论-逻辑-拓扑斯_教材总目录.html" data-page-node-id="PZfcOWWnjKpTsdGGNkCPDu">← 返回总目录</a> ｜ 上一章：<a href="范畴论-逻辑-拓扑斯_教材第6章.html" data-page-node-id="Gd5YSEo02FsaCa6y1IbTZF">第 6 章 自然性、函子范畴与 Yoneda</a></p>
+  <p data-page-node-id="xVGWf12uLhcDoUXmxFYcKX">本章对应 Awodey, <em data-page-node-id="oFoEyIhIv21yh3vb3ufDcD">Category Theory</em>, 2nd ed., §9.1–9.8, §10.1–10.3。公式由 MathJax 渲染，需联网加载。</p>
+</footer>
+
+</div>
+</body>
+</html>

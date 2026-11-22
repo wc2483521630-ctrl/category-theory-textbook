@@ -1,0 +1,986 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>第 6 章 自然性、函子范畴与 Yoneda —— 三书递进自学教材</title>
+<script>
+window.MathJax = {
+  tex: {
+    inlineMath: [['\\(','\\)']], displayMath: [['\\[','\\]']], processEscapes: true,
+    macros: {
+      llbracket: '\\lbrack\\lbrack',
+      rrbracket: '\\rbrack\\rbrack'
+    }
+  },
+  options: { ignoreHtmlClass: 'no-tex' },
+  svg: { fontCache: 'global' }
+};
+</script>
+<script async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
+<style>
+  :root{
+    --bg:#f6f7f9; --card:#fff; --ink:#1b1f27; --ink2:#4d5461; --ink3:#7a8190;
+    --line:#e5e8ed; --soft:#f0f2f5;
+    --c1:#2563eb; --c1bg:#eef4ff; --gold:#b45309; --goldbg:#fdf3e3;
+    --ok:#15803d; --okbg:#eefaf1; --phil:#7c3aed; --philbg:#f6f1ff;
+    --radius:12px;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;
+    line-height:1.75;-webkit-font-smoothing:antialiased;}
+  .wrap{max-width:920px;margin:0 auto;padding:0 22px 80px;}
+
+  header.top{padding:34px 0 22px;border-bottom:1px solid var(--line);margin-bottom:26px;}
+  .breadcrumb{font-size:12.5px;color:var(--ink3);margin-bottom:10px;}
+  .breadcrumb a{color:var(--c1);text-decoration:none;}
+  h1{font-size:29px;margin:0 0 8px;letter-spacing:-.02em;}
+  .lede{color:var(--ink2);font-size:14.5px;margin:0 0 16px;}
+  .jump{display:flex;gap:8px;flex-wrap:wrap;}
+  .jump a{font-size:12.5px;font-weight:650;text-decoration:none;color:var(--ink2);
+    background:var(--card);border:1px solid var(--line);border-radius:99px;padding:6px 13px;}
+  .jump a:hover{border-color:var(--c1);color:var(--c1);}
+
+  section.sec{margin:0 0 52px;scroll-margin-top:16px;}
+  .sec-h{display:flex;align-items:baseline;gap:12px;border-bottom:2px solid var(--c1);padding-bottom:10px;margin-bottom:22px;}
+  .sec-no{font-size:13px;font-weight:800;color:#fff;background:var(--c1);border-radius:7px;padding:3px 10px;white-space:nowrap;}
+  .sec-h h2{font-size:22px;margin:0;letter-spacing:-.01em;}
+  .src{font-size:11.5px;color:var(--ink3);margin-left:auto;white-space:nowrap;}
+
+  .box{border-radius:var(--radius);padding:16px 20px;margin:18px 0;border:1px solid var(--line);}
+  .box h4{margin:0 0 10px;font-size:14px;letter-spacing:.01em;}
+
+  .learn{background:var(--c1bg);border-color:#cfe0ff;}
+  .learn h4{color:var(--c1);}
+  .learn ol{margin:0;padding-left:22px;} .learn li{margin:4px 0;font-size:14px;}
+
+  .defn{background:#fafbfc;border-left:4px solid var(--ink2);padding:14px 18px;margin:16px 0;border-radius:0 10px 10px 0;}
+  .defn .lbl{font-weight:800;font-size:13.5px;color:var(--ink);}
+  .prop{background:#fbfcfe;border:1px solid #dbe6f8;border-left:4px solid var(--c1);padding:14px 18px;margin:16px 0;border-radius:0 10px 10px 0;}
+  .prop .lbl{font-weight:800;font-size:13.5px;color:var(--c1);}
+  .rmk{font-size:13.5px;color:var(--ink2);background:var(--soft);padding:11px 16px;border-radius:9px;margin:12px 0;}
+
+  .proof{margin:10px 0 4px;padding-left:16px;border-left:2px solid var(--line);font-size:14px;color:var(--ink2);}
+  .proof .pl{font-weight:700;color:var(--ink);}
+  .qed{float:right;font-style:normal;color:var(--ink3);}
+
+  .exer{background:var(--goldbg);border-color:#f2dfbb;}
+  .exer h4{color:var(--gold);}
+  .exer .grp{font-size:12.5px;font-weight:750;color:var(--gold);margin:12px 0 4px;}
+  .exer ol{margin:0;padding-left:22px;} .exer li{margin:9px 0;font-size:14px;}
+
+  .ans{background:var(--okbg);border-color:#c9ecd3;}
+  .ans h4{color:var(--ok);}
+  .ans .item{margin:14px 0 18px;font-size:14px;}
+  .ans .item:last-child{margin-bottom:0;}
+  .ans .item b{color:var(--ok);}
+  .ans .proof{border-left-color:#bfe6c9;}
+
+  .phil{background:var(--philbg);border-color:#e3d5ff;}
+  .phil h4{color:var(--phil);}
+  .phil p{font-size:14px;color:#5b3a8e;margin:8px 0;}
+
+  h3.sub{font-size:16px;margin:26px 0 6px;color:var(--ink);}
+  p{margin:9px 0;} .math{overflow-x:auto;}
+
+  .figcap{font-size:12.5px;color:var(--ink3);margin:2px 0 12px;text-align:center;font-style:italic;}
+
+  footer{border-top:1px solid var(--line);margin-top:30px;padding-top:20px;font-size:13px;color:var(--ink3);}
+  footer a{color:var(--c1);text-decoration:none;}
+
+  @media(max-width:640px){
+    h1{font-size:23px;} .wrap{padding:0 14px 60px;}
+    .sec-h{flex-wrap:wrap;} .src{margin-left:0;}
+    .box{padding:14px 15px;}
+  }
+  @media print{body{background:#fff;}.jump{display:none;}.box{break-inside:avoid;}}
+  /* ---- 范畴交换图 SVG（浅色主题）---- */
+  svg.cd{display:block;margin:16px auto 2px;max-width:100%;height:auto;
+    font-family:"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;}
+  svg.cd rect.node{fill:#eef4ff;stroke:#2563eb;stroke-width:1.5;rx:7;}
+  svg.cd rect.node2{fill:#f6f1ff;stroke:#7c3aed;stroke-width:1.5;rx:7;}
+  svg.cd rect.nodeg{fill:#eefaf1;stroke:#15803d;stroke-width:1.5;rx:7;}
+  svg.cd text.nt{fill:#1b1f27;font-size:13.5px;font-weight:600;}
+  svg.cd text.lb{fill:#334155;font-size:12.5px;}
+  svg.cd text.hb{fill:#2563eb;font-size:12.5px;font-weight:600;}
+  svg.cd line.ar,svg.cd path.ar{stroke:#475569;stroke-width:1.6;fill:none;marker-end:url(#cdArr);}
+  svg.cd line.arb,svg.cd path.arb{stroke:#2563eb;stroke-width:1.8;fill:none;marker-end:url(#cdArrB);}
+  svg.cd line.ard,svg.cd path.ard{stroke:#475569;stroke-width:1.5;fill:none;stroke-dasharray:5 4;marker-end:url(#cdArr);}
+  svg.cd line.noa{stroke:#475569;stroke-width:1.5;fill:none;stroke-dasharray:5 4;}
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute;width:0;height:0;overflow:hidden" aria-hidden="true">
+<defs>
+  <marker id="cdArr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+    <path d="M 0 0 L 10 5 L 0 10 z" fill="#475569"/>
+  </marker>
+  <marker id="cdArrB" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+    <path d="M 0 0 L 10 5 L 0 10 z" fill="#2563eb"/>
+  </marker>
+</defs>
+</svg>
+<div class="wrap">
+
+<header class="top">
+  <div class="breadcrumb"><a href="范畴论-逻辑-拓扑斯_教材总目录.html">← 返回总目录</a> ｜ 第一部分 · Awodey《Category Theory》（第二版）</div>
+  <h1>第 6 章　自然性、函子范畴与 Yoneda</h1>
+  <p class="lede">前几章我们已经习惯用"泛性质"定义对象：积、指数、极限，都是"用箭头唯一地刻画出对象"。本章要把同样的思路用<strong>函子</strong>来重做一遍，答案就是 Yoneda 引理——它说"一个完全由它与其他对象的关系决定"，而且逻辑与计算语义里的表示、内部语言、拓扑斯里的对象，本质上都是它的实例。这是 Awodey 全书的技术核心，也是通往 Lambek 与 Mac Lane–Moerdijk 两书的枢纽。</p>
+  <div class="rmk" style="margin-top:14px;"><strong>全章地图（抽象形式 ↔ 直观含义）。</strong>
+    6.1 <strong>可表示</strong>：一个函子能被某个对象 \(A\) 的全部箭头生成 ↔ "用一个观察点看遍整个范畴"；
+    6.2 <strong>自然同构与等价</strong>：函子间的"同构"与范畴间的"相同" ↔ "换个说法，结构不变"；
+    6.3 <strong>Yoneda 嵌入</strong>：\(A\mapsto\operatorname{Hom}(-,A)\) 满忠实 ↔ "给每个对象建一份关系档案，档案不丢信息"；
+    6.4 <strong>Yoneda 引理</strong>：\(\operatorname{Nat}(\operatorname{Hom}(A,-),F)\cong F(A)\) ↔ "一个自然变换由它在 \(\mathrm{id}_A\) 处的一个值全部决定"；
+    6.5 <strong>应用</strong>：Cayley、泛元素、伴随、λ-演算 ↔ "同一套道理，在代数、逻辑、编程里反复出现"。
+    读图时记住图 6.4 的自然性方块：本章几乎每张交换图都是它的变体。</div>
+  <nav class="jump">
+    <a href="#s6-1">6.1 可表示结构</a>
+    <a href="#s6-2">6.2 自然同构与范畴等价</a>
+    <a href="#s6-3">6.3 Yoneda 嵌入</a>
+    <a href="#s6-4">6.4 Yoneda 引理</a>
+    <a href="#s6-5">6.5 Yoneda 引理的应用</a>
+  </nav>
+</header>
+
+<section class="sec" id="s6-1">
+  <div class="sec-h"><span class="sec-no">6.1</span><h2>可表示结构</h2><span class="src">A §7.2, p.153–156</span></div>
+
+  <div class="box learn">
+    <h4>① 本节学习目标</h4>
+    <ol>
+      <li>从"用集合值函子探测一个对象"的动机出发，理解表示（representation）的概念；</li>
+      <li>严格定义协变表示函子 \(\operatorname{Hom}(A,-)\) 与反变表示函子 \(\operatorname{Hom}(-,A)\)，并说明它们在箭头上的作用；</li>
+      <li>证明"表示唯一到唯一同构"，并把它与第 4 章的泛性质语言对照；</li>
+      <li>通过典型例子（群、环、拓扑空间、偏序集）把熟悉的构造认成表示；</li>
+      <li>理解自然性在这里第一次真正起作用：表示之间的箭头由自然变换给出。</li>
+    </ol>
+  </div>
+
+  <h3 class="sub">6.1.1　动机：用一个函子记录"所有箭头"</h3>
+  <p>回忆第 1 章：对任意对象 \(A\)，\(\operatorname{Hom}(A,-)\) 是一个从 \(\mathbf C\) 到 \(\mathbf{Set}\) 的协变函子——它把每个对象 \(X\) 送到集合 \(\operatorname{Hom}(A,X)\)，把箭头 \(f:X\to Y\) 送到"后复合"映射 \(f_* = f\circ - :\operatorname{Hom}(A,X)\to\operatorname{Hom}(A,Y)\)。这个函子把"从 \(A\) 出发的所有箭头"完整地记录下来；对偶地，\(\operatorname{Hom}(-,A)\) 记录"所有到达 \(A\) 的箭头"。</p>
+  <p>为什么这值得单独命名？因为第 4 章里一大类泛性质，说的正是"某个函子被一个 hom-函子表示"。例如：积 \(A\times B\) 的定义等价于自然同构 \(\operatorname{Hom}(X,A\times B)\cong \operatorname{Hom}(X,A)\times\operatorname{Hom}(X,B)\)；指数 \(B^A\) 的定义等价于 \(\operatorname{Hom}(X,B^A)\cong\operatorname{Hom}(X\times A,B)\)。这些式子的共同结构是：<strong>一个用对象语言描述的函子，与一个 hom-函子自然同构</strong>。把这件事抽象出来，就是"可表示函子"。</p>
+
+  <div class="rmk"><strong>先建立直观。</strong>把 hom-集 \(\operatorname{Hom}(A,X)\) 想成"从固定观察点 \(A\) 看向对象 \(X\) 的全部视线"。范畴里每有一条路 \(f:X\to Y\)，这些视线就被"接着往下走"——每条 \(h:A\to X\) 变成 \(f\circ h:A\to Y\)。于是"看 \(X\)"自动变成"看 \(Y\)"，这就是一个函子。所谓"可表示"，就是某个函子的全部信息都能这样由一个观察点 \(A\) 提供。</div>
+
+  <svg class="cd" viewBox="0 0 470 196" role="img" aria-label="表示函子在箭头上的作用">
+    <rect class="node" x="40" y="16" width="70" height="38" rx="7"/>
+    <text class="nt" x="75" y="40" text-anchor="middle">X</text>
+    <rect class="node" x="360" y="16" width="70" height="38" rx="7"/>
+    <text class="nt" x="395" y="40" text-anchor="middle">Y</text>
+    <line class="arb" x1="112" y1="35" x2="356" y2="35"/>
+    <text class="hb" x="234" y="28" text-anchor="middle">f</text>
+    <rect class="nodeg" x="14" y="132" width="122" height="38" rx="7"/>
+    <text class="nt" x="75" y="156" text-anchor="middle">Hom(A, X)</text>
+    <rect class="nodeg" x="334" y="132" width="122" height="38" rx="7"/>
+    <text class="nt" x="395" y="156" text-anchor="middle">Hom(A, Y)</text>
+    <line class="arb" x1="138" y1="151" x2="332" y2="151"/>
+    <text class="hb" x="235" y="144" text-anchor="middle">f_* : h ↦ f∘h</text>
+    <line class="noa" x1="75" y1="56" x2="75" y2="130"/>
+    <line class="noa" x1="395" y1="56" x2="395" y2="130"/>
+    <text class="lb" x="235" y="100" text-anchor="middle">Hom(A, –) ：对象 ↦ hom-集，箭头 ↦ 后复合</text>
+  </svg>
+  <div class="figcap">图 6.1　表示函子 Hom(A, –) 的作用。节点：上行是范畴 \(\mathbf C\) 的对象 \(X,Y\)，下行是 \(\mathbf{Set}\) 的集合 \(\operatorname{Hom}(A,X),\operatorname{Hom}(A,Y)\)。态射与方向：上箭头 \(f:X\to Y\)；下箭头 \(f_*:h\mapsto f\circ h\)（后复合 \(f\)）；两条竖直虚线表示函子 Hom(A, –) 把对象送到 hom-集、把箭头送到后复合映射。</div>
+
+
+  <h3 class="sub">6.1.2　表示函子与可表示性</h3>
+  <div class="defn"><span class="lbl">定义 6.1.1（表示函子，A §7.2）</span>
+    <p>设 \(\mathbf C\) 局部小。对对象 \(A\in\mathbf C\)，定义两个函子：</p>
+    <ul style="margin:6px 0;padding-left:24px;">
+      <li><strong>协变表示函子</strong> \(\operatorname{Hom}(A,-):\mathbf C\to\mathbf{Set}\)：对象 \(X\mapsto \operatorname{Hom}(A,X)\)，箭头 \(f:X\to Y\) 映到 \(f_* :h\mapsto f\circ h\)。</li>
+      <li><strong>反变表示函子</strong> \(\operatorname{Hom}(-,A):\mathbf C^{op}\to\mathbf{Set}\)：对象 \(X\mapsto\operatorname{Hom}(X,A)\)，箭头 \(f:X\to Y\) 映到 \(f^* :h\mapsto h\circ f\)。</li>
+    </ul>
+    一个函子 \(F:\mathbf C\to\mathbf{Set}\) 称为<strong>可表示的</strong>（representable），若存在对象 \(A\) 使 \(F\cong \operatorname{Hom}(A,-)\) 自然同构；此时 \(A\) 称为 \(F\) 的<strong>表示对象</strong>。反变情形类似（等价地视作 \(\mathbf C^{op}\) 上的可表示函子）。
+  </div>
+  <div class="rmk">记号提醒：\(\operatorname{Hom}(A,-)\) 里的横线表示"空位"，箭头送入时用后复合 \(f\circ -\)，这个方向别弄反——它保证 \(\operatorname{Hom}(A,-)\) 对 \(f:X\to Y\) 给出 \(\operatorname{Hom}(A,X)\to\operatorname{Hom}(A,Y)\)，是协变的。而 \(\operatorname{Hom}(-,A)\) 对同样的 \(f\) 给出 \(\operatorname{Hom}(Y,A)\to\operatorname{Hom}(X,A)\)，方向相反，所以是反变的。</div>
+
+  <p>下面这个命题把第 4 章的"泛性质给出唯一同构"重述成表示的语言，是全章反复使用的工具。</p>
+  <div class="prop"><span class="lbl">命题 6.1.2（表示唯一到唯一同构）</span>
+    若 \(F:\mathbf C\to\mathbf{Set}\) 被 \(A\) 与 \(A'\) 表示，即有两个自然同构 \(\phi:\operatorname{Hom}(A,-)\xrightarrow{\sim} F\) 与 \(\phi':\operatorname{Hom}(A',-)\xrightarrow{\sim}F\)，则存在唯一同构 \(u:A'\xrightarrow{\sim}A\) 使 \(\phi'=\phi\circ u_*\)。
+  </div>
+  <div class="proof"><span class="pl">证明：</span>令 \(\theta=\phi^{-1}\circ\phi':\operatorname{Hom}(A',-)\to\operatorname{Hom}(A,-)\)，这是两个表示函子之间的自然同构。取 \(v=\theta_{A'}(\mathrm{id}_{A'})\in\operatorname{Hom}(A,A')\)。对任意 \(h:A'\to X\)，由 \(\theta\) 的自然性方块得到 \(\theta_X(h)=\theta_X(\operatorname{Hom}(A',h)(\mathrm{id}_{A'}))=\operatorname{Hom}(A,h)(\theta_{A'}(\mathrm{id}_{A'}))=h\circ v\)，即 \(\theta\) 就是"后复合 \(v\)"。同理对 \(\theta^{-1}\) 取 \(w=\theta^{-1}_{A}(\mathrm{id}_{A})\in\operatorname{Hom}(A',A)\)，得 \(\theta^{-1}\) 是后复合 \(w\)。由 \(\theta^{-1}\circ\theta=\mathrm{id}\) 得 \(w\circ v=\mathrm{id}_{A'}\)？注意方向：\(\theta_X(h)=h\circ v\) 中 \(v:A\to A'\)，\(\theta^{-1}_Y(k)=k\circ w\) 中 \(w:A'\to A\)。于是 \(\theta^{-1}_A(\theta_A(h))=(h\circ v)\circ w=h\circ(v\circ w)\)，应等于 \(h\)，故 \(v\circ w=\mathrm{id}_A\)；同理由 \(\theta\circ\theta^{-1}=\mathrm{id}\) 得 \(w\circ v=\mathrm{id}_{A'}\)。故 \(v:A\to A'\) 与 \(w:A'\to A\) 互为逆，\(v\) 是同构。唯一性：任何满足 \(\phi'=\phi\circ u_*\) 的 \(u\) 必有 \(u=\theta_{A'}(\mathrm{id}_{A'})=v\)。<span class="qed">∎</span></div>
+  
+  <svg class="cd" viewBox="0 0 510 196" role="img" aria-label="表示唯一性证明中的自然性方块">
+    <rect class="node" x="10" y="18" width="140" height="42" rx="7"/>
+    <text class="nt" x="80" y="44" text-anchor="middle">Hom(A′, A′)</text>
+    <rect class="node" x="360" y="18" width="140" height="42" rx="7"/>
+    <text class="nt" x="430" y="44" text-anchor="middle">Hom(A, A′)</text>
+    <rect class="node" x="10" y="136" width="140" height="42" rx="7"/>
+    <text class="nt" x="80" y="162" text-anchor="middle">Hom(A′, X)</text>
+    <rect class="node" x="360" y="136" width="140" height="42" rx="7"/>
+    <text class="nt" x="430" y="162" text-anchor="middle">Hom(A, X)</text>
+    <line class="arb" x1="152" y1="39" x2="356" y2="39"/>
+    <text class="hb" x="254" y="32" text-anchor="middle">θ_{A′}</text>
+    <line class="arb" x1="152" y1="157" x2="356" y2="157"/>
+    <text class="hb" x="254" y="150" text-anchor="middle">θ_X</text>
+    <line class="ar" x1="80" y1="62" x2="80" y2="134"/>
+    <text class="lb" x="50" y="102" text-anchor="middle">h∘–</text>
+    <line class="ar" x1="430" y1="62" x2="430" y2="134"/>
+    <text class="lb" x="460" y="102" text-anchor="middle">h∘–</text>
+    <text class="lb" x="255" y="105" text-anchor="middle">θ_X(h) = h∘v,  v = θ_{A′}(id_{A′})</text>
+  </svg>
+  <div class="figcap">图 6.2　命题 6.1.2 的核心方块。节点：四角是四个 hom-集。态射与方向：上边 \(\theta_{A'}\) 把 \(\operatorname{Hom}(A',A')\) 送到 \(\operatorname{Hom}(A,A')\)，下边 \(\theta_X\) 是 \(X\) 处的分量；左右两条竖箭头都是"后复合 \(h\)"（\(h:A'\to X\)）。交换性（两条路径从左上到右下相等）正是 \(\theta_X(h\circ\mathrm{id}_{A'})=h\circ\theta_{A'}(\mathrm{id}_{A'})\)，即 \(\theta_X(h)=h\circ v\):自然性把一个元素 \(v\) 复制到所有分量。</div>
+
+<div class="rmk">这个证明的套路——"一个自然变换 \(\operatorname{Hom}(A,-)\to F\) 完全由它在 \(\mathrm{id}_A\) 处的值决定"——正是下一章 Yoneda 引理的特例。这里先朴素地用一遍，第二章再把它提炼成定理。</div>
+
+  <h3 class="sub">6.1.3　例子：熟悉的构造都是表示</h3>
+  <div class="prop"><span class="lbl">例 6.1.3</span>
+    <ol style="margin:6px 0;padding-left:24px;">
+      <li><strong>群</strong>：在 \(\mathbf{Grp}\) 中，\(\operatorname{Hom}(\mathbb Z, G)\cong\)（\(G\) 的底层集），因为群同态 \(\mathbb Z\to G\) 由 \(1\mapsto g\) 唯一决定。所以底层集合函子 \(U:\mathbf{Grp}\to\mathbf{Set}\) 由 \(\mathbb Z\) 表示：\(U\cong\operatorname{Hom}(\mathbb Z,-)\)。</li>
+      <li><strong>环</strong>：在 \(\mathbf{Ring}\) 中，\(\operatorname{Hom}(\mathbb Z[x],R)\cong R\)（环同态由 \(x\) 的像唯一决定），故底层集函子由 \(\mathbb Z[x]\) 表示。</li>
+      <li><strong>拓扑空间</strong>：在 \(\mathbf{Top}\) 中，\(\operatorname{Hom}(1,X)\cong\)（\(X\) 的点集），其中 \(1\) 是单点空间。故点集函子由 \(1\) 表示。</li>
+      <li><strong>偏序集</strong>：视作范畴时 \(\operatorname{Hom}(a,b)\) 或为空或为单点。函子 \(\operatorname{Hom}(a,-)\) 表示"哪些元素 \(\ge a\)"，它本质上是特征函数。可表示性在这里退化为一个上集。</li>
+    </ol>
+  </div>
+  <div class="rmk">看这些例子有个共同点：表示对象（\(\mathbb Z,\mathbb Z[x],1\)）都是"自由对象"或"生成元"。这不是巧合——可表示函子往往就是"取底层数据"，而表示对象就是"带一个泛 universal 元素的对象"。这个 universal 元素就是 \(\mathrm{id}_A\) 在 \(\operatorname{Hom}(A,A)\) 里对应的那个元素。</div>
+
+  <h3 class="sub">6.1.4　表示的箭头</h3>
+  <p>若 \(F\cong\operatorname{Hom}(A,-)\)、\(G\cong\operatorname{Hom}(B,-)\)，那么自然变换 \(F\to G\) 对应什么？由 Yoneda 引理（下一章）它是 \(\operatorname{Hom}(B,A)\) 的元素，即箭头 \(B\to A\)。这给出著名的"表示的反变对应"：可表示函子之间的自然变换方向，与表示对象之间的箭头方向相反。这一事实在 6.3 的 Yoneda 嵌入里会正式登台。</p>
+
+  <svg class="cd" viewBox="0 0 480 168" role="img" aria-label="表示的反变对应">
+    <rect class="node2" x="20" y="16" width="170" height="40" rx="7"/>
+    <text class="nt" x="105" y="41" text-anchor="middle">Hom(A′, –) ≅ F</text>
+    <rect class="node2" x="290" y="16" width="170" height="40" rx="7"/>
+    <text class="nt" x="375" y="41" text-anchor="middle">Hom(A, –) ≅ G</text>
+    <line class="arb" x1="192" y1="36" x2="288" y2="36"/>
+    <text class="hb" x="240" y="29" text-anchor="middle">η</text>
+    <rect class="nodeg" x="20" y="112" width="170" height="40" rx="7"/>
+    <text class="nt" x="105" y="137" text-anchor="middle">A′</text>
+    <rect class="nodeg" x="290" y="112" width="170" height="40" rx="7"/>
+    <text class="nt" x="375" y="137" text-anchor="middle">A</text>
+    <line class="arb" x1="288" y1="140" x2="192" y2="140"/>
+    <text class="hb" x="240" y="160" text-anchor="middle">v : A → A′</text>
+    <line class="noa" x1="105" y1="58" x2="105" y2="110"/>
+    <line class="noa" x1="375" y1="58" x2="375" y2="110"/>
+    <text class="lb" x="240" y="92" text-anchor="middle">方向相反：η ↺ v</text>
+  </svg>
+  <div class="figcap">图 6.3　表示的反变对应。上排是表示函子之间的自然变换 \(\eta:\operatorname{Hom}(A',-)\Rightarrow\operatorname{Hom}(A,-)\)（方向从左到右），下排是表示对象之间的箭头 \(v:A\to A'\)（方向从右到左）。两条虚线表明二者的对应是反向的：自然变换 \(\eta\) 由箭头 \(v\) 经后复合给出（\(\eta_X(h)=h\circ v\)）。这就是 6.3 的 Yoneda 嵌入"反变"的来源。</div>
+
+
+  <div class="box exer">
+    <h4>③ 课后练习</h4>
+    <div class="grp">基础巩固</div>
+    <ol>
+      <li id="q61a">写出 \(\operatorname{Hom}(A,-)\) 在箭头 \(f:X\to Y\) 上的作用，并验证它满足函子的保恒等与保复合。</li>
+      <li id="q61b">在 \(\mathbf{Set}\) 中，\(\operatorname{Hom}(1,X)\) 与 \(X\) 是什么关系？给出自然同构的Explicit 描述。</li>
+      <li id="q61c">说明为什么"底层集函子 \(U:\mathbf{Grp}\to\mathbf{Set}\) 由 \(\mathbb Z\) 表示"，并写出自然同构在箭头上的相容性。</li>
+      <li id="q61d">用表示的语言重述积的泛性质：\(\operatorname{Hom}(X,A\times B)\cong\operatorname{Hom}(X,A)\times\operatorname{Hom}(X,B)\)，指出表示对象是谁。</li>
+    </ol>
+    <div class="grp">进阶思考</div>
+    <ol start="5">
+      <li id="q61e">补全命题 6.1.2 证明中"自然性给出 \(\theta_X(h)=h\circ v\)"的细节，说明为何 \(\theta\) 必是后复合某个固定箭头。</li>
+      <li id="q61f">证明：若 \(F\) 由 \(A\) 表示，则 \(F(A)\) 中有一个"泛元素" \(u=\phi_A(\mathrm{id}_A)\)，使得任意 \(x\in F(X)\) 都唯一写成 \(F(f)(u)\) 的形式（\(f:A\to X\)）。</li>
+    </ol>
+  </div>
+
+  <div class="box ans">
+    <h4>④ 参考答案</h4>
+    <div class="item"><b>6.1.1</b>　\(f_*:\operatorname{Hom}(A,X)\to\operatorname{Hom}(A,Y),\ h\mapsto f\circ h\)。保恒等：\((\mathrm{id}_X)_*(h)=\mathrm{id}_X\circ h=h\)。保复合：对 \(f:X\to Y,\ g:Y\to Z\)，\((g\circ f)_*(h)=(g\circ f)\circ h=g\circ(f\circ h)=g_*(f_*(h))\)，故 \((g\circ f)_*=g_*\circ f_*\)。<span class="qed">∎</span></div>
+    <div class="item"><b>6.1.2</b>　\(\operatorname{Hom}(1,X)\) 的元素是从单点集到 \(X\) 的函数，恰由像点唯一决定，故有双射 \(\operatorname{Hom}(1,X)\to X,\ f\mapsto f(\ast)\)。对 \(g:X\to Y\)，\(\operatorname{Hom}(1,g)\) 把 \(f\) 送到 \(g\circ f\)，其在 \(X\) 中的像为 \(g(f(\ast))\)，与 \(g\) 的作用一致，故是自然同构。<span class="qed">∎</span></div>
+    <div class="item"><b>6.1.3</b>　对每个群 \(G\)，定义 \(\phi_G:\operatorname{Hom}(\mathbb Z,G)\to U(G)\)，\(f\mapsto f(1)\)。同态由 1 的像唯一决定，故 \(\phi_G\) 是双射。对群同态 \(\alpha:G\to H\)，\(\operatorname{Hom}(\mathbb Z,\alpha)(f)=\alpha\circ f\)，而 \(\phi_H(\alpha\circ f)=\alpha(f(1))=\alpha(\phi_G(f))\)，即 \(\phi_H\circ\operatorname{Hom}(\mathbb Z,\alpha)=U(\alpha)\circ\phi_G\)，自然性成立。<span class="qed">∎</span></div>
+    <div class="item"><b>6.1.4</b>　由积的泛性质，\(\operatorname{Hom}(X,A\times B)\cong\operatorname{Hom}(X,A)\times\operatorname{Hom}(X,B)\) 对 \(X\) 自然。右边是函子 \(X\mapsto\operatorname{Hom}(X,A)\times\operatorname{Hom}(X,B)\)，它被 \(A\times B\) 表示。所以表示对象是积对象 \(A\times B\) 本身。<span class="qed">∎</span></div>
+    <div class="item"><b>6.1.5</b>　设 \(\theta:\operatorname{Hom}(A',-)\to\operatorname{Hom}(A,-)\) 自然。取 \(v=\theta_{A'}(\mathrm{id}_{A'})\in\operatorname{Hom}(A,A')\)。对任意 \(h\in\operatorname{Hom}(A',X)\)（即 \(h:A'\to X\)），自然性方块给出 \(\theta_X(\operatorname{Hom}(A',h)(\mathrm{id}_{A'}))=\operatorname{Hom}(A,h)(\theta_{A'}(\mathrm{id}_{A'}))\)，左边即 \(\theta_X(h\circ\mathrm{id}_{A'})=\theta_X(h)\)，右边即 \(h\circ v\)。故 \(\theta_X(h)=h\circ v\)，\(\theta\) 是后复合 \(v\)。<span class="qed">∎</span></div>
+    <div class="item"><b>6.1.6</b>　令 \(u=\phi_A(\mathrm{id}_A)\in F(A)\)。对 \(x\in F(X)\)，取 \(f=\phi_X^{-1}(x)\in\operatorname{Hom}(A,X)\)，则 \(x=\phi_X(f)=\phi_X(\operatorname{Hom}(A,f)(\mathrm{id}_A))\)。由自然性 \(\phi_X\circ\operatorname{Hom}(A,f)=F(f)\circ\phi_A\)，故 \(x=F(f)(\phi_A(\mathrm{id}_A))=F(f)(u)\)。若还有 \(x=F(g)(u)\)，则 \(\phi_X(f)=F(f)(u)=F(g)(u)=\phi_X(g)\)，\(\phi_X\) 单射得 \(f=g\)，唯一性成立。<span class="qed">∎</span></div>
+  </div>
+
+  <div class="box phil">
+    <h4>选读拓展 · 哲学联系</h4>
+    <p>"一个东西是什么，由它与其他东西的关系决定"——这个结构主义式的口号在可表示性里第一次有了精确数学版本。表示对象 \(A\) 并不以"内在属性"被把握，而是以它发射出的全部箭头 \(\operatorname{Hom}(A,-)\) 被把握；而命题 6.1.2 说，这种关系指纹唯一确定 \(A\)（到同构）。第 8 章会把这条思路推到底：在拓扑斯里，一个对象的"内部视图"就是它与其他对象的关系总和。</p>
+  </div>
+</section>
+
+<section class="sec" id="s6-2">
+  <div class="sec-h"><span class="sec-no">6.2</span><h2>自然同构与范畴等价</h2><span class="src">A §7.9–7.10, p.163–168</span></div>
+
+  <div class="box learn">
+    <h4>① 本节学习目标</h4>
+    <ol>
+      <li>在函子范畴 \(\mathbf C^{\mathbf J}\) 中把自然变换认成箭头，进而定义自然同构；</li>
+      <li>给出自然同构的逐点判据：\(\eta\) 是同构当且仅当每个分量 \(\eta_X\) 是 \(\mathbf D\) 中的同构；</li>
+      <li>严格定义范畴等价 \(F:\mathbf C\simeq\mathbf D:G\)，并证明它比同构更弱、更常用；</li>
+      <li>证明核心定理：\(F\) 等价当且仅当 \(F\) 完全忠实且本质上满；</li>
+      <li>说明"等价的范畴共享全部范畴论性质"，并用它解释 \(\mathbf{FinSet}\) 与有限布尔代数等例子。</li>
+    </ol>
+  </div>
+
+  <h3 class="sub">6.2.1　函子范畴里的箭头</h3>
+  <p>第 1 章已经定义了自然变换。现在换一个视角：给定函子 \(F,G:\mathbf J\to\mathbf C\)，从 \(F\) 到 \(G\) 的自然变换 \(\eta:F\Rightarrow G\) 是一族箭头 \(\eta_J:F(J)\to G(J)\)，对每个 \(J\) 的分量，满足对每个 \(a:J\to K\) 的方块交换。若把函子看成"对象"、自然变换看成"箭头"，它们构成一个范畴。</p>
+  
+  <div class="rmk"><strong>读图先建立直观。</strong>自然变换 \(\eta:F\Rightarrow G\) 就是"在每个对象上装一个箭头 \(\eta_J\)"，但要求这些箭头彼此协调：对任意 \(a:J\to K\)，先经 \(F(a)\) 再走 \(\eta_K\)，与先走 \(\eta_J\) 再经 \(G(a)\)，结果必须相同。下面这张方块是全书出现频率最高的图，务必看熟。</div>
+  <svg class="cd" viewBox="0 0 460 188" role="img" aria-label="自然变换方块">
+    <rect class="node" x="20" y="16" width="120" height="44" rx="7"/>
+    <text class="nt" x="80" y="44" text-anchor="middle">F(J)</text>
+    <rect class="node" x="320" y="16" width="120" height="44" rx="7"/>
+    <text class="nt" x="380" y="44" text-anchor="middle">F(K)</text>
+    <rect class="node2" x="20" y="128" width="120" height="44" rx="7"/>
+    <text class="nt" x="80" y="156" text-anchor="middle">G(J)</text>
+    <rect class="node2" x="320" y="128" width="120" height="44" rx="7"/>
+    <text class="nt" x="380" y="156" text-anchor="middle">G(K)</text>
+    <line class="arb" x1="142" y1="38" x2="318" y2="38"/>
+    <text class="hb" x="230" y="31" text-anchor="middle">F(a)</text>
+    <line class="arb" x1="142" y1="150" x2="318" y2="150"/>
+    <text class="hb" x="230" y="143" text-anchor="middle">G(a)</text>
+    <line class="ar" x1="80" y1="62" x2="80" y2="126"/>
+    <text class="lb" x="52" y="98" text-anchor="middle">η_J</text>
+    <line class="ar" x1="380" y1="62" x2="380" y2="126"/>
+    <text class="lb" x="408" y="98" text-anchor="middle">η_K</text>
+    <text class="lb" x="230" y="106" text-anchor="middle">交换：G(a)∘η_J = η_K∘F(a)</text>
+  </svg>
+  <div class="figcap">图 6.4　自然变换方块。节点：左上 \(F(J)\)、右上 \(F(K)\)、左下 \(G(J)\)、右下 \(G(K)\)。态射与方向：上边 \(F(a):F(J)\to F(K)\)、下边 \(G(a):G(J)\to G(K)\) 由函子给出；左边 \(\eta_J:F(J)\to G(J)\)、右边 \(\eta_K:F(K)\to G(K)\) 是自然变换的分量。方块交换即 \(G(a)\circ\eta_J=\eta_K\circ F(a)\)，这就是自然性的全部内容。</div>
+
+<div class="defn"><span class="lbl">定义 6.2.1（函子范畴，A §7.7）</span>
+    函子范畴 \(\mathbf C^{\mathbf J}\)（也写作 \([\mathbf J,\mathbf C]\)）的对象是函子 \(\mathbf J\to\mathbf C\)，箭头是自然变换，复合为逐点复合 \((\eta\circ\theta)_J=\eta_J\circ\theta_J\)，恒等箭头为逐点恒等 \((\mathrm{id}_F)_J=\mathrm{id}_{F(J)}\)。
+  </div>
+  <div class="rmk">方向约定：\(\mathbf C^{\mathbf J}\) 的上标是"索引范畴" \(\mathbf J\)。当 \(\mathbf J\) 是黏着范畴 \(2\)（两个对象一条箭头）时，\([2,\mathbf C]\) 就是 \(\mathbf C\) 的箭头范畴 \(\mathbf C^{\to}\)——对象是 \(\mathbf C\) 的箭头，箭头是交换方块。这个例子能帮你把"函子范畴"落到实处。</div>
+
+  <h3 class="sub">6.2.2　自然同构与逐点判据</h3>
+  <div class="defn"><span class="lbl">定义 6.2.2（自然同构）</span>
+    自然变换 \(\eta:F\Rightarrow G\) 称为<strong>自然同构</strong>，若它在函子范畴 \(\mathbf C^{\mathbf J}\) 中是同构，即存在 \(\theta:G\Rightarrow F\) 使 \(\theta\circ\eta=\mathrm{id}_F\) 且 \(\eta\circ\theta=\mathrm{id}_G\)。记作 \(F\cong G\)。
+  </div>
+  <div class="prop"><span class="lbl">命题 6.2.3（逐点判据）</span>
+    \(\eta:F\Rightarrow G\) 是自然同构，当且仅当对每个对象 \(J\in\mathbf J\)，分量 \(\eta_J:F(J)\to G(J)\) 都是 \(\mathbf C\) 中的同构。
+  </div>
+  <div class="proof"><span class="pl">证明：</span>"仅当"显然：若 \(\theta\) 是逐点逆，则 \((\theta\circ\eta)_J=\theta_J\circ\eta_J=\mathrm{id}_{F(J)}\)，故 \(\eta_J\) 有逆 \(\theta_J\)。"当"：设每个 \(\eta_J\) 有逆 \(\eta_J^{-1}\)。只需验证这些逆箭头拼成自然变换 \(\theta:G\Rightarrow F\)。对 \(a:J\to K\)，由 \(\eta\) 的自然性 \(G(a)\circ\eta_J=\eta_K\circ F(a)\)。两边左乘 \(\eta_K^{-1}\)、右乘 \(\eta_J^{-1}\) 得 \(\eta_K^{-1}\circ G(a)=F(a)\circ\eta_J^{-1}\)，正是 \(\theta:G\Rightarrow F\) 的自然性方块。故 \(\theta\) 自然，逐点为逆，\(\eta\) 是自然同构。<span class="qed">∎</span></div>
+  
+  <svg class="cd" viewBox="0 0 460 188" role="img" aria-label="逆自然变换方块">
+    <rect class="node2" x="20" y="16" width="120" height="44" rx="7"/>
+    <text class="nt" x="80" y="44" text-anchor="middle">G(J)</text>
+    <rect class="node2" x="320" y="16" width="120" height="44" rx="7"/>
+    <text class="nt" x="380" y="44" text-anchor="middle">G(K)</text>
+    <rect class="node" x="20" y="128" width="120" height="44" rx="7"/>
+    <text class="nt" x="80" y="156" text-anchor="middle">F(J)</text>
+    <rect class="node" x="320" y="128" width="120" height="44" rx="7"/>
+    <text class="nt" x="380" y="156" text-anchor="middle">F(K)</text>
+    <line class="arb" x1="142" y1="38" x2="318" y2="38"/>
+    <text class="hb" x="230" y="31" text-anchor="middle">G(a)</text>
+    <line class="arb" x1="142" y1="150" x2="318" y2="150"/>
+    <text class="hb" x="230" y="143" text-anchor="middle">F(a)</text>
+    <line class="ar" x1="80" y1="62" x2="80" y2="126"/>
+    <text class="lb" x="50" y="98" text-anchor="middle">η_J⁻¹</text>
+    <line class="ar" x1="380" y1="62" x2="380" y2="126"/>
+    <text class="lb" x="410" y="98" text-anchor="middle">η_K⁻¹</text>
+    <text class="lb" x="230" y="106" text-anchor="middle">F(a)∘η_J⁻¹ = η_K⁻¹∘G(a)</text>
+  </svg>
+  <div class="figcap">图 6.5　命题 6.2.3 "当"方向的图证。把图 6.4 的竖箭头反向，就得到逆箭头族 \(\eta_J^{-1}\)。它之所以自动构成自然变换 \(\theta:G\Rightarrow F\)，是因为原方块交换式 \(G(a)\eta_J=\eta_K F(a)\) 两边左乘 \(\eta_K^{-1}\)、右乘 \(\eta_J^{-1}\) 后，恰好变成这里的 \(F(a)\eta_J^{-1}=\eta_K^{-1}G(a)\)。这说明：逐点取逆无需额外验证，自然性免费得到。</div>
+
+<div class="rmk">这条判据非常重要：它把"函子范畴里的同构"化归为"目标范畴里逐点同构"，检查起来只需逐个对象看分量。以后证明 \(A\times B\cong B\times A\)、\((B^A)^C\cong B^{A\times C}\) 这些都是自然同构，用的就是它。</div>
+
+  <h3 class="sub">6.2.3　范畴等价</h3>
+  <p>两个范畴"相同"有两种写法。最强的叫<strong>同构</strong>：存在函子 \(F,G\) 使 \(GF=\mathrm{id}_{\mathbf C}\)、\(FG=\mathrm{id}_{\mathbf D}\) 严格相等。但这个要求太苛刻——它要求对象一一对应，而范畴论只关心"到同构"。更合适的弱概念是等价。</p>
+  <div class="defn"><span class="lbl">定义 6.2.4（范畴等价，A §7.9）</span>
+    函子 \(F:\mathbf C\to\mathbf D\) 称为<strong>等价</strong>（equivalence），若存在 \(G:\mathbf D\to\mathbf C\) 及自然同构 \(GF\cong\mathrm{id}_{\mathbf C}\)、\(FG\cong\mathrm{id}_{\mathbf D}\)。此时称 \(\mathbf C\) 与 \(\mathbf D\) 等价，记 \(\mathbf C\simeq\mathbf D\)。
+  </div>
+  <div class="defn"><span class="lbl">定义 6.2.5（完全忠实与本质上满）</span>
+    函子 \(F:\mathbf C\to\mathbf D\) 称为：<strong>忠实的</strong>（faithful），若每个映射 \(\operatorname{Hom}_{\mathbf C}(A,B)\to\operatorname{Hom}_{\mathbf D}(FA,FB)\) 单射；<strong>完全的</strong>（full），若这些映射满射；<strong>完全忠实的</strong>（fully faithful）若既完全又忠实；<strong>本质上满的</strong>（essentially surjective），若对每个 \(D\in\mathbf D\) 存在 \(C\in\mathbf C\) 使 \(FC\cong D\)。
+  </div>
+  
+  <div class="rmk"><strong>直观：等价是"往返一趟只差一个同构"。</strong>\(F\) 把 \(\mathbf C\) 送进 \(\mathbf D\)，\(G\) 再送回来；\(GF\) 不严格等于恒等函子，但有一个自然同构 \(\eta:GF\cong\mathrm{id}_{\mathbf C}\) 把它"掰回"原样。下面两组三角恒等式保证 \(\eta\) 与 \(\epsilon\) 的配合不打架。</div>
+  <svg class="cd" viewBox="0 0 470 196" role="img" aria-label="等价的三角恒等式">
+    <text class="hb" x="235" y="16" text-anchor="middle">对 A ∈ C：ε_{FA} ∘ F(η_A) = id_{FA}</text>
+    <rect class="node" x="30" y="34" width="90" height="40" rx="7"/>
+    <text class="nt" x="75" y="59" text-anchor="middle">FA</text>
+    <rect class="node2" x="190" y="34" width="120" height="40" rx="7"/>
+    <text class="nt" x="250" y="59" text-anchor="middle">FGFA</text>
+    <rect class="node" x="370" y="34" width="80" height="40" rx="7"/>
+    <text class="nt" x="410" y="59" text-anchor="middle">FA</text>
+    <line class="arb" x1="122" y1="46" x2="188" y2="46"/>
+    <text class="hb" x="155" y="40" text-anchor="middle">F(η_A)</text>
+    <line class="arb" x1="312" y1="46" x2="368" y2="46"/>
+    <text class="hb" x="340" y="40" text-anchor="middle">ε_{FA}</text>
+    <path class="ar" d="M 75 76 Q 240 116 410 76"/>
+    <text class="lb" x="243" y="112" text-anchor="middle">id_{FA}</text>
+
+    <text class="hb" x="235" y="150" text-anchor="middle">对 D ∈ D：G(ε_D) ∘ η_{GD} = id_{GD}</text>
+    <rect class="nodeg" x="30" y="162" width="100" height="30" rx="7"/>
+    <text class="nt" x="80" y="182" text-anchor="middle">GD</text>
+    <rect class="node2" x="180" y="162" width="130" height="30" rx="7"/>
+    <text class="nt" x="245" y="182" text-anchor="middle">GFGD</text>
+    <rect class="nodeg" x="360" y="162" width="90" height="30" rx="7"/>
+    <text class="nt" x="405" y="182" text-anchor="middle">GD</text>
+    <line class="arb" x1="132" y1="172" x2="178" y2="172"/>
+    <text class="hb" x="155" y="166" text-anchor="middle">η_{GD}</text>
+    <line class="arb" x1="312" y1="172" x2="358" y2="172"/>
+    <text class="hb" x="335" y="166" text-anchor="middle">G(ε_D)</text>
+  </svg>
+  <div class="figcap">图 6.6　等价的三角恒等式。第一排节点 \(FA\to FGFA\to FA\)，先 \(F(\eta_A)\) 再 \(\epsilon_{FA}\)，合成回到 \(\mathrm{id}_{FA}\)（弧线）。第二排节点 \(GD\to GFGD\to GD\)，先 \(\eta_{GD}\) 再 \(G(\epsilon_D)\)，回到 \(\mathrm{id}_{GD}\)。这两式与图 6.4 的自然性一起，构成"伴随等价"的完整数据；定理 6.2.6 中构造的 \(G\) 正满足它们。</div>
+
+<div class="prop"><span class="lbl">定理 6.2.6（等价的刻画）</span>
+    函子 \(F:\mathbf C\to\mathbf D\) 是等价，当且仅当 \(F\) 完全忠实且本质上满。
+  </div>
+  <div class="proof"><span class="pl">证明（分两步）。</span><br>
+    <strong>（⇒）</strong>设 \(F\) 有拟逆 \(G\) 及 \(\eta:GF\cong\mathrm{id}_{\mathbf C}\)、\(\epsilon:FG\cong\mathrm{id}_{\mathbf D}\)。
+    <em>本质上满</em>：对 \(D\in\mathbf D\)，取 \(C=GD\)，则 \(\epsilon_D:FGD\to D\) 是同构，故 \(F\) 本质上满。
+    <em>完全忠实</em>：对 \(A,B\in\mathbf C\)，考虑映射 \(\phi:\operatorname{Hom}_{\mathbf C}(A,B)\to\operatorname{Hom}_{\mathbf D}(FA,FB),\ f\mapsto Ff\)。构造其逆 \(\psi:\operatorname{Hom}_{\mathbf D}(FA,FB)\to\operatorname{Hom}_{\mathbf C}(A,B),\ g\mapsto \eta_B^{-1}\circ Gg\circ\eta_A\)。验证 \(\psi(Ff)=\eta_B^{-1}\circ GFf\circ\eta_A\)；由 \(\eta\) 自然性 \(GFf\circ\eta_A=\eta_B\circ f\)，故 \(\psi(Ff)=\eta_B^{-1}\circ\eta_B\circ f=f\)。反过来对 \(g:FA\to FB\)，\(F(\psi(g))=F(\eta_B^{-1})\circ FGg\circ F(\eta_A)\)，由 \(\epsilon\) 自然性可化为 \(g\)。故 \(\phi,\psi\) 互逆，\(F\) 完全忠实。<br>
+
+  <div class="rmk"><strong>补全证明里略过的一步。</strong>上面（⇒ 方向）说"\(F(\psi(g))\) 由 \(\epsilon\) 自然性可化为 \(g\)"，这里逐字展开。设 \(g:FA\to FB\)，\(\psi(g)=\eta_B^{-1}\circ Gg\circ\eta_A:A\to B\)。计算
+    \[
+      F(\psi(g))=F(\eta_B^{-1})\circ F(Gg)\circ F(\eta_A).
+    \]
+    由 \(\epsilon:FG\Rightarrow\mathrm{id}_{\mathbf D}\) 的自然性，对 \(g:FA\to FB\) 有 \(g\circ\epsilon_{FA}=\epsilon_{FB}\circ F(Gg)\)，故 \(F(Gg)=\epsilon_{FB}^{-1}\circ g\circ\epsilon_{FA}\)。代入并利用 \(\epsilon_{FA}=F(\eta_A)^{-1}\)、\(F(\eta_B^{-1})=\epsilon_{FB}\)（这是单位余单位与 \(\eta,\epsilon\) 互逆的直接推论），得
+    \[
+      F(\psi(g))=\epsilon_{FB}\circ\big(\epsilon_{FB}^{-1}\circ g\circ\epsilon_{FA}\big)\circ\epsilon_{FA}^{-1}=g.
+    \]
+    于是 \(\phi:f\mapsto Ff\) 与 \(\psi:g\mapsto\eta_B^{-1}Gg\eta_A\) 确为互逆双射，\(F\) 完全忠实。</div>
+  <svg class="cd" viewBox="0 0 440 120" role="img" aria-label="hom-set 双射">
+    <rect class="node" x="10" y="34" width="170" height="44" rx="7"/>
+    <text class="nt" x="95" y="60" text-anchor="middle">Hom_C(A, B)</text>
+    <rect class="nodeg" x="260" y="34" width="170" height="44" rx="7"/>
+    <text class="nt" x="345" y="60" text-anchor="middle">Hom_D(FA, FB)</text>
+    <line class="arb" x1="182" y1="48" x2="258" y2="48"/>
+    <text class="hb" x="220" y="41" text-anchor="middle">φ: f ↦ Ff</text>
+    <line class="arb" x1="258" y1="66" x2="182" y2="66"/>
+    <text class="lb" x="220" y="92" text-anchor="middle">ψ: g ↦ η_B⁻¹∘Gg∘η_A</text>
+  </svg>
+  <div class="figcap">图 6.7　完全忠实的实质：\(F\) 在 hom-集上是双射。左节点是 \(\mathbf C\) 中 \(A\to B\) 的箭头集，右节点是 \(\mathbf D\) 中 \(FA\to FB\) 的箭头集；上箭头 \(\phi\) 是函子作用，下箭头 \(\psi\) 是借助拟逆 \(G\) 与同构 \(\eta\) 构造的逆。两者互逆，故 \(F\) 既不丢箭头（忠实）也不增箭头（完全）。</div>
+
+    <strong>（⇐）</strong>设 \(F\) 完全忠实且本质上满。对每个 \(D\in\mathbf D\)，选 \(C_D\in\mathbf C\) 与同构 \(\epsilon_D:F C_D\xrightarrow{\sim}D\)（用选择公理做一次选择）。定义 \(G\) 在对象上 \(D\mapsto C_D\)；在箭头 \(g:D\to D'\) 上，令 \(Gg\) 是唯一的箭头 \(C_D\to C_{D'}\) 使 \(F(Gg)=\epsilon_{D'}^{-1}\circ g\circ\epsilon_D\)——这样的箭头存在且唯一，正因 \(F\) 完全忠实。于是 \(\epsilon:FG\Rightarrow\mathrm{id}_{\mathbf D}\) 是自然同构（自然性由 \(Gg\) 的定义式保证）。再定义 \(\eta:\mathrm{id}_{\mathbf C}\Rightarrow GF\)：对 \(A\)，令 \(\eta_A:A\to GF A=C_{FA}\) 是唯一使 \(F(\eta_A)=\epsilon_{FA}^{-1}\circ\mathrm{id}_{FA}\)……更简洁地，由 \(\epsilon_{FA}:F C_{FA}\to FA\) 是同构，完全忠实性给出唯一 \(\eta_A:A\to C_{FA}\) 满足 \(F(\eta_A)=\epsilon_{FA}^{-1}\)。可验证 \(\eta\) 自然且与 \(\epsilon\) 满足三角恒等式，故 \(G\) 是拟逆，\(F\) 是等价。<span class="qed">∎</span></div>
+  <div class="rmk">这个定理说明：等价只要求"完全忠实"（不错认箭头）加"本质上满"（不漏对象，到同构），比严格同构弱，却足以保证两个范畴"讲同一种语言"。这就是为什么范畴论里说的是"等价"而非"同构"。</div>
+
+  <h3 class="sub">6.2.4　例子与"等价不变"原则</h3>
+  <div class="prop"><span class="lbl">例 6.2.7</span>
+    <ol style="margin:6px 0;padding-left:24px;">
+      <li>\(\mathbf{FinSet}\) 与"有限维 \(\mathbb F_2\)-向量空间范畴"不等价（后者态射是线性的，更多结构）；但 \(\mathbf{FinSet}\) 与"有限布尔代数的反范畴"由 Stone 对偶的有限版等价。</li>
+      <li>每个范畴 \(\mathbf C\) 与其骨架（skeleton，每同构类选一个代表）等价：包含函子完全忠实且本质上满。</li>
+      <li>\(\mathbf{Mat}_k\)（矩阵范畴，对象为自然数，箭头 \(n\to m\) 为 \(m\times n\) 矩阵）与有限维 \(k\)-向量空间范畴 \(\mathbf{FDVect}_k\) 等价：把 \(n\) 送到 \(k^n\)。这是"等价比同构有用"的样板——矩阵范畴对象少，却抓住全部有限维线性代数。</li>
+    </ol>
+  </div>
+  <div class="rmk"><strong>等价不变原则</strong>：凡是用对象、箭头、同构、极限、伴随等范畴论语言能表述的性质，都在等价下保持。所以证明"某范畴有积/是 CCC/是拓扑斯"，换成等价范畴一样成立。这条原则使我们可以挑最方便的模型来工作——第 13 章里拓扑斯的多种等价刻画正靠它串联。</div>
+
+  <div class="box exer">
+    <h4>③ 课后练习</h4>
+    <div class="grp">基础巩固</div>
+    <ol>
+      <li id="q62a">验证函子范畴 \(\mathbf C^{\mathbf J}\) 的恒等与复合满足范畴公理（逐点验证）。</li>
+      <li id="q62b">证明命题 6.2.3 中"当"方向的细节：由每个 \(\eta_J\) 可逆推出逆箭头族 \(\eta_J^{-1}\) 满足自然性。</li>
+      <li id="q62c">举例说明"忠实但不完全"的函子（提示：包含函子 \(\mathbf{Grp}\hookrightarrow\mathbf{Set}\) 相关，或 forgetful 函子的变体）。</li>
+      <li id="q62d">证明骨架包含函子 \(\mathbf C_{\mathrm{sk}}\hookrightarrow\mathbf C\) 是等价（完全忠实 + 本质上满）。</li>
+    </ol>
+    <div class="grp">进阶思考</div>
+    <ol start="5">
+      <li id="q62e">证明：若 \(F,G:\mathbf C\to\mathbf D\) 都是等价，则 \(GF\) 也是等价（用定理 6.2.6 的完全忠实 + 本质上满）。</li>
+      <li id="q62f">说明为什么"同构"比"等价"强：找一个两个范畴同构必等价、但等价未必同构的例子（提示：一个范畴与它的骨架）。</li>
+    </ol>
+  </div>
+
+  <div class="box ans">
+    <h4>④ 参考答案</h4>
+    <div class="item"><b>6.2.1</b>　恒等：\((\mathrm{id}_F)_J=\mathrm{id}_{F(J)}\)，复合逐点，结合律由 \(\mathbf C\) 中箭头复合的结合律逐点给出，恒等律同理。关键是自然变换逐点复合后仍是自然变换（方块的竖直拼接仍是方块）。<span class="qed">∎</span></div>
+    <div class="item"><b>6.2.2</b>　设 \(\eta\) 自然，即对每个 \(a:J\to K\) 有 \(G(a)\eta_J=\eta_K F(a)\)。对 \(\eta_K^{-1}G(a)=F(a)\eta_J^{-1}\)：左乘 \(\eta_K^{-1}\)、右乘 \(\eta_J^{-1}\) 于原式得 \(\eta_K^{-1}G(a)\eta_J\eta_J^{-1}=\eta_K^{-1}\eta_K F(a)\eta_J^{-1}\)，化简即 \(\eta_K^{-1}G(a)=F(a)\eta_J^{-1}\)。这正是逆箭头族构成自然变换的条件。<span class="qed">∎</span></div>
+    <div class="item"><b>6.2.3</b>　取遗忘函子 \(U:\mathbf{Ring}\to\mathbf{AbGrp}\)（忘掉乘法，只留加法群）。它忠实：环同态若作为加法群同态相等则作为环同态相等。但它不完全：存在加法群同态不保乘法，故某些 \(\operatorname{Hom}_{\mathbf{Ring}}(R,S)\to\operatorname{Hom}_{\mathbf{AbGrp}}(UR,US)\) 不满射。<span class="qed">∎</span></div>
+    <div class="item"><b>6.2.4</b>　骨架 \(\mathbf C_{\mathrm{sk}}\) 是每同构类取一代表的(full)子范畴。包含函子 \(I\) 忠实显然（子范畴态射相同）；完全是因为 Representatives 之间 \(\operatorname{Hom}\) 作为子范畴态射与 \(\mathbf C\) 中相同（满子范畴）；本质上满因为每个对象同构于其所在类的代表，而代表在骨架中。由定理 6.2.6，\(I\) 是等价。<span class="qed">∎</span></div>
+    <div class="item"><b>6.2.5</b>　完全忠实：\(A,B\in\mathbf C\)，\(\operatorname{Hom}(A,B)\xrightarrow{G}\operatorname{Hom}(GA,GB)\xrightarrow{F}\operatorname{Hom}(FGA,FGB)\) 中 \(F\) 与 \(G\) 均双射（\(F,G\) 完全忠实），复合 \(GF\) 在 hom-set 上双射，故 \(GF\) 完全忠实。本质上满：对 \(D\in\mathbf D\)，因 \(G\) 本质上满取 \(E\in\mathbf E\) 使 \(GE\cong D\)；因 \(F\) 本质上满取 \(C\in\mathbf C\) 使 \(FC\cong E\)；则 \(GFC\cong GE\cong D\)，故 \(GF\) 本质上满。由定理 6.2.6，\(GF\) 是等价。<span class="qed">∎</span></div>
+    <div class="item"><b>6.2.6</b>　设 \(\mathbf C\) 有两个同构对象 \(A\not\cong B\) 但彼此同构（如 \(\mathbf{Set}\) 中两个不同单点集 \(\{1\},\{2\}\)）。骨架 \(\mathbf C_{\mathrm{sk}}\) 只保留一个代表，故 \(\mathbf C\) 与骨架对象数不同，不能同构；但练习 6.2.4 表明它们等价。所以等价不蕴含同构，同构是更强的条件。<span class="qed">∎</span></div>
+  </div>
+
+  <div class="box phil">
+    <h4>选读拓展 · 哲学联系</h4>
+    <p>数学中"两个结构相同"的判别标准经历过一次深刻的放宽：从"元素一一对应且运算严格相同"（同构）到"只差一个同构"（等价）。范畴论把这种宽松提升为原则——我们关心的从来不是对象的"内部构造"，而是它在关系网络中的位置。等价不变原则正是这一立场的精确表达：能说清的都留在关系里，说不清的（对象到底"是"什么）本就不该问。</p>
+  </div>
+</section>
+
+<section class="sec" id="s6-3">
+  <div class="sec-h"><span class="sec-no">6.3</span><h2>Yoneda 嵌入</h2><span class="src">A §8.1, p.169–172</span></div>
+
+  <div class="box learn">
+    <h4>① 本节学习目标</h4>
+    <ol>
+      <li>定义 Yoneda 嵌入 \(y:\mathbf C\to[\mathbf C^{op},\mathbf Set]\)，把对象送到预层 \(\operatorname{Hom}(-,A)\)；</li>
+      <li>证明 \(y\) 是函子，并说明它在箭头上的作用是"后复合"；</li>
+      <li>证明 Yoneda 嵌入完全忠实——这是"对象由关系决定"的最强形式；</li>
+      <li>用完全忠实性推出：可代表预层之间的自然变换一一对应原范畴的箭头；</li>
+      <li>理解一个范畴如何被完整地放进一个预层范畴，为第 13 章拓扑斯做准备。</li>
+    </ol>
+  </div>
+
+  <h3 class="sub">6.3.1　动机：把对象放进函子范畴</h3>
+  <p>6.1 说"一个对象 \(A\) 由关系 \(\operatorname{Hom}(-,A)\) 描述"。现在把它做成一台机器：给每个对象 \(A\) 分配一个函子 \(\operatorname{Hom}(-,A):\mathbf C^{op}\to\mathbf Set\)（一个<strong>预层</strong>），给每个箭头 \(f:A\to B\) 分配一个自然变换。这样得到的映射 \(y\) 若能把全部信息无损地带过去，我们就能在一个"更规矩"的范畴（预层范畴）里研究原范畴。</p>
+
+  <div class="rmk"><strong>抽象形式 ↔ 直观含义。</strong>"预层 \(yA=\operatorname{Hom}(-,A)\)"听着抽象，其实就是给 \(A\) 建一份<strong>档案</strong>：对每个对象 \(X\)，档案里记下"所有从 \(X\) 进入 \(A\) 的箭头"；对 \(X'\to X\) 的路，档案相应地告诉你怎么把记录"往回拉"。说两个对象 \(A,B\) 的档案一样（\(yA\cong yB\)），就是说它们在所有其他对象眼里长得一模一样——那么它们本就该是同一个对象。Yoneda 嵌入把这句话变成了定理。整章的直观主线到此可以浓缩成一句：<strong>对象 = 它与全世界的关系之和</strong>。</div>
+
+  <h3 class="sub">6.3.2　Yoneda 嵌入的定义</h3>
+  <div class="defn"><span class="lbl">定义 6.3.1（Yoneda 嵌入，A §8.1）</span>
+    设 \(\mathbf C\) 局部小。定义函子
+    \[
+      y:\mathbf C\longrightarrow[\mathbf C^{op},\mathbf Set],\qquad
+      A\longmapsto yA:=\operatorname{Hom}_{\mathbf C}(-,A),
+    \]
+    在箭头 \(f:A\to B\) 上，\(yf:yA\Rightarrow yB\) 是自然变换，其 \(X\)-分量为
+    \[
+      (yf)_X:\operatorname{Hom}(X,A)\to\operatorname{Hom}(X,B),\quad h\mapsto f\circ h
+    \]
+    （即"后复合 \(f\)"）。\(y\) 称为<strong>Yoneda 嵌入</strong>（米田嵌入）。
+  </div>
+  
+  <svg class="cd" viewBox="0 0 470 190" role="img" aria-label="yf 的自然性方块">
+    <rect class="node" x="20" y="16" width="150" height="44" rx="7"/>
+    <text class="nt" x="95" y="44" text-anchor="middle">Hom(X, A)</text>
+    <rect class="node" x="300" y="16" width="150" height="44" rx="7"/>
+    <text class="nt" x="375" y="44" text-anchor="middle">Hom(X, B)</text>
+    <rect class="node2" x="20" y="130" width="150" height="44" rx="7"/>
+    <text class="nt" x="95" y="158" text-anchor="middle">Hom(X′, A)</text>
+    <rect class="node2" x="300" y="130" width="150" height="44" rx="7"/>
+    <text class="nt" x="375" y="158" text-anchor="middle">Hom(X′, B)</text>
+    <line class="arb" x1="172" y1="38" x2="298" y2="38"/>
+    <text class="hb" x="235" y="31" text-anchor="middle">(yf)_X : f∘–</text>
+    <line class="arb" x1="172" y1="152" x2="298" y2="152"/>
+    <text class="hb" x="235" y="145" text-anchor="middle">(yf)_X′ : f∘–</text>
+    <line class="ar" x1="95" y1="62" x2="95" y2="128"/>
+    <text class="lb" x="65" y="100" text-anchor="middle">–∘a</text>
+    <line class="ar" x1="375" y1="62" x2="375" y2="128"/>
+    <text class="lb" x="405" y="100" text-anchor="middle">–∘a</text>
+    <text class="lb" x="235" y="105" text-anchor="middle">f∘(h∘a) = (f∘h)∘a</text>
+  </svg>
+  <div class="figcap">图 6.8　\(yf:yA\Rightarrow yB\) 的自然性。节点：四角是 hom-集 \(\operatorname{Hom}(X,A)\) 等。态射与方向：上边 \((yf)_X\) 与下边 \((yf)_{X'}\) 都是"后复合 \(f\)"；左右两条竖箭头是"前复合 \(a:X'\to X\)"（预层的限制映射 \(a^*\)）。交换性 \(f\circ(h\circ a)=(f\circ h)\circ a\) 只是复合的结合律——这正是抽象定义能落到的最朴素的事实。</div>
+
+<div class="rmk">先确认 \(yf\) 确实自然：对 \(a:X'\to X\)，预层范畴里的方块是 \(\operatorname{Hom}(X,A)\xrightarrow{f\circ-}\operatorname{Hom}(X,B)\) 与拉回 \(a^*\) 的交换；\((yf)_{X'}(a^*h)=f\circ(h\circ a)=(f\circ h)\circ a=a^*((yf)_X(h))\)，成立。再确认 \(y\) 保复合：\(y(g\circ f)_X(h)=(g\circ f)\circ h=g\circ(f\circ h)=(yg\circ yf)_X(h)\)；保恒等显然。故 \(y\) 是函子。</div>
+
+  <h3 class="sub">6.3.3　完全忠实性</h3>
+  <div class="prop"><span class="lbl">定理 6.3.2（Yoneda 嵌入完全忠实）</span>
+    对任意 \(A,B\in\mathbf C\)，映射
+    \[
+      \operatorname{Hom}_{\mathbf C}(A,B)\longrightarrow
+      \operatorname{Nat}(yA,yB),\quad f\mapsto yf
+    \]
+    是双射。即 \(y\) 完全忠实。
+  </div>
+  <div class="rmk">证明要用到 Yoneda 引理（下一节），但也可以直接给一个漂亮论证，这里就走直接路线，让读者先看到"完全忠实"本身。</div>
+  <div class="proof"><span class="pl">证明。</span><br>
+    <strong>忠实（单射）</strong>：若 \(yf=yg\)，看 \(A\)-分量在 \(\mathrm{id}_A\in\operatorname{Hom}(A,A)\) 上的值：\((yf)_A(\mathrm{id}_A)=f\circ\mathrm{id}_A=f\)，\((yg)_A(\mathrm{id}_A)=g\)，故 \(f=g\)。<br>
+    <strong>完全（满射）</strong>：设 \(\eta:yA\Rightarrow yB\) 是自然变换。令 \(f:=\eta_A(\mathrm{id}_A)\in\operatorname{Hom}(A,B)\)。断言 \(\eta=yf\)。对 \(a:X\to Y\)，\(\eta\) 的自然性方块为：先取 \(h\in\operatorname{Hom}(Y,A)\)，则 \(\eta_X(h\circ a)=\eta_Y(h)\circ a\)。现在取 \(Y=A,\ h=\mathrm{id}_A,\ a:X\to A\) 任意，代入得
+    \[
+      \eta_X(a)=\eta_A(\mathrm{id}_A)\circ a=f\circ a=(yf)_X(a).
+    \]
+    对任意 \(X\) 与任意 \(a\) 成立，故 \(\eta=yf\)，满射。<span class="qed">∎</span></div>
+  
+  <svg class="cd" viewBox="0 0 470 186" role="img" aria-label="完全忠实满射方块">
+    <rect class="node" x="20" y="16" width="150" height="42" rx="7"/>
+    <text class="nt" x="95" y="42" text-anchor="middle">Hom(A, A)</text>
+    <rect class="nodeg" x="300" y="16" width="150" height="42" rx="7"/>
+    <text class="nt" x="375" y="42" text-anchor="middle">Hom(A, B)</text>
+    <rect class="node2" x="20" y="128" width="150" height="42" rx="7"/>
+    <text class="nt" x="95" y="154" text-anchor="middle">Hom(X, A)</text>
+    <rect class="node2" x="300" y="128" width="150" height="42" rx="7"/>
+    <text class="nt" x="375" y="154" text-anchor="middle">Hom(X, B)</text>
+    <line class="arb" x1="172" y1="37" x2="298" y2="37"/>
+    <text class="hb" x="235" y="30" text-anchor="middle">η_A</text>
+    <line class="arb" x1="172" y1="149" x2="298" y2="149"/>
+    <text class="hb" x="235" y="142" text-anchor="middle">η_X</text>
+    <line class="ar" x1="95" y1="60" x2="95" y2="126"/>
+    <text class="lb" x="65" y="98" text-anchor="middle">–∘a</text>
+    <line class="ar" x1="375" y1="60" x2="375" y2="126"/>
+    <text class="lb" x="405" y="98" text-anchor="middle">–∘a</text>
+    <text class="lb" x="235" y="102" text-anchor="middle">η_X(a) = η_A(id_A)∘a</text>
+  </svg>
+  <div class="figcap">图 6.9　完全忠实"满射"一处的方块（取 \(a:X\to A\)）。节点：左上 \(\operatorname{Hom}(A,A)\)、右上 \(\operatorname{Hom}(A,B)\)、左下 \(\operatorname{Hom}(X,A)\)、右下 \(\operatorname{Hom}(X,B)\)。态射与方向：上边 \(\eta_A\)、下边 \(\eta_X\)；两条竖箭头为前复合 \(a\)。沿"上→右"与"左→下"两条路径，\(\mathrm{id}_A\) 分别被送到 \(\eta_A(\mathrm{id}_A)\circ a=f\circ a\) 与 \(\eta_X(a)\)，交换性给出 \(\eta_X(a)=f\circ a=(yf)_X(a)\)，即 \(\eta=yf\)。</div>
+
+<div class="rmk">这段证明的每一步都在重复一句话：<strong>自然变换完全由它在恒等箭头处的值决定</strong>。取 \(\eta_A(\mathrm{id}_A)\) 这个"DNA"，自然性就把它复制到所有分量。请把它记牢——下一节的 Yoneda 引理正是这句话的一般化。</div>
+
+  <h3 class="sub">6.3.4　可代表预层与嵌入的像</h3>
+  <p>Yoneda 嵌入的像由形如 \(\operatorname{Hom}(-,A)\) 的预层组成，称为<strong>可代表预层</strong>。定理 6.3.2 说明：预层范畴中可代表预层之间的箭头，恰好就是原范畴中的箭头——原范畴 \(\mathbf C\) 完整地（作为满忠实子范畴）坐在预层范畴 \([\mathbf C^{op},\mathbf Set]\) 里。</p>
+  <div class="prop"><span class="lbl">例 6.3.3（几个具体的 Yoneda 嵌入）</span>
+    <ol style="margin:6px 0;padding-left:24px;">
+      <li>\(\mathbf C=\mathbf{Set}\)：\(yA=\operatorname{Hom}(-,A)\) 是"到 \(A\) 的所有函数"预层。整个集合范畴被放进预层范畴。</li>
+      <li>\(\mathbf C\) 是偏序集 \(P\)：\(y(a)\) 是下集 \(\downarrow a=\{x\le a\}\) 的特征预层；\(y\) 把偏序集嵌入到它的下集格（Dedekind–MacNeille 补全式）。</li>
+      <li>\(\mathbf C=\mathbf{Grp}\)：\(yG\) 在 \(H\) 处是 \(\operatorname{Hom}(H,G)\)。群的整个结构编码在这些同态集合里。</li>
+    </ol>
+  </div>
+
+  <div class="box exer">
+    <h4>③ 课后练习</h4>
+    <div class="grp">基础巩固</div>
+    <ol>
+      <li id="q63a">写出 \(y\) 在箭头 \(f:A\to B\) 上的分量，并验证 \(yf\) 的自然性。</li>
+      <li id="q63b">验证 \(y\) 保恒等与保复合，即 \(y\) 确为函子。</li>
+      <li id="q63c">在 \(\mathbf{Set}\) 中，描述 \(yA\) 在单点集 \(1\) 和空集 \(\varnothing\) 处的值。</li>
+      <li id="q63d">用定理 6.3.2 说明：若 \(yA\cong yB\)（自然同构），则 \(A\cong B\)。</li>
+    </ol>
+    <div class="grp">进阶思考</div>
+    <ol start="5">
+      <li id="q63e">证明：Yoneda 嵌入保持并反映同构——\(f\) 是同构当且仅当 \(yf\) 是自然同构。这个结论一般对"完全忠实函子"成立吗？</li>
+      <li id="q63f">说明偏序集 \(P\) 的 Yoneda 嵌入 \(y:P\to[\mathbf P^{op},\mathbf Set]\) 与下集表示的关系：\(y(a)\) 何时等于 \(y(b)\)？</li>
+    </ol>
+  </div>
+
+  <div class="box ans">
+    <h4>④ 参考答案</h4>
+    <div class="item"><b>6.3.1</b>　\((yf)_X(h)=f\circ h\)。对 \(a:X'\to X\)，\((yf)_{X'}(a^*h)=f\circ(h\circ a)=(f\circ h)\circ a=a^*((yf)_X(h))\)，方块交换，故 \(yf\) 自然。<span class="qed">∎</span></div>
+    <div class="item"><b>6.3.2</b>　\(y(\mathrm{id}_A)_X(h)=\mathrm{id}_A\circ h=h=\mathrm{id}_{yA}(h)\)，故 \(y(\mathrm{id}_A)=\mathrm{id}_{yA}\)。\(y(g\circ f)_X(h)=(g\circ f)\circ h=g\circ(f\circ h)=(yg)_X((yf)_X(h))=(yg\circ yf)_X(h)\)，故 \(y(g\circ f)=yg\circ yf\)。<span class="qed">∎</span></div>
+    <div class="item"><b>6.3.3</b>　\(yA(1)=\operatorname{Hom}(1,A)\cong A\) 的点集；\(yA(\varnothing)=\operatorname{Hom}(\varnothing,A)\) 是单点集（空函数唯一）。<span class="qed">∎</span></div>
+    <div class="item"><b>6.3.4</b>　设 \(\phi:yA\xrightarrow{\sim}yB\) 自然同构。因 \(y\) 完全忠实（定理 6.3.2），\(\phi=yf\) 对唯一 \(f:A\to B\)；\(\phi^{-1}=yg\) 对唯一 \(g:B\to A\)。由 \(yg\circ yf=y(gf)=\mathrm{id}_{yA}=y(\mathrm{id}_A)\) 及忠实性得 \(gf=\mathrm{id}_A\)，同理 \(fg=\mathrm{id}_B\)，故 \(f\) 是同构，\(A\cong B\)。<span class="qed">∎</span></div>
+    <div class="item"><b>6.3.5</b>　（⇒）若 \(f\) 同构，\(y(f^{-1})\) 是 \(yf\) 的逐点逆，故 \(yf\) 自然同构。（⇐）若 \(yf\) 自然同构，由上一题的论证（对一般的自然同构 \(\phi=yf\) 取其逆 \(\psi\)，完全忠实给出 \(\psi=yg\)，进而 \(gf=\mathrm{id},fg=\mathrm{id}\)）得 \(f\) 同构。这个结论对任意完全忠实函子都成立：完全忠实函子反映同构，因为同构条件 \(fg=\mathrm{id},gf=\mathrm{id}\) 是 hom-set 上的方程，单射性把它从像中拉回。<span class="qed">∎</span></div>
+    <div class="item"><b>6.3.6</b>　偏序集视作范畴时，\(y(a)(x)=\operatorname{Hom}(x,a)\) 在 \(x\le a\) 时为单点、否则为空，故 \(y(a)\) 就是下集 \(\downarrow a\) 的示性预层。\(y(a)=y(b)\) 当且仅当 \(\downarrow a=\downarrow b\)，对偏序这等价于 \(a=b\)（因 \(a\in\downarrow a=\downarrow b\Rightarrow a\le b\)，反之 \(b\le a\)，故 \(a=b\)）。<span class="qed">∎</span></div>
+  </div>
+
+  <div class="box phil">
+    <h4>选读拓展 · 哲学联系</h4>
+    <p>Yoneda 嵌入是"关系先于实体"这一哲学立场的数学顶峰：它证明每个范畴都能无损地翻译成一个预层范畴，对象被它发射出的全部箭头完全替代。这在哲学上呼应了莱布尼茨的"不可分辨者同一"（Leibniz 律）：若两个对象与其余一切对象的关系完全相同，它们就是同一个（同构的）对象。这一思想在下一章的"证明同一性"主题里会以另一副面孔再次出现。</p>
+  </div>
+</section>
+
+<section class="sec" id="s6-4">
+  <div class="sec-h"><span class="sec-no">6.4</span><h2>Yoneda 引理</h2><span class="src">A §8.2, p.172–176</span></div>
+
+  <div class="box learn">
+    <h4>① 本节学习目标</h4>
+    <ol>
+      <li>准确陈述 Yoneda 引理（协变与反变两种形式）及其中出现的 hom-函子记法；</li>
+      <li>完整证明引理：构造双向映射、验证互逆、验证在对象与函子上的自然性；</li>
+      <li>理解证明的核心——"自然变换由 \(\mathrm{id}\) 的像唯一决定"，并能复述；</li>
+      <li>从 Yoneda 引理重新推出 Yoneda 嵌入完全忠实，看到两者的逻辑关系；</li>
+      <li>会用引理做基本计算：求 \(\operatorname{Nat}(\operatorname{Hom}(A,-),F)\)、判断自然变换个数。</li>
+    </ol>
+  </div>
+
+  <h3 class="sub">6.4.1　引理的陈述</h3>
+  <p>Yoneda 引理是范畴论最深刻、也被引用最多的定理之一。它的陈述出奇简洁：从一个表示函子出发的自然变换，与表示对象处的一个元素一一对应。</p>
+  <div class="prop"><span class="lbl">定理 6.4.1（Yoneda 引理，A §8.2）</span>
+    设 \(\mathbf C\) 局部小，\(F:\mathbf C\to\mathbf{Set}\) 为任意函子，\(A\in\mathbf C\) 为任意对象。则存在双射
+    \[
+      \operatorname{Nat}\big(\operatorname{Hom}(A,-),\,F\big)\;\xrightarrow{\ \sim\ }\;F(A),
+      \qquad \eta\longmapsto \eta_A(\mathrm{id}_A),
+    \]
+    且这个双射对 \(A\) 和 \(F\) 都自然。反变形式：对 \(F:\mathbf C^{op}\to\mathbf{Set}\)，有 \(\operatorname{Nat}(\operatorname{Hom}(-,A),F)\cong F(A)\)，同样对 \(A,F\) 自然。
+  </div>
+  <div class="rmk">两种形式的区别只在 \(F\) 的方差：\(F:\mathbf C\to\mathbf{Set}\) 用 \(\operatorname{Hom}(A,-)\)，\(F:\mathbf C^{op}\to\mathbf{Set}\)（预层）用 \(\operatorname{Hom}(-,A)\)。用 Yoneda 嵌入 \(yA=\operatorname{Hom}(-,A)\) 的记号，反变形式就是 \(\operatorname{Nat}(yA,F)\cong F(A)\)——这正是 6.3 嵌入完全忠实的推广。记法不重要，核心是那个双射：一个自然变换 \(\eta\) 完全由单个元素 \(\eta_A(\mathrm{id}_A)\in F(A)\) 决定。</div>
+
+  <h3 class="sub">6.4.2　证明：双向构造与互逆</h3>
+
+  <div class="rmk"><strong>先看核心方块，再读证明。</strong>Yoneda 引理的全部玄机都藏在下面这张方格里：一个自然变换 \(\eta\) 由它在恒等箭头处的一个值 \(x=\eta_A(\mathrm{id}_A)\) 生成，而自然性保证它在任何箭头 \(f\) 上的值都被 \(x\) 唯一决定。读图：从左上出发，两条路径到右下必须相等。</div>
+  <svg class="cd" viewBox="0 0 470 190" role="img" aria-label="Yoneda 核心方块">
+    <rect class="node" x="20" y="16" width="150" height="44" rx="7"/>
+    <text class="nt" x="95" y="44" text-anchor="middle">Hom(A, A)</text>
+    <rect class="nodeg" x="300" y="16" width="150" height="44" rx="7"/>
+    <text class="nt" x="375" y="44" text-anchor="middle">F(A)</text>
+    <rect class="node2" x="20" y="130" width="150" height="44" rx="7"/>
+    <text class="nt" x="95" y="158" text-anchor="middle">Hom(A, B)</text>
+    <rect class="node2" x="300" y="130" width="150" height="44" rx="7"/>
+    <text class="nt" x="375" y="158" text-anchor="middle">F(B)</text>
+    <line class="arb" x1="172" y1="38" x2="298" y2="38"/>
+    <text class="hb" x="235" y="31" text-anchor="middle">η_A</text>
+    <line class="arb" x1="172" y1="152" x2="298" y2="152"/>
+    <text class="hb" x="235" y="145" text-anchor="middle">η_B</text>
+    <line class="ar" x1="95" y1="62" x2="95" y2="128"/>
+    <text class="lb" x="60" y="100" text-anchor="middle">f∘–</text>
+    <line class="ar" x1="375" y1="62" x2="375" y2="128"/>
+    <text class="lb" x="410" y="100" text-anchor="middle">F(f)</text>
+    <text class="lb" x="235" y="104" text-anchor="middle">F(f)(η_A(id_A)) = η_B(f)</text>
+  </svg>
+  <div class="figcap">图 6.10　Yoneda 引理的灵魂方块。节点：左上 \(\operatorname{Hom}(A,A)\)、右上 \(F(A)\)、左下 \(\operatorname{Hom}(A,B)\)、右下 \(F(B)\)。态射与方向：上边 \(\eta_A\)、下边 \(\eta_B\) 是自然变换分量；左竖箭头是后复合 \(f\circ-\)、右竖箭头是 \(F(f)\)。取左上角的 \(\mathrm{id}_A\)：沿"上→右"得 \(F(f)(\eta_A(\mathrm{id}_A))\)，沿"左→下"得 \(\eta_B(f)\)，交换性令二者相等——一个元素 \(x=\eta_A(\mathrm{id}_A)\) 由此生成整个 \(\eta\)。</div>
+
+  <div class="proof"><span class="pl">证明。</span>定义两个映射：
+    \[
+      \Phi:\operatorname{Nat}(\operatorname{Hom}(A,-),F)\to F(A),\quad \Phi(\eta)=\eta_A(\mathrm{id}_A),
+    \]
+    对 \(x\in F(A)\)，定义 \(\Psi(x):\operatorname{Hom}(A,-)\Rightarrow F\)，其在 \(B\in\mathbf C\) 的分量为
+    \[
+      \Psi(x)_B:\operatorname{Hom}(A,B)\to F(B),\quad f\longmapsto F(f)(x).
+    \]
+    <strong>第一步：\(\Psi(x)\) 是自然变换。</strong>对 \(g:B\to C\)，需证方块交换 \(F(g)\circ\Psi(x)_B=\Psi(x)_C\circ\operatorname{Hom}(A,g)\)。取 \(f\in\operatorname{Hom}(A,B)\)：左边 \(=F(g)(F(f)(x))=F(g\circ f)(x)\)（函子性），右边 \(=\Psi(x)_C(g\circ f)=F(g\circ f)(x)\)。相等，自然性成立。<br>
+    
+  <div class="rmk"><strong>把第一步的"方块交换"摊开看。</strong>\(\Psi(x)\) 自然性说的正是下图交换，两路都等于 \(F(g\circ f)(x)\)，相等纯粹因为 \(F\) 保复合。</div>
+  <svg class="cd" viewBox="0 0 470 190" role="img" aria-label="Psi(x) 自然性方块">
+    <rect class="node" x="20" y="16" width="150" height="44" rx="7"/>
+    <text class="nt" x="95" y="44" text-anchor="middle">Hom(A, B)</text>
+    <rect class="nodeg" x="300" y="16" width="150" height="44" rx="7"/>
+    <text class="nt" x="375" y="44" text-anchor="middle">F(B)</text>
+    <rect class="node2" x="20" y="130" width="150" height="44" rx="7"/>
+    <text class="nt" x="95" y="158" text-anchor="middle">Hom(A, C)</text>
+    <rect class="node2" x="300" y="130" width="150" height="44" rx="7"/>
+    <text class="nt" x="375" y="158" text-anchor="middle">F(C)</text>
+    <line class="arb" x1="172" y1="38" x2="298" y2="38"/>
+    <text class="hb" x="235" y="31" text-anchor="middle">Ψ(x)_B</text>
+    <line class="arb" x1="172" y1="152" x2="298" y2="152"/>
+    <text class="hb" x="235" y="145" text-anchor="middle">Ψ(x)_C</text>
+    <line class="ar" x1="95" y1="62" x2="95" y2="128"/>
+    <text class="lb" x="60" y="100" text-anchor="middle">g∘–</text>
+    <line class="ar" x1="375" y1="62" x2="375" y2="128"/>
+    <text class="lb" x="410" y="100" text-anchor="middle">F(g)</text>
+    <text class="lb" x="235" y="104" text-anchor="middle">F(g)(F(f)(x)) = F(g∘f)(x)</text>
+  </svg>
+  <div class="figcap">图 6.11　证明第一步中 \(\Psi(x)\) 的自然性方块。节点：\(\operatorname{Hom}(A,B),F(B)\)（上）与 \(\operatorname{Hom}(A,C),F(C)\)（下）。态射与方向：上边 \(\Psi(x)_B\)、下边 \(\Psi(x)_C\) 由 \(f\mapsto F(f)(x)\) 给出；左竖箭头后复合 \(g:B\to C\)，右竖箭头 \(F(g)\)。从 \(f\) 出发两路分别得 \(F(g)F(f)(x)\) 与 \(F(g\circ f)(x)\)，由函子保复合相等。</div>
+
+    <strong>第二步：\(\Phi\circ\Psi=\mathrm{id}\)。</strong>对 \(x\in F(A)\)，\(\Phi(\Psi(x))=\Psi(x)_A(\mathrm{id}_A)=F(\mathrm{id}_A)(x)=\mathrm{id}_{F(A)}(x)=x\)。<br>
+    <strong>第三步：\(\Psi\circ\Phi=\mathrm{id}\)。</strong>对自然变换 \(\eta\)，令 \(x=\Phi(\eta)=\eta_A(\mathrm{id}_A)\)。需证 \(\Psi(x)=\eta\)，即对每个 \(B\)、每个 \(f:A\to B\) 有 \(F(f)(x)=\eta_B(f)\)。由 \(\eta\) 的自然性（对 \(f:A\to B\)），考虑由箭头 \(f:A\to B\) 连接的两列——左列 \(\operatorname{Hom}(A,A)\xrightarrow{\eta_A}F(A)\)，右列 \(\operatorname{Hom}(A,B)\xrightarrow{\eta_B}F(B)\)——它们经 \(f_*\)（左列到右列的箭头集合之间）与 \(F(f)\)（集合之间）构成的方块交换：
+    \[
+      F(f)\big(\eta_A(\mathrm{id}_A)\big)=\eta_B\big(f_*(\mathrm{id}_A)\big)=\eta_B(f).
+    \]即 \(F(f)(x)=\eta_B(f)\)。故 \(\Psi(x)=\eta\)。于是 \(\Phi,\Psi\) 互逆，得双射。<span class="qed">∎</span></div>
+  <div class="rmk">第三步那一行 \(F(f)(\eta_A(\mathrm{id}_A))=\eta_B(f)\) 就是整个引理的灵魂：自然性强迫 \(\eta_B\) 在任意箭头 \(f\) 上的值，都由 \(\eta_A(\mathrm{id}_A)\) 这一个元素决定。理解并记住这张方块图，Yoneda 引理就再也不会忘。</div>
+
+  <h3 class="sub">6.4.3　自然性</h3>
+  <p>引理还断言这个双射对 \(A\) 与 \(F\) 都自然，即它是函子之间的自然同构。精确地说，把 \(\operatorname{Nat}(\operatorname{Hom}(A,-),F)\) 看成 \(A\) 的反变函子、\(F(A)\) 也是，则 \(\Phi\) 给出自然变换；对 \(F\) 亦然。下面验证关键的相容性。</p>
+  <div class="proof"><span class="pl">对 \(F\) 自然：</span>设 \(\alpha:F\Rightarrow G\)。需证方块
+    \[
+      \operatorname{Nat}(\operatorname{Hom}(A,-),F)\xrightarrow{\;\Phi_F\;}F(A)
+      \ \xrightarrow{\;\alpha_A\;}\
+      \operatorname{Nat}(\operatorname{Hom}(A,-),G)\xrightarrow{\;\Phi_G\;}G(A)
+    \]
+    交换（左竖直为后复合 \(\alpha\)）。取 \(\eta\)：左下路线给 \(\alpha_A(\eta_A(\mathrm{id}_A))\)；右下路线给 \((\alpha\circ\eta)_A(\mathrm{id}_A)=\alpha_A(\eta_A(\mathrm{id}_A))\)。相等。<br>
+    
+  <svg class="cd" viewBox="0 0 470 190" role="img" aria-label="对 A 自然的方块">
+    <rect class="node" x="20" y="16" width="170" height="44" rx="7"/>
+    <text class="nt" x="105" y="44" text-anchor="middle">Nat(Hom(A,–), F)</text>
+    <rect class="nodeg" x="300" y="16" width="150" height="44" rx="7"/>
+    <text class="nt" x="375" y="44" text-anchor="middle">F(A)</text>
+    <rect class="node2" x="20" y="130" width="170" height="44" rx="7"/>
+    <text class="nt" x="105" y="158" text-anchor="middle">Nat(Hom(A′,–), F)</text>
+    <rect class="node2" x="300" y="130" width="150" height="44" rx="7"/>
+    <text class="nt" x="375" y="158" text-anchor="middle">F(A′)</text>
+    <line class="arb" x1="192" y1="38" x2="298" y2="38"/>
+    <text class="hb" x="245" y="31" text-anchor="middle">Φ_A</text>
+    <line class="arb" x1="192" y1="152" x2="298" y2="152"/>
+    <text class="hb" x="245" y="145" text-anchor="middle">Φ_{A′}</text>
+    <line class="ar" x1="105" y1="62" x2="105" y2="128"/>
+    <text class="lb" x="72" y="100" text-anchor="middle">–∘a</text>
+    <line class="ar" x1="375" y1="62" x2="375" y2="128"/>
+    <text class="lb" x="408" y="100" text-anchor="middle">F(a)</text>
+    <text class="lb" x="245" y="104" text-anchor="middle">Φ(η∘a_*) = F(a)(Φ(η))</text>
+  </svg>
+  <div class="figcap">图 6.12　Yoneda 双射对 \(A\) 的自然性。箭头 \(a:A'\to A\) 诱导左竖箭头（前复合 \(a\)，把表示函子拉回）与右竖箭头 \(F(a)\)。上边 \(\Phi_A\)、下边 \(\Phi_{A'}\) 是两处的 Yoneda 双射。两路相等即 \(\Phi(\eta\circ a_*)=F(a)(\Phi(\eta))\)，证明中一行 \(\eta_{A'}(a)=F(a)(\eta_A(\mathrm{id}_A))\) 正是此方块的交换性。</div>
+
+<span class="pl">对 \(A\) 自然：</span>设 \(a:A'\to A\)。它诱导 \(\operatorname{Hom}(A,-)\to\operatorname{Hom}(A',-)\)（前复合 \(a\)）与 \(F(a):F(A')\to F(A)\)。需证 \(\Phi(\eta\circ a_*)=F(a)(\Phi(\eta))\)。取 \(\eta:\operatorname{Hom}(A,-)\Rightarrow F\)，左边 \(\Phi(\eta\circ a_*)=(\eta\circ a_*)_{A'}(\mathrm{id}_{A'})=\eta_{A'}(a)=\)（由 \(\eta\) 自然性对 \(a\)）\(=F(a)(\eta_A(\mathrm{id}_A))=F(a)(\Phi(\eta))\)。相等。<span class="qed">∎</span></div>
+
+  <h3 class="sub">6.4.4　从 Yoneda 引理重推嵌入完全忠实</h3>
+  <p>取 \(F=yB=\operatorname{Hom}(-,B)\)（反变预层），Yoneda 引理给出
+  \[
+    \operatorname{Nat}(yA,yB)\cong yB(A)=\operatorname{Hom}(A,B).
+  \]
+  这正是定理 6.3.2（Yoneda 嵌入完全忠实）。可见：6.3 里那个直接证明，其实是把引理在这个特殊情形下的证明又手写了一遍。引理把"嵌入完全忠实""表示唯一""泛元素"这些结论统一打包。</p>
+  <div class="prop"><span class="lbl">例 6.4.2（用引理数自然变换）</span>设 \(F=\operatorname{Hom}(C,-)\)，则 \(\operatorname{Nat}(\operatorname{Hom}(A,-),\operatorname{Hom}(C,-))\cong\operatorname{Hom}(C,A)\)。例如在 \(\mathbf{Set}\) 中，从 \(\operatorname{Hom}(2,-)\) 到 \(\operatorname{Hom}(3,-)\) 的自然变换的个数等于 \(|\operatorname{Hom}(3,2)|=2^3=8\)。<span class="qed">∎</span></div>
+
+  <div class="box exer">
+    <h4>③ 课后练习</h4>
+    <div class="grp">基础巩固</div>
+    <ol>
+      <li id="q64a">写出 Yoneda 引理的协变形式，并指出双射 \(\Phi\) 把自然变换 \(\eta\) 送到哪个元素。</li>
+      <li id="q64b">在证明的第二步，验证 \(\Psi(x)_B(f)=F(f)(x)\) 对 \(f=\mathrm{id}_A\) 给出 \(x\)。</li>
+      <li id="q64c">用引理计算 \(\operatorname{Nat}(\operatorname{Hom}(2,-),\operatorname{id}_{\mathbf{Set}})\)（提示：结果等于 \(\mathrm{id}_{\mathbf{Set}}(2)=2\)，试描述这两个自然变换）。</li>
+      <li id="q64d">说明反变形式的 Yoneda 引理如何应用到预层 \(F:\mathbf C^{op}\to\mathbf{Set}\)。</li>
+    </ol>
+    <div class="grp">进阶思考</div>
+    <ol start="5">
+      <li id="q64e">从 Yoneda 引理推导：若 \(\operatorname{Hom}(-,A)\cong\operatorname{Hom}(-,B)\)，则 \(A\cong B\)。写出完整推理。</li>
+      <li id="q64f">设 \(F:\mathbf{Set}\to\mathbf{Set}\) 为恒等函子，用引理确定所有自然变换 \(\operatorname{Hom}(1,-)\Rightarrow F\)，并写出它们在 \(X\) 上的分量。</li>
+    </ol>
+  </div>
+
+  <div class="box ans">
+    <h4>④ 参考答案</h4>
+    <div class="item"><b>6.4.1</b>　协变形式：对 \(F:\mathbf C\to\mathbf{Set}\), \(A\in\mathbf C\)，有双射 \(\Phi:\operatorname{Nat}(\operatorname{Hom}(A,-),F)\to F(A)\)，\(\Phi(\eta)=\eta_A(\mathrm{id}_A)\)，且对 \(A,F\) 自然。<span class="qed">∎</span></div>
+    <div class="item"><b>6.4.2</b>　\(\Psi(x)_A(\mathrm{id}_A)=F(\mathrm{id}_A)(x)=\mathrm{id}_{F(A)}(x)=x\)，因为 \(F\) 保恒等。<span class="qed">∎</span></div>
+    <div class="item"><b>6.4.3</b>　由引理 \(\operatorname{Nat}(\operatorname{Hom}(2,-),\mathrm{id})\cong \mathrm{id}(2)=2\)，故恰有两个自然变换。它们由 \(\eta_2(\mathrm{id}_2)\in 2\) 决定：取值 \(0\) 的那个在 \(X\) 上分量为 \(\operatorname{Hom}(2,X)\to X,\ f\mapsto f(0)\)（取函数在 \(0\) 处的值），取值 \(1\) 的那个为 \(f\mapsto f(1)\)。<span class="qed">∎</span></div>
+    <div class="item"><b>6.4.4</b>　反变形式对 \(F:\mathbf C^{op}\to\mathbf{Set}\) 给出 \(\operatorname{Nat}(\operatorname{Hom}(-,A),F)\cong F(A)\)。取 \(F=yB=\operatorname{Hom}(-,B)\)，得 \(\operatorname{Nat}(yA,yB)\cong yB(A)=\operatorname{Hom}(A,B)\)，即预层范畴里可代表预层之间的自然变换由原范畴箭头给出，这正是 Yoneda 嵌入完全忠实。<span class="qed">∎</span></div>
+    <div class="item"><b>6.4.5</b>　设 \(\phi:\operatorname{Hom}(-,A)\xrightarrow{\sim}\operatorname{Hom}(-,B)\)。由反变 Yoneda，\(\operatorname{Nat}(\operatorname{Hom}(-,A),\operatorname{Hom}(-,B))\cong\operatorname{Hom}(B,A)\)，故 \(\phi=yf\) 对唯一 \(f:B\to A\)；同理 \(\phi^{-1}=yg\) 对 \(g:A\to B\)。\(\phi^{-1}\phi=y(fg)=\mathrm{id}=y(\mathrm{id}_A)\) 由忠实性得 \(fg=\mathrm{id}_A\)，同理 \(gf=\mathrm{id}_B\)，故 \(f\) 同构，\(A\cong B\)。<span class="qed">∎</span></div>
+    <div class="item"><b>6.4.6</b>　由引理 \(\operatorname{Nat}(\operatorname{Hom}(1,-),\mathrm{id})\cong\mathrm{id}(1)=\{1\}\)，只有一个自然变换 \(\eta\)。它的分量 \(\eta_X:\operatorname{Hom}(1,X)\to X\) 由 \(\eta_X(f)=\mathrm{id}(f)(\eta_1(\mathrm{id}_1))=f(\eta_1(\ast))\) 给出，而 \(\eta_1(\ast)\in 1\) 只能是唯一点，故 \(\eta_X(f)=f(\ast)\)。<span class="qed">∎</span></div>
+  </div>
+
+  <div class="box phil">
+    <h4>选读拓展 · 哲学联系</h4>
+    <p>Yoneda 引理的哲学意味在于：一个自然变换——哪怕它跨越整个范畴、在无穷多个对象上都有分量——其全部内容竟压缩在一个元素 \(\eta_A(\mathrm{id}_A)\) 里。这提示"整体由一点决定"的强决定论：局部（一个点的取值）与整体（全部自然性约束）之间存在一一对应。这与微分几何中"切向量决定于一个函数芽"、逻辑中"一个证明的同一性决定于其规范化"都有结构上的呼应——或许"同一性"从来就藏在这种从一点重建整体的唯一性里。</p>
+  </div>
+</section>
+
+<section class="sec" id="s6-5">
+  <div class="sec-h"><span class="sec-no">6.5</span><h2>Yoneda 引理的应用</h2><span class="src">A §8.3, p.176–181</span></div>
+
+  <div class="box learn">
+    <h4>① 本节学习目标</h4>
+    <ol>
+      <li>用 Yoneda 引理给出"群 = 可表示函子"的 Yoneda 式证明，理解 Cayley 表示的范畴论版本；</li>
+      <li>证明"有泛元素的函子恰是可表示函子"，并说明泛元素如何给出表示；</li>
+      <li>用 Yoneda 嵌入证明：伴随、极限等概念都可以只用 hom-set 表述来刻画；</li>
+      <li>了解 Yoneda 在 Haskell/函数式编程（自由定理、表示）中的影子，建立与第 5 章 λ-演算的联系。</li>
+    </ol>
+  </div>
+
+  <h3 class="sub">6.5.1　Cayley 定理的范畴论版本</h3>
+  <p>先用一个经典例子体会 Yoneda 的威力。群论里的 Cayley 定理说：每个群 \(G\) 都同构于一个置换群。范畴论版本更漂亮：把群看作单对象范畴，Yoneda 嵌入把它嵌入到集合范畴。</p>
+  <div class="prop"><span class="lbl">命题 6.5.1（Cayley 定理）</span>
+    每个群 \(G\) 同构于 \(\operatorname{Sym}(G)\)（\(G\) 上的置换群）的一个子群。
+  </div>
+  <div class="proof"><span class="pl">证明。</span>把 \(G\) 看作单对象范畴 \(\mathbf B G\)：唯一对象 \(\ast\)，箭头是 \(G\) 的元素，复合是群乘法。Yoneda 嵌入 \(y:\mathbf B G\to[\mathbf B G^{op},\mathbf{Set}]\) 完全忠实。这里 \(\mathbf B G^{op}\) 到 \(\mathbf{Set}\) 的函子就是一个带 \(G\)-作用的集合（\(G\)-set），而 \(y\ast=\operatorname{Hom}(-,\ast)\) 就是 \(G\) 在自身上的正则作用：其唯一分量是集合 \(G\)，箭头 \(g\) 作用为后复合 \(g\)。因为 \(y\) 忠实，\(G=\operatorname{Hom}_{\mathbf B G}(\ast,\ast)\cong\operatorname{Nat}(y\ast,y\ast)\)（Yoneda），而自然自变换 \(yg\) 在唯一分量上是"左乘 \(g\)"的置换，故 \(G\) 单射到置换群 \(\operatorname{Sym}(G)\)，即 \(G\) 是 \(\operatorname{Sym}(G)\) 的子群。<span class="qed">∎</span></div>
+  <div class="rmk">这个论证的要点是：群元素 \(g\) 对应自然变换 \(yg\)，而 \(yg\) 在唯一分量上的作用是"左乘 \(g\)"——一个置换。Yoneda 忠实性保证不同元素给出不同置换，于是 \(G\) 被 faithful 地表示为置换群。这正是 6.1 里"群元素 = \(\operatorname{Hom}(\mathbb Z,-)\)"之外，Yoneda 的又一个化身。</div>
+
+  <h3 class="sub">6.5.2　泛元素与可表示性</h3>
+  <p>6.1 的习题 6.1.6 已经碰到"泛元素"：它其实是判断可表示性的实用工具。</p>
+  <div class="defn"><span class="lbl">定义 6.5.2（泛元素）</span>
+    函子 \(F:\mathbf C\to\mathbf{Set}\) 的<strong>泛元素</strong>是一对 \((A,u)\)，其中 \(A\in\mathbf C\)、\(u\in F(A)\)，满足：对任意 \((B,x)\)（\(x\in F(B)\)），存在唯一箭头 \(f:A\to B\) 使 \(F(f)(u)=x\)。
+  </div>
+  
+  <svg class="cd" viewBox="0 0 440 150" role="img" aria-label="泛元素分解图">
+    <rect class="nodeg" x="20" y="16" width="150" height="42" rx="7"/>
+    <text class="nt" x="95" y="42" text-anchor="middle">F(A) ∋ u</text>
+    <rect class="nodeg" x="270" y="92" width="150" height="42" rx="7"/>
+    <text class="nt" x="345" y="118" text-anchor="middle">F(B) ∋ x</text>
+    <line class="arb" x1="150" y1="34" x2="345" y2="94"/>
+    <text class="hb" x="240" y="44" text-anchor="middle">F(f)</text>
+    <rect class="node" x="20" y="92" width="150" height="42" rx="7"/>
+    <text class="nt" x="95" y="118" text-anchor="middle">A</text>
+    <rect class="node" x="270" y="16" width="150" height="42" rx="7"/>
+    <text class="nt" x="345" y="42" text-anchor="middle">B</text>
+    <line class="ard" x1="150" y1="113" x2="268" y2="40"/>
+    <text class="lb" x="235" y="100" text-anchor="middle">唯一 f : A→B</text>
+    <text class="lb" x="235" y="140" text-anchor="middle">F(f)(u) = x</text>
+  </svg>
+  <div class="figcap">图 6.13　泛元素的分解。左下 \(A\)、右上 \(B\) 是对象，虚线箭头是唯一的 \(f:A\to B\)；左上 \(F(A)\) 里的泛元素 \(u\) 经 \(F(f)\)（蓝色箭头）被送到右下 \(F(B)\) 里给定的 \(x\)。泛元素性质说：对任意 \(x\)，这样的 \(f\) 存在且唯一——于是"给 \(F(B)\) 的一个元素"等价于"给一个箭头 \(A\to B\)"，即 \(F\cong\operatorname{Hom}(A,-)\)。</div>
+
+<div class="prop"><span class="lbl">命题 6.5.3</span>
+    \(F\) 可表示，当且仅当 \(F\) 有泛元素。若 \((A,u)\) 是泛元素，则 \(A\) 是 \(F\) 的表示对象，且 \(u\) 对应表示同构 \(\operatorname{Hom}(A,-)\cong F\) 下 \(\mathrm{id}_A\) 的像。
+  </div>
+  <div class="proof"><span class="pl">证明（⇐）</span>是习题 6.1.6 的逆：由泛元素性质，映射 \(\operatorname{Hom}(A,B)\to F(B),\ f\mapsto F(f)(u)\) 对 \(B\) 双射且自然（函子性保证自然性），故是自然同构 \(\operatorname{Hom}(A,-)\cong F\)。<strong>（⇒）</strong>若 \(\phi:\operatorname{Hom}(A,-)\xrightarrow{\sim}F\)，取 \(u=\phi_A(\mathrm{id}_A)\)。由 \(\phi\) 逐点双射与自然性，任意 \(x\in F(B)\) 唯一写成 \(x=F(f)(u)\)（\(f=\phi_B^{-1}(x)\)），故 \((A,u)\) 是泛元素。<span class="qed">∎</span></div>
+  <div class="rmk">这把"可表示"从一个存在性陈述变成了一个可操作的判据：找一个对象和其中的一个"通用"元素，使其他所有元素都由它唯一生成。第 4 章里的积的投影对、指数的求值箭头、极限的锥，全都是泛元素在不同函子上的实例。</div>
+
+  <h3 class="sub">6.5.3　用 hom-set 语言重述概念</h3>
+  <p>Yoneda 引理带来的方法论是：很多范畴概念可以只用 hom-set 的（自然）同构来表述，而一旦如此表述，就能在等价范畴间自由搬运。除了 6.1 的积与指数，这里再举伴随的例子。</p>
+  <div class="prop"><span class="lbl">命题 6.5.4（伴随的 hom-set 刻画）</span>
+    函子 \(F:\mathbf C\to\mathbf D\) 与 \(G:\mathbf D\to\mathbf C\) 构成伴随 \(F\dashv G\)，当且仅当存在对 \(A\in\mathbf C,B\in\mathbf D\) 自然同构
+    \[
+      \operatorname{Hom}_{\mathbf D}(F A,B)\cong\operatorname{Hom}_{\mathbf C}(A,GB).
+    \]
+  </div>
+  
+  <svg class="cd" viewBox="0 0 470 150" role="img" aria-label="伴随的 hom-set 同构">
+    <rect class="node" x="20" y="16" width="180" height="44" rx="7"/>
+    <text class="nt" x="110" y="44" text-anchor="middle">Hom_D(FA, B)</text>
+    <rect class="nodeg" x="270" y="16" width="180" height="44" rx="7"/>
+    <text class="nt" x="360" y="44" text-anchor="middle">Hom_C(A, GB)</text>
+    <line class="arb" x1="202" y1="38" x2="268" y2="38"/>
+    <text class="hb" x="235" y="30" text-anchor="middle">≅</text>
+    <text class="lb" x="235" y="108" text-anchor="middle">f ↦ Gf ∘ η_A　　（逆：g ↦ ε_B ∘ Fg）</text>
+    <text class="lb" x="235" y="132" text-anchor="middle">对 A、B 双方自然</text>
+  </svg>
+  <div class="figcap">图 6.14　伴随 \(F\dashv G\) 的 hom-set 刻画。左节点 \(\operatorname{Hom}_{\mathbf D}(FA,B)\)、右节点 \(\operatorname{Hom}_{\mathbf C}(A,GB)\)，中间的 \(\cong\) 是双射：把 \(f:FA\to B\) 送成 \(Gf\circ\eta_A:A\to GB\)，逆把 \(g:A\to GB\) 送成 \(\epsilon_B\circ Fg:FA\to B\)。这个双射对 \(A,B\) 自然，正是 Yoneda 目光下"表示同构"的另一种说法。</div>
+
+<div class="rmk">这个刻画在 Yoneda 的目光下特别自然：对固定 \(A\)，左边作为 \(B\) 的函子由 \(FA\) 表示；右边作为 \(B\) 的函子（经 \(G\) 拉回）由 \(A\) 经伴随对应。Yoneda 引理保证"表示同构"与"伴随"是同一件事的两种说法。第 9 章会把伴随作为主角展开，这里先埋下伏笔。</div>
+
+  <h3 class="sub">6.5.4　与 λ-演算和函数式编程的联系</h3>
+  <p>第 5 章的 λ-演算与本章的 Yoneda 其实是同一枚硬币的两面。在 \(\mathbf{Set}\) 中，多态函数 \(\eta_X:\operatorname{Hom}(A,X)\to F(X)\) 若要对 \(X\) 自然，由 Yoneda 引理就完全由一个元素 \(\eta_A(\mathrm{id}_A)\in F(A)\) 决定。函数式编程里著名的"free theorem"（Wadler）说的正是这件事：一个足够多态的函数满足的自然性条件，强到只剩唯一可能的实现。这是 Reynolds 的"关系参数化"与 Yoneda 的交汇。</p>
+
+  <h3 class="sub">6.5.4.1　词典：范畴名词如何翻译成 Haskell</h3>
+  <p>要把抽象对应讲清楚，先建立一本词典。以下把 \(\mathbf{Set}\)（及其自函子）的范畴概念与 Haskell 类型一一对照；这本词典是后面所有例子的基础。</p>
+  <table style="width:100%;border-collapse:collapse;font-size:13.5px;margin:12px 0;">
+    <thead><tr style="background:#eef4ff;">
+      <th style="border:1px solid #dbe6f8;padding:7px 10px;text-align:left;">范畴论</th>
+      <th style="border:1px solid #dbe6f8;padding:7px 10px;text-align:left;">Haskell / 编程</th>
+    </tr></thead>
+    <tbody>
+      <tr><td style="border:1px solid #e5e8ed;padding:6px 10px;">对象 \(A\)</td><td style="border:1px solid #e5e8ed;padding:6px 10px;">类型 <code>a</code></td></tr>
+      <tr><td style="border:1px solid #e5e8ed;padding:6px 10px;">态射 \(f:A\to B\)</td><td style="border:1px solid #e5e8ed;padding:6px 10px;">函数 <code>f :: a -&gt; b</code></td></tr>
+      <tr><td style="border:1px solid #e5e8ed;padding:6px 10px;">自函子 \(F:\mathbf{Set}\to\mathbf{Set}\)</td><td style="border:1px solid #e5e8ed;padding:6px 10px;">类型构造子 <code>f</code>，带 <code>Functor f</code> 实例</td></tr>
+      <tr><td style="border:1px solid #e5e8ed;padding:6px 10px;">函子作用 \(F(f)\)</td><td style="border:1px solid #e5e8ed;padding:6px 10px;"><code>fmap f</code></td></tr>
+      <tr><td style="border:1px solid #e5e8ed;padding:6px 10px;">hom-函子 \(\operatorname{Hom}(A,-)\)</td><td style="border:1px solid #e5e8ed;padding:6px 10px;">Reader 函子 <code>(-&gt;) a</code>，<code>fmap = (.)</code></td></tr>
+      <tr><td style="border:1px solid #e5e8ed;padding:6px 10px;">自然变换 \(\eta:F\Rightarrow G\)</td><td style="border:1px solid #e5e8ed;padding:6px 10px;">多态函数 <code>eta :: forall x. f x -&gt; g x</code></td></tr>
+      <tr><td style="border:1px solid #e5e8ed;padding:6px 10px;">在 \(A\) 处取值 \(\eta_A(\mathrm{id}_A)\)</td><td style="border:1px solid #e5e8ed;padding:6px 10px;">应用到恒等 <code>eta id</code></td></tr>
+    </tbody>
+  </table>
+  <div class="rmk">这张表最后一行最关键：数学里"在一个分量上取一个值"，在代码里就是"把一个多态函数作用到 <code>id</code> 上"。Yoneda 证明的全部内容，翻译成代码就只剩一行 <code>alpha id</code> 与一行 <code>fmap h fa</code>。</div>
+
+  <h3 class="sub">6.5.4.2　Yoneda 引理作为类型同构</h3>
+  <p>把 Yoneda 双射 \(\operatorname{Nat}(\operatorname{Hom}(A,-),F)\cong F(A)\) 用词典翻译，就得到一个具体的类型同构：</p>
+  <pre style="background:#0f172a;color:#e2e8f0;padding:14px 16px;border-radius:10px;overflow-x:auto;font-size:12.5px;line-height:1.55;"><code>{-# LANGUAGE RankNTypes #-}
+-- Nat(Hom(a, -), f)  ≅  f a
+-- 左：forall x. (a -&gt; x) -&gt; f x      右：f a
+
+-- 正向 α ↦ α_A(id_A)：只取 id 处的分量
+fromYoneda :: (forall x. (a -&gt; x) -&gt; f x) -&gt; f a
+fromYoneda alpha = alpha id
+
+-- 逆向 x ↦ (h ↦ F(h)(x))
+toYoneda :: Functor f =&gt; f a -&gt; (forall x. (a -&gt; x) -&gt; f x)
+toYoneda fa h = fmap h fa</code></pre>
+  <p>为什么它们互逆？这正是 Yoneda 证明的逐条翻译，两个方向对应第五节证明的第二、三步：</p>
+  <ul style="margin:6px 0;padding-left:24px;">
+    <li><strong>\(\Phi\circ\Psi=\mathrm{id}\)</strong>（值 → 变换 → 值）：<code>fromYoneda (toYoneda fa) = fmap id fa = fa</code>，用的是函子的恒等律。</li>
+    <li><strong>\(\Psi\circ\Phi=\mathrm{id}\)</strong>（变换 → 值 → 变换）：<code>toYoneda (alpha id) h = fmap h (alpha id) = alpha (h . id) = alpha h</code>。中间那步 <code>fmap h (alpha id) = alpha (h . id)</code> 正是自然性方块（图 6.10）在 <code>id</code> 处的实例——读者函子的 <code>fmap</code> 就是复合 <code>(.)</code>。</li>
+  </ul>
+  <div class="rmk">注意 <code>toYoneda</code> 需要 <code>Functor f</code>，而 <code>fromYoneda</code> 不需要——这精确对应数学里"反向映射 \(\Psi(x)_B(f)=F(f)(x)\) 需要 \(F\) 是函子，正向 \(\Phi(\eta)=\eta_A(\mathrm{id}_A)\) 只需要 \(\eta\) 是自然变换"。数学证明里的每一个前提，在代码里都能找到它的位置。</div>
+
+  <h3 class="sub">6.5.4.3　参数化与 free theorem：为什么自然性"免费"得到</h3>
+  <p>这里有一个编程与数学的微妙差异，值得讲透。数学里，\(\eta\) 是自然变换是<strong>需要证明的前提</strong>；可在 Haskell 里，一个类型如 <code>alpha :: forall x. (a -&gt; x) -&gt; f x</code> 的多态函数，<strong>自动</strong>满足自然性方程</p>
+  <div class="math">\[\mathrm{fmap}\ h\ (\mathrm{alpha}\ g)=\mathrm{alpha}\ (h\circ g)\qquad(\forall\ g:a\to x).\]</div>
+  <p>原因是 Reynolds 的<strong>关系参数化</strong>（relational parametricity）：类型 <code>forall x</code> 意味着函数对每个类型 <code>x</code> 一视同仁，它无法窥探 <code>x</code> 的结构、无法对特定类型做分支，因此只能用统一的方式处理所有 <code>x</code>——这种"统一性"的形式后果就是自由定理（free theorem，Wadler）。在总函数（total、无 <code>undefined</code>）的前提下，参数化保证了代码所实现的必然是某个自然变换。</p>
+  <div class="rmk">所以"自然性"在数学里是一条要验的式子，在多态语言里却是一条免费的定理。这正是 Curry–Howard 式对应的实用版本：类型签名本身就是规格（specification），满足它的程序自动满足相应的自然性定律。这也解释了为什么 Yoneda 在 Haskell 里不只是定理，而是可以直接拿来用的<strong>类型同构</strong>。</div>
+  <p>一个具体例子：取 <code>F = []</code>（列表函子）、<code>A = Int</code>。任何 <code>alpha :: forall x. (Int -&gt; x) -&gt; [x]</code> 若满足参数化，必形如"手里藏着一个固定的 <code>[Int]</code>（比如 <code>[1,2,3]</code>），然后 <code>alpha h = map h [1,2,3]</code>"。<code>alpha id = [1,2,3]</code> 把那个隐藏的列表取了出来，而 <code>alpha h = fmap h (alpha id)</code> 说明整个函数被这个列表唯一决定。自然数的列表有多少个，同类型的自然变换就有多少个——这恰是 Yoneda 说的 <code>Nat(Hom(Int,-), []) ≅ [Int]</code>。</p>
+
+  <h3 class="sub">6.5.4.4　两个可直接落地的例子：CPS 与 fmap 融合</h3>
+  <p><strong>例一：连续传递风格（CPS）。</strong>取 <code>F</code> 为恒等函子 <code>Id</code>。Yoneda 同构 <code>Id a ≅ forall r. (a -&gt; r) -&gt; r</code> 说：一个值 <code>a</code> 等价于"把这个值交给任意后续计算（continuation）的能力"：</p>
+  <pre style="background:#0f172a;color:#e2e8f0;padding:12px 16px;border-radius:10px;overflow-x:auto;font-size:12.5px;line-height:1.55;"><code>toCPS :: a -&gt; (forall r. (a -&gt; r) -&gt; r)
+toCPS x = \k -&gt; k x
+
+fromCPS :: (forall r. (a -&gt; r) -&gt; r) -&gt; a
+fromCPS f = f id</code></pre>
+  <p><code>fromCPS (toCPS x) = (\k -&gt; k x) id = id x = x</code>；反向正是自然性。编译器把程序变换成 CPS，靠的就是这个"值 ↔ 对值的所有观察方式"的等价——与 Yoneda 的哲学读法（对象由其全部关系决定）一字不差。</p>
+  <p><strong>例二：fmap 融合。</strong>在一棵大树上连续 <code>fmap f . fmap g . fmap h</code> 会遍历三次。把中间结果包成 Yoneda 类型，<code>fmap</code> 只做函数复合（<code>O(1)</code>，不遍历），直到最后 <code>fromYoneda</code> 才真正遍历一次：</p>
+  <pre style="background:#0f172a;color:#e2e8f0;padding:14px 16px;border-radius:10px;overflow-x:auto;font-size:12.5px;line-height:1.55;"><code>newtype Yoneda f a = Yoneda { runYoneda :: forall x. (a -&gt; x) -&gt; f x }
+
+instance Functor (Yoneda f) where
+  fmap g (Yoneda k) = Yoneda (\h -&gt; k (h . g))   -- 只复合函数，不遍历
+
+toYoneda :: Functor f =&gt; f a -&gt; Yoneda f a
+toYoneda fa = Yoneda (\h -&gt; fmap h fa)
+fromYoneda :: Yoneda f a -&gt; f a
+fromYoneda (Yoneda k) = k id</code></pre>
+  <p>这里 <code>Yoneda f</code> 即使 <code>f</code> 不是 <code>Functor</code> 也能有 <code>Functor</code> 实例——因为它的 <code>fmap</code> 只用到了函数复合，完全没碰 <code>f</code> 的结构。三次 <code>fmap</code> 被压成一次复合 <code>h . g . f</code>，最后一次 <code>fmap</code> 完成遍历。这就是 Yoneda 引理在性能优化里的真实用途，<code>kan-extensions</code> 等库直接提供 <code>Yoneda</code>/<code>Coyoneda</code>。</p>
+
+  <h3 class="sub">6.5.4.5　可表示函子：tabulate 与 index</h3>
+  <p>6.1 的"可表示"在代码里就是以类型类 <code>Representable</code> 出现的：表示对象叫 <code>Rep f</code>（键类型），表示同构的两个方向叫 <code>tabulate</code> 与 <code>index</code>。</p>
+  <pre style="background:#0f172a;color:#e2e8f0;padding:14px 16px;border-radius:10px;overflow-x:auto;font-size:12.5px;line-height:1.55;"><code>class Representable f where
+  type Rep f
+  tabulate :: (Rep f -&gt; x) -&gt; f x     -- 自然变换（由键索引的函数）
+  index    :: f x -&gt; Rep f -&gt; x       -- 在键处取值
+
+-- 无穷流：由 Natural 索引的"记忆化函数"
+instance Representable Stream where
+  type Rep Stream = Integer
+  tabulate g = Cons (g 0) (tabulate (g . (+1)))
+  index (Cons b bs) n = if n == 0 then b else index bs (n - 1)</code></pre>
+  <p><code>Stream x</code> 与 <code>Integer -&gt; x</code> 同构：一个无穷流就是一张以 <code>Integer</code> 为键、按需（惰性）求值的表。<code>tabulate</code> 与 <code>index</code> 互为逆，正是表示同构 <code>f x ≅ Hom(Rep f, x)</code>。反过来，列表 <code>[]</code> 不可表示——6.5.4.3 里空列导致 <code>head</code> 失效的例子说明，不存在能与 <code>forall x. [x] -&gt; (a -&gt; x)</code> 互逆的 <code>a</code>。数学上"可表示"是一个存在性命题，代码里它变成"能否定义出一对互逆的 <code>tabulate/index</code>"，可检验、可使用。</p>
+
+  <div class="rmk">对你的"证明同一性"主题，这里有个值得琢磨的呼应：Yoneda 说"一个自然变换由它在一点的值唯一决定"，第 5 章说"βη-等价的项指称同一箭头"，而参数化说"多态函数的类型唯一决定它的实现"。三者都在讲同一件事——同一性不是靠逐点比对，而是靠结构约束从一点被强制出来。程序里的 <code>alpha id</code> 与数学里的 <code>η_A(id_A)</code> 是同一个"DNA"。</div>
+
+  <div class="box exer">
+    <h4>③ 课后练习</h4>
+    <div class="grp">基础巩固</div>
+    <ol>
+      <li id="q65a">用 Cayley 论证说明：为什么 \(y\ast\) 的自同构群给出 \(G\) 的一个到 \(\operatorname{Sym}(G)\) 的单射。</li>
+      <li id="q65b">验证命题 6.5.3 中"泛元素 ⇒ 表示"的方向：证明 \(B\mapsto F(f)(u)\) 给出的映射是自然双射。</li>
+      <li id="q65c">找出底层集函子 \(U:\mathbf{Grp}\to\mathbf{Set}\) 的一个泛元素（提示：用 \(\mathbb Z\) 与元素 \(1\)）。</li>
+      <li id="q65d">用 hom-set 刻画检验：\(\mathbf{Set}\) 中 \(-\times A\dashv(-)^A\) 对应的自然同构是什么？</li>
+    </ol>
+    <div class="grp">进阶思考</div>
+    <ol start="5">
+      <li id="q65e">证明伴随的同构 \(\operatorname{Hom}_{\mathbf D}(FA,B)\cong\operatorname{Hom}_{\mathbf C}(A,GB)\) 对 \(A,B\) 双方都自然（这是伴随unit-counit 定义的等价形式之一）。</li>
+      <li id="q65f">结合第 5 章，说明 Yoneda 引理与"多态函数的 free theorem"之间的对应：为什么自然性把多态函数的可能实现压缩到唯一？</li>
+      <li id="q65g">用 Haskell 写出 Yoneda 类型同构 <code>forall x. (a -&gt; x) -&gt; f x ≅ f a</code> 的两个方向 <code>fromYoneda</code>、<code>toYoneda</code>，并逐字翻译第五节证明的两步，说明为何需要 <code>Functor f</code> 的只有其中一个方向。</li>
+      <li id="q65h">证明 <code>Stream</code> 可表示（<code>Rep = Integer</code>）而列表 <code>[]</code> 不可表示；用 Yoneda 说明为何 <code>forall x. [x] -&gt; (a -&gt; x)</code> 对任何 <code>a</code> 都不可能与 <code>[a]</code> 互逆。</li>
+    </ol>
+  </div>
+
+  <div class="box ans">
+    <h4>④ 参考答案</h4>
+    <div class="item"><b>6.5.1</b>　\(y:\mathbf B G\to[\mathbf B G^{op},\mathbf{Set}]\) 完全忠实，故对唯一对象 \(\ast\)，\(y\) 在 \(\operatorname{Hom}(\ast,\ast)=G\) 上是单射，把 \(g\in G\) 送到自然变换 \(yg\)。\(yg\) 在唯一分量上是正则作用中的置换（左乘 \(g\)），故 \(y\) 把 \(G\) 单射进这些置换构成的群，而后者是 \(\operatorname{Sym}(G)\) 的子群。<span class="qed">∎</span></div>
+    <div class="item"><b>6.5.2</b>　对每个 \(B\)，定义 \(\theta_B:\operatorname{Hom}(A,B)\to F(B),\ f\mapsto F(f)(u)\)。泛元素性质说每个 \(x\in F(B)\) 有唯一原像 \(f\)，故 \(\theta_B\) 双射。自然性：对 \(b:B\to C\)，\(\theta_C(b_* f)=F(b\circ f)(u)=F(b)(F(f)(u))=F(b)(\theta_B(f))\)，方块交换。故 \(\theta\) 是自然同构。<span class="qed">∎</span></div>
+    <div class="item"><b>6.5.3</b>　取 \(A=\mathbb Z\)，泛元素 \(u=1\in U(\mathbb Z)\)。对任意群 \(G\) 与元素 \(g\in U(G)\)，存在唯一群同态 \(f:\mathbb Z\to G\) 使 \(f(1)=g\)，即 \(U(f)(1)=g\)。故 \((\mathbb Z,1)\) 是泛元素，\(\mathbb Z\) 表示 \(U\)。<span class="qed">∎</span></div>
+    <div class="item"><b>6.5.4</b>　同构 \(\operatorname{Hom}_{\mathbf{Set}}(X\times A,B)\cong\operatorname{Hom}_{\mathbf{Set}}(X,B^A)\)（指数泛性质），对 \(X,B\) 自然。这里 \(F=-\times A\)，\(G=(-)^A\)，\(A=X\)（对偶记号中 \(X\) 相当于伴随刻画里的 \(A\)）。<span class="qed">∎</span></div>
+    <div class="item"><b>6.5.5</b>　同构由 \(f\mapsto\epsilon_B\circ Ff\) 与其逆 \(g\mapsto\eta_A;Gg\) 给出（\(\eta,\epsilon\) 为伴随的单位余单位）。验证对 \(A\) 自然：对 \(a:A'\to A\)，两边复合 \(Fa\) 与 \(a^*\) 交换，可由 \(\eta\) 自然性推出；对 \(B\) 自然类似地由 \(\epsilon\) 自然性推出。三角恒等式保证两映射互逆。这正是伴随的 unit-counit 刻画与 hom-set 刻画的等价性。<span class="qed">∎</span></div>
+    <div class="item"><b>6.5.6</b>　一个多态函数 \(\eta_X:\operatorname{Hom}(A,X)\to F(X)\) 若对所有 \(X\) 满足参数化（自然性），则由 Yoneda 引理 \(\eta\) 与元素 \(\eta_A(\mathrm{id}_A)\in F(A)\) 一一对应，且 \(\eta_X(f)=F(f)(\eta_A(\mathrm{id}_A))\)。因此实现被这个元素唯一决定，不存在第二个满足同样类型的实现——这就是 free theorem 的 Yoneda 版本。<span class="qed">∎</span></div>
+    <div class="item"><b>6.5.7</b>　<code>fromYoneda alpha = alpha id</code>（对应 \(\Phi(\eta)=\eta_A(\mathrm{id}_A)\)）；<code>toYoneda fa h = fmap h fa</code>（对应 \(\Psi(x)_B(f)=F(f)(x)\)）。互逆：<code>fromYoneda (toYoneda fa) = fmap id fa = fa</code> 用函子恒等律（对应 \(\Phi\Psi=\mathrm{id}\)，证明第二步）；<code>toYoneda (alpha id) h = fmap h (alpha id) = alpha (h . id) = alpha h</code> 用自然性（对应 \(\Psi\Phi=\mathrm{id}\)，证明第三步）。只有 <code>toYoneda</code> 需要 <code>Functor f</code>，因为它用到 <code>fmap</code>；<code>fromYoneda</code> 只需把多态函数作用于 <code>id</code>，对应数学里正向映射不依赖 \(F\) 的函子性。<span class="qed">∎</span></div>
+    <div class="item"><b>6.5.8</b>　<code>Stream</code>：<code>tabulate g = Cons (g 0) (tabulate (g . (+1)))</code>，<code>index (Cons b bs) n</code> 取第 \(n\) 项；二者互逆（惰性保证 <code>tabulate</code> 可定义无穷流），故 <code>Stream x ≅ Integer -&gt; x ≅ Hom(Rep, x)</code>，可表示。列表 <code>[]</code>：若可表示，存在 <code>a</code> 与 <code>forall x. [x] -&gt; (a -&gt; x)</code> 互逆。但取 <code>x = a</code>，<code>fromYoneda :: (forall x. [x] -&gt; (a -&gt; x)) -&gt; [a]</code> 由 Yoneda 应给出 <code>Nat(Hom(a,-),[]) ≅ [a]</code>；问题是空列表 <code>[] :: [x]</code> 对任意 <code>x</code> 存在，参数化迫使对应函数在空列表上无元素可返回（无法产出 <code>a -&gt; x</code>，除非有 <code>a</code> 的居民），与满射矛盾。更直接：<code>head</code> 型的实现在空列表上部分定义（<code>undefined</code>），破坏了全函数性——故不存在这样的 <code>a</code>，列表不可表示。<span class="qed">∎</span></div>
+  </div>
+
+  <div class="box phil">
+    <h4>选读拓展 · 哲学联系</h4>
+    <p>从 Cayley 到泛元素，Yoneda 引理反复演示一个主题：<strong>要理解一个东西，就去看它如何作用、如何被生成</strong>。群由其置换表示决定，函子由其泛元素决定，对象由其全部关系决定。这种"从作用到实体"的认识路径，与实用主义的意义理论（意义即使用）遥相呼应；而对"证明同一性"而言，它提示两条看似不同的路线——范畴的 Yoneda 决定与 Proof 的规范化决定——也许共享同一个"从一点重建整体"的深层结构。本章至此，第一部分的范畴论工具已齐备，下一部分转向 Lambek–Scott 的高阶逻辑。</p>
+  </div>
+</section>
+
+
+<footer>
+  <p><a href="范畴论-逻辑-拓扑斯_教材总目录.html">← 返回总目录</a> ｜ 上一章：<a href="范畴论-逻辑-拓扑斯_教材第5章.html">第 5 章 指数对象与笛卡尔闭范畴</a> ｜ 下一章：<a href="范畴论-逻辑-拓扑斯_教材第7章.html">第 7 章 伴随与 Monad</a></p>
+  <p>本章对应 Awodey, <em>Category Theory</em>, 2nd ed., §7.2, §7.9–7.10, §8.1–§8.3。公式由 MathJax 渲染，需联网加载。</p>
+</footer>
+
+</div>
+</body>
+</html>

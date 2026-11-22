@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>范畴论 · 范畴逻辑 · 拓扑斯 —— 三书递进自学教材总目录</title>
+<style>
+  :root{
+    --bg:#f6f7f9;
+    --card:#ffffff;
+    --ink:#1b1f27;
+    --ink-2:#4d5461;
+    --ink-3:#7a8190;
+    --line:#e5e8ed;
+    --line-soft:#f0f2f5;
+    --c1:#2563eb; --c1bg:#eef4ff;
+    --c2:#7c3aed; --c2bg:#f4efff;
+    --c3:#0d9488; --c3bg:#e9f7f4;
+    --gold:#b45309; --goldbg:#fdf3e3;
+    --ok:#16a34a;
+    --radius:14px;
+    --shadow:0 1px 2px rgba(16,24,40,.04),0 8px 24px rgba(16,24,40,.05);
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0; background:var(--bg); color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;
+    line-height:1.65; -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:1040px;margin:0 auto;padding:0 22px 80px;}
+
+  /* ---------- Hero ---------- */
+  header.hero{
+    padding:54px 0 30px; border-bottom:1px solid var(--line); margin-bottom:26px;
+  }
+  .kicker{font-size:12.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3);font-weight:700;}
+  h1{font-size:34px;line-height:1.3;margin:12px 0 8px;letter-spacing:-.02em;font-weight:800;}
+  .sub{color:var(--ink-2);font-size:16px;margin:0 0 24px;}
+  .stats{display:flex;gap:10px;flex-wrap:wrap;}
+  .stat{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:10px 16px;min-width:96px;}
+  .stat b{display:block;font-size:22px;line-height:1.1;font-weight:800;}
+  .stat span{font-size:12px;color:var(--ink-3);}
+
+  /* ---------- progress ---------- */
+  .progress-box{
+    background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
+    padding:18px 20px;margin:24px 0 30px;box-shadow:var(--shadow);
+  }
+  .progress-head{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:12px;}
+  .progress-head h3{margin:0;font-size:15px;}
+  .progress-head .num{font-size:13px;color:var(--ink-2);font-variant-numeric:tabular-nums;}
+  .bar{height:9px;background:var(--line-soft);border-radius:99px;overflow:hidden;}
+  .bar>i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--c1),var(--c2),var(--c3));border-radius:99px;transition:width .35s ease;}
+  .progress-tip{font-size:12px;color:var(--ink-3);margin-top:10px;}
+
+  /* ---------- quick nav ---------- */
+  .quicknav{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:34px;}
+  .quicknav a{
+    text-decoration:none;font-size:13.5px;font-weight:650;padding:9px 15px;border-radius:99px;
+    border:1px solid var(--line);background:var(--card);color:var(--ink-2);transition:.15s;
+  }
+  .quicknav a:hover{transform:translateY(-1px);box-shadow:var(--shadow);color:var(--ink);}
+  .quicknav a.p1{border-color:#cfe0ff;color:var(--c1);}
+  .quicknav a.p2{border-color:#e3d5ff;color:var(--c2);}
+  .quicknav a.p3{border-color:#bfe9e1;color:var(--c3);}
+
+  /* ---------- reference ---------- */
+  .refs{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:12px;margin-bottom:26px;}
+  .ref{background:var(--card);border:1px solid var(--line);border-left:4px solid var(--line);border-radius:10px;padding:14px 16px;}
+  .ref.r1{border-left-color:var(--c1);} .ref.r2{border-left-color:var(--c2);} .ref.r3{border-left-color:var(--c3);}
+  .ref .tag{font-size:11px;font-weight:800;color:var(--ink-3);letter-spacing:.08em;}
+  .ref .bk{font-size:14.5px;font-weight:650;margin:3px 0 2px;}
+  .ref .meta{font-size:12.5px;color:var(--ink-3);}
+
+  .convention{
+    background:var(--goldbg);border:1px solid #f2dfbb;border-radius:10px;
+    padding:15px 18px;font-size:13.5px;color:#7c4a12;margin-bottom:40px;
+  }
+  .convention b{color:var(--gold);}
+
+  /* ---------- part ---------- */
+  section.part{margin:0 0 46px;scroll-margin-top:18px;}
+  .part-head{display:flex;align-items:flex-start;gap:14px;margin-bottom:20px;padding-bottom:14px;border-bottom:2px solid var(--line);}
+  .part-no{
+    flex:0 0 auto;width:44px;height:44px;border-radius:12px;display:grid;place-items:center;
+    font-size:18px;font-weight:800;color:#fff;
+  }
+  .p1 .part-no{background:var(--c1);} .p2 .part-no{background:var(--c2);} .p3 .part-no{background:var(--c3);}
+  .part-title h2{margin:0;font-size:21px;letter-spacing:-.01em;}
+  .part-title p{margin:3px 0 0;font-size:13px;color:var(--ink-2);}
+  .part-title .src{color:var(--ink-3);font-size:12px;}
+
+  /* ---------- chapter ---------- */
+  .chapter{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);margin-bottom:14px;overflow:hidden;}
+  .ch-head{display:flex;align-items:center;gap:12px;padding:15px 18px;background:var(--line-soft);border-bottom:1px solid var(--line);}
+  .ch-num{font-size:12px;font-weight:800;color:#fff;background:var(--ink-2);border-radius:6px;padding:3px 9px;white-space:nowrap;}
+  .p1 .ch-num{background:var(--c1);} .p2 .ch-num{background:var(--c2);} .p3 .ch-num{background:var(--c3);}
+  .ch-head h3{margin:0;font-size:15.5px;font-weight:700;flex:1;}
+  .ch-count{font-size:11.5px;color:var(--ink-3);white-space:nowrap;}
+
+  ol.secs{list-style:none;margin:0;padding:6px 0;}
+  ol.secs li{
+    display:flex;align-items:flex-start;gap:12px;padding:9px 18px;
+    border-bottom:1px solid var(--line-soft);
+  }
+  ol.secs li:last-child{border-bottom:0;}
+  ol.secs li:hover{background:#fbfcfe;}
+  .chk{flex:0 0 auto;margin-top:4px;width:16px;height:16px;accent-color:var(--ok);cursor:pointer;}
+  .sec-num{font-size:12.5px;font-weight:750;color:var(--ink-2);font-variant-numeric:tabular-nums;min-width:38px;padding-top:1px;}
+  .sec-body{flex:1;min-width:0;}
+  .sec-title{font-size:14px;font-weight:550;color:var(--ink);}
+  .sec-src{display:inline-block;font-size:11px;color:var(--ink-3);background:var(--line-soft);border-radius:5px;padding:1px 7px;margin-left:8px;white-space:nowrap;font-variant-numeric:tabular-nums;}
+  li.done .sec-title{color:var(--ink-3);text-decoration:line-through;}
+  .sec-link{color:inherit;text-decoration:none;border-bottom:1px dashed var(--c1);transition:.15s;}
+  .sec-link:hover{color:var(--c1);border-bottom-style:solid;}
+  .badge-new{display:inline-block;font-size:10.5px;font-weight:750;color:var(--gold);background:var(--goldbg);border:1px solid #f0dcb6;border-radius:5px;padding:0 6px;margin-left:8px;vertical-align:1px;}
+
+  footer{border-top:1px solid var(--line);margin-top:20px;padding-top:22px;font-size:12.5px;color:var(--ink-3);}
+  .reset{font-size:12px;color:var(--ink-3);background:none;border:1px solid var(--line);border-radius:7px;padding:6px 11px;cursor:pointer;}
+  .reset:hover{border-color:var(--ink-3);color:var(--ink-2);}
+
+  @media (max-width:640px){
+    h1{font-size:26px;} .wrap{padding:0 14px 60px;}
+    .sec-src{display:block;margin:4px 0 0;}
+    .ch-head{padding:12px 14px;} ol.secs li{padding:9px 14px;}
+  }
+  @media print{
+    body{background:#fff;} .quicknav,.progress-box,.reset{display:none;}
+    .chapter{box-shadow:none;break-inside:avoid;} header.hero{padding-top:0;}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="hero">
+  <div class="kicker">Self-study Curriculum · 系统自学教材</div>
+  <h1>范畴论 · 范畴逻辑 · 拓扑斯</h1>
+  <p class="sub">三书递进 · 正式教材总目录 —— 从集合与函数出发，直到 Kripke–Joyal 语义与分类拓扑斯</p>
+  <div class="stats">
+    <div class="stat"><b>3</b><span>部著作</span></div>
+    <div class="stat"><b>19</b><span>章</span></div>
+    <div class="stat"><b>80</b><span>节</span></div>
+    <div class="stat"><b id="doneStat">0</b><span>已学完</span></div>
+  </div>
+</header>
+
+<div class="quicknav">
+  <a class="p1" href="#part1">第一部分 · Awodey 范畴论</a>
+  <a class="p2" href="#part2">第二部分 · Lambek &amp; Scott 范畴逻辑</a>
+  <a class="p3" href="#part3">第三部分 · Mac Lane &amp; Moerdijk 层与拓扑斯</a>
+  <a href="范畴论-逻辑-拓扑斯_附录A_米田引理全局交换图.html" style="border-color:#f2dfbb;color:#b45309;">附录 A · 米田引理全局交换图</a>
+</div>
+
+<div class="refs">
+  <div class="ref r1"><div class="tag">[A] · 基础先导</div><div class="bk">Steve Awodey, <i>Category Theory</i></div><div class="meta">2nd ed., Oxford University Press, 2010 · 采用第二版章节编号</div></div>
+  <div class="ref r2"><div class="tag">[L] · 逻辑核心</div><div class="bk">J. Lambek &amp; P. J. Scott, <i>Introduction to Higher Order Categorical Logic</i></div><div class="meta">Cambridge University Press, 1986 · 按 Part 0/I/II/III + 节号</div></div>
+  <div class="ref r3"><div class="tag">[M] · 语义高峰</div><div class="bk">S. Mac Lane &amp; I. Moerdijk, <i>Sheaves in Geometry and Logic</i></div><div class="meta">Springer, 1994 · 按章 + 节号</div></div>
+</div>
+
+<div class="convention">
+  <b>版本提示：</b>Awodey 采用第二版（OUP 2010）章节号，全书 10 章（§9 Adjoints、§10 Monads），与常见的第一版（§14 Adjoints、§15 Monads）不同。另：<b>函子在第二版 §1.4 即已定义</b>（Definition 1.2, p.8–9），第 7 章是自然性。<br>
+  <b>每节固定结构：</b>① 学习目标 ② 正文讲授（严格定义 / 命题 / 定理 + 完整推导）③ 课后练习题（基础巩固 + 进阶思考）④ 习题参考答案（完整证明）。哲学联系一律置于各节末「选读拓展」，不进正文。
+</div>
+
+<div class="progress-box">
+  <div class="progress-head"><h3>学习进度</h3><span class="num" id="progressNum">0 / 80 节</span></div>
+  <div class="bar"><i id="progressBar"></i></div>
+  <div class="progress-tip">勾选每节前的方框即可标记「已学完」，进度自动保存在本机浏览器；换设备不同步。</div>
+</div>
+
+<!-- ============ PART 1 ============ -->
+<section class="part p1" id="part1">
+  <div class="part-head">
+    <div class="part-no">I</div>
+    <div class="part-title">
+      <h2>Awodey《Category Theory》—— 范畴论基础</h2>
+      <p>从函数与复合出发，建立泛性质语言，走到伴随与 Monad。<span class="src">【A，第二版】</span></p>
+    </div>
+  </div>
+
+  <div class="chapter">
+    <div class="ch-head"><span class="ch-num">第 1 章</span><h3>范畴与函子</h3><span class="ch-count">5 节</span></div>
+    <ol class="secs">
+      <li><input class="chk" type="checkbox"><span class="sec-num">1.1</span><span class="sec-body"><span class="sec-title"><a class="sec-link" href="范畴论-逻辑-拓扑斯_教材第1章.html#s1-1">函数、复合与范畴的定义</a><span class="badge-new">已生成</span></span><span class="sec-src">A §1.1–1.3</span></span></li>
+      <li><input class="chk" type="checkbox"><span class="sec-num">1.2</span><span class="sec-body"><span class="sec-title"><a class="sec-link" href="范畴论-逻辑-拓扑斯_教材第1章.html#s1-2">范畴的例子：Set、Rel、Mat、偏序、单对象范畴</a></span><span class="sec-src">A §1.4</span></span></li>
+      <li><input class="chk" type="checkbox"><span class="sec-num">1.3</span><span class="sec-body"><span class="sec-title"><a class="sec-link" href="范畴论-逻辑-拓扑斯_教材第1章.html#s1-3">同构</a></span><span class="sec-src">A §1.5</span></span></li>
+      <li><input class="chk" type="checkbox"><span class="sec-num">1.4</span><span class="sec-body"><span class="sec-title"><a class="sec-link" href="范畴论-逻辑-拓扑斯_教材第1章.html#s1-4">函子与函子范畴</a></span><span class="sec-src">A §1.4, §1.6, §7.7</span></span></li>
+      <li><input class="chk" type="checkbox"><span class="sec-num">1.5</span><span class="sec-body"><span class="sec-title"><a class="sec-link" href="范畴论-逻辑-拓扑斯_教材第1章.html#s1-5">自然变换</a></span><span class="sec-src">A §7.4–7.5</span></span></li>
+    </ol>
+  </div>
+
+  <div class="chapter">
+    <div class="ch-head"><span class="ch-num">第 2 章</span><h3>抽象结构：单态、初终对象与积</h3><span class="ch-count">4 节</span></div>
+    <ol class="secs">
+      <li><input class="chk" type="checkbox"><span class="sec-num">2.1</span><span class="sec-body"><span class="sec-title"><a class="sec-link" href="范畴论-逻辑-拓扑斯_教材第2章.html#s2-1">单态与满态</a></span><span class="sec-src">A §2.1</span></span></li>
+      <li><input class="chk" type="checkbox"><span class="sec-num">2.2</span><span class="sec-body"><span class="sec-title"><a class="sec-link" href="范畴论-逻辑-拓扑斯_教材第2章.html#s2-2">初始对象与终末对象</a></span><span class="sec-src">A §2.2</span></span></li>
+      <li><input class="chk" type="checkbox"><span class="sec-num">2.3</span><span class="sec-body"><span class="sec-title"><a class="sec-link" href="范畴论-逻辑-拓扑斯_教材第2章.html#s2-3">广义元素</a></span><span class="sec-src">A §2.3</span></span></li>
+      <li><input class="chk" type="checkbox"><span class="sec-num">2.4</span><span class="sec-body"><span class="sec-title"><a class="sec-link" href="范畴论-逻辑-拓扑斯_教材第2章.html#s2-4">积与具有积的范畴</a></span><span class="sec-src">A §2.4–2.6</span></span></li>
+    </ol>
+  </div>
+
+  <div class="chapter">
+    <div class="ch-head"><span class="ch-num">第 3 章</span><h3>对偶、余积与等化子</h3><span class="ch-count">3 节</span></div>
+    <ol class="secs">
+      <li><input class="chk" type="checkbox"><span class="sec-num">3.1</span><span class="sec-body"><span class="sec-title"><a class="sec-link" href="范畴论-逻辑-拓扑斯_教材第3章.html#s3-1">对偶原理</a></span><span class="sec-src">A §3.1</span></span></li>
+      <li><input class="chk" type="checkbox"><span class="sec-num">3.2</span><span class="sec-body"><span class="sec-title"><a class="sec-link" href="范畴论-逻辑-拓扑斯_教材第3章.html#s3-2">余积</a></span><span class="sec-src">A §3.2</span></span></li>
+      <li><input class="chk" type="checkbox"><span class="sec-num">3.3</span><span class="sec-body"><span class="sec-title"><a class="sec-link" href="范畴论-逻辑-拓扑斯_教材第3章.html#s3-3">等化子与余等化子</a></span><span class="sec-src">A §3.3–3.4</span></span></li>
+    </ol>
+  </div>
+
+  <div class="chapter">
+    <div class="ch-head"><span class="ch-num">第 4 章</span><h3>极限与余极限</h3><span class="ch-count">4 节</span></div>
+    <ol class="secs">
+      <li><input class="chk" type="checkbox"><span class="sec-num">4.1</span><span class="sec-body"><span class="sec-title"><a class="sec-link" href="范畴论-逻辑-拓扑斯_教材第4章.html#s4-1">子对象</a></span><span class="sec-src">A §5.1</span></span></li>
+      <li><input class="chk" type="checkbox"><span class="sec-num">4.2</span><span class="sec-body"><span class="sec-title"><a class="sec-link" href="范畴论-逻辑-拓扑斯_教材第4章.html#s4-2">拉回及其性质</a></span><span class="sec-src">A §5.2–5.3</span></span></li>
+      <li><input class="chk" type="checkbox"><span class="sec-num">4.3</span><span class="sec-body"><span class="sec-title"><a class="sec-link" href="范畴论-逻辑-拓扑斯_教材第4章.html#s4-3">极限与极限的保持</a></span><span class="sec-src">A §5.4–5.5</span></span></li>
+      <li><input class="chk" type="checkbox"><span class="sec-num">4.4</span><span class="sec-body"><span class="sec-title"><a class="sec-link" href="范畴论-逻辑-拓扑斯_教材第4章.html#s4-4">余极限</a></span><span class="sec-src">A §5.6</span></span></li>
+    </ol>
+  </div>
+
+  <div class="chapter">
+    <div class="ch-head"><span class="ch-num">第 5 章</span><h3>指数对象与笛卡尔闭范畴</h3><span class="ch-count">4 节</span></div>
+    <ol class="secs">
+      <li><input class="chk" type="checkbox"><span class="sec-num">5.1</span><span class="sec-body"><span class="sec-title"><a class="sec-link" href="范畴论-逻辑-拓扑斯_教材第5章.html#s5-1">指数对象</a><span class="badge-new">已生成</span></span><span class="sec-src">A §6.1</span></span></li>
+      <li><input class="chk" type="checkbox"><span class="sec-num">5.2</span><span class="sec-body"><span class="sec-title"><a class="sec-link" href="范畴论-逻辑-拓扑斯_教材第5章.html#s5-2">笛卡尔闭范畴</a></span><span class="sec-src">A §6.2</span></span></li>
+      <li><input class="chk" type="checkbox"><span class="sec-num">5.3</span><span class="sec-body"><span class="sec-title"><a class="sec-link" href="范畴论-逻辑-拓扑斯_教材第5章.html#s5-3">Heyting 代数与命题演算</a></span><span class="sec-src">A §6.3–6.4</span></span></li>
+      <li><input class="chk" type="checkbox"><span class="sec-num">5.4</span><span class="sec-body"><span class="sec-title"><a class="sec-link" href="范畴论-逻辑-拓扑斯_教材第5章.html#s5-4">λ-演算初步</a></span><span class="sec-src">A §6.6</span></span></li>
+    </ol>
+  </div>
+
+  <div class="chapter">
+    <div class="ch-head"><span class="ch-num">第 6 章</span><h3>自然性、函子范畴与 Yoneda</h3><span class="ch-count">5 节</span></div>
+    <ol class="secs">
+      <li><input class="chk" type="checkbox"><span class="sec-num">6.1</span><span class="sec-body"><span class="sec-title"><a class="sec-link" href="范畴论-逻辑-拓扑斯_教材第6章.html#s6-1">可表示结构</a><span class="badge-new">已生成</span></span><span class="sec-src">A §7.2</span></span></li>
+      <li><input class="chk" type="checkbox"><span class="sec-num">6.2</span><span class="sec-body"><span class="sec-title"><a class="sec-link" href="范畴论-逻辑-拓扑斯_教材第6章.html#s6-2">自然同构与范畴等价</a></span><span class="sec-src">A §7.9–7.10</span></span></li>
+      <li><input class="chk" type="checkbox"><span class="sec-num">6.3</span><span class="sec-body"><span class="sec-title"><a class="sec-link" href="范畴论-逻辑-拓扑斯_教材第6章.html#s6-3">Yoneda 嵌入</a></span><span class="sec-src">A §8.1</span></span></li>
+      <li><input class="chk" type="checkbox"><span class="sec-num">6.4</span><span class="sec-body"><span class="sec-title"><a class="sec-link" href="范畴论-逻辑-拓扑斯_教材第6章.html#s6-4">Yoneda 引理</a></span><span class="sec-src">A §8.2</span></span></li>
+      <li><input class="chk" type="checkbox"><span class="sec-num">6.5</span><span class="sec-body"><span class="sec-title"><a class="sec-link" href="范畴论-逻辑-拓扑斯_教材第6章.html#s6-5">Yoneda 引理的应用</a></span><span class="sec-src">A §8.3</span></span></li>
+    </ol>
+  </div>
+
+  <div class="chapter">
+    <div class="ch-head"><span class="ch-num">第 7 章</span><h3>伴随与 Monad</h3><span class="ch-count">5 节</span></div>
+    <ol class="secs">
+      <li><input class="chk" type="checkbox"><span class="sec-num">7.1</span><span class="sec-body"><span class="sec-title"><a class="sec-link" href="范畴论-逻辑-拓扑斯_教材第7章.html#s7-1">伴随的初步定义与 Hom-集刻画</a><span class="badge-new">已生成</span></span><span class="sec-src">A §9.1–9.2</span></span></li>
+      <li><input class="chk" type="checkbox"><span class="sec-num">7.2</span><span class="sec-body"><span class="sec-title"><a class="sec-link" href="范畴论-逻辑-拓扑斯_教材第7章.html#s7-2">伴随的例子</a><span class="badge-new">已生成</span></span><span class="sec-src">A §9.3</span></span></li>
+      <li><input class="chk" type="checkbox"><span class="sec-num">7.3</span><span class="sec-body"><span class="sec-title"><a class="sec-link" href="范畴论-逻辑-拓扑斯_教材第7章.html#s7-3">偏序伴随与量词作为伴随</a><span class="badge-new">已生成</span></span><span class="sec-src">A §9.4–9.5</span></span></li>
+      <li><input class="chk" type="checkbox"><span class="sec-num">7.4</span><span class="sec-body"><span class="sec-title"><a class="sec-link" href="范畴论-逻辑-拓扑斯_教材第7章.html#s7-4">伴随函子定理（RAPL）</a><span class="badge-new">已生成</span></span><span class="sec-src">A §9.6–9.8</span></span></li>
+      <li><input class="chk" type="checkbox"><span class="sec-num">7.5</span><span class="sec-body"><span class="sec-title"><a class="sec-link" href="范畴论-逻辑-拓扑斯_教材第7章.html#s7-5">三角恒等式、Monad 与代数</a><span class="badge-new">已生成</span></span><span class="sec-src">A §10.1–10.3</span></span></li>
+    </ol>
+  </div>
+</section>
+
+<!-- ============ PART 2 ============ -->
+<section class="part p2" id="part2">
+  <div class="part-head">
+    <div class="part-no">II</div>
+    <div class="part-title">
+      <h2>Lambek &amp; Scott《Introduction to Higher Order Categorical Logic》—— 范畴逻辑</h2>
+      <p>演绎系统 = 笛卡尔闭范畴，类型论 ⇄ 拓扑斯，规范化与证明同一性。<span class="src">【L】</span></p>
+    </div>
+  </div>
+
+  <div class="chapter">
+    <div class="ch-head"><span class="ch-num">第 8 章</span><h3>范畴论预备（Part 0）</h3><span class="ch-count">3 节</span></div>
+    <ol class="secs">
+      <li><input class="chk" type="checkbox"><span class="sec-num">8.1</span><span class="sec-body"><span class="sec-title">函子与自然变换</span><span class="sec-src">L Part 0 §1–2</span></span></li>
+      <li><input class="chk" type="checkbox"><span class="sec-num">8.2</span><span class="sec-body"><span class="sec-title">伴随、等价、极限、三元组</span><span class="sec-src">L Part 0 §3–6</span></span></li>
+      <li><input class="chk" type="checkbox"><span class="sec-num">8.3</span><span class="sec-body"><span class="sec-title">笛卡尔闭范畴的例子</span><span class="sec-src">L Part 0 §7</span></span></li>
+    </ol>
+  </div>
+
+  <div class="chapter">
+    <div class="ch-head"><span class="ch-num">第 9 章</span><h3>演绎系统与笛卡尔闭范畴（Part I）</h3><span class="ch-count">5 节</span></div>
+    <ol class="secs">
+      <li><input class="chk" type="checkbox"><span class="sec-num">9.1</span><span class="sec-body"><span class="sec-title">作为演绎系统的命题演算</span><span class="sec-src">L Part I §1</span></span></li>
+      <li><input class="chk" type="checkbox"><span class="sec-num">9.2</span><span class="sec-body"><span class="sec-title">演绎定理</span><span class="sec-src">L Part I §2</span></span></li>
+      <li><input class="chk" type="checkbox"><span class="sec-num">9.3</span><span class="sec-body"><span class="sec-title">CCC 的方程化呈现</span><span class="sec-src">L Part I §3</span></span></li>
+      <li><input class="chk" type="checkbox"><span class="sec-num">9.4</span><span class="sec-body"><span class="sec-title">自由 CCC 与多项式范畴</span><span class="sec-src">L Part I §4–5</span></span></li>
+      <li><input class="chk" type="checkbox"><span class="sec-num">9.5</span><span class="sec-body"><span class="sec-title">函数完备性</span><span class="sec-src">L Part I §6</span></span></li>
+    </ol>
+  </div>
+
+  <div class="chapter">
+    <div class="ch-head"><span class="ch-num">第 10 章</span><h3>λ-演算与证明同一性（Part I）</h3><span class="ch-count">5 节</span></div>
+    <ol class="secs">
+      <li><input class="chk" type="checkbox"><span class="sec-num">10.1</span><span class="sec-body"><span class="sec-title">类型 λ-演算</span><span class="sec-src">L Part I §10</span></span></li>
+      <li><input class="chk" type="checkbox"><span class="sec-num">10.2</span><span class="sec-body"><span class="sec-title">λ-演算生成的 CCC</span><span class="sec-src">L Part I §11</span></span></li>
+      <li><input class="chk" type="checkbox"><span class="sec-num">10.3</span><span class="sec-body"><span class="sec-title">等词判定问题</span><span class="sec-src">L Part I §12</span></span></li>
+      <li><input class="chk" type="checkbox"><span class="sec-num">10.4</span><span class="sec-body"><span class="sec-title">有界项的 Church–Rosser 定理</span><span class="sec-src">L Part I §13–14</span></span></li>
+      <li><input class="chk" type="checkbox"><span class="sec-num">10.5</span><span class="sec-body"><span class="sec-title">C-monoid 与非类型 λ-演算</span><span class="sec-src">L Part I §15–17</span></span></li>
+    </ol>
+  </div>
+
+  <div class="chapter">
+    <div class="ch-head"><span class="ch-num">第 11 章</span><h3>类型论与拓扑斯（Part II）</h3><span class="ch-count">6 节</span></div>
+    <ol class="secs">
+      <li><input class="chk" type="checkbox"><span class="sec-num">11.1</span><span class="sec-body"><span class="sec-title">直觉主义类型论</span><span class="sec-src">L Part II §1–2</span></span></li>
+      <li><input class="chk" type="checkbox"><span class="sec-num">11.2</span><span class="sec-body"><span class="sec-title">拓扑斯的内部语言</span><span class="sec-src">L Part II §3</span></span></li>
+      <li><input class="chk" type="checkbox"><span class="sec-num">11.3</span><span class="sec-body"><span class="sec-title">内部语言的运作</span><span class="sec-src">L Part II §5–6</span></span></li>
+      <li><input class="chk" type="checkbox"><span class="sec-num">11.4</span><span class="sec-body"><span class="sec-title">选择与布尔公理</span><span class="sec-src">L Part II §7</span></span></li>
+      <li><input class="chk" type="checkbox"><span class="sec-num">11.5</span><span class="sec-body"><span class="sec-title">拓扑斯语义与层范畴语义</span><span class="sec-src">L Part II §8–10</span></span></li>
+      <li><input class="chk" type="checkbox"><span class="sec-num">11.6</span><span class="sec-body"><span class="sec-title">类型论与拓扑斯之间的伴随</span><span class="sec-src">L Part II §11–16</span></span></li>
+    </ol>
+  </div>
+
+  <div class="chapter">
+    <div class="ch-head"><span class="ch-num">第 12 章</span><h3>完备性问题（Part II）</h3><span class="ch-count">3 节</span></div>
+    <ol class="secs">
+      <li><input class="chk" type="checkbox"><span class="sec-num">12.1</span><span class="sec-body"><span class="sec-title">带选择规则的完备性</span><span class="sec-src">L Part II §17</span></span></li>
+      <li><input class="chk" type="checkbox"><span class="sec-num">12.2</span><span class="sec-body"><span class="sec-title">不带选择规则的完备性</span><span class="sec-src">L Part II §19, §22</span></span></li>
+      <li><input class="chk" type="checkbox"><span class="sec-num">12.3</span><span class="sec-body"><span class="sec-title">直觉主义原则</span><span class="sec-src">L Part II §20–21</span></span></li>
+    </ol>
+  </div>
+</section>
+
+<!-- ============ PART 3 ============ -->
+<section class="part p3" id="part3">
+  <div class="part-head">
+    <div class="part-no">III</div>
+    <div class="part-title">
+      <h2>Mac Lane &amp; Moerdijk《Sheaves in Geometry and Logic》—— 层与拓扑斯</h2>
+      <p>从层与 site 到初等拓扑斯、内部逻辑、Kripke–Joyal 语义与分类拓扑斯。<span class="src">【M】</span></p>
+    </div>
+  </div>
+
+  <div class="chapter">
+    <div class="ch-head"><span class="ch-num">第 13 章</span><h3>函子范畴（Ch. I）</h3><span class="ch-count">5 节</span></div>
+    <ol class="secs">
+      <li><input class="chk" type="checkbox"><span class="sec-num">13.1</span><span class="sec-body"><span class="sec-title">函子范畴与拉回</span><span class="sec-src">M Ch.I §1–2</span></span></li>
+      <li><input class="chk" type="checkbox"><span class="sec-num">13.2</span><span class="sec-body"><span class="sec-title">子对象的特征函数</span><span class="sec-src">M Ch.I §3</span></span></li>
+      <li><input class="chk" type="checkbox"><span class="sec-num">13.3</span><span class="sec-body"><span class="sec-title">典型的子对象分类子</span><span class="sec-src">M Ch.I §4</span></span></li>
+      <li><input class="chk" type="checkbox"><span class="sec-num">13.4</span><span class="sec-body"><span class="sec-title">余极限与指数</span><span class="sec-src">M Ch.I §5–6</span></span></li>
+      <li><input class="chk" type="checkbox"><span class="sec-num">13.5</span><span class="sec-body"><span class="sec-title">命题演算、Heyting 代数、量词作为伴随</span><span class="sec-src">M Ch.I §7–9</span></span></li>
+    </ol>
+  </div>
+
+  <div class="chapter">
+    <div class="ch-head"><span class="ch-num">第 14 章</span><h3>集合的层（Ch. II）</h3><span class="ch-count">4 节</span></div>
+    <ol class="secs">
+      <li><input class="chk" type="checkbox"><span class="sec-num">14.1</span><span class="sec-body"><span class="sec-title">层</span><span class="sec-src">M Ch.II §1</span></span></li>
+      <li><input class="chk" type="checkbox"><span class="sec-num">14.2</span><span class="sec-body"><span class="sec-title">筛与层</span><span class="sec-src">M Ch.II §2</span></span></li>
+      <li><input class="chk" type="checkbox"><span class="sec-num">14.3</span><span class="sec-body"><span class="sec-title">层与流形、丛、étale 空间</span><span class="sec-src">M Ch.II §3–6</span></span></li>
+      <li><input class="chk" type="checkbox"><span class="sec-num">14.4</span><span class="sec-body"><span class="sec-title">逆像层</span><span class="sec-src">M Ch.II §9</span></span></li>
+    </ol>
+  </div>
+
+  <div class="chapter">
+    <div class="ch-head"><span class="ch-num">第 15 章</span><h3>Grothendieck 拓扑与 site（Ch. III）</h3><span class="ch-count">3 节</span></div>
+    <ol class="secs">
+      <li><input class="chk" type="checkbox"><span class="sec-num">15.1</span><span class="sec-body"><span class="sec-title">广义邻域与 Grothendieck 拓扑</span><span class="sec-src">M Ch.III §1–2</span></span></li>
+      <li><input class="chk" type="checkbox"><span class="sec-num">15.2</span><span class="sec-body"><span class="sec-title">site 上的层</span><span class="sec-src">M Ch.III §4</span></span></li>
+      <li><input class="chk" type="checkbox"><span class="sec-num">15.3</span><span class="sec-body"><span class="sec-title">伴生层函子</span><span class="sec-src">M Ch.III §5</span></span></li>
+    </ol>
+  </div>
+
+  <div class="chapter">
+    <div class="ch-head"><span class="ch-num">第 16 章</span><h3>初等拓扑斯（Ch. IV）</h3><span class="ch-count">4 节</span></div>
+    <ol class="secs">
+      <li><input class="chk" type="checkbox"><span class="sec-num">16.1</span><span class="sec-body"><span class="sec-title">拓扑斯的定义</span><span class="sec-src">M Ch.IV §1</span></span></li>
+      <li><input class="chk" type="checkbox"><span class="sec-num">16.2</span><span class="sec-body"><span class="sec-title">指数与余极限的构造</span><span class="sec-src">M Ch.IV §2, §5</span></span></li>
+      <li><input class="chk" type="checkbox"><span class="sec-num">16.3</span><span class="sec-body"><span class="sec-title">像分解、切片范畴、Beck–Chevalley 条件</span><span class="sec-src">M Ch.IV §6–7, §9</span></span></li>
+      <li><input class="chk" type="checkbox"><span class="sec-num">16.4</span><span class="sec-body"><span class="sec-title">拓扑斯中的格与 Heyting 代数对象</span><span class="sec-src">M Ch.IV §8</span></span></li>
+    </ol>
+  </div>
+
+  <div class="chapter">
+    <div class="ch-head"><span class="ch-num">第 17 章</span><h3>拓扑斯的基本构造（Ch. V）</h3><span class="ch-count">4 节</span></div>
+    <ol class="secs">
+      <li><input class="chk" type="checkbox"><span class="sec-num">17.1</span><span class="sec-body"><span class="sec-title">Lawvere–Tierney 拓扑</span><span class="sec-src">M Ch.V §1</span></span></li>
+      <li><input class="chk" type="checkbox"><span class="sec-num">17.2</span><span class="sec-body"><span class="sec-title">层与伴生层函子</span><span class="sec-src">M Ch.V §2–3</span></span></li>
+      <li><input class="chk" type="checkbox"><span class="sec-num">17.3</span><span class="sec-body"><span class="sec-title">LT 拓扑涵盖 Grothendieck 拓扑</span><span class="sec-src">M Ch.V §4</span></span></li>
+      <li><input class="chk" type="checkbox"><span class="sec-num">17.4</span><span class="sec-body"><span class="sec-title">内部与外部</span><span class="sec-src">M Ch.V §5</span></span></li>
+    </ol>
+  </div>
+
+  <div class="chapter">
+    <div class="ch-head"><span class="ch-num">第 18 章</span><h3>拓扑斯与逻辑（Ch. VI）</h3><span class="ch-count">5 节</span></div>
+    <ol class="secs">
+      <li><input class="chk" type="checkbox"><span class="sec-num">18.1</span><span class="sec-body"><span class="sec-title">Mitchell–Bénabou 语言</span><span class="sec-src">M Ch.VI §5</span></span></li>
+      <li><input class="chk" type="checkbox"><span class="sec-num">18.2</span><span class="sec-body"><span class="sec-title">Kripke–Joyal 语义</span><span class="sec-src">M Ch.VI §6</span></span></li>
+      <li><input class="chk" type="checkbox"><span class="sec-num">18.3</span><span class="sec-body"><span class="sec-title">层语义</span><span class="sec-src">M Ch.VI §7</span></span></li>
+      <li><input class="chk" type="checkbox"><span class="sec-num">18.4</span><span class="sec-body"><span class="sec-title">Cohen 拓扑斯与力迫</span><span class="sec-src">M Ch.VI §2</span></span></li>
+      <li><input class="chk" type="checkbox"><span class="sec-num">18.5</span><span class="sec-body"><span class="sec-title">选择公理、布尔化与实数对象</span><span class="sec-src">M Ch.VI §4, §8</span></span></li>
+    </ol>
+  </div>
+
+  <div class="chapter">
+    <div class="ch-head"><span class="ch-num">第 19 章</span><h3>几何态射与分类拓扑斯（Ch. VII–VIII）</h3><span class="ch-count">3 节</span></div>
+    <ol class="secs">
+      <li><input class="chk" type="checkbox"><span class="sec-num">19.1</span><span class="sec-body"><span class="sec-title">几何态射</span><span class="sec-src">M Ch.VII §1</span></span></li>
+      <li><input class="chk" type="checkbox"><span class="sec-num">19.2</span><span class="sec-body"><span class="sec-title">点与滤子函子</span><span class="sec-src">M Ch.VII §5–6</span></span></li>
+      <li><input class="chk" type="checkbox"><span class="sec-num">19.3</span><span class="sec-body"><span class="sec-title">分类拓扑斯与对象分类子</span><span class="sec-src">M Ch.VIII §3–4</span></span></li>
+    </ol>
+  </div>
+</section>
+
+<section id="appendix" style="margin:34px 0 8px;">
+  <div style="display:flex;align-items:baseline;gap:12px;border-bottom:2px solid #b45309;padding-bottom:10px;margin-bottom:16px;">
+    <span style="font-size:13px;font-weight:800;color:#fff;background:#b45309;border-radius:7px;padding:3px 10px;white-space:nowrap;">附录</span>
+    <h3 style="font-size:19px;margin:0;letter-spacing:-.01em;">图示总览</h3>
+  </div>
+  <div style="background:var(--card);border:1px solid var(--line);border-left:4px solid #b45309;border-radius:10px;padding:15px 18px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;">
+    <div>
+      <div style="font-size:15px;font-weight:750;">附录 A · 米田引理全局交换图 <span style="font-size:11px;font-weight:700;color:#fff;background:#16a34a;border-radius:6px;padding:2px 8px;margin-left:6px;">已生成</span></div>
+      <div style="font-size:12.5px;color:var(--ink-3);margin-top:4px;">一张完整交换图总览 Nat(Hom(C,−),F) ≅ F(C)：分步动画 SVG + Mermaid 备选 · 对应正文 §6.4</div>
+    </div>
+    <a href="范畴论-逻辑-拓扑斯_附录A_米田引理全局交换图.html" style="text-decoration:none;font-size:13px;font-weight:650;color:#b45309;border:1px solid #f2dfbb;border-radius:99px;padding:7px 15px;background:#fdf3e3;">打开附录 →</a>
+  </div>
+</section>
+
+<footer>
+  <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;">
+    <span>三书递进自学教材 · 总目录 · 19 章 / 80 节 · 逐节生成中</span>
+    <button class="reset" id="resetBtn">清除学习进度</button>
+  </div>
+</footer>
+
+</div>
+
+<script>
+(function(){
+  var KEY = 'catlogic-toc-progress-v1';
+  var boxes = Array.prototype.slice.call(document.querySelectorAll('.chk'));
+  var bar = document.getElementById('progressBar');
+  var num = document.getElementById('progressNum');
+  var doneStat = document.getElementById('doneStat');
+  var total = boxes.length;
+
+  function save(){
+    var state = boxes.map(function(b){return b.checked ? 1 : 0;});
+    try{ localStorage.setItem(KEY, JSON.stringify(state)); }catch(e){}
+  }
+  function render(){
+    var done = boxes.filter(function(b){return b.checked;}).length;
+    bar.style.width = (total ? (done/total*100) : 0) + '%';
+    num.textContent = done + ' / ' + total + ' 节';
+    doneStat.textContent = done;
+    boxes.forEach(function(b){
+      var li = b.closest('li');
+      if(li) li.classList.toggle('done', b.checked);
+    });
+  }
+  try{
+    var state = JSON.parse(localStorage.getItem(KEY) || 'null');
+    if(Array.isArray(state) && state.length === boxes.length){
+      boxes.forEach(function(b,i){ b.checked = !!state[i]; });
+    }
+  }catch(e){}
+
+  boxes.forEach(function(b){ b.addEventListener('change', function(){ save(); render(); }); });
+  document.getElementById('resetBtn').addEventListener('click', function(){
+    if(!confirm('确定清除全部学习进度？')) return;
+    boxes.forEach(function(b){ b.checked = false; });
+    save(); render();
+  });
+  render();
+})();
+</script>
+</body>
+</html>

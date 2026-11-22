@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-page-node-id="XbR5TJmneNCggy4FhsiZEn">
+<head data-page-node-id="eA2az1UnOCE8VvuaHpmnBW">
+<meta charset="UTF-8" data-page-node-id="2WQG5FJoh7GcAdsgug3rTu">
+<meta name="viewport" content="width=device-width, initial-scale=1.0" data-page-node-id="9IcEWswZs8uE6y0TLXaXis">
+<title>第 2 章 抽象结构：单态、初终对象与积 —— 三书递进自学教材</title>
+<script>
+window.MathJax = {
+  tex: { inlineMath: [['\\(','\\)']], displayMath: [['\\[','\\]']], processEscapes: true },
+  options: { ignoreHtmlClass: 'no-tex' },
+  svg: { fontCache: 'global' }
+};
+</script>
+<script async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
+<style>
+  :root{
+    --bg:#f6f7f9; --card:#fff; --ink:#1b1f27; --ink2:#4d5461; --ink3:#7a8190;
+    --line:#e5e8ed; --soft:#f0f2f5;
+    --c1:#2563eb; --c1bg:#eef4ff; --gold:#b45309; --goldbg:#fdf3e3;
+    --ok:#15803d; --okbg:#eefaf1; --phil:#7c3aed; --philbg:#f6f1ff;
+    --radius:12px;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;
+    line-height:1.75;-webkit-font-smoothing:antialiased;}
+  .wrap{max-width:920px;margin:0 auto;padding:0 22px 80px;}
+
+  header.top{padding:34px 0 22px;border-bottom:1px solid var(--line);margin-bottom:26px;}
+  .breadcrumb{font-size:12.5px;color:var(--ink3);margin-bottom:10px;}
+  .breadcrumb a{color:var(--c1);text-decoration:none;}
+  h1{font-size:29px;margin:0 0 8px;letter-spacing:-.02em;}
+  .lede{color:var(--ink2);font-size:14.5px;margin:0 0 16px;}
+  .jump{display:flex;gap:8px;flex-wrap:wrap;}
+  .jump a{font-size:12.5px;font-weight:650;text-decoration:none;color:var(--ink2);
+    background:var(--card);border:1px solid var(--line);border-radius:99px;padding:6px 13px;}
+  .jump a:hover{border-color:var(--c1);color:var(--c1);}
+
+  section.sec{margin:0 0 52px;scroll-margin-top:16px;}
+  .sec-h{display:flex;align-items:baseline;gap:12px;border-bottom:2px solid var(--c1);padding-bottom:10px;margin-bottom:22px;}
+  .sec-no{font-size:13px;font-weight:800;color:#fff;background:var(--c1);border-radius:7px;padding:3px 10px;white-space:nowrap;}
+  .sec-h h2{font-size:22px;margin:0;letter-spacing:-.01em;}
+  .src{font-size:11.5px;color:var(--ink3);margin-left:auto;white-space:nowrap;}
+
+  .box{border-radius:var(--radius);padding:16px 20px;margin:18px 0;border:1px solid var(--line);}
+  .box h4{margin:0 0 10px;font-size:14px;letter-spacing:.01em;}
+
+  .learn{background:var(--c1bg);border-color:#cfe0ff;}
+  .learn h4{color:var(--c1);}
+  .learn ol{margin:0;padding-left:22px;} .learn li{margin:4px 0;font-size:14px;}
+
+  .defn{background:#fafbfc;border-left:4px solid var(--ink2);padding:14px 18px;margin:16px 0;border-radius:0 10px 10px 0;}
+  .defn .lbl{font-weight:800;font-size:13.5px;color:var(--ink);}
+  .prop{background:#fbfcfe;border:1px solid #dbe6f8;border-left:4px solid var(--c1);padding:14px 18px;margin:16px 0;border-radius:0 10px 10px 0;}
+  .prop .lbl{font-weight:800;font-size:13.5px;color:var(--c1);}
+  .rmk{font-size:13.5px;color:var(--ink2);background:var(--soft);padding:11px 16px;border-radius:9px;margin:12px 0;}
+
+  .proof{margin:10px 0 4px;padding-left:16px;border-left:2px solid var(--line);font-size:14px;color:var(--ink2);}
+  .proof .pl{font-weight:700;color:var(--ink);}
+  .qed{float:right;font-style:normal;color:var(--ink3);}
+
+  .exer{background:var(--goldbg);border-color:#f2dfbb;}
+  .exer h4{color:var(--gold);}
+  .exer .grp{font-size:12.5px;font-weight:750;color:var(--gold);margin:12px 0 4px;}
+  .exer ol{margin:0;padding-left:22px;} .exer li{margin:9px 0;font-size:14px;}
+
+  .ans{background:var(--okbg);border-color:#c9ecd3;}
+  .ans h4{color:var(--ok);}
+  .ans .item{margin:14px 0 18px;font-size:14px;}
+  .ans .item:last-child{margin-bottom:0;}
+  .ans .item b{color:var(--ok);}
+  .ans .proof{border-left-color:#bfe6c9;}
+
+  .phil{background:var(--philbg);border-color:#e3d5ff;}
+  .phil h4{color:var(--phil);}
+  .phil p{font-size:14px;color:#5b3a8e;margin:8px 0;}
+
+  h3.sub{font-size:16px;margin:26px 0 6px;color:var(--ink);}
+  p{margin:9px 0;} .math{overflow-x:auto;}
+
+  footer{border-top:1px solid var(--line);margin-top:30px;padding-top:20px;font-size:13px;color:var(--ink3);}
+  footer a{color:var(--c1);text-decoration:none;}
+
+  @media(max-width:640px){
+    h1{font-size:23px;} .wrap{padding:0 14px 60px;}
+    .sec-h{flex-wrap:wrap;} .src{margin-left:0;}
+    .box{padding:14px 15px;}
+  }
+  @media print{body{background:#fff;}.jump{display:none;}.box{break-inside:avoid;}}
+</style>
+</head>
+<body data-page-node-id="YkwDyl4vHEOZ1zQ11OL7hK">
+<div class="wrap" data-page-node-id="cGN4CAo7JdZIPDMDzoSwLa">
+
+<header class="top" data-page-node-id="aEMc3haujgStLNMF4LVjOi">
+  <div class="breadcrumb" data-page-node-id="GNyEfnmTGJdaJ2Tc3lKzaV"><a href="范畴论-逻辑-拓扑斯_教材总目录.html" data-page-node-id="gF1hCbGkC86NdkJJcTBrmA">← 返回总目录</a> ｜ 第一部分 · Awodey《Category Theory》（第二版）</div>
+  <h1 data-page-node-id="Y4xVCV8GQxZoL3GKXEUael">第 2 章　抽象结构：单态、初终对象与积</h1>
+  <p class="lede" data-page-node-id="9VF9804KVtDrrmpCU6fNug">本章把集合论里靠"元素"说话的三个概念——单射/满射、特殊集合、笛卡尔积——逐一翻译成只依赖箭头的语言。这一步是全书第一次真正的抽象化：此后"元素"将被 2.3 节的广义元素取代，而泛性质将首次以完整形态出现。对应 Awodey 第二版第 2 章。</p>
+  <nav class="jump" data-page-node-id="sShDRsxAVkL8J0MW8dthbQ">
+    <a href="#s2-1" data-page-node-id="oYBkNFa5eW6YYUpCEC8vaQ">2.1 单态与满态</a>
+    <a href="#s2-2" data-page-node-id="I3tLLJTQIzJWf64GmLabHR">2.2 初始对象与终末对象</a>
+    <a href="#s2-3" data-page-node-id="G7ISwY0qZ82FGwg07vnbk2">2.3 广义元素</a>
+    <a href="#s2-4" data-page-node-id="grMZJAdwGAaPEHolp63OPv">2.4 积与具有积的范畴</a>
+  </nav>
+</header>
+
+<!-- ==================== 2.1 ==================== -->
+<section class="sec" id="s2-1" data-page-node-id="dsecppLGr694Rx6C6Qssb8">
+  <div class="sec-h" data-page-node-id="k1pNjOCIpKCgCfhrob5Vcd"><span class="sec-no" data-page-node-id="nVo49MgRTOAPZ6qMyhLmSY">2.1</span><h2 data-page-node-id="6muhufbzi2rsWEOd5Pooiy">单态与满态</h2><span class="src" data-page-node-id="uLh8TyU4HcnCP6SC49wBLN">A §2.1, pp.29–33</span></div>
+
+  <div class="box learn" data-page-node-id="PyfoIGrjcldfHGsbT16o72">
+    <h4 data-page-node-id="JKW4rqW1Ym9h9hcA7yOIxH">① 本节学习目标</h4>
+    <ol data-page-node-id="Y2fpf3OCKmHWYEY56IVVXX">
+      <li data-page-node-id="NYkSknYqQ8y16cS3Dyec9H">说清为什么"单射/满射"的定义不能照搬进一般范畴，并给出只用箭头的替代定义；</li>
+      <li data-page-node-id="6yoKitfYAypvpO5bgs1qCw">掌握单态（左消去）与满态（右消去）的定义，能熟练用对偶性互换两者；</li>
+      <li data-page-node-id="A4jtRw5DZgwESHaFd1zYTF">严格证明 \(\mathbf{Set}\) 中单态⟺单射、满态⟺满射；</li>
+      <li data-page-node-id="WBaBBwhqPWA6B0MwdtP9m3">给出一个满态但非满射的具体例子（\(\mathbb{Z}\hookrightarrow\mathbb{Q}\)），并完整证明它是满态；</li>
+      <li data-page-node-id="0poB5FmMYmTEmFemAQAMQR">证明单态/满态在复合下的封闭性，以及"复合单⟹左因子单"这类消去规律；</li>
+      <li data-page-node-id="BTVgEg2pHvOvQHmwVJHiLZ">厘清"外部单态"与你此前问过的"内部单态"分别属于哪一层语言。</li>
+    </ol>
+  </div>
+
+  <h3 class="sub" data-page-node-id="VNuz2THyDAwDti4DAAdWMa">2.1.1　动机：没有元素，如何说"单射"？</h3>
+  <p data-page-node-id="uchM5J8bYibxW0ud2Zyn3d">在 \(\mathbf{Set}\) 中，\(f:A\to B\) 单射的定义是
+    \[\forall a_1,a_2\in A,\quad f(a_1)=f(a_2)\ \Longrightarrow\ a_1=a_2.\]
+    这句话用到两样范畴定义里根本不存在的东西：对象 \(A\) 的"元素" \(a\in A\)，以及箭头在元素上的"取值" \(f(a)\)。一般范畴的对象只是一个节点，没有"属于"关系。因此若想让"单射"在范畴论中有意义，必须找一种<strong data-page-node-id="OzAaImqKDPKmV9hdEbLRnI">只提到对象和箭头</strong>的替代说法。</p>
+  <p data-page-node-id="yTU9oXSGmG5nOfKHgQAF7d">观察：在 \(\mathbf{Set}\) 里，元素 \(a\in A\) 与箭头 \(\bar a:1\to A\)（\(1=\{\ast\}\)）一一对应，而 \(f(a)\) 恰是复合 \(f\circ\bar a\)。于是"\(f\) 单射"可改写为：对任意两条从 \(1\) 出发的箭头 \(\bar a_1,\bar a_2:1\to A\)，若 \(f\circ\bar a_1=f\circ\bar a_2\) 则 \(\bar a_1=\bar a_2\)。这里已经不出现元素了，只剩箭头复合。再把"起点 \(1\)"推广为任意对象 \(X\)，就得到下面的定义。</p>
+  <div class="rmk" data-page-node-id="0MUGG2bslRlvOjwlcAUJP2"><strong data-page-node-id="Kuo8mVm50xZ6Ze7woGJJIP">方法论要点。</strong>这一步的模式在全书反复出现：把"对元素的性质"改写成"对所有从某对象出发的箭头的性质"。2.3 节会把这个改写正式命名为广义元素；第 6 章的 Yoneda 引理则给出它为何总是可行的深层理由。此刻只需把它当作一个有效的翻译规则。</div>
+
+  <h3 class="sub" data-page-node-id="OnxxYH8BF0jdX7vouypDLD">2.1.2　定义与基本性质</h3>
+  <div class="defn" data-page-node-id="rIo2MLkLI4bFDciAFM5uGG"><span class="lbl" data-page-node-id="qoELmG8njrWbyvISPWsYHz">定义 2.1.1（单态，monomorphism）</span>　范畴 \(\mathbf{C}\) 中的箭头 \(f:A\to B\) 称为<strong data-page-node-id="tNN8QXFTcUm7l79iTpqMMB">单态</strong>，若对任意对象 \(X\) 与任意箭头 \(g,h:X\to A\)，
+    \[f\circ g=f\circ h\quad\Longrightarrow\quad g=h.\]
+    即：\(f\) 在复合的左侧可被消去（左消去，left-cancellative）。图示：\(X\stackrel{g}{\underset{h}{\rightrightarrows}}A\xrightarrow{f}B\)。</div>
+  <div class="defn" data-page-node-id="tusTZM12KL4NMHA3gwtgz3"><span class="lbl" data-page-node-id="FbEi0pr4k3AhHUxaj6yB4b">定义 2.1.2（满态，epimorphism）</span>　箭头 \(f:A\to B\) 称为<strong data-page-node-id="ftSm8rdAs4DD2NICj4kTzt">满态</strong>，若对任意对象 \(Y\) 与任意箭头 \(g,h:B\to Y\)，
+    \[g\circ f=h\circ f\quad\Longrightarrow\quad g=h.\]
+    即：\(f\) 在复合的右侧可被消去（右消去，right-cancellative）。</div>
+  <div class="prop" data-page-node-id="541bw3H31I2fOYbr5OUNaC"><span class="lbl" data-page-node-id="5MWGglbdG1XEZ6UbcuyG28">命题 2.1.3（对偶性）</span>　\(f\) 是 \(\mathbf{C}\) 中的单态，当且仅当 \(f^{\mathrm{op}}\) 是 \(\mathbf{C}^{\mathrm{op}}\) 中的满态；\(f\) 满当且仅当 \(f^{\mathrm{op}}\) 单。
+    <div class="proof" data-page-node-id="nKKtAxVctzyvUbpHkWh0DF"><span class="pl" data-page-node-id="sCn4GEf8xiASkd9VKQOoEA">证明：</span>\(\mathbf{C}^{\mathrm{op}}\) 中箭头 \(f^{\mathrm{op}}:B\to A\)。按定义，\(f^{\mathrm{op}}\) 在 \(\mathbf{C}^{\mathrm{op}}\) 中单，意为对 \(\mathbf{C}^{\mathrm{op}}\) 中任意 \(g^{\mathrm{op}},h^{\mathrm{op}}:A\to B\)（即 \(\mathbf{C}\) 中 \(g,h:B\to A\)），由 \(f^{\mathrm{op}}\circ^{\mathrm{op}}g^{\mathrm{op}}=f^{\mathrm{op}}\circ^{\mathrm{op}}h^{\mathrm{op}}\)（即 \(\mathbf{C}\) 中 \(g\circ f=h\circ f\)）可推出 \(g^{\mathrm{op}}=h^{\mathrm{op}}\)（即 \(g=h\)）。这正是 \(f\) 在 \(\mathbf{C}\) 中满。另一句同法。<span class="qed" data-page-node-id="RTXmIHPhFpSoyX0iZuIU3T">∎</span></div>
+  </div>
+  <p data-page-node-id="11vMW49cAFTtkkL64KRccT">有了对偶性，凡关于单态的定理都可"倒过来"得到关于满态的定理，证明无需重写。下面在 \(\mathbf{Set}\) 中验证这两个定义确实捕捉了原来的概念。</p>
+
+  <div class="prop" data-page-node-id="opy5uGJEF9hol87mNHGEFJ"><span class="lbl" data-page-node-id="gdj2S65OW6wkIpF8cXh8CJ">命题 2.1.4（\(\mathbf{Set}\) 中的单态）</span>　设 \(f:A\to B\) 是函数。则 \(f\) 是 \(\mathbf{Set}\) 中的单态，当且仅当 \(f\) 是单射。
+    <div class="proof" data-page-node-id="lC7OSGhZlfCtxLEwRxQbul"><span class="pl" data-page-node-id="uwD956yEGvVUAfdNJm4I1Y">证明（⟸）：</span>设 \(f\) 单射，且 \(g,h:X\to A\) 满足 \(f\circ g=f\circ h\)。对任意 \(x\in X\)，有 \(f(g(x))=(f\circ g)(x)=(f\circ h)(x)=f(h(x))\)，由 \(f\) 单射得 \(g(x)=h(x)\)。因 \(x\) 任意，\(g=h\)，故 \(f\) 单态。<br data-page-node-id="HiUNz3aNo9MLgejoaEidWA">
+      <span class="pl" data-page-node-id="PHWSTHCIEXBBdo5AdYP4Bl">证明（⟹）：</span>设 \(f\) 单态。取 \(X=1=\{\ast\}\)，对任意 \(a_1,a_2\in A\) 定义 \(g(1)=a_1,\ h(1)=a_2\)。若 \(f(a_1)=f(a_2)\)，则 \(f\circ g=f\circ h\)，由 \(f\) 单态得 \(g=h\)，从而 \(a_1=g(1)=h(1)=a_2\)。故 \(f\) 单射。<span class="qed" data-page-node-id="cLvxdPnigHSkHCJekQwi5f">∎</span></div>
+  </div>
+  <div class="prop" data-page-node-id="3DZkCOoDNDvjcYfHsXcxHb"><span class="lbl" data-page-node-id="lgXEVSSKgDHBgB2uxHggRK">命题 2.1.5（\(\mathbf{Set}\) 中的满态）</span>　设 \(f:A\to B\) 是函数。则 \(f\) 是 \(\mathbf{Set}\) 中的满态，当且仅当 \(f\) 是满射。
+    <div class="proof" data-page-node-id="KTvYJzpZW9uFc9JSybdeap"><span class="pl" data-page-node-id="TSPDWdGprCQWBnMFFh5XWS">证明（⟸）：</span>设 \(f\) 满射，且 \(g,h:B\to Y\) 满足 \(g\circ f=h\circ f\)。任取 \(b\in B\)，由满射取 \(a\in A\) 使 \(f(a)=b\)，则
+      \[g(b)=g(f(a))=(g\circ f)(a)=(h\circ f)(a)=h(f(a))=h(b).\]
+      因 \(b\) 任意，\(g=h\)，故 \(f\) 满态。<br data-page-node-id="0A1EWxKyn91A4arHXAkKrd">
+      <span class="pl" data-page-node-id="7BveKogOCpEVj0m1CVBVCe">证明（⟹）：</span>设 \(f\) 满态。反设 \(f\) 不满射，则存在 \(b_0\in B\) 不在像 \(f(A)\) 中。取 \(Y=\{0,1\}\)，定义
+      \[g(b)=0\ (\forall b\in B),\qquad h(b)=\begin{cases}1,& b=b_0,\\ 0,& b\ne b_0.\end{cases}\]
+      对任意 \(a\in A\)，\(f(a)\ne b_0\)，故 \(h(f(a))=0=g(f(a))\)，即 \(g\circ f=h\circ f\)。但 \(g(b_0)=0\ne1=h(b_0)\)，故 \(g\ne h\)，与 \(f\) 满态矛盾。故 \(f\) 满射。<span class="qed" data-page-node-id="YDPrII8EqAi9qeApGZPoGa">∎</span></div>
+  </div>
+  <div class="rmk" data-page-node-id="WXnc9GLTksqD3Y2PIDHImJ"><strong data-page-node-id="O2wS8IIgNQC8XgEB7yXBwh">不要过度推广。</strong>命题 2.1.4 在 \(\mathbf{Grp},\mathbf{Ab},\mathbf{Vect}_k,\mathbf{Top}\) 中同样成立（单态=单射、满态=满射），但在一般范畴中满态可能严格弱于"满射"（见 2.1.4）。单态也可能是很"怪"的东西：在偏序范畴 \(\mathbf{P}\) 中，任意两个对象间至多一条箭头，故消去条件自动成立，<strong data-page-node-id="jlogOG6twuBCbCtTKVhfx7">每个箭头既单又满</strong>；而 \(p\le q,\ p\ne q\) 时 \(p\to q\) 显然不是同构。这说明"单且满"一般<strong data-page-node-id="YraCeeULWSPAOuj4YdbaJA">不</strong>推出同构（在阿贝尔范畴等特殊情形才成立）。</div>
+
+  <h3 class="sub" data-page-node-id="wUTMAOWHnIW8W8Kq7k06px">2.1.3　复合与消去规律</h3>
+  <div class="prop" data-page-node-id="mrY2gb9wovGDMK7PGSUAxr"><span class="lbl" data-page-node-id="LkPn9yIxzZdaZW5PPLXdCu">命题 2.1.6</span>　设 \(f:A\to B,\ g:B\to C\)。
+    <br data-page-node-id="iNle6iS0ehtJGRNy3e4zFO">(a) 若 \(f,g\) 都是单态，则 \(g\circ f\) 是单态；若都是满态，则 \(g\circ f\) 是满态。
+    <br data-page-node-id="llLTqbzGfWh6EZ4OpSsRwH">(b) 若 \(g\circ f\) 是单态，则 \(f\) 是单态；若 \(g\circ f\) 是满态，则 \(g\) 是满态。
+    <div class="proof" data-page-node-id="HBAiMB1Ew3Qej51LImBFpG"><span class="pl" data-page-node-id="YJ9iqLm3gnsJ9niCgpQ5VH">证明 (a) 单态部分：</span>设 \(u,v:X\to A\) 满足 \((g\circ f)\circ u=(g\circ f)\circ v\)。由结合律即 \(g\circ(f\circ u)=g\circ(f\circ v)\)。由 \(g\) 单得 \(f\circ u=f\circ v\)，由 \(f\) 单得 \(u=v\)。故 \(g\circ f\) 单。满态部分由对偶性立得。<br data-page-node-id="ze1gZfdBCk2QMDeDy2ToIQ">
+      <span class="pl" data-page-node-id="tBNswZHuiaLkellXLTRCx2">证明 (b) 单态部分：</span>设 \(u,v:X\to A\) 满足 \(f\circ u=f\circ v\)。两边左复合 \(g\)：\(g\circ f\circ u=g\circ f\circ v\)，即 \((g\circ f)\circ u=(g\circ f)\circ v\)。由 \(g\circ f\) 单得 \(u=v\)。故 \(f\) 单。满态部分由对偶性立得。<span class="qed" data-page-node-id="iodaT4Hr4ai4InbGab3sNZ">∎</span></div>
+  </div>
+  <div class="rmk" data-page-node-id="8ZmKvhU85ICXPOXAjCWkeB">(b) 的两个结论都只是"单向"的：\(g\circ f\) 单推不出 \(g\) 单（取 \(A=\varnothing,\ B=\{0,1\},\ C=\{*\}\)，\(f\) 为唯一函数、\(g\) 为常值函数，则 \(g\circ f:\varnothing\to\{*\}\) 单而 \(g\) 在 \(\mathbf{Set}\) 中不单）；对偶地 \(g\circ f\) 满推不出 \(f\) 满。这两点将在习题 2.1.5 中落实。</div>
+
+  <h3 class="sub" data-page-node-id="XP2h527xHWPCjmKDWUq9YA">2.1.4　一个关键反例：\(\mathbb{Z}\hookrightarrow\mathbb{Q}\) 是满态</h3>
+  <p data-page-node-id="NLuQYLve16cSE03mDuB2h0">现在看一个在 \(\mathbf{Set}\) 中绝不会发生、在 \(\mathbf{Ring}\)（含幺环与保幺同态）中却真实发生的现象。记 \(i:\mathbb{Z}\hookrightarrow\mathbb{Q}\) 为自然包含。</p>
+  <div class="prop" data-page-node-id="rTIR05OFJfw50IgTW7cZId"><span class="lbl" data-page-node-id="185eMVZLar2ykBrlwdk9wP">命题 2.1.7</span>　\(i:\mathbb{Z}\to\mathbb{Q}\) 是 \(\mathbf{Ring}\) 中的满态，但不是满射。
+    <div class="proof" data-page-node-id="QtLjzHNnu2d3QOufnDCmUV"><span class="pl" data-page-node-id="o5QDjJpISINak8bL7WPfmx">证明它是满态：</span>设 \(R\) 是含幺环，\(g,h:\mathbb{Q}\to R\) 是保幺环同态，且 \(g\circ i=h\circ i\)，即 \(g(n)=h(n)\) 对一切 \(n\in\mathbb{Z}\)。任取 \(q\in\mathbb{Q}\)，写成 \(q=a/b\)，其中 \(a,b\in\mathbb{Z},\ b\ne0\)。在 \(\mathbb{Q}\) 中 \(b\cdot(1/b)=1\)，施加 \(g\) 得
+      \[g(b)\cdot g(1/b)=g(1)=1_R,\]
+      故 \(g(b)\) 在 \(R\) 中可逆，且 \(g(1/b)=g(b)^{-1}\)。同理 \(h(1/b)=h(b)^{-1}\)。由假设 \(g(b)=h(b)\)，逆元唯一，故 \(g(1/b)=h(1/b)\)。于是
+      \[g(q)=g(a)\,g(1/b)=h(a)\,h(1/b)=h(q).\]
+      \(q\) 任意，故 \(g=h\)。按定义 2.1.2，\(i\) 是满态。<br data-page-node-id="2iz0Czo2jtRNMcGny4Jynj">
+      <span class="pl" data-page-node-id="mTfHqmDS68H9F0FJOtsyHP">证明它不满射：</span>\(1/2\in\mathbb{Q}\) 不属于 \(i(\mathbb{Z})\)。<span class="qed" data-page-node-id="MyUAFBbBbCKVudbkBBOOS3">∎</span></div>
+  </div>
+  <p data-page-node-id="e149uQD7jMhdPTq9hBLBM4">这个例子的哲学含义值得记牢：<strong data-page-node-id="XVszuAiGjpw0mkNA0toC1V">"从外部可区分"不等于"有元素被漏掉"</strong>。\(i\) 漏掉了元素 \(1/2\)，可任何两个从 \(\mathbb{Q}\) 出发的同态只要在 \(\mathbb{Z}\) 上一致，就被 \(\mathbb{Z}\) 中非零元的逆元"逼"得处处一致——\(\mathbb{Q}\) 没有给同态留下任何自由选择的余地。2.3 节会把这句话精确化：满态只保证"广义元素层面不能被 \(\mathbf{Ring}\)-结构区分"，不保证"每个元素都有原像"。这个差别正是层论中"局部存在"与"全局存在"之别的雏形（第 14、15 章）。</p>
+
+  <h3 class="sub" data-page-node-id="uZ50uoUTOFRkRoTr3dIDrS">2.1.5　关于"内部单态"的说明</h3>
+  <div class="rmk" data-page-node-id="TjM8RWFXMnvXFKCKyz0EGY">定义 2.1.1 是<strong data-page-node-id="K4ntQc5EH9WguLCASkKPqN">外部</strong>概念：它活在范畴外的 Hom-集里，用"对所有 \(X\)，箭头消去"来表述。你此前问过的"内部单态"属于另一层语言：在拓扑斯 \(\mathcal{E}\) 的内部语言中，可以说"\(f\) 在内部是单射"，其严格含义要等第 11.2 节（内部语言）与第 18.1 节（Mitchell–Bénabou 语言）才给出，并由第 18.2 节的 Kripke–Joyal 语义刻画。在 \(\mathbf{Set}\) 中两者一致；在一般拓扑斯中，"内部单射"与外部单态的关系并非同义反复。本节先严格建立外部概念，届时再回来对照。此处不可把两者混用。</div>
+
+  <div class="box exer" data-page-node-id="kuRLubs5AvS3LmO1GuDAMj">
+    <h4 data-page-node-id="MZY42oQLxHAPvfKckWK29r">③ ✅ 课后练习题</h4>
+    <div class="grp" data-page-node-id="jzwLrZuWjVyHoIJ0LWQVAp">（一）基础巩固题</div>
+    <ol data-page-node-id="Fdy7QeT0qZuqXWt3Bnetxp">
+      <li id="q211" data-page-node-id="kzjWrgs1ia4Bz52VyFCIFt">设 \(f:A\to B\) 是函数。不用命题 2.1.4，直接验证：常值函数 \(c:\{0,1\}\to\{*\}\) 在 \(\mathbf{Set}\) 中不是单态；并找出使 \(c\circ g=c\circ h\) 但 \(g\ne h\) 的具体 \(g,h\)。</li>
+      <li id="q212" data-page-node-id="a61oRhNu2EDNebRiRdli9z">证明：若 \(f:A\to B\) 与 \(g:B\to C\) 都是单态，则 \(g\circ f\) 单态（要求写出 \(\forall X\ \forall u,v\) 的完整推理，不得只引用命题 2.1.6）。</li>
+      <li id="q213" data-page-node-id="yOnKc8mxKDjQ2EMYBdPKOo">设 \((P,\le)\) 是偏序集，\(\mathbf{P}\) 为 1.1.5 中构造的范畴。证明：\(\mathbf{P}\) 中的每个箭头都是单态且都是满态。</li>
+      <li id="q214" data-page-node-id="lIBV5lO6fhfCopqSsNyoLE">设 \(f:A\to B\) 是 \(\mathbf{Set}\) 中的函数且 \(A\ne\varnothing\)。证明：\(f\) 是单态当且仅当存在 \(g:B\to A\) 使 \(g\circ f=\mathrm{id}_A\)。并说明：为什么单射性保证这个 \(g\) 的定义无需使用选择公理。</li>
+    </ol>
+    <div class="grp" data-page-node-id="aCPt1MiNRdv9F5FWLJUrDP">（二）进阶思考题</div>
+    <ol start="5" data-page-node-id="sVH1m6JvFgNTWkjAktnsEy">
+      <li id="q215" data-page-node-id="tvG95D2S697kJJ7rZtkHML">在 \(\mathbf{Set}\) 中构造 \(f:A\to B,\ g:B\to C\)，使得 \(g\circ f\) 是单态但 \(g\) 不是单态；再构造一对使 \(g\circ f\) 是满态但 \(f\) 不是满态。写出全部集合与函数的定义。</li>
+      <li id="q216" data-page-node-id="VlHY46CCTNtkPErNtc6mz4">证明：\(\mathbb{Z}\hookrightarrow\mathbb{Q}\) 在 \(\mathbf{Ring}\) 中是满态但非满射（命题 2.1.7）之后，进一步回答：包含 \(i:\mathbb{Q}\hookrightarrow\mathbb{R}\) 是否也是 \(\mathbf{Ring}\) 中的满态？给出严格证明或反例。（提示：考察能否构造两个同态 \(\mathbb{R}\to R\) 在 \(\mathbb{Q}\) 上一致而在 \(\mathbb{R}\) 上不同。）</li>
+    </ol>
+  </div>
+
+  <div class="box ans" data-page-node-id="tentOxBtTc89drRrygcZvZ">
+    <h4 data-page-node-id="C4AQWJaDozQ0Yi4FOJ0eUb">④ ✅ 习题参考答案</h4>
+    <div class="item" data-page-node-id="FdqDG2hkgxm8tf9P7qVcHx"><b data-page-node-id="tNjWQ0U9dI2ZMWSRfaKJhI">2.1.1</b>　取 \(X=\{*\}\)，定义 \(g(*)=0,\ h(*)=1\)。则 \((c\circ g)(*)=c(0)=*=(c(1))=(c\circ h)(*)\)，故 \(c\circ g=c\circ h\)（两边都是 \(\{*\}\to\{*\}\) 的唯一函数）。但 \(g(*)=0\ne1=h(*)\)，故 \(g\ne h\)。按定义 2.1.1，\(c\) 不是单态。<span class="qed" data-page-node-id="nSHNGOi10AKoCPEOF0pYZg">∎</span></div>
+    <div class="item" data-page-node-id="gkuH2SHZCudB9joLStwlnT"><b data-page-node-id="Qe9Yw4CrhLmTXi70PZOSsD">2.1.2</b>　任取对象 \(X\) 与箭头 \(u,v:X\to A\)，设 \((g\circ f)\circ u=(g\circ f)\circ v\)。由结合律，
+      \[g\circ(f\circ u)=g\circ(f\circ v).\]
+      因 \(g\) 单态，得 \(f\circ u=f\circ v\)。因 \(f\) 单态，得 \(u=v\)。由于 \(X,u,v\) 任意，\(g\circ f\) 满足定义 2.1.1，故为单态。<span class="qed" data-page-node-id="7StbhVLHONGINVFafyggB2">∎</span></div>
+    <div class="item" data-page-node-id="yQ9zyDGolBqhib7ULMNnOf"><b data-page-node-id="E1mSieEMq2PmOhQaJx3jFQ">2.1.3</b>　在 \(\mathbf{P}\) 中，\(\operatorname{Hom}(p,q)\) 或为空集，或为单元集 \(\{\ast_{pq}\}\)。设 \(f:p\to q\)，任取 \(X=r\) 与 \(g,h:r\to p\)。若 \(\operatorname{Hom}(r,p)=\varnothing\)，则不存在这样的 \(g,h\)，条件空真。若 \(\operatorname{Hom}(r,p)\) 是单元集，则 \(g=h=\ast_{rp}\) 自动成立。故 \(f\) 单态。同理，对 \(g,h:q\to r\)，若存在则唯一，故 \(g\circ f=h\circ f\Rightarrow g=h\) 自动成立，\(f\) 满态。<span class="qed" data-page-node-id="rCjwCondpydTd5y50fxnn9">∎</span></div>
+    <div class="item" data-page-node-id="FzcuuPtbjRfewa9jF8mIsL"><b data-page-node-id="jE6iEK6ViUnI7DAwxwINC1">2.1.4</b>　(⟸) 若存在 \(g:B\to A\) 使 \(g\circ f=\mathrm{id}_A\)，设 \(f\circ u=f\circ v\)，两边左复合 \(g\)：
+      \[u=\mathrm{id}_A\circ u=(g\circ f)\circ u=g\circ(f\circ u)=g\circ(f\circ v)=(g\circ f)\circ v=\mathrm{id}_A\circ v=v.\]
+      故 \(f\) 单态。<br data-page-node-id="GRQ0ZFegq56phRljRIdtbf">
+      (⟹) 设 \(f\) 单态，由命题 2.1.4 它是单射。若 \(A=\varnothing\)，则 \(g:B\to\varnothing\) 存在的条件是 \(B=\varnothing\)，而此时 \(f\) 唯一且结论平凡；以下设 \(A\ne\varnothing\)，取定 \(a_0\in A\)。对每个 \(b\in f(A)\) 令 \(g(b)\) 为唯一的 \(a\in A\) 使 \(f(a)=b\)（单射保证唯一），对 \(b\notin f(A)\) 令 \(g(b)=a_0\)。则 \(g\circ f=\mathrm{id}_A\)。
+      <strong data-page-node-id="oMWp0uoFBW4C7wI39ItwWv">无需选择公理：</strong>这个 \(g\) 可直接由分离公理定义为集合
+      \[g=\{\,(b,a)\in B\times A\mid f(a)=b\,\}\ \cup\ \bigl((B\setminus f(A))\times\{a_0\}\bigr),\]
+      它确为函数（第一段中每个 \(b\) 至多出现一次，正是单射性保证的）。若原像不唯一才需逐点任择，那才会用到选择公理。<span class="qed" data-page-node-id="vP5ZSyNs1Dry6EM1C3qrxk">∎</span></div>
+    <div class="item" data-page-node-id="qRo5FFhowNSweb4W4Qxown"><b data-page-node-id="Ir8yUHiA6IF4ULC9diTBq8">2.1.5</b>　第一例：取 \(A=\varnothing,\ B=\{0,1\},\ C=\{*\}\)，\(f:\varnothing\to B\) 为唯一函数，\(g:B\to C\) 为常值。则 \(g\circ f:\varnothing\to\{*\}\) 是从空集出发的唯一函数，是单态（定义 2.1.1 中不存在 \(u,v:\varnothing\to\varnothing\) 之外的箭头，而 \(\operatorname{Hom}(\varnothing,\varnothing)\) 只有 \(\mathrm{id}\)）。但 \(g\) 不是单态：取 \(u,v:1\to B\) 分别为 \(u(*)=0,\ v(*)=1\)，则 \(g\circ u=g\circ v\) 而 \(u\ne v\)。<br data-page-node-id="fpdw6Lwk4mgEBJcZ5mLmA9">
+      第二例：取 \(A=\{0\},\ B=\{0,1\},\ C=\{*\}\)，\(f(0)=0\)（包含），\(g\) 常值。则 \(g\circ f:\{0\}\to\{*\}\) 是满射，故为满态（命题 2.1.5）。但 \(f\) 不是满射，故不是满态（命题 2.1.5 的⟹方向）。<span class="qed" data-page-node-id="FZGvtqiElDMuFsVitJATwF">∎</span></div>
+    <div class="item" data-page-node-id="QmWfIbmAXfthH9aIabuApL"><b data-page-node-id="LSCBVRD4U9REII4bXey0pf">2.1.6</b>　答案：<strong data-page-node-id="RVRjYXaUlzXfKr67WPz6TW">不是</strong>。设 \(j:\mathbb{Q}\hookrightarrow\mathbb{R}\) 为包含。取目标环 \(R=\mathbb{R}\otimes_{\mathbb{Q}}\mathbb{R}\)，定义两个保幺环同态
+      \[g(x)=x\otimes 1,\qquad h(x)=1\otimes x\qquad(x\in\mathbb{R}).\]
+      它们在 \(\mathbb{Q}\) 上一致：对 \(q\in\mathbb{Q}\) 有 \(q\otimes1=1\otimes q\)（张量积的 \(\mathbb{Q}\)-线性）。但在 \(x=\sqrt2\) 处不同。为严格验证，令 \(\sigma\) 为 \(\mathbb{Q}(\sqrt2)\) 的非平凡 \(\mathbb{Q}\)-自同构（\(\sigma(\sqrt2)=-\sqrt2\)），定义 \(\mathbb{Q}\)-双线性映射
+      \[\psi:\mathbb{Q}(\sqrt2)\otimes_{\mathbb{Q}}\mathbb{Q}(\sqrt2)\to\mathbb{Q}(\sqrt2),\qquad \psi(x\otimes y)=\sigma(x)\,y.\]
+      则 \(\psi(\sqrt2\otimes1)=-\sqrt2\)，\(\psi(1\otimes\sqrt2)=\sqrt2\)，故 \(\sqrt2\otimes1\ne1\otimes\sqrt2\)。于是 \(g\circ j=h\circ j\) 而 \(g\ne h\)，按定义 2.1.2，\(j\) 不是满态。<br data-page-node-id="OIye77DK93n9N7EJp6LMA7">
+      与 \(i:\mathbb{Z}\to\mathbb{Q}\) 对照：\(\mathbb{Q}\) 由 \(\mathbb{Z}\) 的非零元取逆生成，同态在 \(\mathbb{Z}\) 上的取值唯一决定它在 \(\mathbb{Q}\) 上的取值；\(\mathbb{R}\) 则含超越 \(\mathbb{Q}\) 的元素，允许两个同态在 \(\mathbb{Q}\) 上一致却在 \(\mathbb{R}\) 上分叉。<strong data-page-node-id="OeWD5iknRIQ29kFCnvpvXo">注意</strong>：不能靠"同态连续 + \(\mathbb{Q}\) 稠密"论证——题目并未假设连续性，代数同态一般不连续。<span class="qed" data-page-node-id="7wnbZF8c20wxV5PJnJ96WH">∎</span></div>
+  </div>
+
+  <div class="box phil" data-page-node-id="NhSrst1gJhJ5HvlRm7Hp5q">
+    <h4 data-page-node-id="sQDFU2yB2yWWj9YyyAobTa">选读拓展（哲学联系，非正文）</h4>
+    <p data-page-node-id="u4k0d5p5gk90gZTrqAfT3f">本节的核心动作——把"有元素被漏掉"改写为"两个箭头能否被区分"——是一种可迁移的同一性判据。你熟悉的泛代数里，同余关系按"元素在商中是否可区分"来定义；这里满态按"从对象出发的箭头在复合后是否可区分"来定义。两者都把"差异"做成可操作的关系，但方向相反：同余是<strong data-page-node-id="mI6olrkP93ZHb2SLlSBxzh">主动抹平</strong>差异，满态是<strong data-page-node-id="ch8BuSzm9z9tnBH9HJIfVb">检验无法抹平</strong>。第 7.5 节的 monad 与代数会把这两种视角统一起来。</p>
+    <p data-page-node-id="L8EpOW0naLXWsTzz7KCmk5">再看 \(\mathbb{Z}\hookrightarrow\mathbb{Q}\)：它漏掉了元素，却无法被任何环同态"看见"。这与"可观察性"问题结构相近——一个系统的某些状态也许在原则上不可由允许的操作区分，此时"存在"与"可区分"就分道扬镳。但请把它当问题而非答案：范畴论的箭头是数学对象，观察者的选择自由度需另行建模；真正把"可观察的差异"系统化的是第 18 章的层语义与 forcing。</p>
+  </div>
+</section>
+
+<!-- ==================== 2.2 ==================== -->
+<section class="sec" id="s2-2" data-page-node-id="xjK0TkQJW5LFFySsOsz1D2">
+  <div class="sec-h" data-page-node-id="ABKPcGPAJLvsPdco2Nzb8Y"><span class="sec-no" data-page-node-id="J1PyN9WVxXTZyHmxSJpiKj">2.2</span><h2 data-page-node-id="E7FivG2ID97TFK7KVYAEgF">初始对象与终末对象</h2><span class="src" data-page-node-id="VsBirOVNeSjrPmt8SH6KDT">A §2.2, pp.33–36</span></div>
+
+  <div class="box learn" data-page-node-id="QLhFD22Aoe98Ade7Tu1wFt">
+    <h4 data-page-node-id="nznJA18GWsetUm606cK2j1">① 本节学习目标</h4>
+    <ol data-page-node-id="ITdNf8Uolbr0S6dL4qmhn6">
+      <li data-page-node-id="qot4olsFQVikQYnBXolWFE">用"唯一箭头"表述初始、终末、零对象，并能在具体范畴中逐一验证；</li>
+      <li data-page-node-id="K6maSYCxPIL1t8RxS57COo">严格证明初始（终末）对象若存在则<strong data-page-node-id="PBR7sYZRWI5k20HAn1YFpg">唯一到唯一同构</strong>，理解这与"相等"的区别；</li>
+      <li data-page-node-id="ejvW1D5cCfQhhAKTfax5AS">掌握 \(\mathbf{Set},\mathbf{Grp},\mathbf{Ring},\mathbf{Top},\mathbf{Rel},\mathbf{P}\) 中的初终对象，并说明为何结果不同；</li>
+      <li data-page-node-id="5fa6YCZqAoF9jLv531uNED">理解"初始性"如何提供<strong data-page-node-id="vOCUS0WgAh5DFX3ciH90R2">无需选择的典范箭头</strong>，为 2.3 的全局元素与第 6 章的自然性做准备；</li>
+      <li data-page-node-id="AhaEUeEfzH1iZz67qRmRYw">能判断"零对象上的往返复合是否等于恒等"这类问题（习题 2.2.6）。</li>
+    </ol>
+  </div>
+
+  <h3 class="sub" data-page-node-id="nT3F9MdsIwW8P2A2knsF1G">2.2.1　动机：∅ 与单点集的特殊地位</h3>
+  <p data-page-node-id="K2EtZwBVWsyJr5ticNMb8Z">在 \(\mathbf{Set}\) 中有两个初等事实：从空集 \(\varnothing\) 到任意集合 \(A\) 恰有一个函数；从任意集合 \(A\) 到单元集 \(\{*\}\) 也恰有一个函数（习题 1.1.1）。它们在集合论里像是两个不起眼的边角料，但在范畴论里却是<strong data-page-node-id="NcE6JUZedNTSCCqb4ye8v0">用箭头刻画对象</strong>的第一个范例：这两个集合的特殊性完全由"与其他对象的箭头数量"决定，而与它们的内部结构无关。把"恰有一个箭头"抽出来，就得到下面的定义。</p>
+
+  <div class="defn" data-page-node-id="2C7b2MBFOQ10QBj8Uf0Mp9"><span class="lbl" data-page-node-id="hwN9kZXSaOuRhnWuhC5M6b">定义 2.2.1（初始对象）</span>　对象 \(0\in\mathbf{C}\) 称为<strong data-page-node-id="xtz9i3zMXXnAcPv9Ha8Ory">初始对象</strong>（initial object），若对每个对象 \(A\in\mathbf{C}\)，存在<strong data-page-node-id="jYTket4fSO8fPutaXYCzGP">唯一</strong>的箭头 \(!:0\to A\)。</div>
+  <div class="defn" data-page-node-id="M8cnt0E3uAgLKaImCs8Wlj"><span class="lbl" data-page-node-id="LfH0zEVKEe5TOHVXEoZOs1">定义 2.2.2（终末对象）</span>　对象 \(1\in\mathbf{C}\) 称为<strong data-page-node-id="shDF3vwHIIMqwSytT8hpDb">终末对象</strong>（terminal object），若对每个对象 \(A\in\mathbf{C}\)，存在<strong data-page-node-id="zNXAfgDA8YsuuDBT6l8Tyi">唯一</strong>的箭头 \(!:A\to1\)。</div>
+  <div class="defn" data-page-node-id="XrfqFb0OERyJIfgQT5o1b5"><span class="lbl" data-page-node-id="QfoAXFSAe4ozDKRQ5YbfBA">定义 2.2.3（零对象）</span>　若一个对象既是初始的又是终末的，称为<strong data-page-node-id="6Dypoqvd9NFDREmyCQPaxD">零对象</strong>（zero object），常记作 \(0\)。</div>
+  <div class="rmk" data-page-node-id="XjkHbfOeh8gFDe0JBIqxgv">按命题 2.1.3 的对偶原则，终末对象就是 \(\mathbf{C}^{\mathrm{op}}\) 中的初始对象。因此凡关于初始对象的结论，把箭头全部倒过来即得关于终末对象的结论。下文的证明常只写一半。</div>
+
+  <h3 class="sub" data-page-node-id="Qq2OXjEV8opsYBMH1UQpOp">2.2.2　唯一性：泛性质的第一次登场</h3>
+  <div class="prop" data-page-node-id="2LpMlnSfaWwZbYPmj5Decq"><span class="lbl" data-page-node-id="aJf0HlSCGvNg8re2RWrPSU">命题 2.2.4（初始对象的唯一性）</span>　若 \(0\) 与 \(0'\) 都是 \(\mathbf{C}\) 的初始对象，则存在唯一同构 \(u:0\to0'\)。进而 \(0\) 的自同态只有 \(\mathrm{id}_0\)。
+    <div class="proof" data-page-node-id="vQcD1QSDxFFRzvkXmJNFB4"><span class="pl" data-page-node-id="4lzlw6HXuC9kv4BrkHFiIF">证明：</span>因 \(0\) 初始，存在唯一箭头 \(u:0\to0'\)；因 \(0'\) 初始，存在唯一箭头 \(v:0'\to0\)。复合 \(v\circ u:0\to0\) 是 \(0\) 的自同态，而 \(\mathrm{id}_0:0\to0\) 也是一个；由 \(0\) 的初始性，从 \(0\) 到 \(0\) 的箭头唯一，故 \(v\circ u=\mathrm{id}_0\)。同理 \(u\circ v:0'\to0'\) 与 \(\mathrm{id}_{0'}\) 都由 \(0'\) 的初始性给出唯一性，故 \(u\circ v=\mathrm{id}_{0'}\)。于是 \(u\) 是同构（逆为 \(v\)）；唯一性由 \(0\) 的初始性直接给出。<br data-page-node-id="VBl9eai4Iq2QiMC2rpaKDq">
+      最后一句：若 \(e:0\to0\) 是任意自同态，由初始性从 \(0\) 到 \(0\) 的箭头唯一，故 \(e=\mathrm{id}_0\)。<span class="qed" data-page-node-id="4MsuzQtNXzr29utrn6Vdtn">∎</span></div>
+  </div>
+  <div class="prop" data-page-node-id="ErGnoC58NBCjDB3EtDfLur"><span class="lbl" data-page-node-id="Cv3II2oePgK7Zb4LZMHOic">命题 2.2.5（终末对象的唯一性）</span>　若 \(1\) 与 \(1'\) 都终末，则存在唯一同构 \(1\to1'\)；终末对象的自同态只有恒等。
+    <div class="proof" data-page-node-id="Y7sp2obikQGq2JvVkpNQLG"><span class="pl" data-page-node-id="KU4rgmPSj5TGflimm2Ep3a">证明：</span>对偶于命题 2.2.4：把全部箭头反向即得。<span class="qed" data-page-node-id="cALNgOSqIAscMoIWAD35uw">∎</span></div>
+  </div>
+  <div class="rmk" data-page-node-id="pvAxyQSghpirocDl9Ohl4K"><strong data-page-node-id="SaQEDK3D1PRZoKurh3foC0">"唯一同构"≠"相等"。</strong>两个初始（终末）对象可能作为对象并不相等（例如 \(\mathbf{Set}\) 中任何单元集都终末，彼此不相等），但它们之间存在唯一的同构，因而从范畴的内部视角看不可区分。这是全书反复出现的模式：泛性质只把对象确定到<strong data-page-node-id="Vr2aSMro7lGvfZY1tuJGrg">唯一同构</strong>。第 6 章会把这种"不可区分"与"自然同构"严格联系起来，你关心的证明同一性问题也在这里埋下伏笔。<strong data-page-node-id="bPoGatGp1S7J9J0gzhbmCq">注意</strong>：若把"同一"理解成相等，则这里根本谈不上唯一性；数学上正确的说法是同构唯一。</div>
+
+  <h3 class="sub" data-page-node-id="5MhIbEIvuA3AuVokectzAM">2.2.3　例子与反例</h3>
+  <div class="prop" data-page-node-id="BGAFew26NMhJQnc0xJ90ou"><span class="lbl" data-page-node-id="tcRJ4g8nKtiMf8GWLjc54T">例 2.2.6（\(\mathbf{Set}\)）</span>　\(\varnothing\) 是初始对象（习题 1.1.1）；任何单元集 \(\{*\}\) 是终末对象（到它的函数唯一）。二者不同构，故 \(\mathbf{Set}\) 没有零对象。</div>
+  <div class="prop" data-page-node-id="Z1NFSChVyXrwmULFfrqdbO"><span class="lbl" data-page-node-id="CPYVZlsnPSBlGuwcYLOcDL">例 2.2.7（\(\mathbf{Grp},\mathbf{Ab},\mathbf{Vect}_k\)）</span>　平凡群 \(\{e\}\)、零空间 \(\{0\}\) 既是初始也是终末：从任何群到平凡群的同态唯一，从平凡群到任何群的同态也唯一（必须把 \(e\) 送到单位元）。故这些范畴有零对象。</div>
+  <div class="prop" data-page-node-id="AlKLkmAPNYYrFWSkuh2Phn"><span class="lbl" data-page-node-id="WBG4uKK3Os71TIujlgEvqR">例 2.2.8（\(\mathbf{Ring}\)）</span>　取"含幺环 + 保幺同态"，并允许零环（\(1=0\)）。则 \(\mathbb{Z}\) 是初始对象：对任意环 \(R\)，映射 \(n\mapsto n\cdot 1_R\) 是唯一保幺同态 \(\mathbb{Z}\to R\)（负整数由加法逆元强制，正整数由 \(1_R\) 反复相加强制，无从选择）。零环是终末对象：从任意环 \(R\) 到零环只有唯一函数，且自动保幺。若约定环必须满足 \(1\ne0\)（排除零环），则 \(\mathbf{Ring}\) 无终末对象——这一约定差异在文献中常见，对照原著时须留意。</div>
+  <div class="prop" data-page-node-id="d5guN2gPUvDQ3MXSWp80Ib"><span class="lbl" data-page-node-id="xCkXIpV3P6wxLyAzOsNzjx">例 2.2.9（\(\mathbf{Top}\) 与 \(\mathbf{Rel}\)）</span>　在 \(\mathbf{Top}\) 中空空间初始、单点空间终末（连续性的限制不改变唯一性），但二者不同构，故无零对象。在 \(\mathbf{Rel}\) 中空集 \(\varnothing\) 是零对象：从 \(X\) 到 \(\varnothing\) 的关系只能是空关系，从 \(\varnothing\) 到 \(X\) 也只能为空关系，均唯一。</div>
+  <div class="prop" data-page-node-id="06GP3jRkkiC8g0XE2xFe39"><span class="lbl" data-page-node-id="KtdLZXwVKPCmxUuI84xlWb">例 2.2.10（偏序范畴 \(\mathbf{P}\)）</span>　若 \((P,\le)\) 有最小元 \(\bot\)，则 \(\bot\) 是初始对象（因 \(\operatorname{Hom}(\bot,p)\) 非空当且仅当 \(\bot\le p\)，恒成立且至多一箭头）；若它有最大元 \(\top\)，则 \(\top\) 终末。若 \(\bot=\top\)，则它是零对象且 \(P\) 只有一个元素。</div>
+  <div class="rmk" data-page-node-id="BCoB5H9RISRdS7Uy7a9xTP"><strong data-page-node-id="iDFmGor2rOEmBcQZp5M397">为什么这些例子值得逐一过一遍？</strong>初终对象完全由箭头格局决定，因此"同一个对象"在不同范畴里可以有完全不同的地位。\(\varnothing\) 在 \(\mathbf{Set}\) 中初始但不终末，在 \(\mathbf{Rel}\) 中既初始又终末；差别只在于我们允许什么样的箭头（函数 vs 关系）。这正是范畴论相对集合论的方法论优势：把"结构"压缩进箭头的定义里。</div>
+
+  <h3 class="sub" data-page-node-id="9JETqF9zfPZuuB8w2PLHlK">2.2.4　初始性与"典范箭头"</h3>
+  <p data-page-node-id="CIuLtcks61n5jXrh5iLb45">从初始对象 \(0\) 到任意对象 \(A\) 的箭头是唯一的，因此这种箭头不需要任何选择、任何参数，是<strong data-page-node-id="P8dMFPk94NAUabM9DrJeFT">被范畴结构强制给定</strong>的。初等例子：\(\mathbb{Z}\) 的初始性说明"把整数 \(n\) 送到 \(n\cdot1_R\)"不是一个可选的约定，而是唯一可能的保幺同态。这与你在 1.5 节看到的 \(V\cong V^\ast\) 形成鲜明对照：那里的同构存在但不唯一、依赖选基，因而不自然；这里从 \(0\) 出发的箭头天然唯一，因而自动与所有结构映射相容（习题 2.2.5 要求验证这一相容性）。</p>
+  <p data-page-node-id="S1eR77ELCm9Y8XjDHY8aYw">终末对象 \(1\) 的另一用途在下一节：若 \(1\) 存在，箭头 \(1\to A\) 恰好是 \(A\) 的"全局元素"，使我们可以把集合论的元素语言部分地搬回范畴。这是 2.3 节的主题。</p>
+
+  <div class="box exer" data-page-node-id="DCQTKedp0JdR8XeKSrqvF4">
+    <h4 data-page-node-id="Eo3VFGLPoElE1BqAH89YJ5">③ ✅ 课后练习题</h4>
+    <div class="grp" data-page-node-id="IgDNF5Gz13RdKHHhqAJ7GZ">（一）基础巩固题</div>
+    <ol data-page-node-id="rPzFoJSejCKAIPIxRFsUJV">
+      <li id="q221" data-page-node-id="ywkVidtRwOoXFEIuZj5uut">完整证明命题 2.2.5（终末对象唯一到唯一同构），要求写出每一步所用箭头及其类型。</li>
+      <li id="q222" data-page-node-id="UoBBchFA24PIl7KQJVvw9o">逐一验证例 2.2.6–2.2.9 中至少三个范畴的初终对象；对每个范畴明确回答"是否有零对象"。</li>
+      <li id="q223" data-page-node-id="MmrysaBu0vYte1U3QKgAcV">证明：若 \(0\) 是初始对象，则对任意对象 \(A\)，复合 \(A\to0\to A\) 是 \(A\) 的一个自同态；并确定当 \(A=0\) 时它等于什么。</li>
+      <li id="q224" data-page-node-id="mMEKhCT1pEao0AYOFWWAN4">设 \(\mathbf{Set}_*\) 的对象是带点集 \((X,x_0)\)，箭头是满足 \(f(x_0)=y_0\) 的函数 \(f:(X,x_0)\to(Y,y_0)\)。验证 \((\{*\},*)\) 是 \(\mathbf{Set}_*\) 的零对象。</li>
+    </ol>
+    <div class="grp" data-page-node-id="O8HipKilaqQ6lJvs0GJDRg">（二）进阶思考题</div>
+    <ol start="5" data-page-node-id="OuqDM126421E8g8gjjW5H8">
+      <li id="q225" data-page-node-id="UOFdNMX6zlSwTT1CO2cO1J">设 \(0\) 是 \(\mathbf{C}\) 的初始对象。证明：对任意函子 \(F:\mathbf{C}\to\mathbf{D}\)，若 \(F(0)\) 是 \(\mathbf{D}\) 的初始对象，则对任意 \(A\) 有 \(F(!_A)=!_{F(A)}\)。由此说明"从初始对象出发的箭头是典范的"在什么意义下成立。</li>
+      <li id="q226" data-page-node-id="h2f25NEllnCRliVPUOg5tX">构造一个范畴 \(\mathbf{C}\)，它有一个零对象 \(0\)，但某个对象 \(A\) 满足 \(A\to0\to A\) 的复合不等于 \(\mathrm{id}_A\)。（提示：取两个对象 \(0,A\)，令 \(\operatorname{Hom}(A,A)=\{\mathrm{id}_A,s\}\)，并规定从 \(0\) 到 \(A\)、从 \(A\) 到 \(0\) 的箭头各唯一；写出复合表并验证范畴公理。）</li>
+    </ol>
+  </div>
+
+  <div class="box ans" data-page-node-id="vtZ2gZyyvlT03ftZF6V34y">
+    <h4 data-page-node-id="3O4WKOzRdMeBfywOC5J6el">④ ✅ 习题参考答案</h4>
+    <div class="item" data-page-node-id="1X4VVO2AQjDDIAHQHbNSzu"><b data-page-node-id="K6gwHPrOGZXbTye2bgzKI2">2.2.1</b>　设 \(1,1'\) 均终末。由 \(1\) 终末，存在唯一 \(u:1\to1'\)；由 \(1'\) 终末，存在唯一 \(v:1'\to1\)。复合 \(u\circ v:1'\to1'\) 与 \(\mathrm{id}_{1'}\) 都是从 \(1'\) 到 \(1'\) 的箭头，由 \(1'\) 终末性知该 Hom-集为单元集，故 \(u\circ v=\mathrm{id}_{1'}\)。同理 \(v\circ u=\mathrm{id}_1\)。故 \(u\) 是同构，且唯一性由 \(1\) 终末给出。自同态唯一同理。<span class="qed" data-page-node-id="19pArLIwZajCQwfYja2IY2">∎</span></div>
+    <div class="item" data-page-node-id="m0yHfg0fZiom25VDWiJA32"><b data-page-node-id="yqnobyjR0sJ48IxO3l4N1i">2.2.2</b>　(1) \(\mathbf{Set}\)：\(\operatorname{Hom}(\varnothing,A)\) 单元，故 \(\varnothing\) 初始；\(\operatorname{Hom}(A,\{*\})\) 单元，故 \(\{*\}\) 终末；二者不同构，无零对象。<br data-page-node-id="LcpOrfhYvo7bymb9B3uCXT">
+      (2) \(\mathbf{Grp}\)：\(\operatorname{Hom}(\{e\},G)\) 单元（\(e\) 必须映到单位元），\(\operatorname{Hom}(G,\{e\})\) 单元，故 \(\{e\}\) 为零对象。<br data-page-node-id="my3Xpi8hEmV3gbPuMmy0BJ">
+      (3) \(\mathbf{Ring}\)：唯一保幺同态 \(\mathbb{Z}\to R\) 为 \(n\mapsto n\cdot1_R\)；\(\operatorname{Hom}(R,0)\) 单元，故零环终末、\(\mathbb{Z}\) 初始，二者不同构，无零对象。<br data-page-node-id="iX0eMMZWkC3rijCOQylnE8">
+      (4) \(\mathbf{Rel}\)：\(\operatorname{Hom}(X,\varnothing)=\{\varnothing\}\)、\(\operatorname{Hom}(\varnothing,X)=\{\varnothing\}\)，故 \(\varnothing\) 为零对象。<span class="qed" data-page-node-id="QZPAmEFJvUKgZeoHNm7IPz">∎</span></div>
+    <div class="item" data-page-node-id="cHLguWoaSEJm3V5VfPWeNx"><b data-page-node-id="FedIIFlEsvwY8t092T8aiw">2.2.3</b>　记 \(u:0\to A\)、\(v:A\to0\) 为唯一箭头。复合 \(v\circ u:0\to0\) 存在，且由 \(0\) 初始性 \(\operatorname{Hom}(0,0)\) 只含 \(\mathrm{id}_0\)，故 \(v\circ u=\mathrm{id}_0\)。而 \(u\circ v:A\to A\) 是 \(A\) 的自同态（未必恒等，见 2.2.6）。当 \(A=0\) 时 \(u=v=\mathrm{id}_0\)，复合为 \(\mathrm{id}_0\)。<span class="qed" data-page-node-id="YIrPZDpt6wINyRPwyxq3Q4">∎</span></div>
+    <div class="item" data-page-node-id="OC4yJzWgbehEEdyeoNZM2b"><b data-page-node-id="E3VNGSCyFQdQjKbE1DqSRM">2.2.4</b>　对任意 \((X,x_0)\)，保点函数 \(f:(\{*\},*)\to(X,x_0)\) 由 \(f(*)\) 决定且须满足 \(f(*)=x_0\)，故唯一；保点函数 \(g:(X,x_0)\to(\{*\},*)\) 唯一（值只能是 \(*\)，保点条件自动成立）。故 \((\{*\},*)\) 既初始又终末，是零对象。<span class="qed" data-page-node-id="RTqgPzJSG7VKFHQyAD6uS0">∎</span></div>
+    <div class="item" data-page-node-id="DsjDpaFWp46N0Do98oqug7"><b data-page-node-id="fo4bQ9SpekPC73EB0jXwpZ">2.2.5</b>　若 \(F\) 把初始对象送到初始对象，则对任意 \(A\)，\(F(!_A):F(0)\to F(A)\) 与 \(!_{F(A)}:F(0)\to F(A)\) 都是从 \(F(0)\) 出发的箭头，由 \(F(0)\) 初始性二者相等。这说明典范性的精确含义：初始箭头在保持初始性的函子下被强制保持，不依赖任何额外选择。<br data-page-node-id="icoP0DuSKY1TdBHYyxyW7S">
+      <strong data-page-node-id="EGmOx7RQKu5cN6BNFGzNwp">但需警惕</strong>：并非每个函子都保持初始对象。反例：常值函子 \(K_B:\mathbf{Set}\to\mathbf{Set}\)（\(B\ne\varnothing\)）不把 \(\varnothing\) 送到初始对象。因此"典范性"是相对于保持初始性的函子类而言的；更强的自然性表述需用伴随（第 7 章）。<span class="qed" data-page-node-id="HcAzVMJ8bCXr4OLIUPLDRQ">∎</span></div>
+    <div class="item" data-page-node-id="CsalmtXCTtejAggjcyFI4f"><b data-page-node-id="lyv7DXqzsHyhTCXdKXC2HV">2.2.6</b>　构造范畴 \(\mathbf{C}\)：对象为 \(0,A\)。令
+      \[\operatorname{Hom}(0,0)=\{\mathrm{id}_0\},\quad \operatorname{Hom}(0,A)=\{u\},\quad \operatorname{Hom}(A,0)=\{v\},\quad \operatorname{Hom}(A,A)=\{\mathrm{id}_A,\ s=u\circ v\}.\]
+      定义复合：\(v\circ u=\mathrm{id}_0\)；\(s\circ u=(u\circ v)\circ u=u\circ(v\circ u)=u\circ\mathrm{id}_0=u\)；\(v\circ s=v\circ(u\circ v)=(v\circ u)\circ v=\mathrm{id}_0\circ v=v\)；\(s\circ s=u\circ(v\circ u)\circ v=s\)；与恒等箭头的复合满足单位律。结合律在所有可复合情形中均成立（每个等式都由重新括号化给出）。<br data-page-node-id="OBf3WwK8IZxXa9jtKKtF8U">
+      由构造 \(\operatorname{Hom}(0,0),\operatorname{Hom}(0,A)\) 单元，故 \(0\) 初始；\(\operatorname{Hom}(0,0),\operatorname{Hom}(A,0)\) 单元，故 \(0\) 终末；所以 \(0\) 是零对象。但 \(A\to0\to A\) 的复合是 \(u\circ v=s\ne\mathrm{id}_A\)。这说明零对象保证"往返复合"存在且唯一，但不保证它是恒等；\(A\) 与 \(0\) 并不因此同构（\(s\) 不可逆）。<span class="qed" data-page-node-id="vCv8HZg5GqcxlhkPXrnY0M">∎</span></div>
+  </div>
+
+  <div class="box phil" data-page-node-id="gtriFfvmMHCzHwW3rV3wzw">
+    <h4 data-page-node-id="5efETRNeY1FNKzR6YVOGh5">选读拓展（哲学联系，非正文）</h4>
+    <p data-page-node-id="1rkUXrDSFXcnpvGxFUE6AP">命题 2.2.4 给出一种值得注意的同一性判据：两个对象若都以同样方式"被所有箭头关系决定"，它们就唯一同构。这里没有比较两个对象的内部构成，只比较它们在关系网络中的位置。这是结构主义数学哲学的标准样本，也是你讨论证明同一性时可资对照的形式：命题同一性可以问"证明的内在结构是否相同"，也可以问"证明在可观察行为上是否不可区分"。范畴论在这里给的是后一种，但严格限定在箭头可及的范围内。</p>
+    <p data-page-node-id="3K4NEVen0ZzZ4CthnYsQkw">另一点关于"典范性"：从初始对象出发的箭头唯一，因此不需要在多个选项中挑选，这与 1.5 节 \(V\cong V^\ast\) 需要选基形成对照。你研究自由意志与主体责任时关心"选择是否可归给主体"，这里的数学对照很干净——有些结构决定是<strong data-page-node-id="7YdjpM91aRFrOXQy4NyYWf">被强制</strong>的（唯一箭头），有些是<strong data-page-node-id="AFY9VyWAF1TwHCeJK5OrHG">可选但无典范</strong>的（存在同构但无自然同构）。但要明确：这是数学结构的分类，不直接构成对意志问题的论证；把它当概念透镜而非结论。</p>
+  </div>
+</section>
+
+<!-- ==================== 2.3 ==================== -->
+<section class="sec" id="s2-3" data-page-node-id="sUgmrOLhiiHmZqFlCfy1dm">
+  <div class="sec-h" data-page-node-id="fwy4PObOT3UwvSQTkgSYeP"><span class="sec-no" data-page-node-id="iebGClUV8vWEV410FHbLN5">2.3</span><h2 data-page-node-id="MSUnoFqaFHXl9XPMfvKeHh">广义元素</h2><span class="src" data-page-node-id="pxA1FsungDabEjoZegQhNR">A §2.3, pp.36–38</span></div>
+
+  <div class="box learn" data-page-node-id="E8PnzmMuOfOhP4afWJZuyr">
+    <h4 data-page-node-id="EB9zhI6M9oo06wYJUDuVCv">① 本节学习目标</h4>
+    <ol data-page-node-id="cutrOXxfH3PEoKpkBElhil">
+      <li data-page-node-id="nSkraSLvJDmuKxqUr2nz5D">定义 \(X\)-元素与全局元素，说明它们如何推广集合的元素；</li>
+      <li data-page-node-id="ZCSkyj3MQGM6N1FPIHZvsf">用 Hom-集上的映射重新表述单态与满态，理解"元素检验"与"箭头消去"的等价；</li>
+      <li data-page-node-id="GPnjFskWip4MOw0G1LDaJw">严格证明 \(\mathbf{Set}\) 中 \(\operatorname{Hom}(1,A)\cong A\) 及其自然性；</li>
+      <li data-page-node-id="Y77aJvuEdFzujFDJvOn4rh">给出全局元素不足而广义元素有效的具体例子；</li>
+      <li data-page-node-id="iMBHXqFyKUt945DguEFqHY">分清"满态"与"每个广义元素可提升"这两个不同的命题，并用 \(\mathbb{Z}\to\mathbb{Q}\) 验证。</li>
+    </ol>
+  </div>
+
+  <h3 class="sub" data-page-node-id="JnMExMap5wDZJ3AP1AcFhJ">2.3.1　从元素到箭头</h3>
+  <p data-page-node-id="CWTOUEkryYHSVH8yTdVn41">2.1 节的动机里已经埋下一条线索：在 \(\mathbf{Set}\) 中，元素 \(a\in A\) 与箭头 \(\bar a:1\to A\) 一一对应，而 \(f(a)\) 就是 \(f\circ\bar a\)。既然一般范畴的对象没有"内部"，我们干脆把箭头本身当作元素来用，只是要注明它从哪个对象出发。</p>
+  <div class="defn" data-page-node-id="jbo0XUfjAfiPcoxuFNshHJ"><span class="lbl" data-page-node-id="bKsrm3b6MVE8x11DSCcxOf">定义 2.3.1（广义元素 / \(X\)-元素）</span>　设 \(A,X\in\mathbf{C}\)。一个从 \(X\) 到 \(A\) 的箭头 \(x:X\to A\) 称为 \(A\) 的一个<strong data-page-node-id="EzvydqCi1m0SsWUHWGco4C">广义元素</strong>（generalized element），或 \(X\)-元素，记作 \(x\in_X A\)。对象 \(X\) 称为该元素的<strong data-page-node-id="9tejz7d3qtojNTNAEiGf7P">定义阶段</strong>（stage of definition）。若 \(\mathbf{C}\) 有终末对象 \(1\)，则 \(1\)-元素称为 \(A\) 的<strong data-page-node-id="XYC0Yhq1eUFmBYmxBPP3jo">全局元素</strong>（global element）。</div>
+  <div class="rmk" data-page-node-id="j2LyBe0y3UWLEqnfz2vKj7">术语提示："广义元素"在文献中又称"形 \(X\) 的元素"（element of shape \(X\)）或"变量元素"。它们的共同点是：<strong data-page-node-id="ciyvKCzbxkP5xe8wU0B1db">元素总带一个阶段</strong>，脱离阶段谈元素没有意义。这与你熟悉的集合论元素（绝对、无参数）有本质差别。在 \(\mathbf{Set}\) 中，阶段 \(X=1\) 就恢复通常元素，所以差别被掩盖了。</div>
+
+  <h3 class="sub" data-page-node-id="VVEVkocHUX73KOdx1pmhSh">2.3.2　单态与满态的 Hom-集刻画</h3>
+  <div class="prop" data-page-node-id="Za98UOMSenopHfzfqB8FSk"><span class="lbl" data-page-node-id="F1jRfFQbB4jy1AoB3EGbYx">命题 2.3.2（单态的元素式刻画）</span>　\(f:A\to B\) 是单态，当且仅当对每个对象 \(X\)，由后复合给出的映射
+    \[f_*:\operatorname{Hom}(X,A)\longrightarrow\operatorname{Hom}(X,B),\qquad g\longmapsto f\circ g\]
+    是单射。
+    <div class="proof" data-page-node-id="oD8IqCKOzB63zrL1zCsDiR"><span class="pl" data-page-node-id="0qFaZZKeYIaJ8pymVIV1Bs">证明：</span>这几乎只是定义的翻译。\(f_*\) 是单射，意为对任意 \(g,h:X\to A\)，\(f_*(g)=f_*(h)\Rightarrow g=h\)，即 \(f\circ g=f\circ h\Rightarrow g=h\)。对每个 \(X\) 成立，正是定义 2.1.1。<span class="qed" data-page-node-id="TiywGt6Oy7fqOAwTL2iAFw">∎</span></div>
+  </div>
+  <div class="prop" data-page-node-id="nZ0sux4RFEOCxCtmYb4T2i"><span class="lbl" data-page-node-id="8AzOgg8VQi48G7A1dkBgo2">命题 2.3.3（满态的元素式刻画）</span>　\(f:A\to B\) 是满态，当且仅当对每个对象 \(Y\)，由前复合给出的映射
+    \[f^*:\operatorname{Hom}(B,Y)\longrightarrow\operatorname{Hom}(A,Y),\qquad h\longmapsto h\circ f\]
+    是单射。
+    <div class="proof" data-page-node-id="FR1pmMFOScnKGTWP65USqD"><span class="pl" data-page-node-id="HpodH0eCQmliuFs0qK1Tzs">证明：</span>同理：\(f^*\) 单射即为"\(g\circ f=h\circ f\Rightarrow g=h\) 对一切 \(g,h:B\to Y\) 成立"，对每个 \(Y\) 成立正是定义 2.1.2。<span class="qed" data-page-node-id="qUmX6iSszKE9g6WETLMteE">∎</span></div>
+  </div>
+  <div class="rmk" data-page-node-id="XL90XIZCFpYvXooyECetza">这两个命题说明：定义 2.1.1/2.1.2 的"消去律"其实就是"<strong data-page-node-id="XMxeJ3QTlyTTEYhhzjwqUt">在广义元素上不混淆</strong>"。单态说：不同阶段的 \(A\)-元素经 \(f\) 后不会撞在一起；满态说：\(B\)-上的"观测量"（从 \(B\) 出发的箭头）由 \(f\) 拉回后不会撞在一起。注意满态的表述用的是 \(\operatorname{Hom}(B,Y)\)，<strong data-page-node-id="wc9opXu49izZJDRy0AqB9R">不是</strong> \(\operatorname{Hom}(X,B)\)——两个方向不可对调，下一小节会说明原因。</div>
+
+  <h3 class="sub" data-page-node-id="xE55VOKd9gEKCMfLaNtvP2">2.3.3　全局元素能走多远</h3>
+  <div class="prop" data-page-node-id="aUrl71qAGAwey5fWQzOVAl"><span class="lbl" data-page-node-id="z0n7nvXftztT2Qqxm7Ntuc">命题 2.3.4（\(\mathbf{Set}\) 中全局元素就是通常元素）</span>　设 \(1=\{\ast\}\)。映射
+    \[\varepsilon_A:A\longrightarrow\operatorname{Hom}(1,A),\qquad a\longmapsto \bar a\ (\bar a(*)=a)\]
+    是双射，且自然于 \(A\)：对任意 \(f:A\to B\)，有 \(f_*\circ\varepsilon_A=\varepsilon_B\circ f\)。
+    <div class="proof" data-page-node-id="dslTzbUJcqEHgRvbS4VEaI"><span class="pl" data-page-node-id="UpDv4PI4J20DmYHytR03OP">证明：</span><strong data-page-node-id="JvoSJxCgoNJ7E57vQg2a74">单射</strong>：若 \(\bar a=\bar a'\)，则在 \(*\) 处取值相等，\(a=a'\)。<strong data-page-node-id="322b4PojJHQWq642TbApsL">满射</strong>：任取 \(x:1\to A\)，令 \(a=x(*)\)，则 \(\bar a=x\)（两者在唯一输入 \(*\) 处取值相同）。<br data-page-node-id="RTCvEDGmzXDrPHJ3mDsyiE">
+      <strong data-page-node-id="EzkZMY9GosgCBciNxbrUit">自然性</strong>：对 \(a\in A\)，\((f_*\circ\varepsilon_A)(a)=f\circ\bar a\)，它在 \(*\) 处取值 \(f(a)\)；而 \((\varepsilon_B\circ f)(a)=\overline{f(a)}\)，也在 \(*\) 处取值 \(f(a)\)。由函数外延性二者相等。<span class="qed" data-page-node-id="vcF4IFlDFVSGJmXHBEsugv">∎</span></div>
+  </div>
+  <p data-page-node-id="m9bsQ6IlsHxPLxLqblQ1bc">命题 2.3.4 解释了为什么在 \(\mathbf{Set}\) 中用元素证明单态（命题 2.1.4 的⟸方向）是合法的：那里只需检验阶段 \(X=1\) 就够了。但这个缩小<strong data-page-node-id="sP7iZPcinF4xI1YndDMZCc">不是普遍的</strong>。看两个例子：</p>
+  <div class="prop" data-page-node-id="O6Li00lMigwl5W3BV2hBn2"><span class="lbl" data-page-node-id="nC5pBcMWeqxvgIWvenn97a">例 2.3.5（没有终末对象的范畴）</span>　设 \(G\) 是非平凡群，\(\mathbf{B}G\) 是它的分类范畴（1.2 节：只有一个对象 \(\ast\)，箭头为 \(G\) 的元素，复合为群乘法）。\(\operatorname{Hom}(\ast,\ast)=G\) 不单元，故 \(\ast\) 不是终末对象；\(\mathbf{B}G\) 没有终末对象，因而<strong data-page-node-id="2KRnJGABHDBYc8s3XIPNuq">全局元素这个概念根本无从定义</strong>。但广义元素完全够用：\(A=\ast\) 的 \(X=\ast\)-元素就是 \(G\) 的元素。习题 1.5.4 已表明，从 \(\mathbf{B}G\) 到自身的函子之间的自然变换正由这些"元素"控制。</div>
+  <div class="prop" data-page-node-id="VLDTflnUklsZAEgvSCWUaR"><span class="lbl" data-page-node-id="C0GDP4gbTDCWlwCp5T5dWo">例 2.3.6（全局元素给出错误的对象）</span>　在 \(\mathbf{Rel}\) 中，\(\operatorname{Hom}(1,X)\) 是所有 \(1\times X\) 的子集，即 \(X\) 的任意子集 \(\mathcal{P}(X)\)，而不是 \(X\) 的元素。因此"从终末对象出发的箭头"是否像元素，完全取决于范畴允许什么箭头。再如 \(\mathbf{Set}\) 中全局元素恰是通常元素，\(\mathbf{Rel}\) 中却是幂集元素——同一对象 \(X\)，不同范畴，元素概念随之改变。</div>
+  <p data-page-node-id="wVJdQSuSGwQfHWcpTLV99f">更深刻的例子出现在层论：某些层没有任何全局截面（\(\operatorname{Hom}(1,F)=\varnothing\)），却在局部有大量截面；这时若只靠全局元素，对象看起来是"空的"，而广义元素揭示了它的全部内容。第 13、14 章会给出严格版本（预层范畴中 \(y(c)\to F\) 对应 \(F(c)\) 的元素）。在这儿先记住结论：<strong data-page-node-id="cTmUzhZ1pBi0t9WZxbg4pL">全局元素是广义元素在阶段 \(1\) 的特例，可能信息严重不足。</strong></p>
+
+  <h3 class="sub" data-page-node-id="Ubs2kyssYYa6KjbpafE5TT">2.3.4　满态 ≠ 每个广义元素可提升</h3>
+  <p data-page-node-id="Qvpj6Ju9oAGa19xSOqLFoi">初学者常把满态误读为"对任意 \(x\in_X B\) 存在 \(a\in_X A\) 使 \(f a=x\)"，即对广义元素的局部满射性。这是错误的，必须分清两个命题：</p>
+  <div class="rmk" data-page-node-id="12uBzY3rUBi25tYkBgsYeb"><strong data-page-node-id="XSMD93zPiZ0ccCdmnpqZmu">(E) 满态：</strong>对任意 \(Y\)，\(f^*:\operatorname{Hom}(B,Y)\to\operatorname{Hom}(A,Y)\) 是单射（命题 2.3.3）。<br data-page-node-id="203DY3ri3mzukAm9ptSNGF">
+    <strong data-page-node-id="D1f98Ohun7id5TZ8ZheFkb">(L) 局部满：</strong>对任意 \(X\) 与任意 \(b:X\to B\)，存在 \(a:X\to A\) 使 \(f\circ a=b\)。<br data-page-node-id="Ov3sDCHAoKDM96dAWPrahB">
+    (L) 蕴含 (E)（习题 2.3.4），但 (E) 不蕴含 (L)。在 \(\mathbf{Set}\) 中二者等价（用选择逐点取原像）；一般范畴中不等价。关键反例就是 2.1.4 的 inclusion。</div>
+  <div class="prop" data-page-node-id="JhDhwFcW3z7eG7ceMPlKFD"><span class="lbl" data-page-node-id="O90KAcEfS1vyNL5twEfAAd">命题 2.3.7</span>　\(i:\mathbb{Z}\hookrightarrow\mathbb{Q}\) 是 \(\mathbf{Ring}\) 中的满态，但不满足 (L)：存在 \(b\in_{\mathbb{Q}}\mathbb{Q}\) 不能提升为 \(a\in_{\mathbb{Q}}\mathbb{Z}\)。
+    <div class="proof" data-page-node-id="P9UItbu1gx8BGg5qcPY0xW"><span class="pl" data-page-node-id="gtuhGQZl3IASBGUaHpqQOZ">证明：</span>满态部分已在命题 2.1.7 中证明。取 \(X=\mathbb{Q}\)，\(b=\mathrm{id}_{\mathbb{Q}}:\mathbb{Q}\to\mathbb{Q}\)。若存在环同态 \(s:\mathbb{Q}\to\mathbb{Z}\) 使 \(i\circ s=\mathrm{id}_{\mathbb{Q}}\)，则
+      \[2\cdot s(1/2)=s(2)\cdot s(1/2)=s(2\cdot 1/2)=s(1)=1,\]
+      即整数 \(2\,s(1/2)=1\)，这在 \(\mathbb{Z}\) 中无解（\(1\) 是奇数）。故这样的 \(s\) 不存在，\(\mathrm{id}_{\mathbb{Q}}\) 不能提升。<span class="qed" data-page-node-id="S0WftieTDDWQNdDOnq0o70">∎</span></div>
+  </div>
+  <p data-page-node-id="dezl7feqbK63zPwZITCmGi">这个命题是理解层论的前哨：满态只保证"从 \(B\) 看出去的箭头层面无混淆"，并保证不了"每个 \(B\)-元素局部来自 \(A\)"。层论里，把 (L) 加回来（在覆盖的每个成员上可提升）正是层条件的核心；届时会看到，即使全局提升失败，局部提升加上粘合唯一性也能恢复许多结论。</p>
+
+  <div class="box exer" data-page-node-id="PoLJBAGrPJXZi0HE0s5Bqz">
+    <h4 data-page-node-id="kUBsRTzKmoWA5Ddr9RbEqE">③ ✅ 课后练习题</h4>
+    <div class="grp" data-page-node-id="9fCC1EZKXBxll4iTmrdP23">（一）基础巩固题</div>
+    <ol data-page-node-id="gluKy3z7JaplzTPHrLwiUf">
+      <li id="q231" data-page-node-id="UaiHtn4p2sVeS9DvSEEXzg">证明命题 2.3.3：\(f\) 满态当且仅当对每个 \(Y\)，\(f^*:\operatorname{Hom}(B,Y)\to\operatorname{Hom}(A,Y)\) 是单射。</li>
+      <li id="q232" data-page-node-id="8LBdqcJklCLYb3kkQoQglk">在 \(\mathbf{Set}\) 中证明：若 \(f:A\to B\) 满足"对任意 \(g,h:B\to C\)，\(g\circ f=h\circ f\Rightarrow g=h\)"，则 \(f\) 满射。要求用 \(C=\{0,1\}\) 构造反证，不得引用命题 2.1.5。</li>
+      <li id="q233" data-page-node-id="0aJ85rTGngZhTDZGgvty1b">设 \(\mathbf{C}\) 有终末对象 \(1\)。证明：若 \(f:A\to B\) 单态，则 \(\operatorname{Hom}(1,A)\to\operatorname{Hom}(1,B),\ x\mapsto f\circ x\) 是单射。并说明逆命题在一般范畴中不成立（提示：终末对象可能看不到 \(A\) 的所有广义元素）。</li>
+      <li id="q234" data-page-node-id="UmcNgJRAQvEXBBtyY1dJGr">证明 (L) 蕴含 (E)：若对每个 \(X\) 与每个 \(b:X\to B\) 存在 \(a:X\to A\) 使 \(f a=b\)，则 \(f\) 是满态。</li>
+    </ol>
+    <div class="grp" data-page-node-id="L3xcuACkQBqvxATfktYgsB">（二）进阶思考题</div>
+    <ol start="5" data-page-node-id="qIlchd9bULvVCAwy1pw5Uf">
+      <li id="q235" data-page-node-id="DcyU06cudpUaAty48yaeDJ">定义范畴 \(\mathbf{C}\)：对象为 \(0,1\)，箭头为 \(\mathrm{id}_0,\mathrm{id}_1\) 与唯一箭头 \(a:0\to1\)（复合由 \(a\circ\mathrm{id}_0=a=\mathrm{id}_1\circ a\) 给出）。验证这是一个范畴，确定它的终末对象，并证明：对象 \(0\) 没有全局元素，但有 \(0\)-元素 \(\mathrm{id}_0\)。</li>
+      <li id="q236" data-page-node-id="EIL8qut3V74pQ50vr9IVyM">证明：\(\mathbb{Z}\hookrightarrow\mathbb{Q}\) 在 \(\mathbf{Ring}\) 中满足 (E) 而不满足 (L)（命题 2.3.7）；然后判断 \(i:\mathbb{Z}\to\mathbb{Q}\) 在 \(\mathbf{Ab}\)（阿贝尔群与群同态）中是否是满态，给出证明。</li>
+    </ol>
+  </div>
+
+  <div class="box ans" data-page-node-id="eSSifwFHGOj4CWXjWukNgy">
+    <h4 data-page-node-id="MgkcdWm9zeKeuUzDLVvRNu">④ ✅ 习题参考答案</h4>
+    <div class="item" data-page-node-id="2U1mESTm2ft7r3JOUE7LbS"><b data-page-node-id="sV4ZvAN2I4DYgdTazjN1Hv">2.3.1</b>　映射 \(f^*\) 单射意为：对任意 \(g,h:B\to Y\)，\(f^*(g)=f^*(h)\Rightarrow g=h\)。按定义 \(f^*(g)=g\circ f\)，故该条件即 \(g\circ f=h\circ f\Rightarrow g=h\)，对一切 \(Y,g,h\) 成立，正是定义 2.1.2。<span class="qed" data-page-node-id="k9LANMh1ghP7I3MjPd2nYj">∎</span></div>
+    <div class="item" data-page-node-id="CSLFWCaIupnw1o5CJuxbVW"><b data-page-node-id="n8GvngJwvbgXMVTiqrywSY">2.3.2</b>　反设 \(f\) 不满射，取 \(b_0\in B\setminus f(A)\)。令 \(C=\{0,1\}\)，定义 \(g\equiv0\)，\(h(b)=1\iff b=b_0\)。对任意 \(a\in A\)，\(f(a)\ne b_0\)，故 \((g\circ f)(a)=0=(h\circ f)(a)\)，即 \(g\circ f=h\circ f\)；但 \(g(b_0)=0\ne1=h(b_0)\)，故 \(g\ne h\)，与假设矛盾。故 \(f\) 满射。<span class="qed" data-page-node-id="vCKRjuQr3lMuFV1cztN6LW">∎</span></div>
+    <div class="item" data-page-node-id="JgQCwC0JykIWcvzlr3rxWc"><b data-page-node-id="QokJMPYmeeHyF2AwZfa2QP">2.3.3</b>　正向由命题 2.3.2 取 \(X=1\) 立得。逆命题在一般范畴中不成立。构造范畴 \(\mathbf{C}\)：对象为 \(1,A,B,X\)；令 \(1\) 终末（即 \(\operatorname{Hom}(A,1),\operatorname{Hom}(B,1),\operatorname{Hom}(X,1)\) 各唯一）；令
+      \[\operatorname{Hom}(1,A)=\operatorname{Hom}(1,B)=\operatorname{Hom}(1,X)=\varnothing,\quad \operatorname{Hom}(A,B)=\{f\},\quad \operatorname{Hom}(X,A)=\{u,v\},\quad \operatorname{Hom}(X,B)=\{w\},\]
+      并规定 \(f\circ u=w=f\circ v\)，其余复合由恒等与终末箭头唯一确定。结合律在全部可复合的情形中成立（最长的路径 \(X\to A\to B\to1\) 两端都给出 \(!_X\)）。<br data-page-node-id="YZzixSNfS1Q9S7eT5c5nFX">
+      此时 \(\operatorname{Hom}(1,A)=\varnothing\)，故 \(\operatorname{Hom}(1,A)\to\operatorname{Hom}(1,B)\) 是空函数上的单射；但取阶段 \(X\)，有 \(u\ne v\) 而 \(f\circ u=f\circ v\)，故 \(f\) 不是单态。可见全局元素层面的单射太弱，必须用所有阶段的广义元素。</div>
+    <div class="item" data-page-node-id="atWiooGOEqYYIbcjoiikxw"><b data-page-node-id="mqwrQv4ni45SrEI0118NQP">2.3.4</b>　设 \(g,h:B\to Y\) 满足 \(g\circ f=h\circ f\)。要证 \(g=h\)，任取 \(b\in_X B\) 的阶段 \(X=B\)、元素 \(b=\mathrm{id}_B:B\to B\)。由 (L) 存在 \(a:B\to A\) 使 \(f\circ a=\mathrm{id}_B\)。于是
+      \[g=g\circ\mathrm{id}_B=g\circ f\circ a=h\circ f\circ a=h\circ\mathrm{id}_B=h.\]
+      故 \(f\) 满态。<span class="qed" data-page-node-id="Zl9Bhll5691D4oo3vd2mMW">∎</span></div>
+    <div class="item" data-page-node-id="50sG6Z95cFOTcjNBDwwkUA"><b data-page-node-id="wBzqv6b0I02nWWvgteT0e2">2.3.5</b>　范畴验证：对象 \(0,1\)；\(\operatorname{Hom}(0,0)=\{\mathrm{id}_0\}\)、\(\operatorname{Hom}(1,1)=\{\mathrm{id}_1\}\)、\(\operatorname{Hom}(0,1)=\{a\}\)、\(\operatorname{Hom}(1,0)=\varnothing\)。可复合的只有恒等与 \(a\) 两边，复合由恒等律唯一确定，结合律自动成立，故为范畴。<br data-page-node-id="fSgRktgUQYA1tZLUFiB71m">
+      \(\operatorname{Hom}(0,1)=\{a\}\) 与 \(\operatorname{Hom}(1,1)=\{\mathrm{id}_1\}\) 均单元，故 \(1\) 终末；\(\operatorname{Hom}(1,0)=\varnothing\)，故对象 \(0\) 没有全局元素。但 \(\mathrm{id}_0:0\to0\) 是 \(0\) 的一个 \(0\)-元素，故广义元素存在。<span class="qed" data-page-node-id="DLJkA7YB939aykJBDA6tJy">∎</span></div>
+    <div class="item" data-page-node-id="YTukAEs1ZBHNsWxM5817ln"><b data-page-node-id="MjF5blbaCrKyjruw3DAHgU">2.3.6</b>　(E) 由命题 2.1.7（\(\mathbb{Z}\to\mathbb{Q}\) 在 \(\mathbf{Ring}\) 中满态）立得；(L) 的失败由命题 2.3.7（\(\mathrm{id}_{\mathbb{Q}}\) 不可提升到 \(\mathbb{Q}\to\mathbb{Z}\)）立得。<br data-page-node-id="M7kmPb6BxAq4ObwWPmDReh">
+      在 \(\mathbf{Ab}\) 中情况不同：\(i:\mathbb{Z}\to\mathbb{Q}\) <strong data-page-node-id="juCtOffR5jBEZJdLcfCdpJ">不是</strong>满态。取 \(Y=\mathbb{Q}/\mathbb{Z}\)，令 \(q:\mathbb{Q}\to\mathbb{Q}/\mathbb{Z}\) 为商映射，\(h\equiv0\)。则 \(q\circ i\) 把整数送到陪集 \(n+\mathbb{Z}=0\)，故 \(q\circ i=h\circ i\)；但 \(q\ne h\)（例如 \(q(1/2)=1/2+\mathbb{Z}\ne0\)）。故 \(i\) 在 \(\mathbf{Ab}\) 中不满。<br data-page-node-id="gyDlfXrN26wHZoPUivtLcB">
+      对比可见：满态性依赖于允许哪些箭头（环同态 vs 群同态），这正印证了本章反复出现的主题——对象的性质由箭头格局决定。<span class="qed" data-page-node-id="c3wDz1lssKornFiM3F7mNo">∎</span></div>
+  </div>
+
+  <div class="box phil" data-page-node-id="3OKVgta90Ik773SJd5m12R">
+    <h4 data-page-node-id="KA27wCvnDVQRCPorqzNBE5">选读拓展（哲学联系，非正文）</h4>
+    <p data-page-node-id="o9GLYUuZI9ukawrzsD9Dfz">"元素总带一个阶段"这句话值得停留。在集合论里，\(a\in A\) 是无条件的；在范畴里，\(x:X\to A\) 总是<strong data-page-node-id="fZaexpF560HfrGazMy5t3L">从某个视角 \(X\) 出发</strong>的。这与你熟悉的可能性语义有表面相似：一个命题在某个可能世界成立，与"它成立"不同，总要注明世界。但请留意差别：阶段 \(X\) 不是"可能世界"，它没有真值赋值结构；把它做成真正的可能世界语义，需要第 18 章的 Kripke–Joyal forcing 与层模型。这里能说的只是：范畴论迫使我们给每个"元素"标注它的来源，而这一纪律在语义学中被证明是富有成果的。</p>
+    <p data-page-node-id="8qXHk3BhOCtZkgqHe2oUqY">命题 2.3.7 的"满但不局部满"也对应一种常见困惑：一个过程在原则上不可从外部区分（满态），却并不意味着每个状态都能由给定输入实际达到（(L) 失败）。你研究自由意志时区分"形而上学可能"与"主体可达成"，形式上与此有可比之处。但不要直接搬用——范畴论这里的"可达"是箭头存在性，没有时间、能力或主体等结构，那些需要在模型里额外加入。</p>
+  </div>
+</section>
+
+<!-- ==================== 2.4 ==================== -->
+<section class="sec" id="s2-4" data-page-node-id="5b7nqNpHM3teepMuH00ZRU">
+  <div class="sec-h" data-page-node-id="V6hIXWvRMvqHgjYHSZe26M"><span class="sec-no" data-page-node-id="fUdvMsYIgObMNtu04d1NvB">2.4</span><h2 data-page-node-id="FaVSAOFYlOY7KCd5sWuk9q">积与具有积的范畴</h2><span class="src" data-page-node-id="BqRg9HRzkgySRO4OYGxhjH">A §2.4–2.6, pp.38–46</span></div>
+
+  <div class="box learn" data-page-node-id="pz1I7jH7mK1MCwb6sz4djx">
+    <h4 data-page-node-id="pjiIJFHHkAeT35EFZJ6jBO">① 本节学习目标</h4>
+    <ol data-page-node-id="wNrHeQqMGCvSbDFJJxstIp">
+      <li data-page-node-id="ttKECNUnLbrFXRVO6xOvhY">写出积的完整定义（对象 + 两条投影 + 唯一因子箭头），并画出交换图；</li>
+      <li data-page-node-id="TkNNW3uoBKGidgqxoqqw6r">严格证明积唯一到唯一同构，掌握泛性质论证的标准套路；</li>
+      <li data-page-node-id="rkzmHyGo2lBAnrYTzBlJY5">证明 \(\operatorname{Hom}(X,A\times B)\cong\operatorname{Hom}(X,A)\times\operatorname{Hom}(X,B)\)，理解它为何是"积"这个名字的根据；</li>
+      <li data-page-node-id="hFOGtygGoLVQHuOesw2wml">验证 \(\mathbf{Set},\mathbf{Grp},\mathbf{Top},\mathbf{P},\mathbf{Rel}\) 中的积，特别理解 \(\mathbf{Rel}\) 中积是<strong data-page-node-id="CpOsRFFAa4lTzXyuxvHuNZ">不相交并</strong>而不是笛卡尔积；</li>
+      <li data-page-node-id="ObwACiR2eSoXqvzVOaqSyH">掌握积的结合律、交换律、单位律（均到唯一同构），并能用对角线 \(\Delta_A\) 编码等式。</li>
+    </ol>
+  </div>
+
+  <h3 class="sub" data-page-node-id="HfAYNBBATFOobxcnuINIcP">2.4.1　动机：笛卡尔积的"通用接口"</h3>
+  <p data-page-node-id="zRqzYxqfehuwxnHWN9gfTc">集合的笛卡尔积 \(A\times B\) 由有序对组成，带投影 \(\pi_1(a,b)=a,\ \pi_2(a,b)=b\)。它的关键性质不是"由有序对构成"，而是：要给出一个函数 \(X\to A\times B\)，等价于同时给出两个函数 \(X\to A\) 与 \(X\to B\)。用式子说，
+    \[\operatorname{Hom}_{\mathbf{Set}}(X,A\times B)\;\cong\;\operatorname{Hom}(X,A)\times\operatorname{Hom}(X,B).\]
+    这个等价完全刻画了积，根本不必提到有序对。把"等价"拆成对象、箭头、唯一性三件事，就得到范畴中的积。</p>
+
+  <div class="defn" data-page-node-id="BcN1vaYpjOGiGgo4MbaM9z"><span class="lbl" data-page-node-id="tx9MbLG0BI1nKotbNYYNAz">定义 2.4.1（积，product）</span>　范畴 \(\mathbf{C}\) 中对象 \(A,B\) 的<strong data-page-node-id="9c3QRlUtPss6VBj33s12kj">积</strong>是一个对象 \(A\times B\)，连同两个箭头
+    \[\pi_1:A\times B\to A,\qquad \pi_2:A\times B\to B,\]
+    满足如下泛性质：对任意对象 \(X\) 与任意箭头 \(f:X\to A,\ g:X\to B\)，存在<strong data-page-node-id="ldOgxw1TyUeI6GmdsTDtos">唯一</strong>的箭头 \(\langle f,g\rangle:X\to A\times B\)，使得
+    \[\pi_1\circ\langle f,g\rangle=f,\qquad \pi_2\circ\langle f,g\rangle=g.\]
+    图示为
+    \[
+      \begin{array}{ccccc}
+        && X &&\\[2pt]
+        & \swarrow{\scriptstyle f} & \downarrow{\scriptstyle \langle f,g\rangle} & \searrow{\scriptstyle g} &\\[2pt]
+        A & \xleftarrow{\pi_1} & A\times B & \xrightarrow{\pi_2} & B
+      \end{array}
+    \]
+  </div>
+  <div class="rmk" data-page-node-id="CdTj7PhH0Aglj07yWyyqhl"><strong data-page-node-id="zsN7VVcTDtCvKZnKs3k2Gg">逐条检查定义。</strong>积不是"一个对象"，而是<strong data-page-node-id="fJDarOxxYct9FZRzO1jB7k">三件数据</strong> \((A\times B,\pi_1,\pi_2)\)。单独一个对象不足以成为积——必须指定投影。同理，泛性质中的唯一性是关键：若只要求存在而不要求唯一，定义会弱得多，下面所有唯一性结论都会失败。初学时最常见的错误是只记住 \(A\times B\) 忘了投影。</div>
+
+  <h3 class="sub" data-page-node-id="B14jrBdszkQGit75dqk2Gc">2.4.2　唯一性与 Hom-集刻画</h3>
+  <div class="prop" data-page-node-id="D3h85FfFnF0aq36EnGlCv5"><span class="lbl" data-page-node-id="IJUodHhOIQIPMQG9TNoQHy">命题 2.4.2（积唯一到唯一同构）</span>　若 \((P,\pi_1,\pi_2)\) 与 \((P',\pi'_1,\pi'_2)\) 都是 \(A,B\) 的积，则存在唯一同构 \(u:P\to P'\) 满足 \(\pi'_i\circ u=\pi_i\ (i=1,2)\)。
+    <div class="proof" data-page-node-id="dvUXvQhZ5ryObAxlGeL68Q"><span class="pl" data-page-node-id="cbsk2m0YZHzexg0UB4FVjM">证明：</span>因 \(P\) 是积，对箭头 \(\pi'_1:P'\to A,\ \pi'_2:P'\to B\)，存在唯一箭头 \(u:P'\to P\) 使 \(\pi_i\circ u=\pi'_i\)。因 \(P'\) 是积，对 \(\pi_1:P\to A,\ \pi_2:P\to B\)，存在唯一箭头 \(v:P\to P'\) 使 \(\pi'_i\circ v=\pi_i\)。<br data-page-node-id="XpSUBlHvw1nzNJwhAfrlTf">
+      复合 \(u\circ v:P\to P\) 满足 \(\pi_i\circ(u\circ v)=(\pi_i\circ u)\circ v=\pi'_i\circ v=\pi_i\)。而 \(\mathrm{id}_P:P\to P\) 也满足 \(\pi_i\circ\mathrm{id}_P=\pi_i\)。由 \(P\) 的泛性质，满足这两个等式的箭头唯一，故 \(u\circ v=\mathrm{id}_P\)。同理 \(v\circ u=\mathrm{id}_{P'}\)。故 \(v\)（等价于 \(u\)）是同构，且唯一性由泛性质给出。<span class="qed" data-page-node-id="bvtdyTDl5iTmRlCVaocMX9">∎</span></div>
+  </div>
+  <div class="prop" data-page-node-id="NbS8EBAJE4T79LiEx3w6bf"><span class="lbl" data-page-node-id="TvZqW4D4nQCOwsipe7ey0Z">命题 2.4.3（Hom-集刻画）</span>　若 \(A\times B\) 存在，则对每个对象 \(X\)，映射
+    \[\Phi_X:\operatorname{Hom}(X,A\times B)\longrightarrow\operatorname{Hom}(X,A)\times\operatorname{Hom}(X,B),\qquad h\longmapsto(\pi_1\circ h,\ \pi_2\circ h)\]
+    是双射，其逆为 \((f,g)\mapsto\langle f,g\rangle\)。
+    <div class="proof" data-page-node-id="T4ocHmEQa9zcSDiTFCdS99"><span class="pl" data-page-node-id="GA5DqFLh8CoagepKkA8dVk">证明：</span>先证 \(\Phi_X\) 与所给映射互逆。<br data-page-node-id="jqXIOESBcizGUxUBFI3XHl">
+      (1) 对 \((f,g)\in\operatorname{Hom}(X,A)\times\operatorname{Hom}(X,B)\)，
+      \[\Phi_X(\langle f,g\rangle)=(\pi_1\circ\langle f,g\rangle,\ \pi_2\circ\langle f,g\rangle)=(f,g)\]
+      由定义 2.4.1。<br data-page-node-id="9H3NjQcL8bO5KEFibSMLcN">
+      (2) 对 \(h:X\to A\times B\)，\(\langle\pi_1\circ h,\pi_2\circ h\rangle:X\to A\times B\) 满足 \(\pi_1\circ\langle\pi_1 h,\pi_2 h\rangle=\pi_1 h\)、\(\pi_2\circ\langle\pi_1 h,\pi_2 h\rangle=\pi_2 h\)；而 \(h\) 本身也满足这两个等式。由泛性质中"唯一"的一条，二者相等。<span class="qed" data-page-node-id="ePfwFva6nAsuHUeioGCQtD">∎</span></div>
+  </div>
+  <div class="rmk" data-page-node-id="VAl2ikObMvUipDB29WUqfo">命题 2.4.3 解释了为什么叫"积"：在 Hom-集层面，\(\operatorname{Hom}(X,-)\) 把范畴中的积变成<strong data-page-node-id="BS2OPsOr3LLGdrufTtaSxY">集合的笛卡尔积</strong>。后面第 6 章会说明这是"表示函子保持极限"的一般现象的一个特例。</div>
+
+  <h3 class="sub" data-page-node-id="s0EDAYB6mOVVKhCz7Yghc0">2.4.3　积作为函子与基本同构</h3>
+  <div class="prop" data-page-node-id="lA5b6SskmSB9r5XnFVIGLq"><span class="lbl" data-page-node-id="XmiRzRoPv0GJm26aCC21bW">命题 2.4.4（积函子）</span>　若 \(\mathbf{C}\) 对任意两个对象都有积，则 \(\times:\mathbf{C}\times\mathbf{C}\to\mathbf{C}\) 构成函子：对象 \((A,B)\mapsto A\times B\)；箭头 \((f:A\to B,\ g:C\to D)\mapsto f\times g:=\langle f\circ\pi_1,\ g\circ\pi_2\rangle:A\times C\to B\times D\)。
+    <div class="proof" data-page-node-id="8MzrT0k77OQK2G7oo3ygOn"><span class="pl" data-page-node-id="bpqB6cq7jMwTl3Wis8ZLoM">证明：</span>先验证 \(f\times g\) 类型正确：\(f\circ\pi_1:A\times C\to B\)、\(g\circ\pi_2:A\times C\to D\)，故由积的泛性质存在唯一箭头 \(\langle f\pi_1,g\pi_2\rangle:A\times C\to B\times D\)。<br data-page-node-id="RH3Wt0CqsjHw6qohByRO1H">
+      <strong data-page-node-id="p0dd7WLeCYUDDwxzHKG1A0">保持恒等</strong>：\(\mathrm{id}_A\times\mathrm{id}_B=\langle\pi_1,\pi_2\rangle\)，而 \(\mathrm{id}_{A\times B}\) 也满足 \(\pi_1\circ\mathrm{id}=\pi_1,\ \pi_2\circ\mathrm{id}=\pi_2\)，由唯一性二者相等。<br data-page-node-id="fEnc2IDDavzsIFIuCKHeEN">
+      <strong data-page-node-id="Noybuzxs6RHHzLWoHol6la">保持复合</strong>：设 \(f':B\to B',\ g':D\to D'\)。只需验证 \((f'\times g')\circ(f\times g)\) 与 \((f'f)\times(g'g)\) 在同一泛性质下满足相同的投影方程。计算第一个投影：
+      \[\pi_1\circ(f'\times g')\circ(f\times g)=f'\circ\pi_1\circ(f\times g)=f'\circ f\circ\pi_1,\]
+      而 \(\pi_1\circ\bigl((f'f)\times(g'g)\bigr)=(f'f)\circ\pi_1=f'\circ f\circ\pi_1\)。第二个投影同理。由唯一性二者相等。<span class="qed" data-page-node-id="tDHaiY72tkMqfOgmFQsLfv">∎</span></div>
+  </div>
+  <div class="prop" data-page-node-id="pRKKoXpANopgZ6Qw9algQ3"><span class="lbl" data-page-node-id="MOZcQPDzisO3LVeCoVHbV6">命题 2.4.5（积的基本同构）</span>　若所需的积存在，则有自然同构
+    \[A\times B\cong B\times A,\qquad (A\times B)\times C\cong A\times(B\times C),\qquad A\times1\cong A.\]
+    <div class="proof" data-page-node-id="UthzOxTYeGXFF42Ayb4JAc"><span class="pl" data-page-node-id="ZzrKCnDt9zFvFC82ZTV41E">证明：</span>三式都用泛性质的唯一性。<br data-page-node-id="9CVreXKrkM0jT1vmxXjJQV">
+      (1) 定义 \(\tau=\langle\pi_2,\pi_1\rangle:A\times B\to B\times A\)。同理定义 \(\tau'=\langle\pi_2,\pi_1\rangle:B\times A\to A\times B\)。则 \(\tau'\circ\tau:A\times B\to A\times B\) 满足 \(\pi_1\circ(\tau'\tau)=\pi_1,\ \pi_2\circ(\tau'\tau)=\pi_2\)，与 \(\mathrm{id}_{A\times B}\) 满足相同方程，故相等；反向同理。<br data-page-node-id="pyCAyqMgLCHCGJkODunCvv">
+      (2) 三重积：\((A\times B)\times C\) 的投影记为 \(\pi_1^{AB},\pi_2^{AB}\)（到 \(A\times B\)）与 \(\pi_C\)；\(A\times(B\times C)\) 的记为 \(\pi_A,\pi_1^{BC},\pi_2^{BC}\)。定义
+      \[\alpha=\langle \pi_A^{AB}\circ\pi_1^{AB},\ \langle \pi_B^{AB}\circ\pi_1^{AB},\ \pi_C\rangle\rangle:(A\times B)\times C\to A\times(B\times C),\]
+      其中 \(\pi_A^{AB}=\pi_1,\ \pi_B^{AB}=\pi_2\) 是 \(A\times B\) 的投影。其逆按对称方式定义。两复合分别满足所有投影方程，由唯一性等于恒等。<br data-page-node-id="Ee91WSdEKA83PZsf9vl8up">
+      (3) 设 \(1\) 终末。\(\pi_1:A\times1\to A\) 是箭头，其逆为 \(\langle\mathrm{id}_A,!\rangle:A\to A\times1\)（唯一到 \(1\) 的箭头记为 \(!\)）。验证：\(\pi_1\circ\langle\mathrm{id}_A,!\rangle=\mathrm{id}_A\)；反之 \(\langle\mathrm{id}_A,!\rangle\circ\pi_1:A\times1\to A\times1\) 的两个投影分别为 \(\pi_1\) 与 \(!\)（到 \(1\) 的箭头唯一），与 \(\mathrm{id}_{A\times1}\) 的投影相同，由唯一性相等。<span class="qed" data-page-node-id="aWA0H3wfbnASdELx3Mugck">∎</span></div>
+  </div>
+  <div class="defn" data-page-node-id="OR3FZdcdaxosvQHWzPjiHm"><span class="lbl" data-page-node-id="CEvkFB2tLbQqhRBXqX4kzj">定义 2.4.6（对角线）</span>　对有积的范畴，定义 \(A\) 的<strong data-page-node-id="CTFMIuexhAvIZdwWvP9G4C">对角线</strong>为
+    \[\Delta_A=\langle\mathrm{id}_A,\mathrm{id}_A\rangle:A\to A\times A.\]
+    在 \(\mathbf{Set}\) 中即 \(a\mapsto(a,a)\)。</div>
+  <div class="prop" data-page-node-id="X4IxEurB8vD8cCJYk1EGCt"><span class="lbl" data-page-node-id="a4MNY3HlgBZ2xSHfZdKMn3">命题 2.4.7</span>　\(\Delta_A\) 是单态。
+    <div class="proof" data-page-node-id="CrHVbclh0IDUr0HfhVcVUq"><span class="pl" data-page-node-id="d6amAqhqio1fjaLJ1vhMVU">证明：</span>因 \(\pi_1\circ\Delta_A=\mathrm{id}_A\)。若 \(\Delta_A\circ u=\Delta_A\circ v\)，两边左复合 \(\pi_1\)：\(u=\pi_1\Delta_A u=\pi_1\Delta_A v=v\)。故 \(\Delta_A\) 单态（亦可直接用命题 2.1.6(b)）。<span class="qed" data-page-node-id="2KcxZJAwGdGTyH9wlndUD2">∎</span></div>
+  </div>
+
+  <h3 class="sub" data-page-node-id="2CvM4nWuKvAHPefonjHGOP">2.4.4　例子：积不一定是笛卡尔积</h3>
+  <div class="prop" data-page-node-id="EQVvKf8stIW6ZoXvbBeEp6"><span class="lbl" data-page-node-id="yX3EWNcriTEnixzP9AObTH">例 2.4.8（\(\mathbf{Set},\mathbf{Grp},\mathbf{Top}\)）</span>　\(\mathbf{Set}\) 中积为笛卡尔积；\(\mathbf{Grp}\) 中为直积 \(G\times H\)（逐点运算）；\(\mathbf{Top}\) 中为积空间（投影连续，且由积拓扑的泛性质给出最细的使投影连续的拓扑）。</div>
+  <div class="prop" data-page-node-id="VjWIhsFVTmFGxrEtlNLbUN"><span class="lbl" data-page-node-id="vHhJiAkHOXIXwXDv0NUSwv">例 2.4.9（偏序范畴 \(\mathbf{P}\)）</span>　积 \(p\times q\) 是交 \(p\wedge q\)（最大下界）：\(\operatorname{Hom}(r,p\wedge q)\) 非空 ⟺ \(r\le p\) 且 \(r\le q\)，且这样的箭头至多一个，泛性质成立。可见范畴论中的"积"在偏序世界里就是格论中的"交"——你熟悉的格论在这里被统一进同一套语言。</div>
+  <div class="prop" data-page-node-id="sKJKSGpH9uDcYQFVtwMBN7"><span class="lbl" data-page-node-id="ENJbm2ETkqDVhOQdIuqXSt">例 2.4.10（\(\mathbf{Rel}\) 中积是不相交并）</span>　设 \(A,B\) 为集合，取不相交并 \(A\sqcup B=(A\times\{0\})\cup(B\times\{1\})\)。在 \(\mathbf{Rel}\) 中定义投影为关系
+    \[\pi_1=\{((a,0),a)\mid a\in A\}:A\sqcup B\to A,\qquad \pi_2=\{((b,1),b)\mid b\in B\}:A\sqcup B\to B.\]
+    给定关系 \(R:X\to A,\ S:X\to B\)，置
+    \[T=\{(x,(a,0))\mid (x,a)\in R\}\cup\{(x,(b,1))\mid (x,b)\in S\}:X\to A\sqcup B.\]
+    验证 \(\pi_1\circ T=R\)：若 \((x,a')\in\pi_1\circ T\)，则存在 \(y\in A\sqcup B\) 使 \((x,y)\in T\) 且 \((y,a')\in\pi_1\)。由 \(\pi_1\) 的定义 \(y=(a',0)\)，由 \(T\) 的定义 \((x,a')\in R\)；反向包含同理。\(\pi_2\circ T=S\) 同理。<br data-page-node-id="ljHsQEUkJ947zkSR8jZLMN">
+    唯一性：若 \(T':X\to A\sqcup B\) 满足 \(\pi_1 T'=R,\ \pi_2 T'=S\)，取 \((x,y)\in T'\)。若 \(y=(a,0)\)，由 \(\pi_1\) 定义 \((x,a)\in R\)，故 \((x,(a,0))\in T\)；若 \(y=(b,1)\)，同理 \((x,(b,1))\in T\)，故 \(T'\subseteq T\)。反向：若 \((x,(a,0))\in T\)，则 \((x,a)\in R=\pi_1 T'\)，故存在 \(y\) 使 \((x,y)\in T'\) 且 \((y,a)\in\pi_1\)，由 \(\pi_1\) 定义 \(y=(a,0)\)，故 \((x,(a,0))\in T'\)。于是 \(T=T'\)。<br data-page-node-id="Nzlur1rBi3mFXn0Fvxpge8">
+    故 \(A\sqcup B\) 连同上述 \(\pi_1,\pi_2\) 是 \(\mathbf{Rel}\) 中 \(A,B\) 的积。<span class="qed" data-page-node-id="F01gmOLDHU8me3pd1nRRm8">∎</span></div>
+  <div class="rmk" data-page-node-id="C14Z2gGZBIs3BhMBfOkSkB"><strong data-page-node-id="P9OJ5yzu7x6KXElj9shV4O">务必记住这个反直觉例子。</strong>在 \(\mathbf{Rel}\) 中，"积"是集合的<strong data-page-node-id="RLTP4LSJL4DFrUJ3yiDNRZ">并</strong>而非笛卡尔积。这说明"积"这个名字只表示满足某条泛性质，不表示任何特定的集合论构造。若你靠"积 = 有序对"的直觉做题，在这里会立刻出错。同样，在 \(\mathbf{P}\) 中积是"交"；名字与内容脱钩是范畴论的常态。</div>
+
+  <h3 class="sub" data-page-node-id="DuW9KlWIJz3scZ5wWIvAoS">2.4.5　有限积范畴与衔接</h3>
+  <div class="defn" data-page-node-id="Mcy2IOl7cgygJ1c86FFigV"><span class="lbl" data-page-node-id="kPZXFh01jEViuhxu3IPRm7">定义 2.4.11（有限积范畴）</span>　若范畴 \(\mathbf{C}\) 有终末对象且任意两个对象都有积，称 \(\mathbf{C}\) 有<strong data-page-node-id="tnOymPmwFIL5cpMUlQgtqF">有限积</strong>。由归纳：若 \(A_1\times\cdots\times A_n\) 存在，则它与 \(A_{n+1}\) 的积给出 \(n+1\) 元积；空族积即终末对象。</div>
+  <p data-page-node-id="c1BEgQIbjARjwuLHdPjrTH">有限积范畴是下一章的起点：第 3 章引入等化子与余积，第 4 章把它们统一为极限与余极限；第 5 章在有限积上再添指数对象，得到笛卡尔闭范畴——那是 Lambek & Scott 全书的语言基础。你熟悉的格论结构（有限积 = 交、终末对象 = 顶元）也在这一链条中升级为 Heyting 代数（第 5.3 节）。</p>
+
+  <div class="box exer" data-page-node-id="LRrxrt2gfJKzAFw9qFAZwb">
+    <h4 data-page-node-id="dkngqUgAgKqmD9yiOIHCui">③ ✅ 课后练习题</h4>
+    <div class="grp" data-page-node-id="zVS6bTVs2YlPI2ZH9qw8Ut">（一）基础巩固题</div>
+    <ol data-page-node-id="eedATuKIGhhbO3Sax64Dyy">
+      <li id="q241" data-page-node-id="MCx0XaifXsBzBsf9m5nGcY">完整证明命题 2.4.2：积唯一到唯一同构。要求标注每一步所用泛性质的具体对象与箭头。</li>
+      <li id="q242" data-page-node-id="Hq8LJXDUfHJbGwQxHYWPoF">在 \(\mathbf{Set}\) 中验证 \((A\times B,\pi_1,\pi_2)\) 满足定义 2.4.1（写出 \(\langle f,g\rangle\) 的显式定义并验证唯一性）。</li>
+      <li id="q243" data-page-node-id="0AxlFZhdkBYGSRTL12mLSF">证明命题 2.4.3：\(\operatorname{Hom}(X,A\times B)\cong\operatorname{Hom}(X,A)\times\operatorname{Hom}(X,B)\)。</li>
+      <li id="q244" data-page-node-id="5G9NSY35pPJ47sYkrMTu2d">设 \(1\) 为终末对象。证明 \(A\times1\cong A\)，并写出两边互逆的箭头。</li>
+    </ol>
+    <div class="grp" data-page-node-id="N4vBGfrRzYd05IryV4ZjZR">（二）进阶思考题</div>
+    <ol start="5" data-page-node-id="cH1NNHhen1rv3pSsnSFUBX">
+      <li id="q245" data-page-node-id="aptv8CsjDuQR5vZ2Vh5Ubw">在 \(\mathbf{Rel}\) 中验证例 2.4.10：写出 \(A\sqcup B\) 作为积的投影与配对箭头，逐条检查 \(\pi_1 T=R\)、\(\pi_2 T=S\) 与唯一性（不得只写结论）。</li>
+      <li id="q246" data-page-node-id="cYnnYjeEAegujHPbIpsFnb">设 \(f,g:X\to B\)。证明：\(f=g\iff\langle f,g\rangle=\Delta_B\circ f\)。由此说明对角线如何把"两个箭头相等"编码为"某个箭头因子过对角线"。</li>
+    </ol>
+  </div>
+
+  <div class="box ans" data-page-node-id="fQzosdbCAWDC9GGFCgBmF9">
+    <h4 data-page-node-id="FbpH7mNFK2VTBIhcDgLbBZ">④ ✅ 习题参考答案</h4>
+    <div class="item" data-page-node-id="PuB2xyIFcSflQ0Qjv3owtH"><b data-page-node-id="fHCJR93TjTtCczK0EOoOdm">2.4.1</b>　设 \((P,\pi_1,\pi_2)\)、\((P',\pi'_1,\pi'_2)\) 均为 \(A,B\) 的积。因 \(P\) 是积，对 \(X=P'\)、\(f=\pi'_1,\ g=\pi'_2\)，存在唯一 \(u:P'\to P\) 使 \(\pi_i u=\pi'_i\)。因 \(P'\) 是积，对 \(X=P\)、\(f=\pi_1,\ g=\pi_2\)，存在唯一 \(v:P\to P'\) 使 \(\pi'_i v=\pi_i\)。则 \(u v:P\to P\) 满足 \(\pi_i(uv)=\pi'_i v=\pi_i\)，而 \(\mathrm{id}_P\) 也满足；由 \(P\) 的唯一性 \(uv=\mathrm{id}_P\)。同理 \(vu=\mathrm{id}_{P'}\)。故 \(v\) 是同构，且满足 \(\pi'_i v=\pi_i\)；这样的 \(v\) 唯一，因为若 \(v'\) 也满足，由 \(P\) 的唯一性（取 \(X=P\)）得 \(v'=v\)。<span class="qed" data-page-node-id="wKjA2Je9QgAkLQ0nL2zo2S">∎</span></div>
+    <div class="item" data-page-node-id="wj2hiFK2X1m7Ewoe8xTIRw"><b data-page-node-id="Hp2KFQZkkKcjgCgt9bBVU0">2.4.2</b>　取 \(\langle f,g\rangle:X\to A\times B\) 为 \(\langle f,g\rangle(x)=(f(x),g(x))\)。则 \((\pi_1\circ\langle f,g\rangle)(x)=\pi_1(f(x),g(x))=f(x)\)，故 \(\pi_1\langle f,g\rangle=f\)；同理 \(\pi_2\langle f,g\rangle=g\)。<br data-page-node-id="m4b5NY0hcGWBiinLGLzu16">
+      唯一性：若 \(h:X\to A\times B\) 满足 \(\pi_1 h=f,\ \pi_2 h=g\)，则对任意 \(x\in X\)，写 \(h(x)=(a,b)\)，由 \(\pi_1 h(x)=a=f(x)\)、\(\pi_2 h(x)=b=g(x)\) 得 \(h(x)=(f(x),g(x))=\langle f,g\rangle(x)\)。由函数外延性 \(h=\langle f,g\rangle\)。<span class="qed" data-page-node-id="csiGXXCh79zlnnrbPiaEkD">∎</span></div>
+    <div class="item" data-page-node-id="MyQy9IFkLl7PvtTPNUKRic"><b data-page-node-id="poqH6jrRqkTPv8rHLfyfd2">2.4.3</b>　定义 \(\Phi_X(h)=(\pi_1 h,\pi_2 h)\)，\(\Psi_X(f,g)=\langle f,g\rangle\)。则
+      \[\Phi_X\Psi_X(f,g)=(\pi_1\langle f,g\rangle,\pi_2\langle f,g\rangle)=(f,g)\]
+      由定义 2.4.1；而
+      \[\Psi_X\Phi_X(h)=\langle\pi_1 h,\pi_2 h\rangle=h\]
+      因为 \(h\) 与 \(\langle\pi_1 h,\pi_2 h\rangle\) 满足同一组投影方程，由唯一性相等。故 \(\Phi_X\) 为双射。<span class="qed" data-page-node-id="uYA7mCARIsCreJsLls2qYn">∎</span></div>
+    <div class="item" data-page-node-id="w9ALnhKopNr86ALH9CH1rc"><b data-page-node-id="oTYjKADGXo04G2Gqpy3L5z">2.4.4</b>　箭头 \(\pi_1:A\times1\to A\)，逆为 \(s=\langle\mathrm{id}_A,!\rangle:A\to A\times1\)（\(!:A\to1\) 唯一）。验证：
+      \[\pi_1\circ s=\mathrm{id}_A\]
+      由积的泛性质；又 \(s\circ\pi_1:A\times1\to A\times1\) 满足 \(\pi_1(s\pi_1)=\pi_1\)，且到 \(1\) 的投影 \(!\circ s\circ\pi_1=!\)（到 \(1\) 的箭头唯一）。\(\mathrm{id}_{A\times1}\) 的两个投影也是 \(\pi_1\) 与 \(!\)。由 \(A\times1\) 的泛性质，二者相等。故 \(s=\pi_1^{-1}\)。<span class="qed" data-page-node-id="dufXq17ufNRD3CFd7PUj0o">∎</span></div>
+    <div class="item" data-page-node-id="fYBMG2MRHP89TXvYJbJwwP"><b data-page-node-id="K7sm1mzwmmSVbLMQPEvVly">2.4.5</b>　记号同例 2.4.10。设 \(R:X\to A,\ S:X\to B\)，令 \(T=\{(x,(a,0))\mid (x,a)\in R\}\cup\{(x,(b,1))\mid (x,b)\in S\}\)。<br data-page-node-id="aysqJP5Rpu7sHrP8UMt2io">
+      \(\pi_1T=R\)：若 \((x,a)\in\pi_1T\)，存在 \(y\in A\sqcup B\) 满足 \((x,y)\in T,\ (y,a)\in\pi_1\)。由 \(\pi_1\) 定义 \(y=(a,0)\)，由 \(T\) 定义 \((x,a)\in R\)。反之若 \((x,a)\in R\)，取 \(y=(a,0)\in T\) 且 \((y,a)\in\pi_1\)，得 \((x,a)\in\pi_1T\)。\(\pi_2T=S\) 同理（用 \(y=(b,1)\)）。<br data-page-node-id="dv8RiodW81Lc1NPC6LFHhG">
+      唯一性：设 \(T'\) 满足 \(\pi_1T'=R,\pi_2T'=S\)。若 \((x,y)\in T'\)，则 \(y\) 形如 \((a,0)\) 或 \((b,1)\)。前者由 \((x,a)\in\pi_1T'=R\) 得 \((x,(a,0))\in T\)；后者由 \((x,b)\in S\) 得 \((x,(b,1))\in T\)。故 \(T'\subseteq T\)。反向：若 \((x,(a,0))\in T\)，则 \((x,a)\in R=\pi_1T'\)，故存在 \(y'\) 使 \((x,y')\in T',\ (y',a)\in\pi_1\)；由 \(\pi_1\) 定义 \(y'=(a,0)\)，故 \((x,(a,0))\in T'\)。\(B\) 部分同理。故 \(T=T'\)。<span class="qed" data-page-node-id="OzBne4lpa2smEYmx4qzwBm">∎</span></div>
+    <div class="item" data-page-node-id="dQGclpmsTxJ94QsjVMWJyB"><b data-page-node-id="WpIi3PaRBGisoqM5ducGwa">2.4.6</b>　(⟹) 若 \(f=g\)，则 \(\langle f,g\rangle=\langle f,f\rangle=\langle\mathrm{id}_B,\mathrm{id}_B\rangle\circ f=\Delta_B\circ f\)。<br data-page-node-id="oaqgiP2an2hIOPqn8SsYEB">
+      (⟸) 若 \(\langle f,g\rangle=\Delta_B\circ f\)，两边左复合 \(\pi_1\)（或 \(\pi_2\)）：
+      \[f=\pi_1\circ\langle f,g\rangle=\pi_1\circ\Delta_B\circ f=\mathrm{id}_B\circ f=f\]
+      得 \(f=f\)；用 \(\pi_2\)：
+      \[g=\pi_2\circ\langle f,g\rangle=\pi_2\circ\Delta_B\circ f=\mathrm{id}_B\circ f=f.\]
+      故 \(f=g\)。<br data-page-node-id="1exEuH3lHROzqKpCcgNXDF">
+      这说明等式 \(f=g\) 被编码为箭头 \(\langle f,g\rangle\) 因子过 \(\Delta_B\)。在等化子（第 3.3 节）中，这一编码会推广为"差核"的构造。<span class="qed" data-page-node-id="8PD3HBG0E1YzZL9LsYM1FZ">∎</span></div>
+  </div>
+
+  <div class="box phil" data-page-node-id="dU0KcX2D0Kg5WNQInn2Tum">
+    <h4 data-page-node-id="X9Ux0hDOXAMocAWqiR5JEI">选读拓展（哲学联系，非正文）</h4>
+    <p data-page-node-id="ejgpYcftugQGYwUihHqQzx">命题 2.4.2 的论证模式值得单独品味：不去问"积是什么东西做的"，只问"哪些箭头进出它"，就足以唯一确定它。这种<strong data-page-node-id="yi1QNXKdszTIqbWWOdl5Lc">以关系定对象</strong>的推理在哲学里对应结构主义的同一性观：一个项由它在结构中的位置而非内在性质决定。你的研究方向涉及因果关系中的"同一"（同一个原因在不同模型里是否还是同一个原因），这个数学模板可以作为一个干净的对照：范畴论里"唯一同构"是精确的、可判定的，而哲学中的同一性没有这样明确的判定程序——别把类比当作论证。</p>
+    <p data-page-node-id="mvFxUTHnLPKrgsU1TsFKLJ">\(\mathbf{Rel}\) 中积是不相交并、\(\mathbf{P}\) 中积是交，这两例说明数学名词的<strong data-page-node-id="3AJOLaQBNPkbO8kgWfRY7P">意义由使用规则决定</strong>，而非由名字的日常联想决定。这与你读卢克莱修时留意到的语言问题有微妙呼应：语词看似指向自明的东西，实际指向什么要靠它在理论中的角色来定。但此处同样只是透镜：范畴论的角色由公理严格固定，哲学语词的使用规则并不具备这种刚性。</p>
+  </div>
+</section>
+
+<footer data-page-node-id="1HIC0Gj1od6iIPbMVXEL3H">
+  <a href="范畴论-逻辑-拓扑斯_教材总目录.html" data-page-node-id="xmE7Q2vvGnonDRxEvN3nnS">← 返回总目录</a>　｜　第 2 章 · 抽象结构：单态、初终对象与积 · 共 4 节　｜　正文遵循"学习目标—讲授—习题—答案"四块结构，哲学内容均在选读拓展。
+</footer>
+
+</div>
+</body>
+</html>
