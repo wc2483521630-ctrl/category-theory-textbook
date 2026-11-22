@@ -284,6 +284,22 @@ i x\) 是米田双射 \(\cong\) 的两端。</p>
   <p><b>红色双向箭头</b>　\(\Phi:\eta\mapsto\eta_C(\mathrm{id}_C)=x\) 与 \(\Psi:x\mapsto\eta^x\)（corner 构造 \(\eta^x_B(f)=F(f)(x)\)）互为逆，给出双射；下方注明取 \(F=\operatorname{Hom}(-,B)\) 时它 specialize 成 Yoneda 嵌入（unit）的满忠实性。</p>
 </div>
 
+<h3 class="sub">交互版：可点击下钻的嵌套交换图</h3>
+<p style="font-size:13.5px;color:var(--ink2);">下图顶层是米田引理全局交换图。点击三个<span style="color:#b45309;font-weight:700;">金色虚线节点</span>（Hom 函子 / corner 构造 / unit 嵌入）可进入对应子交换图，子图左上角的「← 返回总图」可回到顶层。右上角 + / − / ⟲ 用于无损缩放与复位；也可直接在图上放大查看箭头与态射。脚本内嵌于 SVG，无外部依赖。</p>
+<figure style="padding:10px;">
+  <object data="米田引理_交互式嵌套交换图.svg" type="image/svg+xml" style="display:block;width:100%;aspect-ratio:1400/920;border-radius:8px;background:#fff;">
+    你的浏览器不支持内联 SVG 对象，请<a href="米田引理_交互式嵌套交换图.svg">直接打开 SVG 文件</a>。
+  </object>
+</figure>
+  <figcaption>图 A.2　米田引理交互式嵌套交换图（顶层总图 + 三张子交换图；点击金色节点下钻，矢量无损缩放）</figcaption>
+
+<div class="box cap">
+  <h4>图注：三张子交换图各画什么</h4>
+  <p><b>子图 1 · Hom 函子</b>　示意 <b>H = Hom(C,−)</b> 的函子性：箭头 <b>f</b> 被送到后复合 <b>f∘(−)</b>，虚线三角表达 <b>H(g∘f)=H(g)∘H(f)</b>（即结合律），下排逐元素把 id<sub>C</sub> 送成 f、g∘f。</p>
+  <p><b>子图 2 · unit 嵌入</b>　固定 f:A→B 得自然变换 <b>yf : Hom(−,A) ⇒ Hom(−,B)</b>，方块表达其自然性；取 F=Hom(−,B) 即得满忠实 <b>Nat(Hom(−,A),Hom(−,B)) ≅ Hom(A,B)</b>。</p>
+  <p><b>子图 3 · corner 构造</b>　核心方块把元素 <b>x = η<sub>C</sub>(id<sub>C</sub>)</b> 与整个 η 连起来：两条路径相等给出 <b>η<sup>x</sup><sub>B</sub>(f) = F(f)(x)</b>，说明单个元素唯一决定自然变换。</p>
+</div>
+
 <h3 class="sub">备选：Mermaid 结构预览</h3>
 <p style="font-size:13.5px;color:var(--ink2);">若只需快速看清图的结构（不含动画），可用支持 Mermaid 的编辑器渲染下面代码；它表达的是同一张图的骨架。</p>
 <pre class="mermaid">

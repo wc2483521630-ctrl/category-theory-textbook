@@ -1,0 +1,356 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 920" width="1400" height="920" font-family="-apple-system, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif">
+  <title>米田引理 · 交互式嵌套交换图</title>
+  <desc>顶层为米田引理全局交换图；点击 Hom 函子、unit 嵌入、corner 构造三个节点，切换到对应的子交换图；子图可返回顶层。矢量无损缩放，脚本内嵌，无外部依赖。</desc>
+
+  <defs>
+    <marker id="aN" viewBox="0 0 8 6" refX="7" refY="3" markerWidth="8" markerHeight="8" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L8,3 L0,6 Z" fill="#475569"/></marker>
+    <marker id="aB" viewBox="0 0 8 6" refX="7" refY="3" markerWidth="8" markerHeight="8" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L8,3 L0,6 Z" fill="#2563eb"/></marker>
+    <marker id="aG" viewBox="0 0 8 6" refX="7" refY="3" markerWidth="8" markerHeight="8" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L8,3 L0,6 Z" fill="#15803d"/></marker>
+    <marker id="aE" viewBox="0 0 8 6" refX="7" refY="3" markerWidth="8" markerHeight="8" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L8,3 L0,6 Z" fill="#7c3aed"/></marker>
+    <marker id="aR" viewBox="0 0 8 6" refX="7" refY="3" markerWidth="8" markerHeight="8" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L8,3 L0,6 Z" fill="#dc2626"/></marker>
+    <marker id="aY" viewBox="0 0 8 6" refX="7" refY="3" markerWidth="8" markerHeight="8" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L8,3 L0,6 Z" fill="#b45309"/></marker>
+    <style><![CDATA[
+      .ttl{font-size:26px;font-weight:750;fill:#1b1f27;}
+      .sub{font-size:14px;fill:#4d5461;}
+      .hint{font-size:13px;fill:#92400e;}
+      .ctitle{font-size:16px;font-weight:700;fill:#1b1f27;}
+      .tiny{font-size:11.5px;fill:#7a8190;}
+      .nt{font-size:15px;font-weight:650;fill:#1b1f27;}
+      .ntb{font-size:15px;font-weight:650;fill:#1e40af;}
+      .ntg{font-size:15px;font-weight:650;fill:#166534;}
+      .nte{font-size:15px;font-weight:650;fill:#6d28d9;}
+      .ntr{font-size:14px;font-weight:700;fill:#b91c1c;}
+      .lb{font-size:14px;fill:#475569;}
+      .lbb{font-size:13px;font-weight:600;fill:#2563eb;}
+      .lbg{font-size:13px;font-weight:600;fill:#15803d;}
+      .lbe{font-size:13px;font-weight:600;fill:#7c3aed;}
+      .lbr{font-size:13px;font-weight:600;fill:#dc2626;}
+      .lby{font-size:13px;font-weight:600;fill:#b45309;}
+      .eq{font-size:12.5px;fill:#334155;font-weight:600;}
+      .note{font-size:12.5px;fill:#4d5461;}
+      .arN{stroke:#475569;stroke-width:2.1;marker-end:url(#aN);}
+      .arB{stroke:#2563eb;stroke-width:2.4;marker-end:url(#aB);}
+      .arG{stroke:#15803d;stroke-width:2.4;marker-end:url(#aG);}
+      .arE{stroke:#7c3aed;stroke-width:2.4;marker-end:url(#aE);}
+      .arR{stroke:#dc2626;stroke-width:2.2;marker-end:url(#aR);}
+      .arY{stroke:#b45309;stroke-width:2.2;marker-end:url(#aY);}
+      .dash{fill:none;stroke-dasharray:7 5;}
+      .thin{stroke-width:1.4;opacity:.55;}
+      .zoneC{fill:#f8fafc;stroke:#cbd5e1;stroke-width:1.4;stroke-dasharray:6 4;}
+      .zoneS{fill:#fbfdff;stroke:#cfe0ff;stroke-width:1.6;}
+      .zoneY{fill:#faf7ff;stroke:#ddd0fb;stroke-width:1.6;}
+      .node{fill:#fff;stroke:#94a3b8;stroke-width:1.6;}
+      .nodeB{fill:#eff6ff;stroke:#2563eb;stroke-width:1.7;}
+      .nodeG{fill:#f0fdf4;stroke:#15803d;stroke-width:1.7;}
+      .nodeE{fill:#f5f3ff;stroke:#7c3aed;stroke-width:1.7;}
+      .nodeR{fill:#fef2f2;stroke:#dc2626;stroke-width:1.8;}
+      .sq{fill:#fef3c7;opacity:.5;stroke:none;}
+      .hot{cursor:pointer;}
+      .hot .hotbox{fill:#fffbeb;stroke:#d97706;stroke-width:1.5;stroke-dasharray:5 4;}
+      .hot:hover .hotbox{fill:#fef3c7;stroke-width:2.6;stroke-dasharray:none;}
+      .hotlabel{font-size:13px;font-weight:700;fill:#92400e;}
+      .backbtn{cursor:pointer;}
+      .backbtn rect{fill:#fff;stroke:#2563eb;stroke-width:1.6;}
+      .backbtn:hover rect{fill:#eef4ff;}
+      .backtxt{font-size:13.5px;font-weight:700;fill:#2563eb;}
+      .ctrl{cursor:pointer;}
+      .ctrl rect{fill:#fff;stroke:#94a3b8;stroke-width:1.3;}
+      .ctrl:hover rect{fill:#f0f2f5;stroke:#2563eb;}
+      .ctxt{font-size:17px;font-weight:700;fill:#334155;}
+      .view{}
+    ]]></style>
+  </defs>
+
+  <!-- ============================================================ -->
+  <!-- 顶层总图                                                       -->
+  <!-- ============================================================ -->
+  <g id="view-top" class="view">
+    <text class="ttl" x="700" y="44" text-anchor="middle">米田引理 · 全局交换图（交互版）</text>
+    <text class="sub" x="700" y="70" text-anchor="middle">Nat(Hom(C,−), F) ≅ F(C)　—　一个自然变换 η 由单个元素 x = η_C(id_C) 唯一决定</text>
+    <text class="hint" x="700" y="96" text-anchor="middle">点击带 ⊕ 的金色节点进入子图　｜　右上 + / − 缩放，⟲ 复位</text>
+
+    <!-- 缩放控件 -->
+    <g class="ctrl" onclick="zoomIn()"><rect x="1248" y="24" width="34" height="32" rx="7"/><text class="ctxt" x="1265" y="46" text-anchor="middle">+</text></g>
+    <g class="ctrl" onclick="zoomOut()"><rect x="1288" y="24" width="34" height="32" rx="7"/><text class="ctxt" x="1305" y="46" text-anchor="middle">−</text></g>
+    <g class="ctrl" onclick="resetView()"><rect x="1328" y="24" width="34" height="32" rx="7"/><text class="ctxt" x="1345" y="46" text-anchor="middle">⟲</text></g>
+
+    <!-- 范畴 C -->
+    <ellipse class="zoneC" cx="146" cy="470" rx="104" ry="290"/>
+    <text class="ctitle" x="146" y="196" text-anchor="middle">范畴 C</text>
+    <text class="tiny" x="146" y="214" text-anchor="middle">源范畴（局部小）</text>
+    <rect class="node" x="94" y="292" width="104" height="46" rx="9"/><text class="nt" x="146" y="322" text-anchor="middle">C</text>
+    <rect class="node" x="94" y="462" width="104" height="46" rx="9"/><text class="nt" x="146" y="492" text-anchor="middle">C′</text>
+    <rect class="node" x="94" y="632" width="104" height="46" rx="9"/><text class="nt" x="146" y="662" text-anchor="middle">C″</text>
+    <line class="arN" x1="146" y1="338" x2="146" y2="460"/><text class="lb" x="136" y="404" text-anchor="end">f</text>
+    <line class="arN" x1="146" y1="508" x2="146" y2="630"/><text class="lb" x="136" y="572" text-anchor="end">g</text>
+    <path class="arN dash" d="M 202,318 Q 268,470 202,666"/><text class="lb" x="236" y="474">g∘f</text>
+    <text class="tiny" x="146" y="712" text-anchor="middle">f:C→C′, g:C′→C″</text>
+
+    <!-- Set 容器 -->
+    <rect class="zoneS" x="300" y="214" width="648" height="592" rx="20"/>
+    <text class="ctitle" x="624" y="244" text-anchor="middle">Set（集合范畴）</text>
+
+    <!-- 交换方块底纹 -->
+    <rect class="sq" x="536" y="306" width="188" height="118" rx="8"/>
+    <rect class="sq" x="536" y="466" width="188" height="118" rx="8"/>
+
+    <!-- Hom 列（热点 1） -->
+    <g class="hot" onclick="showView('view-hom')">
+      <rect class="hotbox" x="356" y="252" width="184" height="32" rx="8"/>
+      <text class="hotlabel" x="448" y="273" text-anchor="middle">⊕ Hom(C,−) 函子</text>
+    </g>
+    <rect class="nodeB" x="368" y="306" width="168" height="48" rx="8"/><text class="ntb" x="452" y="336" text-anchor="middle">Hom(C, C)</text>
+    <rect class="nodeB" x="368" y="466" width="168" height="48" rx="8"/><text class="ntb" x="452" y="496" text-anchor="middle">Hom(C, C′)</text>
+    <rect class="nodeB" x="368" y="626" width="168" height="48" rx="8"/><text class="ntb" x="452" y="656" text-anchor="middle">Hom(C, C″)</text>
+    <line class="arB" x1="452" y1="354" x2="452" y2="464"/><text class="lbb" x="444" y="412" text-anchor="end">H(f)=f∘(−)</text>
+    <line class="arB" x1="452" y1="514" x2="452" y2="624"/><text class="lbb" x="444" y="572" text-anchor="end">H(g)=g∘(−)</text>
+    <path class="arB dash" d="M 540,330 Q 610,470 540,650"/><text class="lbb" x="592" y="600">H(g∘f)</text>
+
+    <!-- F 列 -->
+    <text class="ctitle" x="812" y="286" text-anchor="middle" fill="#166534">函子 F : C → Set</text>
+    <rect class="nodeG" x="726" y="306" width="168" height="48" rx="8"/><text class="ntg" x="810" y="336" text-anchor="middle">F(C)</text>
+    <rect class="nodeG" x="726" y="466" width="168" height="48" rx="8"/><text class="ntg" x="810" y="496" text-anchor="middle">F(C′)</text>
+    <rect class="nodeG" x="726" y="626" width="168" height="48" rx="8"/><text class="ntg" x="810" y="656" text-anchor="middle">F(C″)</text>
+    <line class="arG" x1="810" y1="354" x2="810" y2="464"/><text class="lbg" x="820" y="412">F(f)</text>
+    <line class="arG" x1="810" y1="514" x2="810" y2="624"/><text class="lbg" x="820" y="572">F(g)</text>
+    <path class="arG dash" d="M 898,330 Q 926,470 898,650"/><text class="lbg" x="916" y="474" text-anchor="end">F(g∘f)</text>
+
+    <!-- η 分量 -->
+    <line class="arE" x1="538" y1="330" x2="724" y2="330"/><text class="lbe" x="631" y="321" text-anchor="middle">η<tspan baseline-shift="sub" font-size="10">C</tspan></text>
+    <line class="arE" x1="538" y1="490" x2="724" y2="490"/><text class="lbe" x="631" y="481" text-anchor="middle">η<tspan baseline-shift="sub" font-size="10">C′</tspan></text>
+    <line class="arE" x1="538" y1="650" x2="724" y2="650"/><text class="lbe" x="631" y="641" text-anchor="middle">η<tspan baseline-shift="sub" font-size="10">C″</tspan></text>
+    <text class="lbe" x="452" y="290">η : Hom(C,−) ⇒ F（自然变换）</text>
+
+    <!-- 方块交换等式 -->
+    <text class="eq" x="630" y="372" text-anchor="middle">η<tspan baseline-shift="sub" font-size="9">C′</tspan>∘H(f) = F(f)∘η<tspan baseline-shift="sub" font-size="9">C</tspan></text>
+    <text class="eq" x="630" y="532" text-anchor="middle">η<tspan baseline-shift="sub" font-size="9">C″</tspan>∘H(g) = F(g)∘η<tspan baseline-shift="sub" font-size="9">C′</tspan></text>
+
+    <!-- 关键元素 -->
+    <circle cx="374" cy="330" r="6" fill="#dc2626"/><text class="lbr" x="366" y="334" text-anchor="end">id<tspan baseline-shift="sub" font-size="9">C</tspan></text>
+    <circle cx="732" cy="330" r="6" fill="#dc2626"/><text class="ntr" x="810" y="368" text-anchor="middle">x = η<tspan baseline-shift="sub" font-size="10">C</tspan>(id<tspan baseline-shift="sub" font-size="10">C</tspan>)</text>
+
+    <!-- 米田对应区 -->
+    <rect class="zoneY" x="970" y="214" width="390" height="592" rx="18"/>
+    <text class="ctitle" x="1165" y="244" text-anchor="middle" fill="#6d28d9">米田对应 (Yoneda)</text>
+    <rect class="nodeE" x="1002" y="300" width="326" height="54" rx="9"/><text class="nt" x="1165" y="333" text-anchor="middle" font-size="13.5">Nat(Hom(C,−), F)</text>
+    <rect class="nodeR" x="1002" y="486" width="326" height="54" rx="9"/><text class="ntr" x="1165" y="519" text-anchor="middle">F(C) ∋ x</text>
+    <line class="arR" x1="1075" y1="356" x2="1075" y2="484"/><text class="lbr" x="1067" y="424" text-anchor="end">Φ</text>
+    <line class="arR" x1="1255" y1="484" x2="1255" y2="356"/><text class="lbr" x="1263" y="424">Ψ</text>
+    <text class="lbe" x="1165" y="466" text-anchor="middle" font-size="12.5">双射 ≅，且对 A、F 自然</text>
+    <text class="tiny" x="1071" y="378" text-anchor="end">η ↦ η<tspan baseline-shift="sub" font-size="9">C</tspan>(id)</text>
+    <text class="tiny" x="1259" y="378">x ↦ η<tspan baseline-shift="super" font-size="9">x</tspan></text>
+
+    <!-- 热点 2：corner 构造 -->
+    <g class="hot" onclick="showView('view-corner')">
+      <rect class="hotbox" x="1002" y="572" width="326" height="104" rx="10"/>
+      <text class="hotlabel" x="1165" y="596" text-anchor="middle">⊕ corner 构造（点击展开子图）</text>
+      <text class="eq" x="1165" y="626" text-anchor="middle" font-size="14">η<tspan baseline-shift="super" font-size="10">x</tspan><tspan baseline-shift="sub" font-size="11">B</tspan>(f) = F(f)(x)</text>
+      <text class="tiny" x="1165" y="650" text-anchor="middle">f : C→B 处于 Hom(C,B) 的“角”</text>
+    </g>
+
+    <!-- 热点 3：unit 嵌入 -->
+    <g class="hot" onclick="showView('view-unit')">
+      <rect class="hotbox" x="1002" y="700" width="326" height="90" rx="10"/>
+      <text class="hotlabel" x="1165" y="724" text-anchor="middle">⊕ unit 嵌入 / Yoneda 嵌入（点击展开子图）</text>
+      <text class="note" x="1020" y="750">y : A ↦ Hom(−,A)，满忠实：</text>
+      <text class="tiny" x="1020" y="774">Nat(Hom(−,A),Hom(−,B)) ≅ Hom(A,B)</text>
+    </g>
+
+    <!-- 图例 -->
+    <line x1="330" y1="858" x2="362" y2="858" stroke="#2563eb" stroke-width="2.4"/><text class="tiny" x="370" y="862">Hom 函子的像与态射</text>
+    <line x1="560" y1="858" x2="592" y2="858" stroke="#15803d" stroke-width="2.4"/><text class="tiny" x="600" y="862">函子 F 的像与态射</text>
+    <line x1="770" y1="858" x2="802" y2="858" stroke="#7c3aed" stroke-width="2.4"/><text class="tiny" x="810" y="862">η 的分量</text>
+    <circle cx="990" cy="858" r="5" fill="#dc2626"/><text class="tiny" x="1002" y="862">关键元素 id、x</text>
+    <rect x="1160" y="850" width="26" height="15" rx="4" fill="none" stroke="#d97706" stroke-width="1.4" stroke-dasharray="4 3"/><text class="tiny" x="1192" y="862">可点击节点</text>
+  </g>
+
+  <!-- ============================================================ -->
+  <!-- 子图 1：Hom 函子                                               -->
+  <!-- ============================================================ -->
+  <g id="view-hom" class="view" style="display:none">
+    <g class="backbtn" onclick="showView('view-top')"><rect x="40" y="24" width="150" height="38" rx="9"/><text class="backtxt" x="115" y="48" text-anchor="middle">← 返回总图</text></g>
+    <text class="ttl" x="700" y="48" text-anchor="middle">子图 1 · Hom 函子 H = Hom(C,−)</text>
+    <text class="sub" x="700" y="74" text-anchor="middle">函子性：箭头 f:C→C′ 被送到后复合 f∘(−)；保持复合与恒等</text>
+
+    <!-- 范畴 C（上排） -->
+    <text class="ctitle" x="180" y="150">范畴 C</text>
+    <rect class="node" x="120" y="176" width="120" height="52" rx="9"/><text class="nt" x="180" y="208" text-anchor="middle">C</text>
+    <rect class="node" x="612" y="176" width="120" height="52" rx="9"/><text class="nt" x="672" y="208" text-anchor="middle">C′</text>
+    <rect class="node" x="1100" y="176" width="120" height="52" rx="9"/><text class="nt" x="1160" y="208" text-anchor="middle">C″</text>
+    <line class="arN" x1="242" y1="202" x2="610" y2="202"/><text class="lb" x="426" y="190" text-anchor="middle">f</text>
+    <line class="arN" x1="734" y1="202" x2="1098" y2="202"/><text class="lb" x="916" y="190" text-anchor="middle">g</text>
+    <path class="arN dash" d="M 180,232 Q 620,300 1160,232"/><text class="lb" x="670" y="292" text-anchor="middle">g∘f</text>
+
+    <!-- 函子作用的虚线对应 -->
+    <line class="arN dash thin" x1="180" y1="232" x2="180" y2="404"/>
+    <line class="arN dash thin" x1="672" y1="232" x2="672" y2="404"/>
+    <line class="arN dash thin" x1="1160" y1="232" x2="1160" y2="404"/>
+    <text class="tiny" x="180" y="330" text-anchor="middle">H</text>
+    <text class="tiny" x="672" y="330" text-anchor="middle">H</text>
+    <text class="tiny" x="1160" y="330" text-anchor="middle">H</text>
+
+    <!-- Set 中的 hom 集合（下排） -->
+    <text class="ctitle" x="180" y="374">Set</text>
+    <rect class="nodeB" x="110" y="410" width="220" height="66" rx="9"/>
+    <text class="ntb" x="220" y="438" text-anchor="middle">Hom(C,C)</text>
+    <text class="tiny" x="220" y="462" text-anchor="middle">元素：id<tspan baseline-shift="sub" font-size="9">C</tspan></text>
+    <rect class="nodeB" x="602" y="410" width="220" height="66" rx="9"/>
+    <text class="ntb" x="712" y="438" text-anchor="middle">Hom(C,C′)</text>
+    <text class="tiny" x="712" y="462" text-anchor="middle">元素：f = f∘id<tspan baseline-shift="sub" font-size="9">C</tspan></text>
+    <rect class="nodeB" x="1090" y="410" width="220" height="66" rx="9"/>
+    <text class="ntb" x="1200" y="438" text-anchor="middle">Hom(C,C″)</text>
+    <text class="tiny" x="1200" y="462" text-anchor="middle">元素：g∘f</text>
+
+    <line class="arB" x1="332" y1="443" x2="600" y2="443"/><text class="lbb" x="466" y="431" text-anchor="middle">H(f)=f∘(−)</text>
+    <line class="arB" x1="824" y1="443" x2="1088" y2="443"/><text class="lbb" x="956" y="431" text-anchor="middle">H(g)=g∘(−)</text>
+    <path class="arB dash" d="M 220,480 Q 700,568 1200,480"/><text class="lbb" x="710" y="562" text-anchor="middle">H(g∘f)=(g∘f)∘(−)</text>
+
+    <!-- 交换三角结论 -->
+    <rect x="330" y="600" width="740" height="66" rx="10" fill="#eff6ff" stroke="#2563eb" stroke-width="1.5"/>
+    <text class="eq" x="700" y="628" text-anchor="middle" font-size="15">H(g∘f) = H(g) ∘ H(f)</text>
+    <text class="tiny" x="700" y="651" text-anchor="middle">逐元素：(g∘f)∘(−) = g∘( f∘(−) )，即结合律；且 H(id)=id、H(1_C)(id_C)=id_C</text>
+
+    <text class="note" x="120" y="716">读图：上排是范畴 C 的对象与箭头，下排是它们在 Hom(C,−) 下的像（集合与函数）。</text>
+    <text class="note" x="120" y="742">虚线 H 把「对象/箭头」送到「集合/函数」；蓝色路径显示后复合如何把 id_C 依次送成 f、g∘f。</text>
+    <text class="tiny" x="120" y="772">交换三角说明：先经 f 再经 g，与直接经 g∘f，结果相同——这正是函子保持复合。</text>
+  </g>
+
+  <!-- ============================================================ -->
+  <!-- 子图 2：unit 嵌入                                              -->
+  <!-- ============================================================ -->
+  <g id="view-unit" class="view" style="display:none">
+    <g class="backbtn" onclick="showView('view-top')"><rect x="40" y="24" width="150" height="38" rx="9"/><text class="backtxt" x="115" y="48" text-anchor="middle">← 返回总图</text></g>
+    <text class="ttl" x="700" y="48" text-anchor="middle">子图 2 · unit 嵌入（Yoneda 嵌入）</text>
+    <text class="sub" x="700" y="74" text-anchor="middle">y : C → [Cᵒᵖ, Set]，A ↦ Hom(−,A)；米田引理给出 y 满忠实</text>
+
+    <rect x="360" y="104" width="680" height="46" rx="10" fill="#f5f3ff" stroke="#7c3aed" stroke-width="1.5"/>
+    <text class="eq" x="700" y="133" text-anchor="middle" font-size="14">满忠实：Nat(Hom(−,A), Hom(−,B)) ≅ Hom(A,B)</text>
+
+    <!-- 交换方块四角 -->
+    <rect class="nodeE" x="250" y="248" width="240" height="60" rx="9"/><text class="nte" x="370" y="285" text-anchor="middle">Hom(X, A)</text>
+    <rect class="nodeE" x="910" y="248" width="240" height="60" rx="9"/><text class="nte" x="1030" y="285" text-anchor="middle">Hom(X, B)</text>
+    <rect class="nodeE" x="250" y="556" width="240" height="60" rx="9"/><text class="nte" x="370" y="593" text-anchor="middle">Hom(Y, A)</text>
+    <rect class="nodeE" x="910" y="556" width="240" height="60" rx="9"/><text class="nte" x="1030" y="593" text-anchor="middle">Hom(Y, B)</text>
+
+    <!-- 上边 (y f)_X -->
+    <line class="arE" x1="492" y1="278" x2="908" y2="278"/><text class="lbe" x="700" y="266" text-anchor="middle">(y f)<tspan baseline-shift="sub" font-size="10">X</tspan> = f∘(−)</text>
+    <!-- 下边 (y f)_Y -->
+    <line class="arE" x1="492" y1="586" x2="908" y2="586"/><text class="lbe" x="700" y="574" text-anchor="middle">(y f)<tspan baseline-shift="sub" font-size="10">Y</tspan> = f∘(−)</text>
+    <!-- 左边 (-)∘h -->
+    <line class="arB" x1="370" y1="310" x2="370" y2="554"/><text class="lbb" x="360" y="436" text-anchor="end">(−)∘h</text>
+    <!-- 右边 (-)∘h -->
+    <line class="arB" x1="1030" y1="310" x2="1030" y2="554"/><text class="lbb" x="1040" y="436">(−)∘h</text>
+
+    <!-- h、f 说明 -->
+    <text class="lb" x="370" y="228" text-anchor="middle">h : Y → X</text>
+    <text class="lbe" x="700" y="206" text-anchor="middle">f : A → B</text>
+
+    <!-- 方块中央交换等式 -->
+    <rect x="520" y="378" width="360" height="80" rx="10" fill="#fff" stroke="#cbd5e1" stroke-width="1.4"/>
+    <text class="eq" x="700" y="410" text-anchor="middle" font-size="14">(y f)<tspan baseline-shift="sub" font-size="10">Y</tspan> ∘ h* = h* ∘ (y f)<tspan baseline-shift="sub" font-size="10">X</tspan></text>
+    <text class="tiny" x="700" y="436" text-anchor="middle">逐元素：f∘(u∘h) = (f∘u)∘h</text>
+
+    <text class="note" x="150" y="672">读图：固定 f:A→B，它给出自然变换 yf : Hom(−,A) ⇒ Hom(−,B)，在 X 处的分量是「左复合 f」。</text>
+    <text class="note" x="150" y="698">左边/右边的 (−)∘h 是 h:Y→X 诱导的映射（前复合 h）。方块交换表达 yf 的自然性。</text>
+    <text class="tiny" x="150" y="728">满忠实：取米田引理中 F = Hom(−,B)，得 Nat(Hom(−,A),Hom(−,B)) ≅ Hom(A,B)，箭头 f 映到 yf。</text>
+    <text class="tiny" x="150" y="752">故 y 把 C 的箭头完整嵌入函子范畴——这就是「unit 嵌入」，证明同一性在此获得范畴论表达。</text>
+  </g>
+
+  <!-- ============================================================ -->
+  <!-- 子图 3：corner 构造                                            -->
+  <!-- ============================================================ -->
+  <g id="view-corner" class="view" style="display:none">
+    <g class="backbtn" onclick="showView('view-top')"><rect x="40" y="24" width="150" height="38" rx="9"/><text class="backtxt" x="115" y="48" text-anchor="middle">← 返回总图</text></g>
+    <text class="ttl" x="700" y="48" text-anchor="middle">子图 3 · corner 构造（米田对应）</text>
+    <text class="sub" x="700" y="74" text-anchor="middle">元素 x = η_C(id_C) 唯一决定整个自然变换 η：ηˣ_B(f) = F(f)(x)</text>
+
+    <!-- 交换方块四角 -->
+    <rect class="nodeB" x="230" y="248" width="250" height="62" rx="9"/>
+    <text class="ntb" x="355" y="276" text-anchor="middle">Hom(C,C)</text>
+    <text class="tiny" x="355" y="300" text-anchor="middle">含 id<tspan baseline-shift="sub" font-size="9">C</tspan></text>
+    <rect class="nodeG" x="920" y="248" width="250" height="62" rx="9"/>
+    <text class="ntg" x="1045" y="276" text-anchor="middle">F(C)</text>
+    <text class="ntr" x="1045" y="300" text-anchor="middle">含 x = η<tspan baseline-shift="sub" font-size="9">C</tspan>(id)</text>
+    <rect class="nodeB" x="230" y="556" width="250" height="62" rx="9"/>
+    <text class="ntb" x="355" y="584" text-anchor="middle">Hom(C,B)</text>
+    <text class="lbr" x="355" y="608" text-anchor="middle">含 f（角落元素）</text>
+    <rect class="nodeG" x="920" y="556" width="250" height="62" rx="9"/>
+    <text class="ntg" x="1045" y="584" text-anchor="middle">F(B)</text>
+    <text class="ntr" x="1045" y="608" text-anchor="middle">含 F(f)(x)</text>
+
+    <!-- 上边 η_C -->
+    <line class="arE" x1="482" y1="279" x2="918" y2="279"/><text class="lbe" x="700" y="267" text-anchor="middle">η<tspan baseline-shift="sub" font-size="10">C</tspan></text>
+    <!-- 下边 η_B -->
+    <line class="arE" x1="482" y1="587" x2="918" y2="587"/><text class="lbe" x="700" y="575" text-anchor="middle">η<tspan baseline-shift="sub" font-size="10">B</tspan></text>
+    <!-- 左边 f∘(−) -->
+    <line class="arB" x1="355" y1="312" x2="355" y2="554"/><text class="lbb" x="345" y="436" text-anchor="end">f∘(−)</text>
+    <text class="tiny" x="345" y="456" text-anchor="end">把 id<tspan baseline-shift="sub" font-size="9">C</tspan> 送到 f</text>
+    <!-- 右边 F(f) -->
+    <line class="arG" x1="1045" y1="312" x2="1045" y2="554"/><text class="lbg" x="1055" y="436">F(f)</text>
+    <text class="tiny" x="1055" y="456">把 x 送到 F(f)(x)</text>
+
+    <!-- 中央：两条路径 -->
+    <rect x="500" y="374" width="400" height="92" rx="10" fill="#fff" stroke="#cbd5e1" stroke-width="1.4"/>
+    <text class="eq" x="700" y="404" text-anchor="middle" font-size="14">两条路径相等（交换性）：</text>
+    <text class="eq" x="700" y="430" text-anchor="middle" font-size="13.5">η<tspan baseline-shift="sub" font-size="10">B</tspan>(f) = F(f)(η<tspan baseline-shift="sub" font-size="10">C</tspan>(id)) = F(f)(x)</text>
+    <text class="tiny" x="700" y="454" text-anchor="middle">f = f∘id<tspan baseline-shift="sub" font-size="9">C</tspan>，再用 η 的自然性</text>
+
+    <!-- 关键元素高亮 -->
+    <circle cx="238" cy="279" r="6" fill="#dc2626"/>
+    <circle cx="928" cy="279" r="6" fill="#dc2626"/>
+
+    <rect x="230" y="660" width="940" height="72" rx="10" fill="#fef2f2" stroke="#dc2626" stroke-width="1.5"/>
+    <text class="eq" x="700" y="690" text-anchor="middle" font-size="15">η<tspan baseline-shift="super" font-size="10">x</tspan><tspan baseline-shift="sub" font-size="11">B</tspan>(f) = F(f)(x)</text>
+    <text class="tiny" x="700" y="715" text-anchor="middle">morphism 记号 η 由元素 x 完全重建；Φ 与 Ψ 互逆，给出 Nat(Hom(C,−),F) ≅ F(C)</text>
+
+    <text class="note" x="150" y="774">读图：「角」指左下角的元素 f ∈ Hom(C,B)。从 id_C 出发展开这条交换方块的角，</text>
+    <text class="note" x="150" y="800">即先沿 η_C 得 x、再沿 F(f) 得 F(f)(x)；与先经 f∘(−) 得 f、再经 η_B 得 η_B(f) 相同。</text>
+    <text class="tiny" x="150" y="830">交换性强制 η_B(f)=F(f)(x) 对所有 B、f 成立——单个元素 x 就决定了整个 η。</text>
+  </g>
+
+  <script type="text/javascript"><![CDATA[
+    var YV = {x:0, y:0, w:1400, h:920};
+    var YS = null;
+
+    function yApply() {
+      if (YS) { YS.setAttribute('viewBox', YV.x+' '+YV.y+' '+YV.w+' '+YV.h); }
+    }
+    function yResetZoom() {
+      YV = {x:0, y:0, w:1400, h:920};
+      yApply();
+    }
+    function showView(id) {
+      var gs = document.querySelectorAll('.view');
+      for (var i = 0; i < gs.length; i++) {
+        gs[i].style.display = (gs[i].id === id) ? 'inline' : 'none';
+      }
+      yResetZoom();
+    }
+    function zoomIn() {
+      var cx = YV.x + YV.w/2, cy = YV.y + YV.h/2;
+      var w = YV.w/1.25, h = YV.h/1.25;
+      if (w < 320) return;
+      YV = {x:cx-w/2, y:cy-h/2, w:w, h:h};
+      yApply();
+    }
+    function zoomOut() {
+      var cx = YV.x + YV.w/2, cy = YV.y + YV.h/2;
+      var w = YV.w*1.25, h = YV.h*1.25;
+      if (w > 3200) return;
+      YV = {x:cx-w/2, y:cy-h/2, w:w, h:h};
+      yApply();
+    }
+    function resetView() {
+      showView('view-top');
+    }
+    function yInit() {
+      YS = document.documentElement;
+      showView('view-top');
+    }
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', yInit);
+    } else {
+      yInit();
+    }
+  ]]></script>
+</svg>
