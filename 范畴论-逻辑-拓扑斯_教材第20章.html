@@ -1,0 +1,881 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>第 20 章 局部性拓扑斯（Ch. IX）—— 三书递进自学教材</title>
+<script>
+window.MathJax = {
+  tex: {
+    inlineMath: [['\\(','\\)']], displayMath: [['\\[','\\]']], processEscapes: true,
+    macros: {
+      llbracket: '\\lbrack\\lbrack',
+      rrbracket: '\\rbrack\\rbrack'
+    }
+  },
+  options: { ignoreHtmlClass: 'no-tex' },
+  svg: { fontCache: 'global' }
+};
+</script>
+<script async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
+<style>
+  :root{
+    --bg:#f6f7f9; --card:#fff; --ink:#1b1f27; --ink2:#4d5461; --ink3:#7a8190;
+    --line:#e5e8ed; --soft:#f0f2f5;
+    --c1:#2563eb; --c1bg:#eef4ff; --gold:#b45309; --goldbg:#fdf3e3;
+    --ok:#15803d; --okbg:#eefaf1; --phil:#7c3aed; --philbg:#f6f1ff;
+    --teal:#0d9488; --tealbg:#eefaf7; --walk:#b45309;
+    --radius:12px;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;
+    line-height:1.75;-webkit-font-smoothing:antialiased;}
+  .wrap{max-width:920px;margin:0 auto;padding:0 22px 80px;}
+
+  header.top{padding:34px 0 22px;border-bottom:1px solid var(--line);margin-bottom:26px;}
+  .breadcrumb{font-size:12.5px;color:var(--ink3);margin-bottom:10px;}
+  .breadcrumb a{color:var(--c1);text-decoration:none;}
+  h1{font-size:29px;margin:0 0 8px;letter-spacing:-.02em;}
+  .lede{color:var(--ink2);font-size:14.5px;margin:0 0 16px;}
+  .jump{display:flex;gap:8px;flex-wrap:wrap;}
+  .jump a{font-size:12.5px;font-weight:650;text-decoration:none;color:var(--ink2);
+    background:var(--card);border:1px solid var(--line);border-radius:99px;padding:6px 13px;}
+  .jump a:hover{border-color:var(--c1);color:var(--c1);}
+
+  section.sec{margin:0 0 52px;scroll-margin-top:16px;}
+  .sec-h{display:flex;align-items:baseline;gap:12px;border-bottom:2px solid var(--c1);padding-bottom:10px;margin-bottom:22px;}
+  .sec-no{font-size:13px;font-weight:800;color:#fff;background:var(--c1);border-radius:7px;padding:3px 10px;white-space:nowrap;}
+  .sec-h h2{font-size:22px;margin:0;letter-spacing:-.01em;}
+  .src{font-size:11.5px;color:var(--ink3);margin-left:auto;white-space:nowrap;}
+
+  .box{border-radius:var(--radius);padding:16px 20px;margin:18px 0;border:1px solid var(--line);}
+  .box h4{margin:0 0 10px;font-size:14px;letter-spacing:.01em;}
+
+  .learn{background:var(--c1bg);border-color:#cfe0ff;}
+  .learn h4{color:var(--c1);}
+  .learn ol{margin:0;padding-left:22px;} .learn li{margin:4px 0;font-size:14px;}
+
+  .prep{background:var(--tealbg);border-color:#bfe9dd;}
+  .prep h4{color:var(--teal);}
+  .prep p{font-size:13.5px;color:#115e59;margin:8px 0;}
+  .prep ol,.prep ul{margin:8px 0;padding-left:22px;font-size:13.5px;color:#115e59;}
+  .prep li{margin:5px 0;}
+
+  .defn{background:#fafbfc;border-left:4px solid var(--ink2);padding:14px 18px;margin:16px 0;border-radius:0 10px 10px 0;}
+  .defn .lbl{font-weight:800;font-size:13.5px;color:var(--ink);}
+  .prop{background:#fbfcfe;border:1px solid #dbe6f8;border-left:4px solid var(--c1);padding:14px 18px;margin:16px 0;border-radius:0 10px 10px 0;}
+  .prop .lbl{font-weight:800;font-size:13.5px;color:var(--c1);}
+  .rmk{font-size:13.5px;color:var(--ink2);background:var(--soft);padding:11px 16px;border-radius:9px;margin:12px 0;}
+  .xref{font-size:13px;color:#115e59;background:var(--tealbg);border-left:3px solid var(--teal);padding:9px 14px;border-radius:0 8px 8px 0;margin:12px 0;}
+
+  .proof{margin:10px 0 4px;padding-left:16px;border-left:2px solid var(--line);font-size:14px;color:var(--ink2);}
+  .proof .pl{font-weight:700;color:var(--ink);}
+  .qed{float:right;font-style:normal;color:var(--ink3);}
+
+  .exer{background:var(--goldbg);border-color:#f2dfbb;}
+  .exer h4{color:var(--gold);}
+  .exer .grp{font-size:12.5px;font-weight:750;color:var(--gold);margin:12px 0 4px;}
+  .exer ol{margin:0;padding-left:22px;} .exer li{margin:9px 0;font-size:14px;}
+
+  .ans{background:var(--okbg);border-color:#c9ecd3;}
+  .ans h4{color:var(--ok);}
+  .ans .item{margin:14px 0 18px;font-size:14px;}
+  .ans .item:last-child{margin-bottom:0;}
+  .ans .item b{color:var(--ok);}
+  .ans .proof{border-left-color:#bfe6c9;}
+
+  .phil{background:var(--philbg);border-color:#e3d5ff;}
+  .phil h4{color:var(--phil);}
+  .phil p{font-size:14px;color:#5b3a8e;margin:8px 0;}
+
+  .walk{background:#fffbeb;border-color:#fde68a;}
+  .walk h4{color:var(--walk);}
+  .walk p,.walk li{font-size:13.5px;color:#78350f;}
+  .walk ol,.walk ul{margin:8px 0;padding-left:22px;}
+  .walk table{border-collapse:collapse;width:100%;font-size:13px;margin:10px 0;}
+  .walk th,.walk td{border:1px solid #fcd34d;padding:7px 9px;text-align:left;vertical-align:top;}
+  .walk th{background:#fef3c7;color:#78350f;}
+
+  h3.sub{font-size:16px;margin:26px 0 6px;color:var(--ink);}
+  p{margin:9px 0;} .math{overflow-x:auto;}
+
+  .figcap{font-size:12.5px;color:var(--ink3);margin:2px 0 12px;text-align:center;font-style:italic;}
+  .figdesc{font-size:13px;color:var(--ink2);background:var(--soft);padding:10px 15px;border-radius:8px;margin:6px 0 12px;}
+
+  footer{border-top:1px solid var(--line);margin-top:30px;padding-top:20px;font-size:13px;color:var(--ink3);}
+  footer a{color:var(--c1);text-decoration:none;}
+
+  @media(max-width:640px){
+    h1{font-size:23px;} .wrap{padding:0 14px 60px;}
+    .sec-h{flex-wrap:wrap;} .src{margin-left:0;}
+    .box{padding:14px 15px;}
+  }
+  @media print{body{background:#fff;}.jump{display:none;}.box{break-inside:avoid;}}
+  /* ---- 范畴交换图 SVG（浅色主题）---- */
+  svg.cd{display:block;margin:16px auto 2px;max-width:100%;height:auto;
+    font-family:"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;}
+  svg.cd rect.node{fill:#eef4ff;stroke:#2563eb;stroke-width:1.5;rx:7;}
+  svg.cd rect.node2{fill:#f6f1ff;stroke:#7c3aed;stroke-width:1.5;rx:7;}
+  svg.cd rect.nodeg{fill:#eefaf1;stroke:#15803d;stroke-width:1.5;rx:7;}
+  svg.cd rect.nodey{fill:#fdf3e3;stroke:#b45309;stroke-width:1.5;rx:7;}
+  svg.cd text.nt{fill:#1b1f27;font-size:13.5px;font-weight:600;}
+  svg.cd text.lb{fill:#334155;font-size:12.5px;}
+  svg.cd text.hb{fill:#2563eb;font-size:12.5px;font-weight:600;}
+  svg.cd text.hg{fill:#15803d;font-size:12.5px;font-weight:600;}
+  svg.cd text.hp{fill:#7c3aed;font-size:12.5px;font-weight:600;}
+  svg.cd line.ar,svg.cd path.ar{stroke:#475569;stroke-width:1.6;fill:none;marker-end:url(#cdArr);}
+  svg.cd line.arb,svg.cd path.arb{stroke:#2563eb;stroke-width:1.8;fill:none;marker-end:url(#cdArrB);}
+  svg.cd line.arg,svg.cd path.arg{stroke:#15803d;stroke-width:1.8;fill:none;marker-end:url(#cdArrG);}
+  svg.cd line.arp,svg.cd path.arp{stroke:#7c3aed;stroke-width:1.8;fill:none;marker-end:url(#cdArrP);}
+  svg.cd line.ard,svg.cd path.ard{stroke:#475569;stroke-width:1.5;fill:none;stroke-dasharray:5 4;marker-end:url(#cdArr);}
+  svg.cd line.noa{stroke:#475569;stroke-width:1.5;fill:none;stroke-dasharray:5 4;}
+
+  /* ---- 四类例子深度组件（本章新增，落实用户"每概念四类例"要求）---- */
+  .cases{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:6px 20px 14px;margin:18px 0;}
+  .cases>.ct{font-size:13.5px;font-weight:800;color:var(--ink);padding:11px 0 4px;border-bottom:1px dashed var(--line);margin-bottom:8px;}
+  .case{padding:9px 0 9px 14px;border-left:3px solid var(--line);margin:8px 0;font-size:13.5px;color:var(--ink2);}
+  .case b{display:inline-block;font-size:12px;padding:1px 9px;border-radius:99px;margin-right:8px;vertical-align:1px;}
+  .case.typ{border-left-color:var(--ok);}       .case.typ b{background:var(--okbg);color:var(--ok);}
+  .case.deep{border-left-color:var(--c1);}      .case.deep b{background:var(--c1bg);color:var(--c1);}
+  .case.edge{border-left-color:#dc2626;}        .case.edge b{background:#fef2f2;color:#dc2626;}
+  .case.use{border-left-color:var(--phil);}     .case.use b{background:var(--philbg);color:var(--phil);}
+  .case p{margin:6px 0;}
+  /* 数学动机框：解释"这个构造解决什么问题" */
+  .motiv{background:#fffbeb;border:1px solid #fde68a;border-left:4px solid #d97706;padding:13px 18px;border-radius:0 10px 10px 0;margin:16px 0;font-size:13.5px;color:#78350f;}
+  .motiv .lbl{font-weight:800;color:#b45309;display:block;margin-bottom:5px;}
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute;width:0;height:0;overflow:hidden" aria-hidden="true">
+<defs>
+  <marker id="cdArr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+    <path d="M 0 0 L 10 5 L 0 10 z" fill="#475569"/>
+  </marker>
+  <marker id="cdArrB" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+    <path d="M 0 0 L 10 5 L 0 10 z" fill="#2563eb"/>
+  </marker>
+  <marker id="cdArrG" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+    <path d="M 0 0 L 10 5 L 0 10 z" fill="#15803d"/>
+  </marker>
+  <marker id="cdArrP" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+    <path d="M 0 0 L 10 5 L 0 10 z" fill="#7c3aed"/>
+  </marker>
+</defs>
+</svg><div class="wrap">
+<header class="top">
+  <div class="kicker">范畴论 · 逻辑 · 拓扑斯 —— 三书递进自学教材</div>
+  <h1>第 20 章　局部性拓扑斯（Ch. IX）</h1>
+  <p class="lede">第 19 章把拓扑斯之间的映射讲清楚了。这一章问一个更朴素的问题：<strong>拓扑斯与拓扑空间究竟差多远？</strong>答案是：差得不远，而且可以精确度量。Locale（_locale_）把拓扑空间的开集格抽象成一个完备格，丢掉"点"而保留"开集之间的格结构"；局部性拓扑斯 \(\mathbf{Sh}(L)\) 则把这种抽象完整地装进拓扑斯范畴。沿着这条线，我们会经过 Sober 空间（什么时候点能从开集格中恢复）、子 locale 与开映射（拓扑关系如何范畴化）、Diaconescu 覆盖与 Barr 定理（任意拓扑斯都能被一个局部性拓扑斯"盖住"），最后抵达 Stone 空间与 Deligne 定理（连通性与点的存在性）。本章以 Mac Lane &amp; Moerdijk 第九章为主线，用 Johnstone《Stone Spaces》与《Elephant》补 locale 的点集拓扑细节，Caramello 补多呈现视角，Bell 补局部集合论对照。</p>
+
+  <div class="xref">
+    <strong>章首去重说明.</strong>本章反复用到但不重述：几何态射、嵌入与满射（<strong>19.1</strong>）；点与 Diaconescu 定理（<strong>19.2</strong>）；site、覆盖筛与层化（<strong>15</strong>）；LT 拓扑与布尔化（<strong>17</strong>）；Heyting 代数与伴随（<strong>7.3、16.4</strong>）。这些只复述关键结论，不重证。
+  </div>
+
+  <div class="phil">
+    <span class="lbl">导读（哲学联系，选读）</span>
+    <p>拓扑学的传统出发点是"点集 + 开集"。范畴论会问：<strong>点真的必要吗？</strong>Locale 的回答是"不"：一切拓扑性质都能用开集格的完备格结构表达，而格结构比点集更"构造性"——它不预设排中律，因而在拓扑斯里能活得很好。更妙的是，当你真的需要点时，Sober 条件保证点可以从格中重新造出来。这就是本章的主旋律：<em>先丢掉点，再在需要时把它们找回来</em>。Barr 定理与 Deligne 定理是这首曲子的高潮：任意拓扑斯都有一个局部性、甚至布尔的"覆盖"，而相干拓扑斯一定有足够多点——范畴结构最终把点还给了你。</p>
+  </div>
+
+  <nav class="jump">
+    <a href="#s20-1">20.1 Locale 与拓扑空间</a>
+    <a href="#s20-2">20.2 点、Sober 空间与空间的刻画</a>
+    <a href="#s20-3">20.3 子 Locale 与局部性拓扑斯</a>
+    <a href="#s20-4">20.4 开几何态射</a>
+    <a href="#s20-5">20.5 Diaconescu 覆盖与 Barr 定理</a>
+    <a href="#s20-6">20.6 Stone 空间与 Deligne 定理</a>
+  </nav>
+</header>
+<section class="sec" id="s20-1">
+  <div class="sec-h"><span class="sec-no">20.1</span><h2>Locale：把空间写成开集的格</h2><span class="src">M Ch.IX §1</span></div>
+
+  <div class="box learn">
+    <h4>① 本节学习目标</h4>
+    <ol>
+      <li>给出 frame 与 locale 的定义，解释无限分配律为什么是"开集格"的本质特征；</li>
+      <li>说明连续映射如何给出 frame 同态，从而得到 \(\mathcal O:\mathbf{Top}\to\mathbf{Loc}\)；</li>
+      <li>区分空间 locale（spatial locale）与一般 locale，理解"丢掉点"带来的自由；</li>
+      <li>在 \(\mathcal O(\mathbb R)\)、完备布尔代数、\(\Omega\) 三类例子中把定义算具体；</li>
+      <li>理解 locale 与拓扑斯的连接点：\(\mathbf{Sh}(L)\) 的 \(\operatorname{Sub}(1)\) 正是 \(L\)。</li>
+    </ol>
+  </div>
+
+  <div class="xref"><strong>沿用前文（不再复述）.</strong>完备格、Heyting 代数与无限分配（<strong>7.3、16.4</strong>）；拓扑空间与开集（第 14 章背景）；层范畴 \(\mathbf{Sh}(X)\) 与 \(\operatorname{Sub}(1)\cong\mathcal O(X)\)（<strong>14.1、16.1</strong>）。</div>
+
+  <div class="box prep">
+    <h4>极简回顾（五分钟）</h4>
+    <p><strong>1. 开集本身是格.</strong>对拓扑空间 \(X\)，\(\mathcal O(X)\) 在并、交下是完备格：任意并仍是开集，有限交仍是开集，且满足无限分配律 \(U\cap\bigcup_i V_i=\bigcup_i(U\cap V_i)\)。</p>
+    <p><strong>2. 点不是必须的.</strong>很多拓扑性质（紧致、连通、分离）只用开集及上述格结构就能表述。于是可以问：如果不从点集出发，直接公理化这个格，会得到什么？</p>
+    <p><strong>3. 本节要跨的一步.</strong>把 \(\mathcal O(X)\) 的格结构抽出来作为定义，把"连续映射"抽成保持并和有限交的格同态。得到的范畴 \(\mathbf{Loc}\) 比 \(\mathbf{Top}\) 更广，而且天生适合在拓扑斯里解释。</p>
+  </div>
+
+  <h3 class="sub">20.1.1 Frame 与 Locale</h3>
+
+  <div class="defn">
+    <span class="lbl">定义 20.1.1（Frame 与 Locale）</span>
+    <p>一个<strong>frame</strong> 是完备格 \(L\)（有任意并 \(\bigvee\)、任意交 \(\bigwedge\)、顶 \(1\)、底 \(0\)），满足<strong>无限分配律</strong>：对任意 \(a\in L\) 与任意族 \(\{b_i\}_{i\in I}\)，</p>
+    <p class="math">\[a\wedge\bigvee_{i\in I}b_i=\bigvee_{i\in I}(a\wedge b_i).\]</p>
+    <p>frame 之间的态射 \(h:L\to M\) 是保有限交与任意并的格同态（\(h(1)=1\)，\(h(a\wedge b)=h(a)\wedge h(b)\)，\(h(\bigvee b_i)=\bigvee h(b_i)\)）。记 \(\mathbf{Frm}\) 为 frame 范畴，\(\mathbf{Loc}=\mathbf{Frm}^{\mathrm{op}}\) 为其反范畴；\(\mathbf{Loc}\) 的对象称为<strong>locale</strong>，记为 \(L\)，其对应的 frame 仍记为 \(\mathcal O(L)\)。</p>
+  </div>
+
+  <div class="rmk"><strong>为什么用反范畴？</strong>连续映射 \(\varphi:X\to Y\) 给出 frame 同态 \(\varphi^{-1}:\mathcal O(Y)\to\mathcal O(X)\)——方向反了。为了让 locale 的箭头方向与空间的箭头方向一致（\(X\to Y\) 对应 \(L_X\to L_Y\)），取反范畴。于是 locale 态射 \(f:L\to M\) 的"逆像" \(f^\ast=\mathcal O(f):\mathcal O(M)\to\mathcal O(L)\) 是 frame 同态。</div>
+
+  <div class="prop">
+    <span class="lbl">命题 20.1.2（开集格是 frame）</span>
+    <p>对任意拓扑空间 \(X\)，\(\mathcal O(X)\) 是 frame；连续映射 \(\varphi:X\to Y\) 给出 frame 同态 \(\varphi^{-1}:\mathcal O(Y)\to\mathcal O(X)\)。于是 \(\mathcal O:\mathbf{Top}\to\mathbf{Loc}\) 是函子。</p>
+    <div class="proof"><span class="pl">证.</span>\(\mathcal O(X)\) 在任意并下封闭、有限交下封闭，构成完备格（任意交是内部并的交，需取内部以保开性——注意完备格的"交"是 \(\operatorname{int}(\bigcap)\)，这确是格交）。无限分配律由集合的分配律与并、交的定义直接验证。\(\varphi^{-1}\) 保任意并与有限交是点集拓扑的基本事实。函子性：\((\varphi\circ\psi)^{-1}=\psi^{-1}\circ\varphi^{-1}\)，在 \(\mathbf{Loc}\) 中恰为 \(\mathcal O(\varphi\circ\psi)=\mathcal O(\varphi)\circ\mathcal O(\psi)\) ✓。</div>
+  </div>
+
+  <div class="motiv">
+    <span class="lbl">为什么叫"无限"分配律？</span>
+    普通 Boolean 代数只要求有限分配 \(a\wedge(b\vee c)=(a\wedge b)\vee(a\wedge c)\)。开集格天然满足更强的无限版本——因为并可以是任意大的开覆盖。这条律正是"开集"与"一般完备格"的分水岭：存在不满足无限分配的完备格（例如某些非 Boole 的完备格），它们不是任何空间的开集格。<strong>frame 公理 = 开集格的精确抽象</strong>。
+  </div>
+
+  <h3 class="sub">20.1.2 三类例子</h3>
+
+  <div class="cases">
+    <div class="ct">frame / locale 的四种面目</div>
+    <div class="case typ"><b>典型例</b><p><strong>空间的开集格.</strong>\(\mathcal O(\mathbb R)\) 是所有开集构成的 frame，任意并为通常并，有限交为通常交，无限分配律成立。连续 \(f:\mathbb R\to\mathbb R\) 给出 frame 同态 \(f^{-1}\)。</p></div>
+    <div class="case deep"><b>本质例</b><p><strong>完备布尔代数.</strong>任一完备 Boolean 代数 \(B\) 是 frame（Boolean 代数有无限分配，因 \(a\wedge-\) 有右伴随 \(a\Rightarrow-\)，保任意并）。对应的 locale \(\operatorname{Stone}(B)\) 是 Stone 空间——§20.6 会看到它在 Deligne 定理中的核心作用。</p></div>
+    <div class="case edge"><b>边界与误解</b><p><strong>非空间 locale.</strong>存在不是任何空间开集格的 frame（non-spatial locale）。经典的例子是"不可约但不 Sober 的空间"的开集格，或用自由 frame 构造的 locale。它们没有足够的"点"，但作为 locale 完全合法——这正是丢掉点的自由：可以谈论没有点的"空间"。</p></div>
+    <div class="case use"><b>结构应用</b><p><strong>拓扑斯的子对象格.</strong>对任意拓扑斯 \(\mathcal E\)，\(\operatorname{Sub}(1)\) 是 frame（交为拉回、并为并、无限分配由 \(\Omega\) 的 Heyting 结构给出）。于是每个拓扑斯"带有一个 locale"；当 \(\mathcal E=\mathbf{Sh}(X)\) 时这个 locale 恰是 \(\mathcal O(X)\)。§20.3 会把这个观察变成局部性拓扑斯的定义。</p></div>
+  </div>
+
+  <h3 class="sub">20.1.3 手把手：在 \(\mathcal O(\mathbb R)\) 中验证无限分配律</h3>
+
+  <div class="box walk">
+    <h4>③ 手把手：一个开集与一族开集的分配</h4>
+    <ol>
+      <li><strong>设定.</strong>取 \(a=(0,1)\subseteq\mathbb R\)，取 \(V_n=(n,n+1)\)（\(n\in\mathbb Z\)），令 \(b_n=V_n\)。</li>
+      <li><strong>左边.</strong>\(\bigvee_n b_n=\bigcup_{n\in\mathbb Z}(n,n+1)\)，与 \(a\) 相交得 \((0,1)\)（只有 \(n=0\) 那片贡献，边界点不交）。</li>
+      <li><strong>右边.</strong>\(a\cap b_n\) 对 \(n=0\) 是 \((0,1)\)，其余为空；再取并得 \((0,1)\)。两边相等 ✓。</li>
+      <li><strong>关键点.</strong>若把 \(a\) 换成闭集 \([0,1]\)，同样的等式仍作为集合成立，但闭集不构成 frame（任意并不一定仍是闭集）。frame 公理同时要求"完备"与"分配"，开集格恰好两者兼备。</li>
+      <li><strong>读出拓扑斯意义.</strong>在 \(\mathbf{Sh}(\mathbb R)\) 中，\(\operatorname{Sub}(1)=\mathcal O(\mathbb R)\) 正是这个 frame；内部命题的真值就是开集。frame 的无限分配律对应逻辑中 \(\wedge\) 对任意 \(\vee\) 的分配——这在直觉主义逻辑里成立，在一般完备格上不自动成立。</li>
+    </ol>
+  </div>
+
+  <svg class="cd" viewBox="0 0 640 190" role="img" aria-label="拓扑空间、Locale 与拓扑斯三者的关系图">
+    <rect class="node" x="40" y="55" width="150" height="50" rx="7"/>
+    <text class="nt" x="115" y="85" text-anchor="middle">Top（空间）</text>
+    <rect class="node2" x="245" y="55" width="150" height="50" rx="7"/>
+    <text class="nt" x="320" y="85" text-anchor="middle">Loc（locale）</text>
+    <rect class="nodeg" x="450" y="55" width="150" height="50" rx="7"/>
+    <text class="nt" x="525" y="85" text-anchor="middle">Topos（拓扑斯）</text>
+    <line class="arb" x1="190" y1="80" x2="243" y2="80"/>
+    <text class="hb" x="217" y="70" text-anchor="middle">O</text>
+    <line class="arb" x1="395" y1="80" x2="448" y2="80"/>
+    <text class="hb" x="422" y="70" text-anchor="middle">Sh</text>
+    <text class="lb" x="320" y="145" text-anchor="middle">X ⟼ O(X) ⟼ Sh(O(X))：空间 → locale → 局部性拓扑斯</text>
+    <text class="lb" x="320" y="170" text-anchor="middle" style="font-size:12px">Sub(1) of Sh(L) = L：最后一步可逆地读回 locale</text>
+  </svg>
+  <p class="figcap">图 20.1　从空间到 locale 再到局部性拓扑斯：本章的主线地图</p>
+
+  <div class="box exer">
+    <h4>④ 习题（20.1）</h4>
+    <ol>
+      <li id="ex20-1-1">证明 \(\mathcal O(X)\) 满足 frame 的无限分配律。</li>
+      <li id="ex20-1-2">验证完备布尔代数是 frame，并说明其对应的 locale 是 Stone 空间。</li>
+      <li id="ex20-1-3">证明连续映射 \(\varphi:X\to Y\) 给出 frame 同态 \(\varphi^{-1}\)。</li>
+      <li id="ex20-1-4">说明为什么一般完备格不一定是 frame，举一个具体反例。</li>
+      <li id="ex20-1-5">证明 \(\operatorname{Sub}(1)\) 在任意拓扑斯里是 frame。</li>
+      <li id="ex20-1-6">解释"非空间 locale"为什么不能有足够多点，并说明这与第 19 章"有足够多点"的关系。</li>
+    </ol>
+  </div>
+
+  <div class="box ans">
+    <h4>⑤ 参考答案（20.1）</h4>
+    <div class="item"><b>20.1.1</b>对开集 \(U\) 与开集族 \(\{V_i\}\)，集合论分配律给出 \(U\cap\bigcup_i V_i=\bigcup_i(U\cap V_i)\)；左侧是开集交开集（开），右侧是开集的并（开），两边作为 \(\mathcal O(X)\) 的元素相等 ✓。</div>
+    <div class="item"><b>20.1.2</b>完备 BA \(B\) 有 \(a\wedge-\) 的右伴随 \(a\Rightarrow b=\neg a\vee b\)，故 \(a\wedge-\) 保任意并，即无限分配律成立 ✓。其 locale 的点是 \(B\) 的超滤子，按 Stone 拓扑构成 Stone 空间（§20.6）✓。</div>
+    <div class="item"><b>20.1.3</b>\(\varphi^{-1}(\bigcup_i V_i)=\bigcup_i\varphi^{-1}(V_i)\)、\(\varphi^{-1}(V\cap W)=\varphi^{-1}V\cap\varphi^{-1}W\)、\(\varphi^{-1}(Y)=X\)——开集原像的基本性质，故 \(\varphi^{-1}\) 是 frame 同态 ✓。</div>
+    <div class="item"><b>20.1.4</b>取五元钻石格 \(M_3=\{\bot,a,b,c,\top\}\)，其中 \(a,b,c\) 两两不可比且任两者之并为 \(\top\)、之交为 \(\bot\)。有限格自动完备，故 \(M_3\) 是完备格。但它不满足分配律：\(a\wedge(b\vee c)=a\wedge\top=a\)，而 \((a\wedge b)\vee(a\wedge c)=\bot\vee\bot=\bot\ne a\)。故 \(M_3\) 是完备格但不是 frame，不能作为任何空间的开集格 ✓。</div>
+    <div class="item"><b>20.1.5</b>\(\operatorname{Sub}(X)\) 是 Heyting 代数（<strong>16.4</strong>），特别对 \(X=1\) 是完备格；Heyting 伴随 \(a\wedge-\dashv a\Rightarrow-\) 说明 \(a\wedge-\) 保任意并，即无限分配。故 \(\operatorname{Sub}(1)\) 是 frame ✓。</div>
+    <div class="item"><b>20.1.6</b>非空间 locale \(L\) 的"点"是 frame 同态 \(\mathcal O(L)\to 2\)，若这些点不足以决定 \(L\) 的元素（存在不同开集含相同点集），则没有足够多点。对应到 \(\mathbf{Sh}(L)\)，由 <strong>19.2</strong> 的定义，逐点检验会漏掉差异，故 \(\mathbf{Sh}(L)\) 没有足够多点——这正是第 19 章"有足够多点"概念的非平凡边界，说明必须保留 locale/拓扑斯层面的语义而不能只用茎 ✓。</div>
+  </div>
+</section>
+<section class="sec" id="s20-2">
+  <div class="sec-h"><span class="sec-no">20.2</span><h2>点、Sober 空间与空间的刻画</h2><span class="src">M Ch.IX §2–3</span></div>
+
+  <div class="box learn">
+    <h4>① 本节学习目标</h4>
+    <ol>
+      <li>把 locale 的点定义为 frame 同态 \(\mathcal O(L)\to 2\)，并翻译成完全素滤子；</li>
+      <li>从 locale \(L\) 造出拓扑空间 \(\operatorname{pt}(L)\)，验证 \(D(a)\) 构成开集基；</li>
+      <li>定义 Sober 空间（不可约闭集有唯一泛点），证明 \(X\cong\operatorname{pt}(\mathcal O(X))\) 当且仅当 \(X\) Sober；</li>
+      <li>在 Hausdorff 空间、余有限拓扑空间与无点 locale 中把定义算具体；</li>
+      <li>理解空间 locale 与拓扑斯的"有足够多点"之间的精确对应。</li>
+    </ol>
+  </div>
+
+  <div class="xref"><strong>沿用前文（不再复述）.</strong>frame 与 locale（<strong>20.1</strong>）；拓扑斯的点与有足够多点（<strong>19.2</strong>）；不可约闭集与泛点在代数几何中的雏形（<strong>15.2 Zariski site</strong>）。</div>
+
+  <div class="box prep">
+    <h4>极简回顾（五分钟）</h4>
+    <p><strong>1. 点是"取真值的同态".</strong>空间中的点 \(x\) 通过"\(x\in U\)?"给每个开集一个真假值，即映射 \(\mathcal O(X)\to\{\bot,\top\}\)。这个映射保有限交与任意并——它正是 frame 同态。</p>
+    <p><strong>2. 反向也自然.</strong>给一个 locale \(L\)，把所有 frame 同态 \(\mathcal O(L)\to 2\) 收集起来，用 \(D(a)=\{p\mid p(a)=1\}\) 作开集，得到一个拓扑空间 \(\operatorname{pt}(L)\)。</p>
+    <p><strong>3. 本节要跨的一步.</strong>\(X\) 与 \(\operatorname{pt}(\mathcal O(X))\) 一般不同构。Sober 条件精确刻画何时它们相同——这是"从 locale 找回空间"的充要条件。</p>
+  </div>
+
+  <h3 class="sub">20.2.1 Locale 的点</h3>
+
+  <div class="defn">
+    <span class="lbl">定义 20.2.1（locale 的点）</span>
+    <p>locale \(L\) 的一个<strong>点</strong>是 frame 同态 \(p:\mathcal O(L)\to 2\)（其中 \(2=\{\bot\lt\top\}\) 是两元 frame）。等价地，是 \(\mathcal O(L)\) 的一个<strong>完全素滤子</strong> \(F_p=\{a\mid p(a)=\top\}\)，即满足：</p>
+    <ul>
+      <li>\(1\in F_p,\ 0\notin F_p\)；</li>
+      <li>\(a\in F_p,\ a\le b\Rightarrow b\in F_p\)（上闭）；</li>
+      <li>\(a,b\in F_p\Rightarrow a\wedge b\in F_p\)（有限交封闭）；</li>
+      <li>\(\bigvee_i a_i\in F_p\Rightarrow\exists i,\ a_i\in F_p\)（完全素性）。</li>
+    </ul>
+    <p>记 \(\operatorname{pt}(L)\) 为 \(L\) 的全体点，拓扑由基 \(D(a)=\{p\in\operatorname{pt}(L)\mid p(a)=\top\}\) 生成；因 \(D(a\wedge b)=D(a)\cap D(b)\)、\(D(\bigvee_i a_i)=\bigcup_i D(a_i)\)，\(D:\mathcal O(L)\to\mathcal O(\operatorname{pt}(L))\) 是 frame 同态。</p>
+  </div>
+
+  <div class="rmk"><strong>完全素性为什么关键？</strong>普通素滤子只要求对有限并素。locale 的点必须对<em>任意</em>并素——这正对应拓扑中"若 \(x\in\bigcup_i U_i\) 则存在 \(i\) 使 \(x\in U_i\)"。这条性质把"点"与"任意并"绑定，使得点能感受到无限覆盖结构。</div>
+
+  <h3 class="sub">20.2.2 Sober 空间</h3>
+
+  <div class="defn">
+    <span class="lbl">定义 20.2.2（不可约闭集与 Sober）</span>
+    <p>拓扑空间 \(X\) 的非空闭集 \(C\) 称为<strong>不可约的</strong>，若 \(C\subseteq C_1\cup C_2\)（\(C_i\) 闭）蕴涵 \(C\subseteq C_1\) 或 \(C\subseteq C_2\)。称 \(X\) 是<strong>Sober 的</strong>，若每个不可约闭集都是某个点的闭包 \(C=\overline{\{x\}}\)，且这个点唯一。</p>
+  </div>
+
+  <div class="prop">
+    <span class="lbl">命题 20.2.3（空间的刻画）</span>
+    <p>对任意拓扑空间 \(X\)，映射</p>
+    <p class="math">\[\eta_X:X\longrightarrow\operatorname{pt}(\mathcal O(X)),\qquad x\longmapsto p_x,\quad p_x(U)=\top\iff x\in U\]</p>
+    <p>是连续单射当且仅当 \(X\) 是 \(T_0\)；它是同胚当且仅当 \(X\) 是 Sober 空间。</p>
+    <div class="proof"><span class="pl">证.</span>\(p_x\) 显然是 frame 同态（开集原像保并和有限交）。\(\eta_X^{-1}(D(U))=U\)，故连续。\(T_0\) 保证不同点被某个开集分开，故单射。若 \(X\) Sober，取 \(q\in\operatorname{pt}(\mathcal O(X))\)，其核 \(F_q^c=\{U\mid q(U)=\bot\}\) 的补之闭包是不可约闭集（由完全素性验证），Sober 性给出唯一点 \(x\) 使其闭包为该集，于是 \(q=p_x\)——满射。由 \(\eta_X^{-1}(D(U))=U\) 知逆也连续，故同胚。反之若 \(\eta_X\) 同胚，任一不可约闭集 \(C\) 对应某点的闭包（用 \(D\) 基读出），唯一性由 \(T_0\) 给出，故 Sober ✓。</div>
+  </div>
+
+  <div class="motiv">
+    <span class="lbl">Sober 性在做什么？</span>
+    在代数几何里，\(\operatorname{Spec}R\) 的每个不可约闭集都有唯一泛点——这是概形空间的骨架性质。Sober 性把这件事抽成纯拓扑条件：一个点不仅是一个位置，还是一整片不可约闭集的"泛代表"。Hausdorff 空间总是 Sober（不可约闭集只能是单点），但一般 \(T_1\) 空间未必——余有限拓扑就是反例。Sober 性是"空间能被其开集格完全恢复"的精确界限。
+  </div>
+
+  <h3 class="sub">20.2.3 手把手：\(\mathbb R\) 与余有限拓扑的对照</h3>
+
+  <div class="box walk">
+    <h4>③ 手把手：哪些空间能从开集格找回来？</h4>
+    <ol>
+      <li><strong>Hausdorff 情形.</strong>\(X=\mathbb R\)。若闭集 \(C\) 不可约且含两点 \(x\ne y\)，用 Hausdorff 分离取不交开邻域 \(U\ni x\)、\(V\ni y\)，则 \(C\subseteq(\mathbb R\setminus U)\cup(\mathbb R\setminus V)\) 且两片都不含整个 \(C\)——矛盾。故不可约闭集只能是单点，\(\mathbb R\) Sober，\(\eta_{\mathbb R}\) 是同胚。</li>
+      <li><strong>非 Sober 情形.</strong>\(X=\mathbb N\) 带余有限拓扑（闭集 = 有限集或全体）。\(X\) 本身是不可约闭集：若 \(X\subseteq C_1\cup C_2\)，两闭集的并要覆盖无限集，必有一个是 \(X\)。但 \(X\) 不是任何点的闭包——\(\overline{\{n\}}=\{n\}\)（有限集闭）。故 \(X\) 不是 Sober。</li>
+      <li><strong>看开集格.</strong>\(\mathcal O(X)\) 与某个 Sober 空间的开集格同构（其 \(\operatorname{pt}\) 会多出一个"泛点"），但 \(X\) 自己不同构于 \(\operatorname{pt}(\mathcal O(X))\)。这说明丢失的信息正是那个泛点。</li>
+      <li><strong>拓扑斯读法.</strong>\(\mathbf{Sh}(X)\) 的点按 <strong>19.2</strong> 是 \(X\) 的点，只有自然数那些；而 \(\operatorname{pt}(\mathcal O(X))\) 多一个泛点。这说明"空间的点"与"locale 的点"不是一回事——正是 Sober 性让二者重合。</li>
+    </ol>
+  </div>
+
+  <div class="cases">
+    <div class="ct">四类空间/locale 的点</div>
+    <div class="case typ"><b>典型例</b><p><strong>离散空间.</strong>\(\mathcal O(X)=\mathcal P(X)\)，点是所有主滤子 \(\{U\mid x\in U\}\)，\(\operatorname{pt}(\mathcal O(X))\cong X\)（离散空间 Sober）。</p></div>
+    <div class="case deep"><b>本质例</b><p><strong>谱空间.</strong>\(\operatorname{Spec}R\) 是 Sober 空间（Zariski 拓扑），不可约闭集 \(V(\mathfrak p)\) 的泛点是素理想 \(\mathfrak p\)。这是 Sober 性最重要的来源。</p></div>
+    <div class="case edge"><b>边界与误解</b><p><strong>无点 locale.</strong>存在没有点的非零 locale（frame 同态到 \(2\) 不存在）。此时 \(\operatorname{pt}(L)=\varnothing\)，但 \(\mathcal O(L)\ne 0\)。对应的 \(\mathbf{Sh}(L)\) 是非平凡拓扑斯却没有点——再次印证 §19.2 的"无点拓扑斯"现象。</p></div>
+    <div class="case use"><b>结构应用</b><p><strong>局部性拓扑斯.</strong>若 \(X\) Sober，\(\mathbf{Sh}(X)\simeq\mathbf{Sh}(\operatorname{pt}(\mathcal O(X)))\)，拓扑空间与 locale 给出同一个拓扑斯。Sober 性因此是"空间的拓扑斯理论无损失"的保证。</p></div>
+  </div>
+
+  <svg class="cd" viewBox="0 0 640 190" role="img" aria-label="Sober 空间与 locale 点的对应关系图">
+    <rect class="node" x="40" y="55" width="150" height="50" rx="7"/>
+    <text class="nt" x="115" y="85" text-anchor="middle">空间 X</text>
+    <rect class="node2" x="245" y="55" width="150" height="50" rx="7"/>
+    <text class="nt" x="320" y="85" text-anchor="middle">locale O(X)</text>
+    <rect class="nodeg" x="450" y="55" width="150" height="50" rx="7"/>
+    <text class="nt" x="525" y="85" text-anchor="middle">空间 pt(O(X))</text>
+    <line class="arb" x1="190" y1="80" x2="243" y2="80"/>
+    <text class="hb" x="217" y="70" text-anchor="middle">O</text>
+    <line class="arb" x1="395" y1="80" x2="448" y2="80"/>
+    <text class="hb" x="422" y="70" text-anchor="middle">pt</text>
+    <text class="lb" x="320" y="145" text-anchor="middle">X Sober ⟺ η_X : X → pt(O(X)) 是同胚</text>
+    <text class="lb" x="320" y="170" text-anchor="middle" style="font-size:12px">非 Sober 时丢掉泛点；无点 locale 时 pt(L) = ∅</text>
+  </svg>
+  <p class="figcap">图 20.2　从空间到 locale 再回到空间：Sober 性决定往返是否无损</p>
+
+  <div class="box exer">
+    <h4>④ 习题（20.2）</h4>
+    <ol>
+      <li id="ex20-2-1">证明 \(p_x(U)=\top\iff x\in U\) 是 frame 同态 \(\mathcal O(X)\to 2\)。</li>
+      <li id="ex20-2-2">证明 \(D(a)=\{p\mid p(a)=\top\}\) 满足 \(D(a\wedge b)=D(a)\cap D(b)\)、\(D(\bigvee a_i)=\bigcup D(a_i)\)。</li>
+      <li id="ex20-2-3">证明 Hausdorff 空间是 Sober 的。</li>
+      <li id="ex20-2-4">证明 \(\mathbb N\) 的余有限拓扑不是 Sober 的，并找出对应 locale 比它多出的点。</li>
+      <li id="ex20-2-5">证明 \(\operatorname{Spec}R\) 是 Sober 空间。</li>
+      <li id="ex20-2-6">举例说明无点 locale，并解释为何它对应的拓扑斯也无点。</li>
+    </ol>
+  </div>
+
+  <div class="box ans">
+    <h4>⑤ 参考答案（20.2）</h4>
+    <div class="item"><b>20.2.1</b>\(x\in U\cap V\iff x\in U\) 且 \(x\in V\)，\(x\in\bigcup_i U_i\iff\exists i,x\in U_i\)，\(x\in X\) 恒真。故 \(p_x\) 保有限交与任意并，是 frame 同态 ✓。</div>
+    <div class="item"><b>20.2.2</b>\(p(a\wedge b)=\top\iff p(a)=p(b)=\top\)（因 \(p\) 保有限交且滤子上闭），故 \(D(a\wedge b)=D(a)\cap D(b)\)。\(p(\bigvee a_i)=\top\iff\exists i,p(a_i)=\top\)（因 \(p\) 保任意并且完全素），故 \(D(\bigvee a_i)=\bigcup D(a_i)\) ✓。</div>
+    <div class="item"><b>20.2.3</b>设 \(C\) 不可约闭且含 \(x\ne y\)。Hausdorff 性给不交开邻域 \(U\ni x\)、\(V\ni y\)。则 \(C\subseteq(X\setminus U)\cup(X\setminus V)\)，两片闭且都不含 \(C\)（分别漏掉 \(x\)、\(y\)），与不可约性矛盾。故 \(C\) 单点，Sober ✓。</div>
+    <div class="item"><b>20.2.4</b>余有限拓扑中 \(X=\mathbb N\) 本身不可约（两闭集并覆盖无限集须有一为全体），但 \(\overline{\{n\}}=\{n\}\ne X\)，故非 Sober。对应 locale \(\mathcal O(X)\) 的完全素滤子还包括"余有限滤子" \(F=\{U\mid \mathbb N\setminus U\text{ 有限}\}\)，它给出额外点 \(\infty\)，使 \(\operatorname{pt}(\mathcal O(X))\) 成为 one-point compactification 型的 Sober 空间 ✓。</div>
+    <div class="item"><b>20.2.5</b>\(\operatorname{Spec}R\) 中不可约闭集恰为 \(V(\mathfrak p)\)（\(\mathfrak p\) 素理想），且 \(\overline{\{\mathfrak p\}}=V(\mathfrak p)\)，唯一性由素理想的唯一性给出，故 Sober ✓。</div>
+    <div class="item"><b>20.2.6</b>退化例子是 \(L=\{0=1\}\)（frame 同态须把 \(0=1\) 送到 \(2\) 中，不可能），它没有点。更实质地，存在非平凡 frame 没有完全素滤子（参见 Johnstone, <em>Stone Spaces</em>, Part II 的无点 locale 构造；某些例子与选择公理的失败相关）。由 <strong>19.2</strong>，\(\mathbf{Sh}(L)\) 的点恰为 \(\mathcal O(L)\to 2\) 的 frame 同态，即 \(L\) 的点，故这些拓扑斯也无点。结论：无点不是拓扑斯的病态，而是 locale 层面就可以出现的现象，拓扑斯只是忠实继承它 ✓。</div>
+  </div>
+</section>
+<section class="sec" id="s20-3">
+  <div class="sec-h"><span class="sec-no">20.3</span><h2>子 Locale 与局部性拓扑斯</h2><span class="src">M Ch.IX §4–5</span></div>
+
+  <div class="box learn">
+    <h4>① 本节学习目标</h4>
+    <ol>
+      <li>用 nucleus（闭包算子）定义子 locale，并说明它与第 17 章 LT 拓扑的同构关系；</li>
+      <li>区分 locale 的嵌入与满射，验证它们对应 frame 同态的满与单；</li>
+      <li>定义局部性拓扑斯，证明 \(\mathbf{Sh}(L)\) 是局部性的，且 \(\mathbf{Loc}\simeq\{\text{局部性拓扑斯}\}\)；</li>
+      <li>在 \(\mathbf{Set}\)、\(\mathbf{Sh}(X)\)、\(\mathbf{B}G\) 与 Cohen 拓扑斯中判定是否局部性；</li>
+      <li>理解"局部性"是拓扑学与拓扑斯理论之间的接口：它让拓扑斯的问题可还原为格论问题。</li>
+    </ol>
+  </div>
+
+  <div class="xref"><strong>沿用前文（不再复述）.</strong>LT 拓扑与闭包算子 \(j\)（<strong>17.1</strong>）；\(j\)-层与子拓扑斯（<strong>17.2</strong>）；几何嵌入与满射（<strong>19.1</strong>）；\(\operatorname{Sub}(1)\) 是 frame（<strong>20.1</strong>）。</div>
+
+  <div class="box prep">
+    <h4>极简回顾（五分钟）</h4>
+    <p><strong>1. 空间的子空间对应子 locale.</strong>对 \(Y\subseteq X\)，\(\mathcal O(Y)\) 是 \(\mathcal O(X)\) 的商（限制映射满）。但 locale 的子对象比空间的子空间多——存在没有点集的"子空间"。</p>
+    <p><strong>2. 第 17 章已经见过同样的结构.</strong>LT 拓扑是 \(\Omega\) 上的闭包算子 \(j\)，\(j\)-层子拓扑斯由 \(j\) 决定。locale 上的 nucleus 是 frame 上的闭包算子，子 locale 由它决定。两者是同一个模式在格与拓扑斯上的两次出现。</p>
+    <p><strong>3. 本节要跨的一步.</strong>把 \(\operatorname{Sub}(1)\) 当成一个 locale，问哪些拓扑斯完全由它生成。答案是局部性拓扑斯——它们把拓扑斯的问题全部还原为格论问题。</p>
+  </div>
+
+  <h3 class="sub">20.3.1 子 Locale 与 Nucleus</h3>
+
+  <div class="defn">
+    <span class="lbl">定义 20.3.1（Nucleus 与子 Locale）</span>
+    <p>frame \(L\) 上的<strong>nucleus</strong> 是映射 \(j:L\to L\)，满足：</p>
+    <ol>
+      <li>\(a\le j(a)\)（膨胀）；</li>
+      <li>\(a\le b\Rightarrow j(a)\le j(b)\)（单调）；</li>
+      <li>\(j(j(a))=j(a)\)（幂等）；</li>
+      <li>\(j(a\wedge b)=j(a)\wedge j(b)\)（保有限交）。</li>
+    </ol>
+    <p>记 \(L_j=\{a\in L\mid j(a)=a\}\)，它在 \(L\) 的序下是 frame，称为由 \(j\) 给出的<strong>子 locale</strong>。等价地，子 locale 是 \(L\) 的某个 frame 商。</p>
+  </div>
+
+  <div class="prop">
+    <span class="lbl">命题 20.3.2（子 Locale 的分类）</span>
+    <p>\(L\) 的子 locale 与 \(L\) 上的 nucleus 一一对应；对应由 \(j\mapsto L_j\) 给出。</p>
+    <div class="proof"><span class="pl">证（骨架）.</span>给定 nucleus \(j\)，\(L_j\) 的任意并是 \(j(\bigvee a_i)\)（因 \(j\) 膨胀且幂等），有限交是 \(a\wedge b\)（因 \(j\) 保交），故 \(L_j\) 是 frame，\(j:L\to L_j\) 是满 frame 同态。反之给定满 frame 同态 \(q:L\twoheadrightarrow M\)，令 \(j(a)=\bigvee\{b\mid q(b)=q(a)\}\)；验证 \(j\) 是 nucleus 且 \(M\cong L_j\)。两侧互逆 ✓。</div>
+  </div>
+
+  <div class="xref"><strong>与第 17 章的对应.</strong>设 \(\mathcal E=\mathbf{Sh}(L)\)，则 \(\operatorname{Sub}(1)\cong L\)。\(\mathcal E\) 上的 LT 拓扑 \(j\) 限制到 \(L\) 上恰是 nucleus；\(j\)-层子拓扑斯 \(\mathcal E_j\cong\mathbf{Sh}(L_j)\)。故<strong>子拓扑斯 = 子 locale</strong>——第 17 章与本章在此合流。</div>
+
+  <h3 class="sub">20.3.2 Locale 的嵌入与满射</h3>
+
+  <div class="defn">
+    <span class="lbl">定义 20.3.3（locale 态射的类型）</span>
+    <p>locale 态射 \(f:L\to M\)（即 frame 同态 \(f^\ast:\mathcal O(M)\to\mathcal O(L)\)）称为</p>
+    <ul>
+      <li><strong>嵌入</strong>，若 \(f^\ast\) 满（此时 \(L\cong M_j\) 是 \(M\) 的子 locale）；</li>
+      <li><strong>满射</strong>，若 \(f^\ast\) 单（此时 \(\mathcal O(M)\) 嵌入 \(\mathcal O(L)\) 作为子 frame）。</li>
+    </ul>
+  </div>
+
+  <div class="prop">
+    <span class="lbl">命题 20.3.4</span>
+    <p>locale 态射 \(f:L\to M\) 是嵌入（满射），当且仅当对应的几何态射 \(\mathbf{Sh}(f):\mathbf{Sh}(L)\to\mathbf{Sh}(M)\) 是几何嵌入（满射）。</p>
+    <div class="proof"><span class="pl">证.</span>\(\mathbf{Sh}(f)\) 的逆像就是 \(f^\ast\)（在层上的延拓）。几何嵌入的定义是正像全忠实，等价于逆像为层化函子（<strong>19.1.4</strong>），在 locale 情形恰为 frame 同态满；满射的定义是逆像忠实，对 \(\mathbf{Sh}(L)\) 这一条件逐开集读就是 \(f^\ast\) 单 ✓。</div>
+  </div>
+
+  <h3 class="sub">20.3.3 局部性拓扑斯</h3>
+
+  <div class="defn">
+    <span class="lbl">定义 20.3.5（局部性拓扑斯）</span>
+    <p>拓扑斯 \(\mathcal E\) 称为<strong>局部性的</strong>（localic），若 \(\mathcal E\simeq\mathbf{Sh}(L)\) 对某 locale \(L\)。等价地，\(\mathcal E\) 由 \(\operatorname{Sub}(1)\) 生成：每个对象是若干 \(1\) 的子对象的余积的商。</p>
+  </div>
+
+  <div class="prop">
+    <span class="lbl">命题 20.3.6（Loc 与局部性拓扑斯等价）</span>
+    <p>函子 \(L\mapsto\mathbf{Sh}(L)\) 给出 \(\mathbf{Loc}\simeq\{\text{局部性拓扑斯}\}\) 的等价，逆函子为 \(\mathcal E\mapsto\operatorname{Sub}_{\mathcal E}(1)\)。</p>
+    <div class="proof"><span class="pl">证（骨架）.</span>对 locale \(L\)，\(\operatorname{Sub}_{\mathbf{Sh}(L)}(1)\cong L\)（层 \(1\) 的子层由开集决定），故复合给出恒等。对局部性拓扑斯 \(\mathcal E\simeq\mathbf{Sh}(L)\)，其 \(\operatorname{Sub}(1)\cong L\)，故 \(\mathbf{Sh}(\operatorname{Sub}(1))\simeq\mathbf{Sh}(L)\simeq\mathcal E\)。态射层面由命题 20.3.4 保证全忠实 ✓。</div>
+  </div>
+
+  <div class="cases">
+    <div class="ct">哪些拓扑斯是局部性的？</div>
+    <div class="case typ"><b>典型例</b><p><strong>\(\mathbf{Sh}(X)\).</strong>由 \(X\) 的开集格生成，故局部性。特别 \(\mathbf{Set}=\mathbf{Sh}(\ast)\) 局部性。</p></div>
+    <div class="case deep"><b>本质例</b><p><strong>Cohen 拓扑斯.</strong>\(\mathbf{Sh}(\mathbb P,\neg\neg)\)（第 18 章）是 poset 上的层拓扑斯，故局部性。这说明力迫模型完全落在拓扑学一侧——Cohen 拓扑斯可以从开集格的角度研究。</p></div>
+    <div class="case edge"><b>边界与误解</b><p><strong>\(\mathbf{B}G\) 非局部性.</strong>对非平凡群 \(G\)，\(\mathbf{Set}^{G}\) 中 \(\operatorname{Sub}(1)\) 只有 \(0,1\)（\(G\)-集 \(1\) 的子对象只有空和全体），若局部性则 \(\mathcal E\simeq\mathbf{Sh}(2)\cong\mathbf{Set}\)，矛盾。故群作用的拓扑斯<strong>不是</strong>局部性的——它的信息不在开集格里，而在群作用里。</p></div>
+    <div class="case use"><b>结构应用</b><p><strong>还原论.</strong>局部性拓扑斯中，所有对象由 \(\operatorname{Sub}(1)\) 生成，故拓扑斯的问题可还原为格论问题。这是"拓扑斯 = 广义空间"这一口号最严格的版本：对局部性拓扑斯，广义空间就是一个 locale。</p></div>
+  </div>
+
+  <h3 class="sub">20.3.4 手把手：从 \(\mathbb B G\) 看局部性的界限</h3>
+
+  <div class="box walk">
+    <h4>③ 手把手：判定一个拓扑斯是否局部性</h4>
+    <ol>
+      <li><strong>步骤 1：算 \(\operatorname{Sub}(1)\).</strong>在 \(\mathbf{Set}^{G}\) 中，终对象 \(1\) 是带平凡作用的单点集。其子 \(G\)-集只有 \(\varnothing\) 与 \(1\)，故 \(\operatorname{Sub}(1)=2\)。</li>
+      <li><strong>步骤 2：若局部性则应同构于 \(\mathbf{Sh}(2)=\mathbf{Set}\).</strong>因为 \(\operatorname{Sub}(1)=2\) 对应的 locale 是单点，\(\mathbf{Sh}(\ast)\cong\mathbf{Set}\)。</li>
+      <li><strong>步骤 3：比较.</strong>若 \(G\ne 1\)，\(\mathbf{Set}^{G}\) 有非平凡 \(G\)-集（如 \(G\) 自身左作用），不同于 \(\mathbf{Set}\)。故 \(\mathbf{Set}^{G}\) 不是局部性的 ✓。</li>
+      <li><strong>结论.</strong>局部性不是所有拓扑斯的性质。它精确标记了"信息全在开集格里"的那一类——这也是为什么 Barr 定理（§20.5）要说：任意拓扑斯都能被一个局部性拓扑斯<em>满射覆盖</em>，即使它自己不是局部性的。</li>
+    </ol>
+  </div>
+
+  <svg class="cd" viewBox="0 0 640 190" role="img" aria-label="Locale 与局部性拓扑斯的等价图">
+    <rect class="node" x="40" y="55" width="160" height="50" rx="7"/>
+    <text class="nt" x="120" y="85" text-anchor="middle">Loc</text>
+    <rect class="node2" x="240" y="55" width="160" height="50" rx="7"/>
+    <text class="nt" x="320" y="85" text-anchor="middle">子 locale / nucleus</text>
+    <rect class="nodeg" x="440" y="55" width="160" height="50" rx="7"/>
+    <text class="nt" x="520" y="85" text-anchor="middle">局部性拓扑斯</text>
+    <line class="arb" x1="200" y1="80" x2="238" y2="80"/>
+    <line class="arb" x1="400" y1="80" x2="438" y2="80"/>
+    <text class="lb" x="320" y="145" text-anchor="middle">L ⟼ Sh(L)；E ⟼ Sub(1)　互为拟逆</text>
+    <text class="lb" x="320" y="170" text-anchor="middle" style="font-size:12px">子 locale ↔ 子拓扑斯（第 17 章的 LT 拓扑在此特例中重合）</text>
+  </svg>
+  <p class="figcap">图 20.3　局部性拓扑斯与 locale 的等价：格论与拓扑斯理论的接口</p>
+
+  <div class="box exer">
+    <h4>④ 习题（20.3）</h4>
+    <ol>
+      <li id="ex20-3-1">验证 \(j_a(b)=a\Rightarrow b\) 是 nucleus（开子 locale）。</li>
+      <li id="ex20-3-2">验证 \(j^a(b)=a\vee b\) 是 nucleus（闭子 locale）。</li>
+      <li id="ex20-3-3">证明子 locale 与 nucleus 一一对应。</li>
+      <li id="ex20-3-4">证明 \(\mathbf{Sh}(L)\) 是局部性的，且 \(\operatorname{Sub}(1)\cong L\)。</li>
+      <li id="ex20-3-5">证明 \(\mathbf{Set}^G\)（\(G\) 非平凡）不是局部性的。</li>
+      <li id="ex20-3-6">说明 LT 拓扑（第 17 章）与 nucleus 的关系，并解释为何子拓扑斯对应子 locale。</li>
+    </ol>
+  </div>
+
+  <div class="box ans">
+    <h4>⑤ 参考答案（20.3）</h4>
+    <div class="item"><b>20.3.1</b>\(b\le a\Rightarrow b\)（因 \(a\wedge b\le b\)，Heyting 伴随给出），单调显然，\(j_a(j_a(b))=j_a(b)\)（Heyting 代数的幂等性），\(j_a(b\wedge c)=(a\Rightarrow b)\wedge(a\Rightarrow c)=j_a(b)\wedge j_a(c)\)（Heyting 伴随右伴随保交）✓。</div>
+    <div class="item"><b>20.3.2</b>\(b\le a\vee b\)，单调显然，幂等因 \(a\vee(a\vee b)=a\vee b\)，保交因 \(a\vee(b\wedge c)=(a\vee b)\wedge(a\vee c)\)（frame 的分配律）✓。</div>
+    <div class="item"><b>20.3.3</b>见命题 20.3.2 证明骨架：\(j\mapsto L_j\)，逆为满 frame 同态 \(q\mapsto j(a)=\bigvee\{b\mid q(b)=q(a)\}\)，两侧互逆 ✓。</div>
+    <div class="item"><b>20.3.4</b>\(\mathbf{Sh}(L)\) 中 \(1\) 的子层由 \(L\) 的元素给出（开子集对应子层），故 \(\operatorname{Sub}(1)\cong L\)。任何层都是 \(L\) 中元素的余积的商（用表示层生成），故局部性 ✓。</div>
+    <div class="item"><b>20.3.5</b>若 \(\mathbf{Set}^G\) 局部性，则 \(\mathbf{Set}^G\simeq\mathbf{Sh}(\operatorname{Sub}(1))=\mathbf{Sh}(2)=\mathbf{Set}\)。但 \(G\) 非平凡时 \(G\) 的左作用集非平凡，与 \(\mathbf{Set}\) 不等价，矛盾 ✓。</div>
+    <div class="item"><b>20.3.6</b>对 \(\mathcal E=\mathbf{Sh}(L)\)，\(\Omega\) 限制到 \(\operatorname{Sub}(1)=L\) 上就是 \(L\) 的 Heyting 结构；LT 拓扑 \(j:\Omega\to\Omega\) 满足的三条闭包公理正是 nucleus 的四条（在 \(L\) 上，单调与膨胀、幂等、保有限交）。\(j\)-层子拓扑斯 \(\mathcal E_j\) 的 \(\operatorname{Sub}(1)=\{a\in L\mid j(a)=a\}=L_j\)，故 \(\mathcal E_j=\mathbf{Sh}(L_j)\)，即子拓扑斯对应子 locale ✓。</div>
+  </div>
+</section>
+<section class="sec" id="s20-4">
+  <div class="sec-h"><span class="sec-no">20.4</span><h2>开几何态射与开映射</h2><span class="src">M Ch.IX §6–8</span></div>
+
+  <div class="box learn">
+    <h4>① 本节学习目标</h4>
+    <ol>
+      <li>定义开几何态射：逆像保 Heyting 蕴涵 \(\Rightarrow\)，并解释它为何推广了拓扑中的开映射；</li>
+      <li>证明局部性态射的开性等价于 locale 层上的开映射（左伴随 + Frobenius 条件）；</li>
+      <li>理解开映射在 site 上的刻画（§8），并能在给定 site 上判定开性；</li>
+      <li>在开包含、étale 映射与一般包含中把开性算具体；</li>
+      <li>看清开性与第 16 章 \(\Pi_f\)、Beck–Chevalley 条件的内在联系。</li>
+    </ol>
+  </div>
+
+  <div class="xref"><strong>沿用前文（不再复述）.</strong>Heyting 蕴涵与伴随（<strong>7.3、16.4</strong>）；\(\Sigma_f\dashv f^\ast\dashv\Pi_f\) 与 Beck–Chevalley（<strong>16.3</strong>）；几何态射与局部性（<strong>19.1、20.3</strong>）。</div>
+
+  <div class="box prep">
+    <h4>极简回顾（五分钟）</h4>
+    <p><strong>1. 拓扑中的开映射.</strong>连续 \(\varphi:X\to Y\) 是开映射，若把开集送到开集。等价地，原像 \(\varphi^{-1}:\mathcal O(Y)\to\mathcal O(X)\) 不仅有右伴随（它总有），还有<em>左伴随</em> \(\varphi_!\)（把开集 \(U\subseteq X\) 送到 \(\varphi(U)\)，需开性保证它是开集），且满足 Frobenius 公式 \(\varphi_!(U\cap\varphi^{-1}V)=\varphi_!(U)\cap V\)。</p>
+    <p><strong>2. 拓扑斯里的对应.</strong>几何态射 \(f\) 的逆像 \(f^\ast\) 总是保有限交与任意并；它是否保蕴涵 \(\Rightarrow\)，正是开性的试金石。</p>
+    <p><strong>3. 本节要跨的一步.</strong>把"保开集"提升为"保 Heyting 代数结构"，就得到适用于任意拓扑斯的开几何态射定义。</p>
+  </div>
+
+  <h3 class="sub">20.4.1 开几何态射的定义</h3>
+
+  <div class="defn">
+    <span class="lbl">定义 20.4.1（开几何态射）</span>
+    <p>几何态射 \(f:\mathcal F\to\mathcal E\) 称为<strong>开的</strong>，若对 \(\mathcal E\) 的每个对象 \(E\)，诱导映射</p>
+    <p class="math">\[f^\ast:\operatorname{Sub}_{\mathcal E}(E)\longrightarrow\operatorname{Sub}_{\mathcal F}(f^\ast E)\]</p>
+    <p>保 Heyting 蕴涵：\(f^\ast(A\Rightarrow B)=f^\ast A\Rightarrow f^\ast B\)。等价地，\(f^\ast\) 保所有全称量词 \(\forall_h\)（沿任意箭头 \(h\) 的右伴随）。</p>
+  </div>
+
+  <div class="rmk"><strong>为什么"保 \(\Rightarrow\)"就是"保开"？</strong>在 \(\mathbf{Sh}(X)\) 中，\(\operatorname{Sub}(U)=\mathcal O(U)\)，蕴涵 \(A\Rightarrow B=\operatorname{int}((X\setminus A)\cup B)\)。原像 \(\varphi^{-1}\) 一般只保交与并，不保这个"取内部再取并"的构造；恰在 \(\varphi\) 是开映射时它保。所以定义 20.4.1 是拓扑开映射在 Heyting 代数层面的精确推广。</div>
+
+  <div class="prop">
+    <span class="lbl">命题 20.4.2（局部性态射的开性刻画）</span>
+    <p>设 \(f:\mathbf{Sh}(L)\to\mathbf{Sh}(M)\) 是局部性拓扑斯之间的几何态射，对应 locale 态射 \(f:L\to M\)（frame 同态 \(f^\ast:\mathcal O(M)\to\mathcal O(L)\)）。则以下等价：</p>
+    <ol>
+      <li>\(f\) 是开几何态射；</li>
+      <li>\(f^\ast\) 有左伴随 \(f_!:\mathcal O(L)\to\mathcal O(M)\)，满足 Frobenius 条件
+        \[f_!(a\wedge f^\ast(b))=f_!(a)\wedge b;\]</li>
+      <li>\(f\) 是 locale 的<strong>开映射</strong>（即满足 (2) 的 locale 态射）。</li>
+    </ol>
+    <div class="proof"><span class="pl">证（骨架）.</span>(1)⟹(2)：若 \(f^\ast\) 保 \(\Rightarrow\)，则在 Heyting 代数中 \(a\Rightarrow b\) 由 \(\Rightarrow\) 与 \(\bot\) 可定义，左伴随存在由伴随函子定理给出；Frobenius 公式是 \(f^\ast\) 保 \(\Rightarrow\) 的等价重述（取 \(b=\bot\) 验证，再由伴随推广）。(2)⟹(1)：有左伴随且满足 Frobenius 时，\(f^\ast\) 把 \(a\Rightarrow b\) 送到 \(f^\ast a\Rightarrow f^\ast b\)，由伴随的三角恒等式验证。(3) 即 (2) 的命名 ✓。</div>
+  </div>
+
+  <h3 class="sub">20.4.2 Site 上的开性（§8）</h3>
+
+  <div class="prop">
+    <span class="lbl">命题 20.4.3（site 刻画）</span>
+    <p>设 \(f:\mathbf{Sh}(\mathbf C,J)\to\mathbf{Sh}(\mathbf D,K)\) 是由连续平坦函子 \(u:\mathbf C\to\mathbf D\) 诱导的几何态射。若对每个 \(C\in\mathbf C\)，提升函子 \(u/C\to u(C)/K\)（在切片 site 上）是共尾的，则 \(f\) 是开的。反之在适当小性条件下也成立。</p>
+    <div class="proof"><span class="pl">证（思路）.</span>开性逐对象检验，相当于切片拓扑斯 \(\mathbf{Sh}(\mathbf C,J)/C\to\mathbf{Sh}(\mathbf D,K)/u(C)\) 的逆像保顶对象；共尾性保证覆盖能被提升，从而开集（子对象格）的原像仍可覆盖。详细构造见 M&amp;M Ch.IX §8。∎</div>
+  </div>
+
+  <div class="cases">
+    <div class="ct">开映射的四种情形</div>
+    <div class="case typ"><b>典型例</b><p><strong>开包含.</strong>\(U\subseteq X\) 开，包含 \(i:U\hookrightarrow X\) 是开映射：\(i_!(V)=V\)（作为 \(X\) 的开集），Frobenius 公式 \(V\cap(W\cap U)=V\cap W\) 显然。</p></div>
+    <div class="case deep"><b>本质例</b><p><strong>étale 映射.</strong>局部同胚 \(p:E\to X\) 是开映射；对应的几何态射 \(\mathbf{Sh}(E)\to\mathbf{Sh}(X)\) 是 étale 的，且为开几何态射。这类态射正是"在拓扑斯内部添加一个对象"的几何版本（参见 \(f^\ast\) 为切片函子的情形）。</p></div>
+    <div class="case edge"><b>边界与误解</b><p><strong>闭包含未必开.</strong>\(i:\{0\}\hookrightarrow\mathbb R\) 不是开映射：\(\{0\}\) 的开集 \(\{0\}\) 映到 \(\{0\}\)，不是 \(\mathbb R\) 的开集（无左伴随把 \(\{0\}\) 送到开集并满足 Frobenius）。对应地，\(i^\ast\) 不保 \(\Rightarrow\)。</p></div>
+    <div class="case use"><b>结构应用</b><p><strong>与 \(\forall_f\) 的联系.</strong>开性 \(f^\ast\forall_h=\forall_{f^\ast h}f^\ast\)（命题 20.4.1 的等价表述）正是 Beck–Chevalley 条件在右伴随一侧的版本（<strong>16.3</strong>）。所以开性不是孤立概念，而是第 16 章那套伴随—BC 机制在几何态射上的回声。</p></div>
+  </div>
+
+  <h3 class="sub">20.4.3 手把手：验证开包含是开几何态射</h3>
+
+  <div class="box walk">
+    <h4>③ 手把手：在 \(\mathbf{Sh}(U)\to\mathbf{Sh}(X)\) 上验证保蕴涵</h4>
+    <ol>
+      <li><strong>设定.</strong>\(U\subseteq X\) 开，\(i^\ast F=F|_U\)。对开集 \(V\subseteq X\)，\(\operatorname{Sub}_{\mathbf{Sh}(X)}(V)=\mathcal O(V)\)，\(i^\ast\) 在子对象上是限制 \(W\mapsto W\cap U\)。</li>
+      <li><strong>计算蕴涵.</strong>\(A\Rightarrow B=\operatorname{int}((V\setminus A)\cup B)\)（在 \(V\) 中取内部）。限制后 \(i^\ast(A\Rightarrow B)=\operatorname{int}((V\setminus A)\cup B)\cap U\)。</li>
+      <li><strong>另一侧.</strong>\(i^\ast A\Rightarrow i^\ast B=(A\cap U)\Rightarrow(B\cap U)=\operatorname{int}((U\setminus A)\cup(B\cap U))\)（在 \(V\cap U\) 中）。因 \(U\) 开，\(\operatorname{int}((V\setminus A)\cup B)\cap U=\operatorname{int}((U\setminus A)\cup(B\cap U))\)，两边相等 ✓。</li>
+      <li><strong>Frobenius.</strong>\(i_!(W\cap i^\ast Z)=W\cap Z\cap U=W\cap Z\)（因 \(W\subseteq U\)），与 \(i_!W\cap Z=W\cap Z\) 相等 ✓。</li>
+      <li><strong>结论.</strong>开包含是开几何态射。闭包含失败的关键在于 \(U\) 不是开集，上述内部的交换性失效。</li>
+    </ol>
+  </div>
+
+  <svg class="cd" viewBox="0 0 640 200" role="img" aria-label="开几何态射的伴随与 Frobenius 条件图">
+    <rect class="nodey" x="40" y="55" width="150" height="50" rx="7"/>
+    <text class="nt" x="115" y="85" text-anchor="middle">O(L)</text>
+    <rect class="nodeg" x="450" y="55" width="150" height="50" rx="7"/>
+    <text class="nt" x="525" y="85" text-anchor="middle">O(M)</text>
+    <line class="arb" x1="450" y1="72" x2="192" y2="72"/>
+    <text class="hb" x="320" y="62" text-anchor="middle">f*（frame 同态，左伴随 f_!）</text>
+    <line class="arg" x1="190" y1="92" x2="448" y2="92"/>
+    <text class="hg" x="320" y="115" text-anchor="middle">f_!（保开，满足 Frobenius）</text>
+    <text class="lb" x="320" y="158" text-anchor="middle">f_!(a ∧ f*(b)) = f_!(a) ∧ b　⟺　f* 保 ⇒</text>
+    <text class="lb" x="320" y="182" text-anchor="middle" style="font-size:12px">这是第 16 章 Beck–Chevalley 在右伴随一侧的版本</text>
+  </svg>
+  <p class="figcap">图 20.4　开映射的伴随刻画：左伴随 + Frobenius ⇔ 保 Heyting 蕴涵</p>
+
+  <div class="box exer">
+    <h4>④ 习题（20.4）</h4>
+    <ol>
+      <li id="ex20-4-1">证明定义 20.4.1 中"保 \(\Rightarrow\)"与"保所有 \(\forall_h\)"等价。</li>
+      <li id="ex20-4-2">验证开包含 \(i:U\hookrightarrow X\) 是开映射。</li>
+      <li id="ex20-4-3">举一个非开的连续映射，说明 \(f^\ast\) 不保 \(\Rightarrow\)。</li>
+      <li id="ex20-4-4">证明 \(f_!\) 满足 Frobenius 当且仅当 \(f^\ast\) 保 \(\Rightarrow\)。</li>
+      <li id="ex20-4-5">说明 étale 几何态射为何是开的。</li>
+      <li id="ex20-4-6">用开性重述第 16 章的 Beck–Chevalley 条件。</li>
+    </ol>
+  </div>
+
+  <div class="box ans">
+    <h4>⑤ 参考答案（20.4）</h4>
+    <div class="item"><b>20.4.1</b>由 Heyting 伴随 \(A\wedge-\dashv A\Rightarrow-\)，\(\forall_h\) 是沿 \(h\) 的拉回在子对象格上的右伴随；保 \(\Rightarrow\) 等价于保这些右伴随（把 \(h\) 取为投影即可读出），由伴随唯一性互推 ✓。</div>
+    <div class="item"><b>20.4.2</b>见手把手：\(U\) 开保证内部的交换性成立，故 \(i^\ast\) 保蕴涵，\(i\) 是开映射 ✓。</div>
+    <div class="item"><b>20.4.3</b>取常值映射 \(f:\mathbb R\to\mathbb R\)，\(f\equiv 0\)（非开）。在 \(\mathcal O(\mathbb R)\) 中令 \(A=(0,1)\)、\(B=\varnothing\)，则 \(A\Rightarrow B=\operatorname{int}\big((\mathbb R\setminus A)\cup B\big)=(-\infty,0)\cup(1,\infty)\)，不含 \(0\)，故 \(f^{-1}(A\Rightarrow B)=\varnothing\)。另一方面 \(f^{-1}A=\varnothing\)、\(f^{-1}B=\varnothing\)，故 \(f^{-1}A\Rightarrow f^{-1}B=\varnothing\Rightarrow\varnothing=\mathbb R\)。两侧不等，\(f^{-1}\) 不保 \(\Rightarrow\)，\(f\) 不是开几何态射 ✓。</div>
+    <div class="item"><b>20.4.4</b>若 \(f_!\dashv f^\ast\) 且 Frobenius 成立，则 \(f^\ast(a\Rightarrow b)\le f^\ast a\Rightarrow f^\ast b\) 由伴随与 Frobenius 推出，反向由 \(f^\ast\) 保交与 \(f_!\) 的正交性推出；反之若 \(f^\ast\) 保 \(\Rightarrow\)，定义 \(f_!(a)=\bigwedge\{b\mid a\le f^\ast b\}\) 并验证伴随与 Frobenius ✓。</div>
+    <div class="item"><b>20.4.5</b>étale 几何态射的逆像 \(f^\ast\) 是切片函子 \(-\times E\)；在集合上 \(A\times-\) 有右伴随（指数）且保所有结构，在层范畴上对应局部同胚的开性，故保 \(\Rightarrow\)，是开态射 ✓。</div>
+    <div class="item"><b>20.4.6</b>Beck–Chevalley 说 \(g^\ast\Sigma_f=\Sigma_{f'}g^{\prime\ast}\)（左伴随一侧）；开性对应右伴随一侧 \(f^\ast\forall_h=\forall_{f^\ast h}f^\ast\)。二者同源于 \(f^\ast\) 保拉回（<strong>16.3</strong>），是同一 BC 条件的两个投影 ✓。</div>
+  </div>
+</section>
+<section class="sec" id="s20-5">
+  <div class="sec-h"><span class="sec-no">20.5</span><h2>Diaconescu 覆盖与 Barr 定理</h2><span class="src">M Ch.IX §9</span></div>
+
+  <div class="box learn">
+    <h4>① 本节学习目标</h4>
+    <ol>
+      <li>陈述 Diaconescu 覆盖定理：任意 Grothendieck 拓扑斯都被一个局部性拓扑斯满射覆盖；</li>
+      <li>理解"字符串 poset" \(\operatorname{String}(\mathbf C)\) 的构造及其为何是局部性的；</li>
+      <li>陈述并证明 Barr 定理：任意拓扑斯有布尔拓扑斯的满覆盖；</li>
+      <li>解释"满射 = 逆像忠实"与"几何逻辑的保守性"之间的等价；</li>
+      <li>看这两个定理如何把"任意拓扑斯"的问题还原为"局部性 / 布尔拓扑斯"的问题。</li>
+    </ol>
+  </div>
+
+  <div class="xref"><strong>沿用前文（不再复述）.</strong>几何态射的满射（<strong>19.1</strong>）；局部性拓扑斯（<strong>20.3</strong>）；site 与覆盖（<strong>15</strong>）；布尔化 \(\mathcal E_{\neg\neg}\)（<strong>17.4、18.5</strong>）；几何逻辑与可靠性（<strong>18.1</strong>）。</div>
+
+  <div class="box prep">
+    <h4>极简回顾（五分钟）</h4>
+    <p><strong>1. 满射的逆像是忠实的.</strong>几何态射 \(p:\mathcal F\to\mathcal E\) 满射定义为 \(p^\ast\) 忠实（<strong>19.1</strong>）。这意味着 \(\mathcal F\) "看得见" \(\mathcal E\) 的所有区别——两个箭头在 \(\mathcal E\) 中不同，在 \(\mathcal F\) 中仍不同。</p>
+    <p><strong>2. 问题是：能否总找到好的 \(\mathcal F\)？</strong>给定任意 \(\mathcal E\)，能否找到局部性甚至布尔的 \(\mathcal F\) 满射到 \(\mathcal E\)？如果可以，那么 \(\mathcal E\) 的任何逻辑问题都可以在更容易处理的 \(\mathcal F\) 中检验。</p>
+    <p><strong>3. 本节要跨的一步.</strong>Diaconescu 给出局部性覆盖，Barr 加上布尔化给出布尔覆盖。两步合起来，把"任意拓扑斯"还原为"布尔局部性拓扑斯"——这是拓扑斯理论最有用的还原定理之一。</p>
+  </div>
+
+  <h3 class="sub">20.5.1 Diaconescu 覆盖定理</h3>
+
+  <div class="prop">
+    <span class="lbl">定理 20.5.1（Diaconescu 覆盖）</span>
+    <p>对任意 Grothendieck 拓扑斯 \(\mathcal E=\mathbf{Sh}(\mathbf C,J)\)，存在 locale \(L\) 与满射几何态射</p>
+    <p class="math">\[p:\mathbf{Sh}(L)\twoheadrightarrow\mathcal E.\]</p>
+    <div class="proof"><span class="pl">证（构造骨架）.</span><strong>第一步：字符串 poset.</strong>令 \(\operatorname{String}(\mathbf C)\) 的元素是 \(\mathbf C\) 中可复合箭头串
+    \[s=\left(U_n\xrightarrow{\alpha_n}U_{n-1}\xrightarrow{\alpha_{n-1}}\cdots\xrightarrow{\alpha_1}U_0\right),\]
+    排序为 \(t\le s\) 当且仅当 \(t\) 是 \(s\) 向左延长（即在 \(U_n\) 前再接若干箭头）。这是 poset，赋予适当的覆盖拓扑（M&amp;M IX.9）。<strong>第二步：局部性.</strong>由 M&amp;M 定理 5.1，poset site 上的层拓扑斯等价于其 \(\operatorname{Sub}(1)\) 给出的局部性拓扑斯，故 \(\mathbf{Sh}(\operatorname{String}(\mathbf C))\) 是局部性的；记其对应 locale 为 \(L\)。<strong>第三步：满射.</strong>定义 \(p^\ast\) 把层限制到字符串上；字符串覆盖了 \(\mathbf C\) 的所有"局部历史"，忠实性逐层验证：若两个箭头在 \(\mathbf C\) 的层范畴中不同，则存在某个对象处的截面区分它们，取一个以该对象为末端的字符串即可在 \(\mathbf{Sh}(L)\) 中区分 ✓。</div>
+  </div>
+
+  <div class="rmk"><strong>字符串在做什么？</strong>一个字符串是一段"局部历史的轨迹"——从某个对象出发沿箭头走到 \(U_0\)。字符串 poset 用"延长"排序，把 site 中所有可能的局部路径收集起来。满射性说：这些轨迹足以区分 \(\mathcal E\) 的所有箭头。这与 §19.2 的滤子函子一脉相承——点是一条"无限轨迹"，而 Diaconescu 覆盖收集了所有"有限轨迹"。</div>
+
+  <h3 class="sub">20.5.2 Barr 定理</h3>
+
+  <div class="prop">
+    <span class="lbl">定理 20.5.2（Barr）</span>
+    <p>对任意 Grothendieck 拓扑斯 \(\mathcal E\)，存在完备布尔代数 \(B\) 与满射几何态射</p>
+    <p class="math">\[q:\mathbf{Sh}(B)\twoheadrightarrow\mathcal E.\]</p>
+    <div class="proof"><span class="pl">证.</span>先由 Diaconescu 覆盖得满射 \(p:\mathbf{Sh}(L)\twoheadrightarrow\mathcal E\)，其中 \(L\) 是 locale，对应 frame \(S=\mathcal O(L)\)。再证明一个引理：<strong>对任意 frame \(S\)，存在完备布尔代数 \(B\) 与满射 \(i:\mathbf{Sh}(B)\twoheadrightarrow\mathbf{Sh}(S)\)</strong>。构造：取 \(B\) 为 \(S\) 的"布尔完备化"——具体地，令 \(\mathbb P\) 为 \(S\setminus\{0\}\) 配上适当序，取 \(\operatorname{RO}(\mathbb P)\)（正则开代数）或其完备布尔化；\(i^\ast\) 由包含 \(S\hookrightarrow B\) 诱导。忠实性：\(S\) 的元素在 \(B\) 中仍可区分（布尔化不坍缩非零元素），故 \(i^\ast\) 忠实。复合 \(q=p\circ i\) 即满射（满射复合仍满射）✓。详细构造见 M&amp;M IX.9 的引理。</div>
+  </div>
+
+  <div class="motiv">
+    <span class="lbl">Barr 定理为什么重要？</span>
+    很多几何逻辑的推理在布尔拓扑斯（即经典逻辑成立的拓扑斯）中容易证明，但在一般拓扑斯中困难。Barr 定理说：如果一个几何蕴涵在所有布尔拓扑斯中成立，那么它在所有拓扑斯中成立——因为满射 \(q\) 的逆像忠实，可以把一般拓扑斯中的反例拉回到布尔拓扑斯中。这给出<strong>几何逻辑相对于经典逻辑的完备性</strong>，是第 18 章可靠性定理的反向补充。
+  </div>
+
+  <h3 class="sub">20.5.3 手把手：用布尔覆盖检验一个几何蕴涵</h3>
+
+  <div class="box walk">
+    <h4>③ 手把手：从布尔模型到一般模型</h4>
+    <ol>
+      <li><strong>设定.</strong>设几何公式 \(\varphi\Rightarrow\psi\) 在所有布尔拓扑斯中为真。要证它在任意 \(\mathcal E\) 中为真。</li>
+      <li><strong>取覆盖.</strong>由 Barr 定理取满射 \(q:\mathbf{Sh}(B)\twoheadrightarrow\mathcal E\)，\(B\) 完备布尔代数。</li>
+      <li><strong>搬运.</strong>\(q^\ast\) 忠实且保几何逻辑的联结词（逆像左正合且保 \(\vee,\exists\)）。若 \(\varphi\Rightarrow\psi\) 在 \(\mathbf{Sh}(B)\) 中真，即 \(\llbracket\varphi\rrbracket\le\llbracket\psi\rrbracket\)，由忠实性在 \(\mathcal E\) 中也有 \(\llbracket\varphi\rrbracket\le\llbracket\psi\rrbracket\)。</li>
+      <li><strong>结论.</strong>故 \(\varphi\Rightarrow\psi\) 在 \(\mathcal E\) 中真。这正是"几何逻辑的经典完备性"。</li>
+      <li><strong>注意边界.</strong>该论证只对<strong>几何</strong>公式有效（只用 \(\wedge,\vee,\exists,=,\top,\bot\) 和任意 \(\vee\)），因为 \(q^\ast\) 不保 \(\Rightarrow,\forall\)。这解释了为什么几何逻辑是拓扑斯理论的自然逻辑——它恰好是能被满射覆盖保持的那一片段。</li>
+    </ol>
+  </div>
+
+  <svg class="cd" viewBox="0 0 720 190" role="img" aria-label="Diaconescu 覆盖与 Barr 定理的还原图">
+    <rect class="node2" x="25" y="55" width="170" height="50" rx="7"/>
+    <text class="nt" x="110" y="85" text-anchor="middle">Sh(B)（布尔）</text>
+    <rect class="nodey" x="280" y="55" width="170" height="50" rx="7"/>
+    <text class="nt" x="365" y="85" text-anchor="middle">Sh(L)（局部性）</text>
+    <rect class="node" x="550" y="55" width="160" height="50" rx="7"/>
+    <text class="nt" x="630" y="85" text-anchor="middle">E（任意拓扑斯）</text>
+    <line class="arb" x1="195" y1="80" x2="278" y2="80"/>
+    <text class="hb" x="236" y="70" text-anchor="middle">Barr</text>
+    <line class="arb" x1="450" y1="80" x2="548" y2="80"/>
+    <text class="hb" x="499" y="70" text-anchor="middle">Diaconescu</text>
+    <text class="lb" x="360" y="145" text-anchor="middle">两级满射覆盖：布尔 → 局部性 → 任意</text>
+    <text class="lb" x="360" y="170" text-anchor="middle" style="font-size:12px">逆像忠实 ⟹ 几何蕴涵可从布尔模型传递到任意拓扑斯</text>
+  </svg>
+  <p class="figcap">图 20.5　Barr 与 Diaconescu：把任意拓扑斯还原为布尔局部性拓扑斯</p>
+
+  <div class="box exer">
+    <h4>④ 习题（20.5）</h4>
+    <ol>
+      <li id="ex20-5-1">陈述 Diaconescu 覆盖定理并说明字符串 poset 的作用。</li>
+      <li id="ex20-5-2">证明满射几何态射的复合仍是满射。</li>
+      <li id="ex20-5-3">陈述 Barr 定理，并说明它为何给出几何逻辑的完备性。</li>
+      <li id="ex20-5-4">解释为什么 \(q^\ast\) 不保 \(\Rightarrow,\forall\)，从而论证只限于几何公式。</li>
+      <li id="ex20-5-5">说明 Diaconescu 覆盖与第 19 章滤子函子的联系。</li>
+      <li id="ex20-5-6">讨论 Barr 定理在第 18 章 Cohen 力迫模型上的体现。</li>
+    </ol>
+  </div>
+
+  <div class="box ans">
+    <h4>⑤ 参考答案（20.5）</h4>
+    <div class="item"><b>20.5.1</b>定理：任意 Grothendieck 拓扑斯 \(\mathbf{Sh}(\mathbf C,J)\) 有满射 \(p:\mathbf{Sh}(L)\twoheadrightarrow\mathcal E\)，\(L\) locale。字符串 poset 收集所有可复合箭头串并按左延长排序，其上的层拓扑斯是局部性的（M&amp;M 定理 5.1），且足以区分 \(\mathcal E\) 的所有箭头，故给出满射 ✓。</div>
+    <div class="item"><b>20.5.2</b>若 \(p^\ast,q^\ast\) 忠实，则 \((p\circ q)^\ast=q^\ast\circ p^\ast\) 忠实（两个忠实函子复合忠实），故 \(p\circ q\) 满射 ✓。</div>
+    <div class="item"><b>20.5.3</b>Barr：存在完备 BA \(B\) 与满射 \(\mathbf{Sh}(B)\twoheadrightarrow\mathcal E\)。若几何蕴涵在所有布尔拓扑斯中真，则取任意 \(\mathcal E\) 的布尔覆盖，由 \(q^\ast\) 忠实且保几何联结词，把真值不等式拉回，得在 \(\mathcal E\) 中也真——即几何逻辑相对于经典逻辑完备 ✓。</div>
+    <div class="item"><b>20.5.4</b>几何态射的逆像 \(q^\ast\) 按定义只保有限极限与余极限（左伴随），对 \(\Rightarrow\) 与 \(\forall\)（右伴随结构）一般无能为力。开几何态射才额外保 \(\Rightarrow\)（<strong>20.4</strong>），而 Barr 覆盖一般不开。故论证只能用于由 \(\wedge,\vee,\exists\) 等构成的几何公式 ✓。</div>
+    <div class="item"><b>20.5.5</b>Diaconescu 覆盖用所有有限字符串（局部历史）覆盖 site，而滤子函子（<strong>19.2</strong>）用相容的局部截面系统给出一个点。前者是"所有可能的局部轨迹的集合"，后者是"一条完整的轨迹"；覆盖是"把点聚集起来形成的新空间"，二者是整体与部分的关系 ✓。</div>
+    <div class="item"><b>20.5.6</b>Cohen 拓扑斯 \(\mathbf{Sh}(\mathbb P,\neg\neg)\) 本身是布尔的（<strong>18.4</strong>），所以 Barr 覆盖可取为恒等（或自身的布尔化）。这说明力迫模型已经是"最直接"的布尔模型——Barr 定理在此退化，而 Diaconescu 覆盖把它进一步表示为 poset 上的层（本来就是），显示力迫与拓扑斯覆盖理论天然吻合 ✓。</div>
+  </div>
+</section>
+<section class="sec" id="s20-6">
+  <div class="sec-h"><span class="sec-no">20.6</span><h2>Stone 空间与 Deligne 定理</h2><span class="src">M Ch.IX §10–11</span></div>
+
+  <div class="box learn">
+    <h4>① 本节学习目标</h4>
+    <ol>
+      <li>从完备布尔代数 \(B\) 构造 Stone 空间 \(\operatorname{Stone}(B)\)，并说明它的紧 Hausdorff、极端不连通性质；</li>
+      <li>区分 Stone 空间的点（超滤子）与拓扑斯 \(\mathbf{Sh}(B)\) 的点（原子）——这是一个容易踩的坑；</li>
+      <li>定义相干（coherent）拓扑斯，陈述 Deligne 定理：相干拓扑斯有足够多点；</li>
+      <li>理解 Deligne 定理与一阶/相干逻辑完备性定理的对应（Lawvere 的观察）；</li>
+      <li>看清它与 Barr 定理的分工：Barr 给布尔覆盖，Deligne 给点，二者合起来才有"经典推理对相干公式可靠"。</li>
+    </ol>
+  </div>
+
+  <div class="xref"><strong>沿用前文（不再复述）.</strong>完备布尔代数与 Boolean 化（<strong>17.4、18.5</strong>）；Stone 表示定理（<strong>15.2</strong> 背景）；Barr 定理（<strong>20.5</strong>）；足够多点（<strong>19.2</strong>）；几何逻辑与完备性（<strong>18.1</strong>）。</div>
+
+  <div class="box prep">
+    <h4>极简回顾（五分钟）</h4>
+    <p><strong>1. 布尔代数有空间模型.</strong>Stone 表示定理说：布尔代数 \(B\) 同构于其超滤子空间 \(\operatorname{Stone}(B)\) 的 clopen 集代数。当 \(B\) 完备时，\(\operatorname{Stone}(B)\) 是紧 Hausdorff 且极端不连通的空间。</p>
+    <p><strong>2. 但拓扑斯的点更挑剔.</strong>\(\mathbf{Sh}(B)\)（\(B\) 视作 site）的点是完全素滤子，对完备布尔代数而言就是原子生成的滤子。若 \(B\) 无原子，\(\mathbf{Sh}(B)\) 没有点——这是 Barr 论文里的经典例子。所以"有 Stone 空间"不等于"层拓扑斯有足够多点"。</p>
+    <p><strong>3. 本节要跨的一步.</strong>Deligne 定理指出：对<strong>相干</strong>拓扑斯（一类由有限可表述对象生成的拓扑斯），点足够多。这条限制精确标记了"一阶逻辑完备性有效"的边界。</p>
+  </div>
+
+  <h3 class="sub">20.6.1 完备布尔代数的 Stone 空间</h3>
+
+  <div class="defn">
+    <span class="lbl">定义 20.6.1（Stone 空间）</span>
+    <p>设 \(B\) 是完备布尔代数。\(B\) 的<strong>Stone 空间</strong> \(\operatorname{Stone}(B)\) 是其所有超滤子的集合，拓扑由基</p>
+    <p class="math">\[\widetilde b=\{U\subseteq B\mid U\text{ 超滤子},\ b\in U\}\qquad(b\in B)\]</p>
+    <p>生成。它紧、Hausdorff、零维且极端不连通（每个开集的闭包仍开）。</p>
+  </div>
+
+  <div class="prop">
+    <span class="lbl">命题 20.6.2（点的辨析）</span>
+    <p>\(\mathbf{Sh}(B)\)（\(B\) 作为 poset site，赋规范拓扑）的点与 \(B\) 的<strong>原子</strong>一一对应；若 \(B\) 无原子，则 \(\mathbf{Sh}(B)\) 没有点。</p>
+    <div class="proof"><span class="pl">证.</span>由 Diaconescu 定理（<strong>19.2</strong>），\(\mathbf{Sh}(B)\) 的点 = 连续滤子函子 \(B\to\mathbf{Set}\) = 完全素滤子 \(F\subseteq B\)。对完备布尔代数，完全素即"对任意并素"，这迫使 \(F\) 是主滤子 \(\uparrow a\)，且 \(a\) 必为原子（否则 \(a=b\vee c\) 且 \(b,c\lt a\) 会破坏素性）。反之每个原子 \(a\) 给出完全素滤子 \(\uparrow a\) ✓。</div>
+  </div>
+
+  <div class="rmk"><strong>关键区分.</strong>Stone 空间的点是所有超滤子（很多），\(\mathbf{Sh}(B)\) 的点只是原子（可能没有）。二者不可混同——正是这个区别使得"有 Stone 空间"不能推出"层拓扑斯有足够多点"，也解释了为什么 Deligne 定理需要额外的相干性假设。</div>
+
+  <h3 class="sub">20.6.2 相干拓扑斯与 Deligne 定理</h3>
+
+  <div class="defn">
+    <span class="lbl">定义 20.6.3（相干拓扑斯）</span>
+    <p>拓扑斯 \(\mathcal E\) 称为<strong>相干的</strong>（coherent），若它有一个 site \((\mathbf C,J)\)，其中 \(\mathbf C\) 有有限极限，\(J\) 由有限覆盖生成，且 \(\mathbf C\) 中每个对象可由"有限可表述"对象覆盖。等价地，\(\mathcal E\) 由相干对象（在内部语言中由有界公式定义的对象）生成。</p>
+  </div>
+
+  <div class="prop">
+    <span class="lbl">定理 20.6.4（Deligne）</span>
+    <p>每个相干拓扑斯都有足够多点。即若 \(\alpha:A\to B\) 在所有点 \(p:\mathbf{Set}\to\mathcal E\) 上 \(p^\ast\alpha\) 是同构，则 \(\alpha\) 是同构。</p>
+    <div class="proof"><span class="pl">证（M&amp;M IX.11 的思路骨架）.</span>M&amp;M 的证明基于相干拓扑斯的<strong>注入性</strong>（injectivity）：相干拓扑斯关于某类几何嵌入是注入对象，因而可以把任意"非同构"的箭头嵌入到一个由 Stone 空间给出的模型中并被点的茎检测到。具体地，若 \(\alpha\) 不是同构，则其像或余像给出 \(\operatorname{Sub}(1)\) 中一个非平凡元素；相干性保证它可由有限数据表述，从而能在某个 Stone 模型的点处被区分。详细构造见 M&amp;M IX.11.3；Johnstone《Stone Spaces》7.4 给出 Deligne 原证明的几何版本。∎</div>
+  </div>
+
+  <div class="motiv">
+    <span class="lbl">这是 Gödel 完备性定理！</span>
+    Lawvere 观察到：一个理论 \(T\) 的分类拓扑斯通常是相干的，而 \(\mathbf{Set}[T]\) 的点恰是 \(T\) 在 \(\mathbf{Set}\) 中的模型（<strong>19.3</strong>）。于是 Deligne 定理"相干拓扑斯有足够多点"翻译成模型论语言就是：<strong>若一个相干语句在所有模型中为真，则它可由理论证明</strong>——这正是完备性定理。拓扑斯理论由此把模型论的经典成果统一到范畴框架中。
+  </div>
+
+  <div class="cases">
+    <div class="ct">Deligne 定理的适用范围与边界</div>
+    <div class="case typ"><b>典型例</b><p><strong>\(\mathbf{Sh}(X)\).</strong>若 \(X\) 是相干空间（有有限开覆盖基且稳定），\(\mathbf{Sh}(X)\) 相干，Deligne 保证有足够多点（本来就由 \(X\) 的点给出）。</p></div>
+    <div class="case deep"><b>本质例</b><p><strong>分类拓扑斯.</strong>由有限可表述的几何理论（如群、环、局部环的理论）分类的拓扑斯是相干的；Deligne 定理给出这些理论有足够多模型——这是模型论中"理论有模型"的范畴证明。</p></div>
+    <div class="case edge"><b>边界与误解</b><p><strong>无原子的 \(\mathbf{Sh}(B)\).</strong>对无原子完备 BA \(B\)，\(\mathbf{Sh}(B)\) 没有点（命题 20.6.2），故不可能有足够多点。它也不是相干的——Deligne 定理不适用。这个反例精确说明了"相干"假设不可省。</p></div>
+    <div class="case use"><b>结构应用</b><p><strong>与 Barr 的分工.</strong>Barr 定理（<strong>20.5</strong>）给任意拓扑斯一个布尔覆盖，保几何逻辑；Deligne 定理给相干拓扑斯足够多点，保一阶/相干逻辑的完备性。前者是"换模型"，后者是"找模型"，合起来构成拓扑斯模型论的基础。</p></div>
+  </div>
+
+  <h3 class="sub">20.6.3 手把手：从 Deligne 定理读出完备性</h3>
+
+  <div class="box walk">
+    <h4>③ 手把手：把"可证"翻译成"有足够多点"</h4>
+    <ol>
+      <li><strong>设定.</strong>设 \(T\) 是相干理论（如"群"的理论），\(\mathcal E=\mathbf{Set}[T]\) 是其分类拓扑斯（相干）。</li>
+      <li><strong>语法侧.</strong>语句 \(\varphi\) 在 \(T\) 中可证，当且仅当 \(\llbracket\varphi\rrbracket=1\) 在 \(\mathcal E\) 中成立（可靠性与完备性，<strong>18.1</strong>）。</li>
+      <li><strong>语义侧.</strong>\(\mathcal E\) 的点 \(p\) 恰是 \(T\) 在 \(\mathbf{Set}\) 中的模型（<strong>19.3</strong>）；\(p^\ast\llbracket\varphi\rrbracket=1\) 当且仅当 \(\varphi\) 在该模型中真。</li>
+      <li><strong>Deligne 起作用.</strong>若 \(\varphi\) 在所有模型中真，则所有点 \(p\) 满足 \(p^\ast\llbracket\varphi\rrbracket=1\)。Deligne 定理（足够多点）推出 \(\llbracket\varphi\rrbracket=1\)，故 \(\varphi\) 可证。</li>
+      <li><strong>结论.</strong>范畴命题"相干拓扑斯有足够多点"与逻辑命题"相干理论的完备性定理"是同一件事的两种说法。第 21 章会把这套对应推广到一般几何理论。</li>
+    </ol>
+  </div>
+
+  <svg class="cd" viewBox="0 0 640 200" role="img" aria-label="Deligne 定理与完备性对应的框图">
+    <rect class="node" x="40" y="55" width="150" height="50" rx="7"/>
+    <text class="nt" x="115" y="85" text-anchor="middle">相干理论 T</text>
+    <rect class="node2" x="245" y="55" width="150" height="50" rx="7"/>
+    <text class="nt" x="320" y="85" text-anchor="middle">Set[T]（相干）</text>
+    <rect class="nodeg" x="450" y="55" width="150" height="50" rx="7"/>
+    <text class="nt" x="525" y="85" text-anchor="middle">T 的模型 = 点</text>
+    <line class="arb" x1="190" y1="80" x2="243" y2="80"/>
+    <text class="hb" x="217" y="70" text-anchor="middle">分类</text>
+    <line class="arb" x1="395" y1="80" x2="448" y2="80"/>
+    <text class="hb" x="422" y="70" text-anchor="middle">Deligne</text>
+    <text class="lb" x="320" y="150" text-anchor="middle">足够多点 ⟺ 所有模型真 ⟹ 可证（完备性）</text>
+    <text class="lb" x="320" y="175" text-anchor="middle" style="font-size:12px">相干性不可省：无原子完备 BA 的层拓扑斯没有点</text>
+  </svg>
+  <p class="figcap">图 20.6　Deligne 定理：拓扑斯的"足够多点"就是逻辑的"完备性"</p>
+
+  <div class="box exer">
+    <h4>④ 习题（20.6）</h4>
+    <ol>
+      <li id="ex20-6-1">证明 \(\operatorname{Stone}(B)\) 是紧 Hausdorff 空间。</li>
+      <li id="ex20-6-2">证明 \(\mathbf{Sh}(B)\) 的点对应 \(B\) 的原子。</li>
+      <li id="ex20-6-3">举例说明无点拓扑斯，并解释为何 Deligne 定理不适用。</li>
+      <li id="ex20-6-4">陈述 Deligne 定理，并说明它为何等价于相干逻辑的完备性。</li>
+      <li id="ex20-6-5">比较 Barr 定理与 Deligne 定理的假设与结论。</li>
+      <li id="ex20-6-6">用分类拓扑斯的语言重述"群的理论有模型"。</li>
+    </ol>
+  </div>
+
+  <div class="box ans">
+    <h4>⑤ 参考答案（20.6）</h4>
+    <div class="item"><b>20.6.1</b>Hausdorff：不同超滤子 \(U\ne V\) 取 \(b\in U\setminus V\)，则 \(\widetilde b\ni U\)、\(\widetilde{\neg b}\ni V\)，两者不交。紧致：由超滤子引理，任意开覆盖有有限子覆盖（标准 Stone 紧致性论证）✓。</div>
+    <div class="item"><b>20.6.2</b>由 Diaconescu，点 = 完全素滤子 \(F\)。完备 BA 中完全素滤子必为主滤子 \(\uparrow a\)，且 \(a\) 必原子（否则 \(a=b\vee c\) 且 \(b,c\ne a\) 破坏素性）；反之原子给出点 ✓。</div>
+    <div class="item"><b>20.6.3</b>取无原子完备 BA（如可测集的商代数），\(\mathbf{Sh}(B)\) 没有点（20.6.2），故无足够多点。它非相干，Deligne 定理不适用 ✓。</div>
+    <div class="item"><b>20.6.4</b>Deligne：相干拓扑斯有足够多点。对分类拓扑斯 \(\mathbf{Set}[T]\)，点 = \(T\) 的模型；足够多点把"所有模型满足"提升为"内部真值 = 1"，即语法可证——完备性 ✓。</div>
+    <div class="item"><b>20.6.5</b>Barr：任意 Grothendieck 拓扑斯有布尔覆盖（满射 \(\mathbf{Sh}(B)\twoheadrightarrow\mathcal E\)），保几何逻辑但不给点。Deligne：相干拓扑斯有足够多点，给一阶/相干逻辑完备性但要求相干性。前者换模型，后者找模型 ✓。</div>
+    <div class="item"><b>20.6.6</b>"群的理论有模型"等价于：群的几何理论的分类拓扑斯 \(\mathbf{Set}[\text{Group}]\) 至少有一个点 \(\mathbf{Set}\to\mathbf{Set}[\text{Group}]\)。事实上它有足够多点（群的理论相干，Deligne），故每个群论语句若在所有群中真则可证 ✓。</div>
+  </div>
+</section>
+<footer>
+  <p><a href="范畴论-逻辑-拓扑斯_教材总目录.html">← 返回总目录</a> ｜ 上一章：<a href="范畴论-逻辑-拓扑斯_教材第19章.html">第 19 章 几何态射与分类拓扑斯</a> ｜ 下一章：<a href="范畴论-逻辑-拓扑斯_教材第21章.html">第 21 章 几何逻辑与分类拓扑斯</a></p>
+  <p>本章对应 Mac Lane &amp; Moerdijk, <em>Sheaves in Geometry and Logic</em>, Chapter IX（§1 Locales、§2 Points and Sober Spaces、§3 Spaces from Locales、§4 Embeddings and Surjections of Locales、§5 Localic Topoi、§6 Open Geometric Morphisms、§7 Open Maps of Locales、§8 Open Maps and Sites、§9 The Diaconescu Cover and Barr's Theorem、§10 The Stone Space of a Complete Boolean Algebra、§11 Deligne's Theorem）。进阶参考 P. T. Johnstone, <em>Stone Spaces</em> 与 <em>Sketches of an Elephant</em>（locale 与 Stone 对偶的严格基础）、O. Caramello, <em>Theories, Sites, Toposes</em>（同一拓扑斯的多 site 呈现）、J. L. Bell, <em>Toposes and Local Set Theories</em>（局部集合论视角）。公式由 MathJax 渲染。每节核心概念配"典型例 / 本质例 / 边界与误解 / 结构应用"四类例子。</p>
+</footer>
+
+</div>
+</body>
+</html>

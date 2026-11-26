@@ -1,0 +1,966 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>第 21 章 几何逻辑与分类拓扑斯（Ch. X）—— 三书递进自学教材</title>
+<script>
+window.MathJax = {
+  tex: {
+    inlineMath: [['\\(','\\)']], displayMath: [['\\[','\\]']], processEscapes: true,
+    macros: {
+      llbracket: '\\lbrack\\lbrack',
+      rrbracket: '\\rbrack\\rbrack'
+    }
+  },
+  options: { ignoreHtmlClass: 'no-tex' },
+  svg: { fontCache: 'global' }
+};
+</script>
+<script async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
+<style>
+  :root{
+    --bg:#f6f7f9; --card:#fff; --ink:#1b1f27; --ink2:#4d5461; --ink3:#7a8190;
+    --line:#e5e8ed; --soft:#f0f2f5;
+    --c1:#2563eb; --c1bg:#eef4ff; --gold:#b45309; --goldbg:#fdf3e3;
+    --ok:#15803d; --okbg:#eefaf1; --phil:#7c3aed; --philbg:#f6f1ff;
+    --teal:#0d9488; --tealbg:#eefaf7; --walk:#b45309;
+    --radius:12px;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;
+    line-height:1.75;-webkit-font-smoothing:antialiased;}
+  .wrap{max-width:920px;margin:0 auto;padding:0 22px 80px;}
+
+  header.top{padding:34px 0 22px;border-bottom:1px solid var(--line);margin-bottom:26px;}
+  .breadcrumb{font-size:12.5px;color:var(--ink3);margin-bottom:10px;}
+  .breadcrumb a{color:var(--c1);text-decoration:none;}
+  h1{font-size:29px;margin:0 0 8px;letter-spacing:-.02em;}
+  .lede{color:var(--ink2);font-size:14.5px;margin:0 0 16px;}
+  .jump{display:flex;gap:8px;flex-wrap:wrap;}
+  .jump a{font-size:12.5px;font-weight:650;text-decoration:none;color:var(--ink2);
+    background:var(--card);border:1px solid var(--line);border-radius:99px;padding:6px 13px;}
+  .jump a:hover{border-color:var(--c1);color:var(--c1);}
+
+  section.sec{margin:0 0 52px;scroll-margin-top:16px;}
+  .sec-h{display:flex;align-items:baseline;gap:12px;border-bottom:2px solid var(--c1);padding-bottom:10px;margin-bottom:22px;}
+  .sec-no{font-size:13px;font-weight:800;color:#fff;background:var(--c1);border-radius:7px;padding:3px 10px;white-space:nowrap;}
+  .sec-h h2{font-size:22px;margin:0;letter-spacing:-.01em;}
+  .src{font-size:11.5px;color:var(--ink3);margin-left:auto;white-space:nowrap;}
+
+  .box{border-radius:var(--radius);padding:16px 20px;margin:18px 0;border:1px solid var(--line);}
+  .box h4{margin:0 0 10px;font-size:14px;letter-spacing:.01em;}
+
+  .learn{background:var(--c1bg);border-color:#cfe0ff;}
+  .learn h4{color:var(--c1);}
+  .learn ol{margin:0;padding-left:22px;} .learn li{margin:4px 0;font-size:14px;}
+
+  .prep{background:var(--tealbg);border-color:#bfe9dd;}
+  .prep h4{color:var(--teal);}
+  .prep p{font-size:13.5px;color:#115e59;margin:8px 0;}
+  .prep ol,.prep ul{margin:8px 0;padding-left:22px;font-size:13.5px;color:#115e59;}
+  .prep li{margin:5px 0;}
+
+  .defn{background:#fafbfc;border-left:4px solid var(--ink2);padding:14px 18px;margin:16px 0;border-radius:0 10px 10px 0;}
+  .defn .lbl{font-weight:800;font-size:13.5px;color:var(--ink);}
+  .prop{background:#fbfcfe;border:1px solid #dbe6f8;border-left:4px solid var(--c1);padding:14px 18px;margin:16px 0;border-radius:0 10px 10px 0;}
+  .prop .lbl{font-weight:800;font-size:13.5px;color:var(--c1);}
+  .rmk{font-size:13.5px;color:var(--ink2);background:var(--soft);padding:11px 16px;border-radius:9px;margin:12px 0;}
+  .xref{font-size:13px;color:#115e59;background:var(--tealbg);border-left:3px solid var(--teal);padding:9px 14px;border-radius:0 8px 8px 0;margin:12px 0;}
+
+  .proof{margin:10px 0 4px;padding-left:16px;border-left:2px solid var(--line);font-size:14px;color:var(--ink2);}
+  .proof .pl{font-weight:700;color:var(--ink);}
+  .qed{float:right;font-style:normal;color:var(--ink3);}
+
+  .exer{background:var(--goldbg);border-color:#f2dfbb;}
+  .exer h4{color:var(--gold);}
+  .exer .grp{font-size:12.5px;font-weight:750;color:var(--gold);margin:12px 0 4px;}
+  .exer ol{margin:0;padding-left:22px;} .exer li{margin:9px 0;font-size:14px;}
+
+  .ans{background:var(--okbg);border-color:#c9ecd3;}
+  .ans h4{color:var(--ok);}
+  .ans .item{margin:14px 0 18px;font-size:14px;}
+  .ans .item:last-child{margin-bottom:0;}
+  .ans .item b{color:var(--ok);}
+  .ans .proof{border-left-color:#bfe6c9;}
+
+  .phil{background:var(--philbg);border-color:#e3d5ff;}
+  .phil h4{color:var(--phil);}
+  .phil p{font-size:14px;color:#5b3a8e;margin:8px 0;}
+
+  .walk{background:#fffbeb;border-color:#fde68a;}
+  .walk h4{color:var(--walk);}
+  .walk p,.walk li{font-size:13.5px;color:#78350f;}
+  .walk ol,.walk ul{margin:8px 0;padding-left:22px;}
+  .walk table{border-collapse:collapse;width:100%;font-size:13px;margin:10px 0;}
+  .walk th,.walk td{border:1px solid #fcd34d;padding:7px 9px;text-align:left;vertical-align:top;}
+  .walk th{background:#fef3c7;color:#78350f;}
+
+  h3.sub{font-size:16px;margin:26px 0 6px;color:var(--ink);}
+  p{margin:9px 0;} .math{overflow-x:auto;}
+
+  .figcap{font-size:12.5px;color:var(--ink3);margin:2px 0 12px;text-align:center;font-style:italic;}
+  .figdesc{font-size:13px;color:var(--ink2);background:var(--soft);padding:10px 15px;border-radius:8px;margin:6px 0 12px;}
+
+  footer{border-top:1px solid var(--line);margin-top:30px;padding-top:20px;font-size:13px;color:var(--ink3);}
+  footer a{color:var(--c1);text-decoration:none;}
+
+  @media(max-width:640px){
+    h1{font-size:23px;} .wrap{padding:0 14px 60px;}
+    .sec-h{flex-wrap:wrap;} .src{margin-left:0;}
+    .box{padding:14px 15px;}
+  }
+  @media print{body{background:#fff;}.jump{display:none;}.box{break-inside:avoid;}}
+  /* ---- 范畴交换图 SVG（浅色主题）---- */
+  svg.cd{display:block;margin:16px auto 2px;max-width:100%;height:auto;
+    font-family:"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;}
+  svg.cd rect.node{fill:#eef4ff;stroke:#2563eb;stroke-width:1.5;rx:7;}
+  svg.cd rect.node2{fill:#f6f1ff;stroke:#7c3aed;stroke-width:1.5;rx:7;}
+  svg.cd rect.nodeg{fill:#eefaf1;stroke:#15803d;stroke-width:1.5;rx:7;}
+  svg.cd rect.nodey{fill:#fdf3e3;stroke:#b45309;stroke-width:1.5;rx:7;}
+  svg.cd text.nt{fill:#1b1f27;font-size:13.5px;font-weight:600;}
+  svg.cd text.lb{fill:#334155;font-size:12.5px;}
+  svg.cd text.hb{fill:#2563eb;font-size:12.5px;font-weight:600;}
+  svg.cd text.hg{fill:#15803d;font-size:12.5px;font-weight:600;}
+  svg.cd text.hp{fill:#7c3aed;font-size:12.5px;font-weight:600;}
+  svg.cd line.ar,svg.cd path.ar{stroke:#475569;stroke-width:1.6;fill:none;marker-end:url(#cdArr);}
+  svg.cd line.arb,svg.cd path.arb{stroke:#2563eb;stroke-width:1.8;fill:none;marker-end:url(#cdArrB);}
+  svg.cd line.arg,svg.cd path.arg{stroke:#15803d;stroke-width:1.8;fill:none;marker-end:url(#cdArrG);}
+  svg.cd line.arp,svg.cd path.arp{stroke:#7c3aed;stroke-width:1.8;fill:none;marker-end:url(#cdArrP);}
+  svg.cd line.ard,svg.cd path.ard{stroke:#475569;stroke-width:1.5;fill:none;stroke-dasharray:5 4;marker-end:url(#cdArr);}
+  svg.cd line.noa{stroke:#475569;stroke-width:1.5;fill:none;stroke-dasharray:5 4;}
+
+  /* ---- 四类例子深度组件（本章新增，落实用户"每概念四类例"要求）---- */
+  .cases{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:6px 20px 14px;margin:18px 0;}
+  .cases>.ct{font-size:13.5px;font-weight:800;color:var(--ink);padding:11px 0 4px;border-bottom:1px dashed var(--line);margin-bottom:8px;}
+  .case{padding:9px 0 9px 14px;border-left:3px solid var(--line);margin:8px 0;font-size:13.5px;color:var(--ink2);}
+  .case b{display:inline-block;font-size:12px;padding:1px 9px;border-radius:99px;margin-right:8px;vertical-align:1px;}
+  .case.typ{border-left-color:var(--ok);}       .case.typ b{background:var(--okbg);color:var(--ok);}
+  .case.deep{border-left-color:var(--c1);}      .case.deep b{background:var(--c1bg);color:var(--c1);}
+  .case.edge{border-left-color:#dc2626;}        .case.edge b{background:#fef2f2;color:#dc2626;}
+  .case.use{border-left-color:var(--phil);}     .case.use b{background:var(--philbg);color:var(--phil);}
+  .case p{margin:6px 0;}
+  /* 数学动机框：解释"这个构造解决什么问题" */
+  .motiv{background:#fffbeb;border:1px solid #fde68a;border-left:4px solid #d97706;padding:13px 18px;border-radius:0 10px 10px 0;margin:16px 0;font-size:13.5px;color:#78350f;}
+  .motiv .lbl{font-weight:800;color:#b45309;display:block;margin-bottom:5px;}
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute;width:0;height:0;overflow:hidden" aria-hidden="true">
+<defs>
+  <marker id="cdArr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+    <path d="M 0 0 L 10 5 L 0 10 z" fill="#475569"/>
+  </marker>
+  <marker id="cdArrB" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+    <path d="M 0 0 L 10 5 L 0 10 z" fill="#2563eb"/>
+  </marker>
+  <marker id="cdArrG" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+    <path d="M 0 0 L 10 5 L 0 10 z" fill="#15803d"/>
+  </marker>
+  <marker id="cdArrP" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+    <path d="M 0 0 L 10 5 L 0 10 z" fill="#7c3aed"/>
+  </marker>
+</defs>
+</svg><div class="wrap">
+<header class="top">
+  <div class="kicker">范畴论 · 逻辑 · 拓扑斯 —— 三书递进自学教材</div>
+  <h1>第 21 章　几何逻辑与分类拓扑斯（Ch. X）</h1>
+  <p class="lede">这是全书的终点，也是前二十章的汇流处。前面我们看到：拓扑斯有内部语言（第 18 章），有空间和点（第 19、20 章），有逻辑与模型的对应（第 19.3）。本章把这一切收束为一个完整的定理：<strong>每个几何理论都有一个分类拓扑斯，使该理论在任意拓扑斯中的模型恰好是从这个分类拓扑斯出发的几何态射</strong>。证明路线严格按 Mac Lane &amp; Moerdijk 第十章展开：从一阶理论的语言与模型说起（§21.1–21.2），挑出能被几何态射逆像保持的"几何"片段（§21.3），用公式构造可定义对象范畴（§21.4），给它装上语法 site（§21.5），最后证明该 site 的层拓扑斯就是分类拓扑斯、其中的泛模型具有普遍性质（§21.6–21.7）。Johnstone《Elephant》补证明论细节，Caramello 补"同一理论多重呈现"的终章回响，Bell 补完备性的模型论视角。</p>
+
+  <div class="xref">
+    <strong>章首去重说明.</strong>本章反复用到但不重述：内部语言与公式的解释（<strong>18.1</strong>）；Kripke–Joyal 语义（<strong>18.2</strong>）；几何态射与逆像左正合（<strong>19.1</strong>）；点与 Diaconescu 定理（<strong>19.2</strong>）；分类拓扑斯的定义与对象分类子（<strong>19.3</strong>）；site、覆盖筛与层化（<strong>15</strong>）；Deligne 定理（<strong>20.6</strong>）。这些只复述关键结论，不重证。
+  </div>
+
+  <div class="phil">
+    <span class="lbl">导读（为什么这是终点）</span>
+    <p>整本书从范畴论出发，经过层、拓扑斯、内部逻辑、力迫、空间，最后回到逻辑——但已是完全不同的高度。开头的逻辑是"外部规定的符号规则"；这里的逻辑是<strong>分类拓扑斯的内部语言</strong>，而分类拓扑斯本身由理论的语法造出。于是形成一个闭环：<em>理论 \(\to\) 语法 site \(\to\) 分类拓扑斯 \(\to\) 内部语言 \(\to\) 理论</em>。闭合成得如此严密，以至于"证明一个理论有模型"与"找到其分类拓扑斯的一个点"成为同一句话。这是范畴逻辑最漂亮的收束，我们用它为全书画上句号。</p>
+  </div>
+
+  <nav class="jump">
+    <a href="#s21-1">21.1 一阶理论</a>
+    <a href="#s21-2">21.2 拓扑斯中的模型</a>
+    <a href="#s21-3">21.3 几何理论</a>
+    <a href="#s21-4">21.4 可定义对象范畴</a>
+    <a href="#s21-5">21.5 语法 Site</a>
+    <a href="#s21-6">21.6 分类拓扑斯</a>
+    <a href="#s21-7">21.7 泛模型</a>
+  </nav>
+</header>
+<section class="sec" id="s21-1">
+  <div class="sec-h"><span class="sec-no">21.1</span><h2>一阶理论：语法的准备</h2><span class="src">M Ch.X §1</span></div>
+
+  <div class="box learn">
+    <h4>① 本节学习目标</h4>
+    <ol>
+      <li>给出多类一阶语言的形式定义（类、函数符号、关系符号、常量）与项、公式的形成规则；</li>
+      <li>区分句子、公式、语境中的公式，理解"在语境 \(\vec x\) 中的公式"如何对应子对象；</li>
+      <li>引入相继式 \(\varphi\vdash\psi\) 与理论的句法定义；</li>
+      <li>识别正则、相干、几何三个语法层次，理解它们为何与不同的范畴结构对应；</li>
+      <li>在群、环、局部环、对象的理论上把语法写具体。</li>
+    </ol>
+  </div>
+
+  <div class="xref"><strong>沿用前文（不再复述）.</strong>内部语言的语法与解释（<strong>18.1</strong>）；Heyting 代数与量词作为伴随（<strong>7.3、16.4</strong>）；相干拓扑斯与 Deligne 定理（<strong>20.6</strong>）。</div>
+
+  <div class="box prep">
+    <h4>极简回顾（五分钟）</h4>
+    <p><strong>1. 理论是公理的集合.</strong>一个数学理论（群、环、偏序集……）由语言与一组公理组成。在范畴语义里，公理要写成"在任意拓扑斯中有意义"的形式——这需要把公理表示成相继式。</p>
+    <p><strong>2. 关键观察.</strong>不是所有一阶公式在拓扑斯中都"表现良好"。含全称量词与蕴涵的公式，其真值在几何态射的逆像下不一定保持；而由 \(\wedge,\vee,\exists,=\) 构成的公式则保持。这决定了哪一段语法能成为"几何逻辑"。</p>
+    <p><strong>3. 本节要跨的一步.</strong>先把一阶语法完整写出，再标记出几何片段——后者才是分类拓扑斯理论真正处理的对象。</p>
+  </div>
+
+  <h3 class="sub">21.1.1 一阶语言</h3>
+
+  <div class="defn">
+    <span class="lbl">定义 21.1.1（多类一阶语言）</span>
+    <p>一个<strong>多类一阶语言</strong> \(L\) 由以下数据组成：</p>
+    <ul>
+      <li>一个集合 \(S\)（<strong>类</strong>，sorts）；</li>
+      <li>对每个类 \(A\in S\)，一族<strong>函数符号</strong> \(f:A_1\times\cdots\times A_n\to A\)（\(n=0\) 时为常量符号）；</li>
+      <li>一族<strong>关系符号</strong> \(R\subseteq A_1\times\cdots\times A_n\)（ \(n=0\) 时为命题常量）。</li>
+    </ul>
+    <p>此外有一族可数无限的变量 \(x_A^1,x_A^2,\ldots\)（每个类 \(A\) 一族）。<strong>项</strong>由变量、常量与函数符号复合形成；<strong>原子公式</strong>为 \(t_1=t_2\)（等式）与 \(R(t_1,\ldots,t_n)\)（关系）。<strong>公式</strong>由原子公式经 \(\top,\bot,\wedge,\vee,\Rightarrow,\neg,\exists x,\forall x\) 形成。</p>
+  </div>
+
+  <div class="rmk">这里特意用<strong>多类</strong>语言而非单类：拓扑斯里的不同对象天然是不同类，群对象需要一个类，环对象需要两个类（加法群与乘法幺半群共享底层对象时用同一类更方便），而"局部环"这样的结构可能需要多个类。多类语言与拓扑斯的对象一一对应，比单类编码更自然。</div>
+
+  <h3 class="sub">21.1.2 相继式与理论</h3>
+
+  <div class="defn">
+    <span class="lbl">定义 21.1.2（相继式与理论）</span>
+    <p>一个<strong>相继式</strong>（sequent）是形如</p>
+    <p class="math">\[\varphi_1,\ldots,\varphi_n\;\vdash\;\psi\]</p>
+    <p>的表达式，其中 \(\varphi_i,\psi\) 是在同一语境 \(\vec x=(x_{A_1},\ldots,x_{A_k})\) 中的公式；读作"在 \(\vec x\) 下，若所有 \(\varphi_i\) 成立则 \(\psi\) 成立"。一个<strong>一阶理论</strong> \(T\) 是语言 \(L\) 加上一组相继式（公理），并在相继式演算下封闭。</p>
+  </div>
+
+  <div class="prop">
+    <span class="lbl">命题 21.1.3（语法层次）</span>
+    <p>按下表逐级限制公式形式，得到四个层次：</p>
+    <ul>
+      <li><strong>正则</strong>（regular）：公式只用 \(\top,=,\wedge,\exists\)；相继式左边单个公式、右边单个公式。</li>
+      <li><strong>相干</strong>（coherent）：公式只用 \(\top,\bot,=,\wedge,\vee_{\text{有限}},\exists\)；相继式左边有限多个公式、右边有限个公式的析取。</li>
+      <li><strong>几何</strong>（geometric）：公式只用 \(\top,\bot,=,\wedge,\vee_{\text{任意}},\exists\)；相继式为几何公式间的蕴涵。</li>
+      <li><strong>一阶</strong>：允许 \(\forall,\Rightarrow,\neg\) 及任意嵌套。</li>
+    </ul>
+    <div class="proof"><span class="pl">说明.</span>这些层次按语法复杂度严格嵌套：正则 ⊂ 相干 ⊂ 几何 ⊂ 一阶。分类别对应拓扑斯中不同的保持性质：正则逻辑被保有限极限的函子保持，相干逻辑被相干态射保持，几何逻辑被<em>所有</em>几何态射的逆像保持（<strong>21.3</strong>）。∎</div>
+  </div>
+
+  <div class="motiv">
+    <span class="lbl">为什么"相继式"而非"公式"？</span>
+    在拓扑斯里，一个公式 \(\varphi(\vec x)\) 解释为一个子对象 \(\llbracket\varphi\rrbracket\hookrightarrow A_1\times\cdots\times A_k\)。"\(\varphi\vdash\psi\)"则解释为包含关系 \(\llbracket\varphi\rrbracket\le\llbracket\psi\rrbracket\)。用相继式作公理，恰好把逻辑公理变成范畴里可验证的箭头关系。这是语法与语义能严格对应的形式基础。
+  </div>
+
+  <h3 class="sub">21.1.3 手把手：群理论的语法</h3>
+
+  <div class="box walk">
+    <h4>③ 手把手：把群写成相继式</h4>
+    <ol>
+      <li><strong>语言.</strong>一个类 \(G\)；函数符号 \(m:G\times G\to G\)（乘法）、\(e:1\to G\)（单位）、\(i:G\to G\)（逆）。无关系符号。</li>
+      <li><strong>公理.</strong>结合律：\(x,y,z\mid\top\vdash m(m(x,y),z)=m(x,m(y,z))\)；单位律：\(x\mid\top\vdash m(e,x)=x\) 与 \(m(x,e)=x\)；逆律：\(x\mid\top\vdash m(i(x),x)=e\) 与 \(m(x,i(x))=e\)。</li>
+      <li><strong>层次.</strong>所有公理都是等式且左边只有 \(\top\)——这是正则理论（从而相干、几何）。正因如此，群对象的概念在任何有有限积的范畴中都有意义，且在几何态射逆像下保持。</li>
+      <li><strong>对比局部环.</strong>"局部环"需要"每个元素或它可逆"：\(\forall x.\ (\exists y.\ xy=1)\vee(\exists y.\ (1-x)y=1)\)。这条含 \(\forall\) 和 \(\vee\)，需几何化为相继式 \((\top\vdash_x \bigvee\text{局部条件})\)，并配合 Zariski 拓扑（<strong>19.3</strong>）——这说明语法层次与 site 拓扑直接相关。</li>
+    </ol>
+  </div>
+
+  <div class="cases">
+    <div class="ct">四种理论的语法画像</div>
+    <div class="case typ"><b>典型例</b><p><strong>对象的理论 \(\mathbb O\).</strong>一个类 \(A\)，无函数、无关系、无公理。最简单的一阶（即几何）理论，分类拓扑斯为 \(\mathbf{Set}^{\mathbf{FinSet}^{\mathrm{op}}}\)（<strong>19.3</strong>）。</p></div>
+    <div class="case deep"><b>本质例</b><p><strong>群的理论.</strong>正则理论，其分类拓扑斯 \(\mathbf{Set}[\text{Group}]\) 是群对象的"泛场所"，点是通常的群。相干性保证 Deligne 定理适用（群的理论有足够多模型）。</p></div>
+    <div class="case edge"><b>边界与误解</b><p><strong>含 \(\forall\) 的理论.</strong>如"偏序集"的传递性 \(\forall x,y,z.\ (x\le y\wedge y\le z)\Rightarrow x\le z\) 含 \(\forall\) 与 \(\Rightarrow\)。它可等价改写为相继式 \(x\le y,\,y\le z\vdash x\le z\)（把全称移到语境、把蕴涵移到相继式左边）——这是把理论"几何化"的标准手法。</p></div>
+    <div class="case use"><b>结构应用</b><p><strong>理论即呈现.</strong>从 Caramello 视角看，一个理论就是拓扑斯的一种呈现语言；同一理论的不同公理化（不同相继式集）只要导出相同语法 site，就给出同一个分类拓扑斯。语法因此不是唯一的，但分类拓扑斯是。</p></div>
+  </div>
+
+  <div class="box exer">
+    <h4>④ 习题（21.1）</h4>
+    <ol>
+      <li id="ex21-1-1">给出多类一阶语言的形式定义，并说明为什么多类比单类更适合拓扑斯语义。</li>
+      <li id="ex21-1-2">把"等价关系"理论写成相继式。</li>
+      <li id="ex21-1-3">说明正则、相干、几何、一阶四个层次的包含关系。</li>
+      <li id="ex21-1-4">把"偏序集"的传递性公理几何化。</li>
+      <li id="ex21-1-5">解释相继式 \(\varphi\vdash\psi\) 在拓扑斯中的语义。</li>
+      <li id="ex21-1-6">说明"群的理论"为何是正则理论。</li>
+    </ol>
+  </div>
+
+  <div class="box ans">
+    <h4>⑤ 参考答案（21.1）</h4>
+    <div class="item"><b>21.1.1</b>多类语言含类集 \(S\)、每类的函数符号与关系符号、变量族；拓扑斯中不同对象天然对应不同类，避免单类编码所需的额外谓词，故更自然 ✓。</div>
+    <div class="item"><b>21.1.2</b>一个类 \(A\)、一个二元关系符号 \(R\)。公理：自反 \(x\mid\top\vdash R(x,x)\)；对称 \(x,y\mid R(x,y)\vdash R(y,x)\)；传递 \(x,y,z\mid R(x,y),R(y,z)\vdash R(x,z)\) ✓。</div>
+    <div class="item"><b>21.1.3</b>正则 ⊂ 相干 ⊂ 几何 ⊂ 一阶，按允许的连接词逐步放宽：正则只允许 \(\wedge,\exists,=\) 与单左边；相干加有限 \(\vee\) 与多前提；几何加任意 \(\vee\)；一阶再加 \(\forall,\Rightarrow,\neg\) ✓。</div>
+    <div class="item"><b>21.1.4</b>\(\forall x,y,z.\ (x\le y\wedge y\le z)\Rightarrow x\le z\) 改写为相继式 \(x\le y,\,y\le z\vdash_x x\le z\)，全称移入语境，蕴涵移到相继式左侧 ✓。</div>
+    <div class="item"><b>21.1.5</b>\(\varphi\vdash\psi\) 解释为子对象包含 \(\llbracket\varphi\rrbracket\le\llbracket\psi\rrbracket\)（在同一语境对象的子对象格中），即箭头 \(\llbracket\varphi\rrbracket\hookrightarrow\llbracket\psi\rrbracket\) ✓。</div>
+    <div class="item"><b>21.1.6</b>群公理全是等式（原子公式），相继式左边只有 \(\top\)，只用 \(=\) 与有限积，故正则 ✓。</div>
+  </div>
+</section>
+<section class="sec" id="s21-2">
+  <div class="sec-h"><span class="sec-no">21.2</span><h2>拓扑斯中的模型</h2><span class="src">M Ch.X §2</span></div>
+
+  <div class="box learn">
+    <h4>① 本节学习目标</h4>
+    <ol>
+      <li>定义理论 \(T\) 在拓扑斯 \(\mathcal E\) 中的模型：类解释为对象、函数符号解释为箭头、关系符号解释为子对象；</li>
+      <li>说明公理（相继式）如何解释为子对象包含，并给出模型同态的定义；</li>
+      <li>证明几何态射的逆像把 \(T\)-模型送到 \(T\)-模型（对几何理论）；</li>
+      <li>在 \(\mathbf{Set}\)、\(\mathbf{Sh}(X)\)、\(\mathbf{Set}^{\mathbf C^{\mathrm{op}}}\) 中构造群对象与环对象的模型；</li>
+      <li>理解"模型 = 解释函子"，为 §21.4 的语法范畴与 §21.6 的分类定理做铺垫。</li>
+    </ol>
+  </div>
+
+  <div class="xref"><strong>沿用前文（不再复述）.</strong>内部语言的解释与可靠性（<strong>18.1</strong>）；几何态射的逆像左正合（<strong>19.1</strong>）；拓扑斯中的群对象、环对象（<strong>16.2</strong> 背景）。</div>
+
+  <div class="box prep">
+    <h4>极简回顾（五分钟）</h4>
+    <p><strong>1. 集合中的模型.</strong>群的理论在 \(\mathbf{Set}\) 中的模型就是通常的群：一个集合 \(G\) 配备满足公理的运算。</p>
+    <p><strong>2. 拓扑斯中的模型.</strong>把"集合"换成"对象"、把"函数"换成"箭头"、把"子集"换成"子对象"，公理用内部语言解释——就得到拓扑斯中的模型。例如 \(\mathbf{Sh}(X)\) 中的"群"是一个层，其每个截面是群，且限制映射是群同态。</p>
+    <p><strong>3. 本节要跨的一步.</strong>把这套解释严格定义为语法到语义的函子，并证明它在几何态射下自然——这正是分类拓扑斯泛性质的雏形。</p>
+  </div>
+
+  <h3 class="sub">21.2.1 模型的定义</h3>
+
+  <div class="defn">
+    <span class="lbl">定义 21.2.1（拓扑斯中的模型）</span>
+    <p>设 \(T\) 是语言 \(L\) 上的理论，\(\mathcal E\) 是拓扑斯。\(T\) 在 \(\mathcal E\) 中的一个<strong>模型</strong> \(M\) 由以下数据给出：</p>
+    <ul>
+      <li>对每个类 \(A\)，一个对象 \(M(A)\in\mathcal E\)；</li>
+      <li>对每个函数符号 \(f:A_1\times\cdots\times A_n\to A\)，一个箭头
+        \(M(f):M(A_1)\times\cdots\times M(A_n)\to M(A)\)；</li>
+      <li>对每个关系符号 \(R\subseteq A_1\times\cdots\times A_n\)，一个子对象
+        \(M(R)\hookrightarrow M(A_1)\times\cdots\times M(A_n)\)。</li>
+    </ul>
+    <p>这些数据须使每条公理相继式 \(\varphi\vdash\psi\) 成立，即在语境对象的子对象格中 \(\llbracket\varphi\rrbracket_M\le\llbracket\psi\rrbracket_M\)，其中公式的解释按 <strong>18.1</strong> 的内部语言规则递归给出。</p>
+  </div>
+
+  <div class="defn">
+    <span class="lbl">定义 21.2.2（模型同态）</span>
+    <p>模型 \(M,N\) 之间的<strong>同态</strong> \(h:M\to N\) 是一族箭头 \(h_A:M(A)\to N(A)\)，使每个函数符号与关系符号的解释与 \(h\) 交换；对关系符号 \(R\)，要求 \(\big(M(R)\big)\) 经 \(h\)  factored through \(N(R)\)（即子对象包含成立）。</p>
+  </div>
+
+  <div class="prop">
+    <span class="lbl">命题 21.2.3（几何态射保持模型）</span>
+    <p>设 \(f:\mathcal F\to\mathcal E\) 是几何态射，\(T\) 是几何理论，\(M\) 是 \(T\) 在 \(\mathcal E\) 中的模型。则 \(f^\ast M\)（逐分量作用 \(f^\ast\)）是 \(T\) 在 \(\mathcal F\) 中的模型。</p>
+    <div class="proof"><span class="pl">证.</span>\(f^\ast\) 保有限极限，故保乘积；保子对象（作为 mono 的拉回）与公式的解释（\(\llbracket\varphi\rrbracket_{f^\ast M}=f^\ast\llbracket\varphi\rrbracket_M\)，对几何公式逐构造验证：\(\wedge\) 由保拉回、\(\vee\) 与 \(\exists\) 由保余极限与像、\(=\) 由保对角）。公理是几何相继式，其解释为包含关系，被 \(f^\ast\) 保持，故 \(f^\ast M\models T\) ✓。</div>
+  </div>
+
+  <div class="motiv">
+    <span class="lbl">为什么"几何"是关键？</span>
+    证明中用到 \(f^\ast\) 保 \(\vee\) 与 \(\exists\)（来自左伴随保余极限与像分解），以及保有限极限。若公理含 \(\Rightarrow\) 或 \(\forall\)，其解释涉及 Heyting 伪补或右伴随，而一般 \(f^\ast\) 不保这些（<strong>20.4</strong>）。所以在命题 21.2.3 中"几何"假设不可省——这再次解释了为什么分类拓扑斯理论只处理几何理论。
+  </div>
+
+  <h3 class="sub">21.2.2 手把手：\(\mathbf{Sh}(X)\) 中的群对象</h3>
+
+  <div class="box walk">
+    <h4>③ 手把手：把群层写成模型</h4>
+    <ol>
+      <li><strong>语言.</strong>群理论 \(T_{\text{Grp}}\)：一个类 \(G\)，函数 \(m,e,i\)，公理如 <strong>21.1.3</strong>。</li>
+      <li><strong>模型.</strong>在 \(\mathcal E=\mathbf{Sh}(X)\) 中取对象 \(M(G)=\) 一个层 \(\mathcal G\)；\(M(m):\mathcal G\times\mathcal G\to\mathcal G\) 是层射（逐开集给出群的乘法，且与限制交换）；\(M(e):1\to\mathcal G\)、\(M(i):\mathcal G\to\mathcal G\) 同理。</li>
+      <li><strong>公理验证.</strong>结合律等相继式解释为层射相等。因层射相等可逐开集检验，而每片 \(\mathcal G(U)\) 是通常的群，故公理成立 ✓。</li>
+      <li><strong>例子.</strong>连续函数层 \(C(-,\mathbb R)\) 是 \(\mathbf{Sh}(\mathbb R)\) 中的加法群对象；可逆连续函数层是乘法群对象。</li>
+      <li><strong>换基.</strong>若 \(\varphi:Y\to X\) 连续，几何态射 \(\mathbf{Sh}(Y)\to\mathbf{Sh}(X)\) 的逆像 \(\varphi^{-1}\) 把这个群层拉回为 \(\mathbf{Sh}(Y)\) 中的群层——命题 21.2.3 的具体实例。</li>
+    </ol>
+  </div>
+
+  <div class="cases">
+    <div class="ct">模型的四种栖身之所</div>
+    <div class="case typ"><b>典型例</b><p><strong>\(\mathbf{Set}\).</strong>通常的群、环、偏序集。这是最熟悉的模型，也是分类拓扑斯的点（<strong>19.3</strong>）。</p></div>
+    <div class="case deep"><b>本质例</b><p><strong>\(\mathbf{Sh}(X)\).</strong>群对象是"随开集连续变化的群"——群层。这比逐点群更强，因为要求限制映射是同态。</p></div>
+    <div class="case edge"><b>边界与误解</b><p><strong>预层范畴.</strong>在 \(\mathbf{Set}^{\mathbf C^{\mathrm{op}}}\) 中模型是预层对象，公理逐对象成立但不必有粘合性。这使预层中的模型比层中的多——正是 site 拓扑筛掉了不合法的模型。</p></div>
+    <div class="case use"><b>结构应用</b><p><strong>换基不变性.</strong>命题 21.2.3 说模型沿几何态射逆像传递。这意味着"有模型"是拓扑斯层面的稳定性质：一个理论若有模型，换到任何有几何态射相通的拓扑斯中也仍有模型。</p></div>
+  </div>
+
+  <svg class="cd" viewBox="0 0 640 190" role="img" aria-label="理论语法到拓扑斯模型的解释图">
+    <rect class="nodey" x="40" y="55" width="150" height="50" rx="7"/>
+    <text class="nt" x="115" y="85" text-anchor="middle">理论 T（语法）</text>
+    <rect class="node" x="245" y="55" width="150" height="50" rx="7"/>
+    <text class="nt" x="320" y="85" text-anchor="middle">解释函子 M</text>
+    <rect class="nodeg" x="450" y="55" width="150" height="50" rx="7"/>
+    <text class="nt" x="525" y="85" text-anchor="middle">E 中的 T-模型</text>
+    <line class="arb" x1="190" y1="80" x2="243" y2="80"/>
+    <text class="hb" x="217" y="70" text-anchor="middle">解释</text>
+    <line class="arb" x1="395" y1="80" x2="448" y2="80"/>
+    <text class="hb" x="422" y="70" text-anchor="middle">满足公理</text>
+    <text class="lb" x="320" y="150" text-anchor="middle">类→对象，函数→箭头，关系→子对象，相继式→包含</text>
+    <text class="lb" x="320" y="175" text-anchor="middle" style="font-size:12px">几何态射逆像保持这一切（命题 21.2.3）</text>
+  </svg>
+  <p class="figcap">图 21.1　从语法到语义：模型就是把理论解释进拓扑斯</p>
+
+  <div class="box exer">
+    <h4>④ 习题（21.2）</h4>
+    <ol>
+      <li id="ex21-2-1">给出 \(T\)-模型的严格定义，并说明公理如何被解释。</li>
+      <li id="ex21-2-2">证明几何态射逆像把 \(T\)-模型送到 \(T\)-模型。</li>
+      <li id="ex21-2-3">举一个 \(\mathbf{Sh}(X)\) 中的群对象例子。</li>
+      <li id="ex21-2-4">说明为什么含 \(\Rightarrow\) 的公理可能不被逆像保持。</li>
+      <li id="ex21-2-5">定义模型同态，并说明它为何是保持结构的箭头。</li>
+      <li id="ex21-2-6">比较预层范畴中层范畴中的模型差异。</li>
+    </ol>
+  </div>
+
+  <div class="box ans">
+    <h4>⑤ 参考答案（21.2）</h4>
+    <div class="item"><b>21.2.1</b>模型给每个类一个对象、每个函数符号一个箭头、每个关系符号一个子对象，使相继式 \(\varphi\vdash\psi\) 解释为 \(\llbracket\varphi\rrbracket\le\llbracket\psi\rrbracket\) ✓。</div>
+    <div class="item"><b>21.2.2</b>\(f^\ast\) 保有限极限、余极限与像，故保几何公式的解释；公理是几何相继式，其包含关系被保持 ✓。</div>
+    <div class="item"><b>21.2.3</b>\(\mathbf{Sh}(\mathbb R)\) 中连续实函数层 \(C(-,\mathbb R)\) 在加法下是群对象：每层 \(C(U,\mathbb R)\) 是加法群，限制是同态 ✓。</div>
+    <div class="item"><b>21.2.4</b>\(\Rightarrow\) 解释为 Heyting 伪补（右伴随结构），一般几何态射的逆像只保有限极限与余极限，不保伪补（<strong>20.4</strong>），故含 \(\Rightarrow\) 的公理未必保持 ✓。</div>
+    <div class="item"><b>21.2.5</b>模型同态是逐类的箭头族，与函数符号解释交换并保持关系子对象，故保持理论的全部结构 ✓。</div>
+    <div class="item"><b>21.2.6</b>预层模型只需逐对象满足公理，层模型还需满足粘合性；site 拓扑把不粘合的预层模型排除，故层中的模型更"几何" ✓。</div>
+  </div>
+</section>
+<section class="sec" id="s21-3">
+  <div class="sec-h"><span class="sec-no">21.3</span><h2>几何理论</h2><span class="src">M Ch.X §3</span></div>
+
+  <div class="box learn">
+    <h4>① 本节学习目标</h4>
+    <ol>
+      <li>精确定义几何公式：只含 \(\top,\bot,=,\wedge,\vee_{\text{任意}},\exists\)；</li>
+      <li>定义几何相继式与几何理论，理解为何这是"拓扑斯的语言"；</li>
+      <li>证明几何公式的解释被任意几何态射的逆像保持；</li>
+      <li>区分几何、相干、正则理论，能判定给定理论属于哪一层；</li>
+      <li>用域、局部环、等价关系等例子理解几何化的具体手法。</li>
+    </ol>
+  </div>
+
+  <div class="xref"><strong>沿用前文（不再复述）.</strong>语法层次（<strong>21.1</strong>）；模型在逆像下保持（<strong>21.2.3</strong>）；相干拓扑斯与 Deligne（<strong>20.6</strong>）。</div>
+
+  <div class="box prep">
+    <h4>极简回顾（五分钟）</h4>
+    <p><strong>1. 不是所有公式都适合拓扑斯.</strong>几何态射的逆像 \(f^\ast\) 保有限极限与余极限，因此保 \(\wedge,\vee,\exists,=\)，但一般不保 \(\Rightarrow,\forall,\neg\)（那是右伴随结构）。</p>
+    <p><strong>2. 挑出被保持的那一片.</strong>把公式限制在 \(f^\ast\) 能保持的连接词上，得到"几何公式"。用几何公式写的公理，在任何拓扑斯中解释后都能沿几何态射搬运。</p>
+    <p><strong>3. 本节要跨的一步.</strong>把这片段形式化为几何理论，并证明它确实是"几何态射保持的逻辑"——这是分类拓扑斯只能分类几何理论的根本原因。</p>
+  </div>
+
+  <h3 class="sub">21.3.1 几何公式与几何理论</h3>
+
+  <div class="defn">
+    <span class="lbl">定义 21.3.1（几何公式）</span>
+    <p>在语言 \(L\) 中，<strong>几何公式</strong>由以下递归规则生成：</p>
+    <ul>
+      <li>原子式 \(t_1=t_2\)、\(R(t_1,\ldots,t_n)\)、\(\top\)、\(\bot\) 是几何公式；</li>
+      <li>若 \(\varphi,\psi\) 几何，则 \(\varphi\wedge\psi\) 几何；</li>
+      <li>若 \(\{\varphi_i\}_{i\in I}\) 是一族几何公式（\(I\) 可为任意集合），则 \(\bigvee_{i\in I}\varphi_i\) 几何；</li>
+      <li>若 \(\varphi\) 几何，则 \(\exists x.\varphi\) 几何。</li>
+    </ul>
+    <p><strong>几何相继式</strong>是形如 \(\varphi\vdash\psi\) 的表达式，其中 \(\varphi,\psi\) 都是几何公式。<strong>几何理论</strong>是语言加一组几何相继式。</p>
+  </div>
+
+  <div class="rmk">注意几何公式<strong>不含</strong> \(\forall\)、\(\Rightarrow\)、\(\neg\)（因为 \(\neg\varphi\) 即 \(\varphi\Rightarrow\bot\)）。但很多看似含这些符号的公理可以几何化：例如 \(\forall x.\ \varphi(x)\) 改写为相继式 \(\top\vdash_x\varphi\)，把全称移到语境；\(p\Rightarrow q\) 改写为 \(p\vdash q\)，把蕴涵移到相继式。这是几何化中最常用的两个技巧。</div>
+
+  <div class="prop">
+    <span class="lbl">命题 21.3.2（保持定理）</span>
+    <p>设 \(f:\mathcal F\to\mathcal E\) 是几何态射，\(\varphi(\vec x)\) 是几何公式，\(M\) 是 \(\mathcal E\) 中的解释。则</p>
+    <p class="math">\[\llbracket\varphi\rrbracket_{f^\ast M}=f^\ast\llbracket\varphi\rrbracket_M.\]</p>
+    <div class="proof"><span class="pl">证（按构造归纳）.</span>原子式：等式由 \(f^\ast\) 保对角与拉回，关系由保子对象；\(\top,\bot\) 由保终、始对象；\(\wedge\) 由保拉回；\(\bigvee\) 与 \(\exists\) 由 \(f^\ast\) 作为左伴随保余极限，并保像分解（<strong>16.3</strong>）。每一步只用到 \(f^\ast\) 左正合且保余极限，无一处需要保 \(\Rightarrow\) 或 \(\forall\) ✓。</div>
+  </div>
+
+  <div class="prop">
+    <span class="lbl">命题 21.3.3（特征的刻画）</span>
+    <p>几何公式恰是（在适当小性假设下）被所有几何态射逆像保持的公式类：若一个一阶公式在任意几何态射逆像下都保持其解释，则它在逻辑上等价于某个几何公式。</p>
+    <div class="proof"><span class="pl">说明.</span>"几何 ⟹ 保持"由命题 21.3.2；反向是表达力定理，证明需用分类拓扑斯与点（参见 Johnstone《Elephant》D1.3 与 Makkai–Reyes 的相应结果），本教材不展开。∎</div>
+  </div>
+
+  <h3 class="sub">21.3.2 手把手：把域与局部环公理几何化</h3>
+
+  <div class="box walk">
+    <h4>③ 手把手：从 \(\forall,\Rightarrow\) 到几何相继式</h4>
+    <ol>
+      <li><strong>域.</strong>通常写法：\(\forall x.\ (x=0\vee\exists y.\ xy=1)\)。利用"全称移到语境"，改写为相继式
+        \[x\mid\top\vdash_x \big(x=0\ \vee\ \exists y.\ x\cdot y=1\big).\]
+        右侧只含 \(=,\vee,\exists\)，是几何公式 ✓。</li>
+      <li><strong>局部环.</strong>条件"每个元素或其 \(1-x\) 可逆"：
+        \[x\mid\top\vdash_x\big(\exists y.\ xy=1\big)\ \vee\ \big(\exists y.\ (1-x)y=1\big).\]
+        也是几何相继式。其分类拓扑斯需 Zariski 拓扑（<strong>19.3</strong>）——几何理论不限定 site 拓扑，拓扑由呈现决定。</li>
+      <li><strong>等价关系.</strong>传递性 \(\forall x,y,z.\ (xRy\wedge yRz)\Rightarrow xRz\) 改写为
+        \[x,y,z\mid xRy,\,yRz\vdash xRz,\]
+        把 \(\Rightarrow\) 的前件移到相继式左侧 ✓。</li>
+      <li><strong>关键.</strong>三步只用了两个手法：\(\forall\) 移入语境、\(\Rightarrow\) 移入相继式。任何一阶理论若能用这两个手法且不含 \(\neg\)，就可几何化。</li>
+    </ol>
+  </div>
+
+  <div class="cases">
+    <div class="ct">几何理论的四种情形</div>
+    <div class="case typ"><b>典型例</b><p><strong>群、环、域.</strong>公理都是等式或几何相继式，故是几何理论（甚至相干/正则）。它们的模型在任意几何态射逆像下保持。</p></div>
+    <div class="case deep"><b>本质例</b><p><strong>局部环.</strong>几何理论，分类拓扑斯为 Zariski site 上的层。这是"几何理论 + 非平凡 site 拓扑"的标准范例。</p></div>
+    <div class="case edge"><b>边界与误解</b><p><strong>不可几何化的理论.</strong>含本质否定的理论（如"域的特征不为 2"写成 \(\neg(1+1=0)\)）可用 \(1+1=0\vdash\bot\) 几何化；但"恰好有一个元素"这类需要 \(\forall x\forall y.\ x=y\) 的陈述可改写为相继式。真正困难的是需要任意 \(\forall\) 嵌套且无法移入语境的陈述——几何逻辑的表达力虽强但非全部一阶逻辑。</p></div>
+    <div class="case use"><b>结构应用</b><p><strong>为何分类拓扑斯只分类几何理论.</strong>命题 21.3.2 说明只有几何公式的解释能沿逆像搬运；若理论含非几何公理，其模型不能在任意拓扑斯间传递，分类拓扑斯的泛性质（对任意 \(\mathcal E\)）就无法成立。</p></div>
+  </div>
+
+  <svg class="cd" viewBox="0 0 640 190" role="img" aria-label="几何公式的连接词及其保持性">
+    <rect class="nodeg" x="40" y="50" width="240" height="100" rx="7"/>
+    <text class="nt" x="160" y="80" text-anchor="middle">几何公式（被 f* 保持）</text>
+    <text class="lb" x="160" y="105" text-anchor="middle">⊤ ⊥ = ∧ ∨(任意) ∃</text>
+    <text class="lb" x="160" y="130" text-anchor="middle">保有限极限 + 保余极限 ⟹ 解释可搬运</text>
+    <rect class="nodey" x="360" y="50" width="240" height="100" rx="7"/>
+    <text class="nt" x="480" y="80" text-anchor="middle">非几何（一般不保持）</text>
+    <text class="lb" x="480" y="105" text-anchor="middle">⇒ ∀ ¬（右伴随结构）</text>
+    <text class="lb" x="480" y="130" text-anchor="middle">需开态射才保 ⇒；∀ 一般更难</text>
+  </svg>
+  <p class="figcap">图 21.2　几何逻辑的边界：恰是几何态射逆像能保持的片段</p>
+
+  <div class="box exer">
+    <h4>④ 习题（21.3）</h4>
+    <ol>
+      <li id="ex21-3-1">给出几何公式的递归定义。</li>
+      <li id="ex21-3-2">证明几何公式的解释被任意几何态射逆像保持。</li>
+      <li id="ex21-3-3">把域的公理改写成几何相继式。</li>
+      <li id="ex21-3-4">把等价关系的传递性几何化。</li>
+      <li id="ex21-3-5">解释为何 \(\Rightarrow\) 与 \(\forall\) 一般不被逆像保持。</li>
+      <li id="ex21-3-6">说明几何理论为何是分类拓扑斯的自然对象。</li>
+    </ol>
+  </div>
+
+  <div class="box ans">
+    <h4>⑤ 参考答案（21.3）</h4>
+    <div class="item"><b>21.3.1</b>几何公式由 \(\top,\bot,=,\) 关系原子式经有限 \(\wedge\)、任意 \(\vee\)、\(\exists\) 递归生成，不含 \(\Rightarrow,\forall,\neg\) ✓。</div>
+    <div class="item"><b>21.3.2</b>按构造归纳：原子式与 \(\wedge\) 用 \(f^\ast\) 保有限极限，\(\vee,\exists\) 用其保余极限与像分解；全程不需保 \(\Rightarrow\) 或 \(\forall\) ✓。</div>
+    <div class="item"><b>21.3.3</b>\(x\mid\top\vdash_x\big(x=0\vee\exists y.\ xy=1\big)\) ✓。</div>
+    <div class="item"><b>21.3.4</b>\(x,y,z\mid xRy,\,yRz\vdash xRz\) ✓。</div>
+    <div class="item"><b>21.3.5</b>\(\Rightarrow\) 与 \(\forall\) 涉及 Heyting 伪补与右伴随，而几何态射逆像只保有限极限与余极限；开几何态射才额外保 \(\Rightarrow\)（<strong>20.4</strong>），一般逆像不保 ✓。</div>
+    <div class="item"><b>21.3.6</b>分类拓扑斯的泛性质要求模型沿任意几何态射逆像传递，只有几何公式有此保持性，故分类理论必为几何理论 ✓。</div>
+  </div>
+</section>
+<section class="sec" id="s21-4">
+  <div class="sec-h"><span class="sec-no">21.4</span><h2>可定义对象范畴</h2><span class="src">M Ch.X §4</span></div>
+
+  <div class="box learn">
+    <h4>① 本节学习目标</h4>
+    <ol>
+      <li>把"语境中的公式"作为对象、把"可证功能关系"作为箭头，构造可定义对象范畴 \(\mathbf C_T\)；</li>
+      <li>验证恒等箭头与复合（关系复合 + 存在量词）满足范畴公理；</li>
+      <li>证明 \(\mathbf C_T\) 有有限极限，几何理论时还有任意余积；</li>
+      <li>证明 \(T\)-模型在 \(\mathcal E\) 中恰是保结构的函子 \(\mathbf C_T\to\mathcal E\)；</li>
+      <li>在对象的理论、群的理论中把 \(\mathbf C_T\) 具体算出。</li>
+    </ol>
+  </div>
+
+  <div class="xref"><strong>沿用前文（不再复述）.</strong>公式的解释与相继式语义（<strong>18.1、21.1</strong>）；几何公式（<strong>21.3</strong>）；米田引理（<strong>6.4</strong>）。</div>
+
+  <div class="box prep">
+    <h4>极简回顾（五分钟）</h4>
+    <p><strong>1. 理论自带一个范畴.</strong>给定理论 \(T\)，所有"在语境 \(\vec x\) 中由公式 \(\varphi\) 定义的对象"本身就构成一个范畴：对象是 \([\vec x,\varphi]\)，箭头是可证明为函数的公式。</p>
+    <p><strong>2. 这是语法的范畴化.</strong>可定义对象范畴把"语法片段"变成真正的范畴，使范畴论工具能作用于逻辑。它是 §21.5 语法 site 的底层范畴。</p>
+    <p><strong>3. 本节要跨的一步.</strong>严格构造 \(\mathbf C_T\)，并证明模型 = 从 \(\mathbf C_T\) 到 \(\mathcal E\) 的适当函子——这一步把"模型论"化为"函子论"。</p>
+  </div>
+
+  <h3 class="sub">21.4.1 可定义对象范畴的构造</h3>
+
+  <div class="defn">
+    <span class="lbl">定义 21.4.1（可定义对象范畴 \(\mathbf C_T\)）</span>
+    <p>设 \(T\) 是几何理论。<strong>可定义对象范畴</strong> \(\mathbf C_T\) 定义如下：</p>
+    <ul>
+      <li><strong>对象</strong>：形如 \([\vec x,\varphi]\)，其中 \(\varphi\) 是语境 \(\vec x=(x_1,\ldots,x_n)\) 中的几何公式，模去 \(T\)-可证等价（\(\varphi\sim\psi\) 当 \(T\vdash\varphi\leftrightarrow\psi\)）。</li>
+      <li><strong>箭头</strong>：\([\vec x,\varphi]\to[\vec y,\psi]\) 是公式 \(\theta(\vec x,\vec y)\)，模去等价，满足 \(T\) 可证：
+        <ol>
+          <li>\(\theta(\vec x,\vec y)\wedge\varphi(\vec x)\vdash\psi(\vec y)\)（良型）；</li>
+          <li>\(\varphi(\vec x)\vdash\exists\vec y.\ \theta(\vec x,\vec y)\)（全）；</li>
+          <li>\(\theta(\vec x,\vec y)\wedge\theta(\vec x,\vec y')\vdash\vec y=\vec y'\)（功能）。</li>
+        </ol>
+      </li>
+    </ul>
+    <p><strong>恒等</strong>为等式公式 \(\vec x=\vec x'\)；<strong>复合</strong>由关系复合给出：\(\eta\circ\theta=[\exists\vec y.\ (\theta(\vec x,\vec y)\wedge\eta(\vec y,\vec z))]\)。</p>
+  </div>
+
+  <div class="prop">
+    <span class="lbl">命题 21.4.2（范畴公理）</span>
+    <p>上述数据构成范畴：恒等满足单位律，复合满足结合律。</p>
+    <div class="proof"><span class="pl">证.</span>恒等显然满足三条功能条件。结合律：关系复合对应公式 \(\exists y.\ (\theta(x,y)\wedge\eta(y,z))\)，再与 \(\zeta(z,w)\) 复合得 \(\exists y\exists z.\ (\theta(x,y)\wedge\eta(y,z)\wedge\zeta(z,w))\)；由量词与 \(\wedge\) 的结合律，无论先复合哪两步都得到同一个公式（模 \(T\)-等价）✓。</div>
+  </div>
+
+  <div class="prop">
+    <span class="lbl">命题 21.4.3（极限与余积）</span>
+    <p>\(\mathbf C_T\) 有有限极限；若 \(T\) 是几何理论，则 \(\mathbf C_T\) 还有任意小余积。</p>
+    <div class="proof"><span class="pl">证（骨架）.</span>终对象是 \([\ast,\top]\)（空语境上的真公式）。拉回：给定 \(\theta:A\to C\)、\(\eta:B\to C\)，其拉回由公式 \(\exists c.\ (\theta(a,c)\wedge\eta(b,c))\) 在语境 \((\vec a,\vec b)\) 中给出，功能性与泛性质由存在量词的伴随刻画验证。余积：由公式的析取 \(\bigvee_i\varphi_i\) 给出（这里用到几何公式允许任意 \(\vee\)），这正是几何理论比相干理论多出的能力 ✓。</div>
+  </div>
+
+  <h3 class="sub">21.4.2 模型即函子</h3>
+
+  <div class="prop">
+    <span class="lbl">命题 21.4.4（模型作为函子）</span>
+    <p>\(T\) 在拓扑斯 \(\mathcal E\) 中的模型与保有限极限和余积的函子 \(\mathbf C_T\to\mathcal E\) 一一对应。</p>
+    <div class="proof"><span class="pl">证（骨架）.</span>给定模型 \(M\)，定义函子 \(F_M([\vec x,\varphi])=\llbracket\varphi\rrbracket_M\hookrightarrow M(A_1)\times\cdots\times M(A_n)\)；箭头 \(\theta\) 解释为函数 \(\llbracket\theta\rrbracket\)，由全性与功能性保证它是定义的箭头。反之给定函子 \(F\)，从生成对象读出各类与符号的解释。两侧互逆由公式解释的递归性验证 ✓。</div>
+  </div>
+
+  <div class="motiv">
+    <span class="lbl">为什么这一步是决定性的？</span>
+    模型原本是"给每个符号指定解释"的数据，杂乱且依赖语法细节。变成函子 \(\mathbf C_T\to\mathcal E\) 后，模型成为范畴论对象，可以取极限、余极限、自然变换。更重要的是：Diaconescu 定理（<strong>19.2</strong>）说几何态射 \(\mathcal E\to\mathbf{Sh}(\mathbf C_T,J)\) 对应平坦连续函子 \(\mathbf C_T\to\mathcal E\)——而模型正是这样的函子！于是"模型 = 几何态射"的桥梁已经架好，只差在 \(\mathbf C_T\) 装上正确的拓扑（§21.5）。
+  </div>
+
+  <h3 class="sub">21.4.3 手把手：对象的理论的 \(\mathbf C_T\)</h3>
+
+  <div class="box walk">
+    <h4>③ 手把手：算出最小理论的可定义对象范畴</h4>
+    <ol>
+      <li><strong>理论.</strong>\(\mathbb O\)：一个类 \(A\)，无函数、无关系、无公理。</li>
+      <li><strong>对象.</strong>语境中的公式只有变量等式与 \(\top\)（无其他原子式），故对象只有 \([x,\top]\)（即 \(A\) 本身）与 \([x,x=x]\sim[x,\top]\)。本质上只有一个生成对象。</li>
+      <li><strong>箭头.</strong>从 \(A\) 到 \(A\) 的可定义函数是等式 \(\theta(x,y)\equiv(x=y)\)；从 \(A\) 到 \(1\) 是 \(\top\)。</li>
+      <li><strong>范畴.</strong>\(\mathbf C_{\mathbb O}\) 等价于有限集范畴 \(\mathbf{FinSet}^{\mathrm{op}}\)：一个 \(n\) 元语境对应 \(n\) 元集合，投影由变量抹除给出。这正是对象分类子为 \(\mathbf{Set}^{\mathbf{FinSet}^{\mathrm{op}}}\) 的深层原因（<strong>19.3</strong>）。</li>
+      <li><strong>读出.</strong>可定义对象范畴已经"预演"了分类拓扑斯——装上平凡拓扑后层化，就得到 \(\mathbf{Set}[\mathbb O]\)。</li>
+    </ol>
+  </div>
+
+  <div class="cases">
+    <div class="ct">可定义对象范畴的四种形态</div>
+    <div class="case typ"><b>典型例</b><p><strong>对象的理论.</strong>\(\mathbf C_{\mathbb O}\simeq\mathbf{FinSet}^{\mathrm{op}}\)，最小但已足够生成对象分类子。</p></div>
+    <div class="case deep"><b>本质例</b><p><strong>群的理论.</strong>\(\mathbf C_T\) 的对象是"由群公式定义的集合"，如 \(G^n\)、由 \(x^n=1\) 定义的子对象；箭头是可定义同态。这个范畴是群对象的语法骨架。</p></div>
+    <div class="case edge"><b>边界与误解</b><p><strong>可定义 ≠ 所有对象.</strong>\(\mathbf C_T\) 只包含可由公式定义的对象与函数；分类拓扑斯 \(\mathbf{Set}[T]\) 中还有不可定义的对象（如任意余积、子对象）。\(\mathbf C_T\) 是生成骨架，不是全部。</p></div>
+    <div class="case use"><b>结构应用</b><p><strong>语法—语义对应.</strong>模型 = 函子 \(\mathbf C_T\to\mathcal E\)（命题 21.4.4），把逻辑的模型论还原为函子论。Caramello 的多呈现视角在此特别清晰：不同理论若有等价的可定义对象范畴（经 Morita 等价），就有同一分类拓扑斯。</p></div>
+  </div>
+
+  <svg class="cd" viewBox="0 0 720 200" role="img" aria-label="可定义对象范畴到分类拓扑斯的流程图">
+    <rect class="nodey" x="25" y="55" width="150" height="50" rx="7"/>
+    <text class="nt" x="100" y="85" text-anchor="middle">理论 T（语法）</text>
+    <rect class="node" x="265" y="55" width="160" height="50" rx="7"/>
+    <text class="nt" x="345" y="85" text-anchor="middle">C_T（可定义对象）</text>
+    <rect class="nodeg" x="550" y="55" width="150" height="50" rx="7"/>
+    <text class="nt" x="625" y="85" text-anchor="middle">Set[T]（层化）</text>
+    <line class="arb" x1="175" y1="80" x2="263" y2="80"/>
+    <text class="hb" x="219" y="70" text-anchor="middle">构造</text>
+    <line class="arb" x1="425" y1="80" x2="548" y2="80"/>
+    <text class="hb" x="486" y="70" text-anchor="middle">+ 语法拓扑</text>
+    <text class="lb" x="360" y="150" text-anchor="middle">对象 = 公式（模等价）；箭头 = 可证功能关系</text>
+    <text class="lb" x="360" y="175" text-anchor="middle" style="font-size:12px">模型 = 函子 C_T → E = 几何态射 E → Set[T]（下两节）</text>
+  </svg>
+  <p class="figcap">图 21.3　语法范畴化：从理论到可定义对象范畴再到分类拓扑斯</p>
+
+  <div class="box exer">
+    <h4>④ 习题（21.4）</h4>
+    <ol>
+      <li id="ex21-4-1">定义可定义对象范畴的对象与箭头。</li>
+      <li id="ex21-4-2">证明关系复合给出满足结合律的箭头复合。</li>
+      <li id="ex21-4-3">证明 \(\mathbf C_T\) 有终对象与拉回。</li>
+      <li id="ex21-4-4">证明几何理论时 \(\mathbf C_T\) 有余积。</li>
+      <li id="ex21-4-5">证明 \(T\)-模型对应保结构的函子 \(\mathbf C_T\to\mathcal E\)。</li>
+      <li id="ex21-4-6">算出对象的理论的 \(\mathbf C_T\)。</li>
+    </ol>
+  </div>
+
+  <div class="box ans">
+    <h4>⑤ 参考答案（21.4）</h4>
+    <div class="item"><b>21.4.1</b>对象是语境中几何公式模可证等价；箭头是满足良型、全、功能三条的可证关系公式，模等价 ✓。</div>
+    <div class="item"><b>21.4.2</b>复合 \(\exists y.\ (\theta(x,y)\wedge\eta(y,z))\)；两次复合都化为 \(\exists y\exists z.\ (\theta\wedge\eta\wedge\zeta)\)，由量词结合律相等 ✓。</div>
+    <div class="item"><b>21.4.3</b>终对象 \([\ast,\top]\)；拉回由 \(\exists c.\ (\theta(a,c)\wedge\eta(b,c))\) 给出，泛性质由存在量词伴随验证 ✓。</div>
+    <div class="item"><b>21.4.4</b>余积由公式析取 \(\bigvee_i\varphi_i\) 给出，几何公式允许任意析取，故余积存在 ✓。</div>
+    <div class="item"><b>21.4.5</b>模型 \(M\mapsto F_M\)，\(F_M([\vec x,\varphi])=\llbracket\varphi\rrbracket_M\)；反向由函子读出符号解释；两侧互逆 ✓。</div>
+    <div class="item"><b>21.4.6</b>只有变量与 \(\top\)，\(\mathbf C_{\mathbb O}\simeq\mathbf{FinSet}^{\mathrm{op}}\) ✓。</div>
+  </div>
+</section>
+<section class="sec" id="s21-5">
+  <div class="sec-h"><span class="sec-no">21.5</span><h2>语法 Site</h2><span class="src">M Ch.X §5</span></div>
+
+  <div class="box learn">
+    <h4>① 本节学习目标</h4>
+    <ol>
+      <li>在可定义对象范畴 \(\mathbf C_T\) 上定义语法拓扑 \(J_T\)：覆盖由可证明的析取生成；</li>
+      <li>验证 \(J_T\) 满足 Grothendieck 拓扑的三条公理（恒等、拉回稳定、传递）；</li>
+      <li>理解"析取 = 覆盖"这条核心对应的来源与意义；</li>
+      <li>在对象的理论（平凡拓扑）与局部环的理论（Zariski 拓扑）中把 \(J_T\) 算具体；</li>
+      <li>说明语法 site 是分类拓扑斯的呈现，同一理论可有不同呈现（Caramello 视角）。</li>
+    </ol>
+  </div>
+
+  <div class="xref"><strong>沿用前文（不再复述）.</strong>Grothendieck 拓扑与覆盖筛（<strong>15.1</strong>）；可定义对象范畴（<strong>21.4</strong>）；几何逻辑的析取（<strong>21.3</strong>）；Zariski site（<strong>15.2、19.3</strong>）。</div>
+
+  <div class="box prep">
+    <h4>极简回顾（五分钟）</h4>
+    <p><strong>1. 析取在拓扑斯里是局部现象.</strong>公式 \(\varphi=\bigvee_i\varphi_i\) 为真，在层语义中意味着：某个覆盖上每片满足某一支（<strong>18.2</strong>）。这正是 Grothendieck 拓扑中"覆盖族"的语义。</p>
+    <p><strong>2. 于是语法直接给出拓扑.</strong>在 \(\mathbf C_T\) 中，若 \(T\) 可证 \(\varphi\leftrightarrow\bigvee_i\varphi_i\)，就把 \(\{\varphi_i\hookrightarrow\varphi\}\) 宣布为覆盖。这样逻辑的析取变成了范畴的覆盖。</p>
+    <p><strong>3. 本节要跨的一步.</strong>严格定义这个覆盖并验证它生成 Grothendieck 拓扑。得到的 site \((\mathbf C_T,J_T)\) 称为语法 site，其层化就是分类拓扑斯。</p>
+  </div>
+
+  <h3 class="sub">21.5.1 语法拓扑的定义</h3>
+
+  <div class="defn">
+    <span class="lbl">定义 21.5.1（语法拓扑 \(J_T\)）</span>
+    <p>在 \(\mathbf C_T\) 上定义覆盖族如下：对对象 \([\vec x,\varphi]\)，一族箭头 \(\{[\vec x,\varphi_i]\to[\vec x,\varphi]\}_{i\in I}\)（由可证蕴涵 \(\varphi_i\vdash\varphi\) 给出）是<strong>覆盖</strong>的，若</p>
+    <p class="math">\[T\ \vdash\ \varphi\ \leftrightarrow\ \bigvee_{i\in I}\varphi_i.\]</p>
+    <p>这些覆盖族生成的 Grothendieck 拓扑称为<strong>语法拓扑</strong> \(J_T\)，\((\mathbf C_T,J_T)\) 称为 \(T\) 的<strong>语法 site</strong>。</p>
+  </div>
+
+  <div class="prop">
+    <span class="lbl">命题 21.5.2（拓扑公理）</span>
+    <p>上述覆盖族满足 Grothendieck 拓扑的三条公理：</p>
+    <ol>
+      <li>恒等：\(\{\mathrm{id}_\varphi\}\) 覆盖 \(\varphi\)（因 \(\varphi\leftrightarrow\varphi\)）；</li>
+      <li>拉回稳定：若 \(\{\varphi_i\to\varphi\}\) 覆盖 \(\varphi\)，且 \(\theta:\psi\to\varphi\) 是任意箭头，则拉回族 \(\{\psi\wedge\varphi_i\to\psi\}\) 覆盖 \(\psi\)；</li>
+      <li>传递：覆盖的覆盖仍是覆盖。</li>
+    </ol>
+    <div class="proof"><span class="pl">证.</span>(1) 显然。(2) 拉回 \(\varphi_i\) 沿 \(\theta\) 得到 \(\psi\wedge\varphi_i\)（关系复合）；由 frame 的无限分配律（<strong>20.1</strong>），\(\psi\wedge\bigvee_i\varphi_i=\bigvee_i(\psi\wedge\varphi_i)\)，而 \(\varphi=\bigvee_i\varphi_i\) 且 \(\psi\le\varphi\)，故 \(\psi=\bigvee_i(\psi\wedge\varphi_i)\)，覆盖成立。(3) 若 \(\varphi=\bigvee_i\varphi_i\) 且每个 \(\varphi_i=\bigvee_j\varphi_{ij}\)，则 \(\varphi=\bigvee_{i,j}\varphi_{ij}\)，仍是析取覆盖 ✓。</div>
+  </div>
+
+  <div class="motiv">
+    <span class="lbl">"析取 = 覆盖"为什么是核心对应？</span>
+    在 Kripke–Joyal 语义中，\(\bigvee_i\varphi_i\) 在阶段 \(U\) 为真，当且仅当存在覆盖 \(U=\bigcup U_i\) 使每片 \(U_i\) 满足某一支（<strong>18.2</strong>）。语法 site 把这条语义规则直接变成公理：把"可证的析取"提升为"覆盖"。因此语法 site 不是外加的结构，而是逻辑语义在范畴中的投影。
+  </div>
+
+  <h3 class="sub">21.5.2 手把手：两个语法 site</h3>
+
+  <div class="box walk">
+    <h4>③ 手把手：从公理读出 site 拓扑</h4>
+    <ol>
+      <li><strong>对象的理论.</strong>\(\mathbf C_{\mathbb O}\simeq\mathbf{FinSet}^{\mathrm{op}}\)，语言中无关系符号，公式只有等式与 \(\top\)，没有非平凡的可证析取。故 \(J_{\mathbb O}\) 是平凡拓扑（只有恒等覆盖），\(\mathbf{Sh}(\mathbf C_{\mathbb O},J_{\mathbb O})=\mathbf{Set}^{\mathbf{FinSet}^{\mathrm{op}}}\)，与 <strong>19.3</strong> 一致 ✓。</li>
+      <li><strong>局部环的理论.</strong>公理含"每个元素或其 \(1-x\) 可逆"的析取。在 \(\mathbf C_T\) 中，这给出覆盖族 \(\{D(x)\to 1,\ D(1-x)\to 1\}\)（其中 \(D(x)=[x,\exists y.\ xy=1]\)）。这些覆盖生成的拓扑恰是 Zariski 拓扑（有限族且对应元素生成单位理想）——与 <strong>15.2</strong> 的 Zariski site 一致 ✓。</li>
+      <li><strong>对比.</strong>群的理论无析取公理，\(J_T\) 平凡，分类拓扑斯是预层拓扑斯；局部环有析取公理，\(J_T\) 非平凡，分类拓扑斯是层拓扑斯。<strong>公理的逻辑复杂度直接决定 site 的拓扑复杂度</strong>。</li>
+      <li><strong>Caramello 注记.</strong>同一理论的不同等价公理化可能给出不同但 Morita 等价的 site，层化后得到同一分类拓扑斯。语法 site 是呈现，分类拓扑斯是本质。</li>
+    </ol>
+  </div>
+
+  <div class="cases">
+    <div class="ct">语法 site 的四种形态</div>
+    <div class="case typ"><b>典型例</b><p><strong>群理论.</strong>无析取公理，平凡拓扑，\(\mathbf{Set}[\text{Group}]\) 是预层拓扑斯。</p></div>
+    <div class="case deep"><b>本质例</b><p><strong>局部环理论.</strong>析取公理生成 Zariski 拓扑，分类拓扑斯是 \(\mathbf{Sh}(\mathbf{Ring}_{\mathrm{fp}}^{\mathrm{op}},J_{\mathrm{Zar}})\)。</p></div>
+    <div class="case edge"><b>边界与误解</b><p><strong>任意并的覆盖.</strong>几何理论允许任意析取，故 \(J_T\) 可能含无限覆盖族；相干理论只允许有限析取，\(J_T\) 由有限覆盖生成，分类拓扑斯相干（Deligne 适用，<strong>20.6</strong>）。</p></div>
+    <div class="case use"><b>结构应用</b><p><strong>语法即几何.</strong>语法 site 把逻辑公理翻译成几何覆盖，使"理论"成为"空间"的呈现。这是 Caramello 桥的技术核心：不同理论呈现同一拓扑斯时，覆盖关系的对应就是桥梁。</p></div>
+  </div>
+
+  <svg class="cd" viewBox="0 0 640 190" role="img" aria-label="析取公理生成语法拓扑的示意图">
+    <rect class="nodey" x="40" y="55" width="190" height="50" rx="7"/>
+    <text class="nt" x="135" y="85" text-anchor="middle">语法：φ = ⋁ᵢ φᵢ</text>
+    <rect class="node" x="410" y="55" width="190" height="50" rx="7"/>
+    <text class="nt" x="505" y="85" text-anchor="middle">几何：{φᵢ → φ} 覆盖</text>
+    <line class="arb" x1="230" y1="80" x2="408" y2="80"/>
+    <text class="hb" x="320" y="70" text-anchor="middle">KJ 语义</text>
+    <text class="lb" x="320" y="145" text-anchor="middle">局部成立 = 覆盖上逐片成立　⟺　可证析取 = 语法覆盖</text>
+    <text class="lb" x="320" y="170" text-anchor="middle" style="font-size:12px">相干理论 → 有限覆盖 → 相干分类拓扑斯 → Deligne 适用</text>
+  </svg>
+  <p class="figcap">图 21.4　语法 site 的核心对应：逻辑析取生成几何覆盖</p>
+
+  <div class="box exer">
+    <h4>④ 习题（21.5）</h4>
+    <ol>
+      <li id="ex21-5-1">定义语法拓扑 \(J_T\)。</li>
+      <li id="ex21-5-2">证明 \(J_T\) 满足拉回稳定性。</li>
+      <li id="ex21-5-3">证明 \(J_T\) 满足传递性。</li>
+      <li id="ex21-5-4">说明对象的理论的语法拓扑为何平凡。</li>
+      <li id="ex21-5-5">说明局部环理论的语法拓扑为何是 Zariski 拓扑。</li>
+      <li id="ex21-5-6">解释相干理论与有限覆盖的关系，以及为何 Deligne 定理适用。</li>
+    </ol>
+  </div>
+
+  <div class="box ans">
+    <h4>⑤ 参考答案（21.5）</h4>
+    <div class="item"><b>21.5.1</b>覆盖族由可证析取 \(\varphi\leftrightarrow\bigvee_i\varphi_i\) 生成，取生成的 Grothendieck 拓扑 ✓。</div>
+    <div class="item"><b>21.5.2</b>拉回得 \(\psi\wedge\varphi_i\)，由 frame 无限分配 \(\psi=\psi\wedge\bigvee_i\varphi_i=\bigvee_i(\psi\wedge\varphi_i)\)，故拉回族覆盖 ✓。</div>
+    <div class="item"><b>21.5.3</b>覆盖的覆盖：\(\varphi=\bigvee_i\varphi_i\)、\(\varphi_i=\bigvee_j\varphi_{ij}\)，则 \(\varphi=\bigvee_{i,j}\varphi_{ij}\)，是覆盖 ✓。</div>
+    <div class="item"><b>21.5.4</b>对象的理论无非平凡析取公理，只有恒等覆盖，故拓扑平凡 ✓。</div>
+    <div class="item"><b>21.5.5</b>"每个元素或其 \(1-x\) 可逆"给出覆盖 \(\{D(x),D(1-x)\}\)，且 \(x+(1-x)=1\) 对应有限族生成单位理想，正是 Zariski 覆盖 ✓。</div>
+    <div class="item"><b>21.5.6</b>相干理论只允许有限析取，故 \(J_T\) 由有限覆盖生成，分类拓扑斯相干，Deligne 定理（<strong>20.6</strong>）给出足够多点 ✓。</div>
+  </div>
+</section>
+<section class="sec" id="s21-6">
+  <div class="sec-h"><span class="sec-no">21.6</span><h2>几何理论的分类拓扑斯</h2><span class="src">M Ch.X §6</span></div>
+
+  <div class="box learn">
+    <h4>① 本节学习目标</h4>
+    <ol>
+      <li>陈述并证明主定理：\(\mathbf{Sh}(\mathbf C_T,J_T)\) 是几何理论 \(T\) 的分类拓扑斯；</li>
+      <li>把 Diaconescu 定理与"模型 = 函子"拼接成完整证明；</li>
+      <li>理解连续性条件为何恰对应公理的成立；</li>
+      <li>说明模型的同态对应几何态射之间的自然变换；</li>
+      <li>在对象的理论、群的理论中检验分类拓扑斯的具体面目。</li>
+    </ol>
+  </div>
+
+  <div class="xref"><strong>沿用前文（不再复述）.</strong>Diaconescu 定理（<strong>19.2</strong>）；分类拓扑斯的定义（<strong>19.3</strong>）；可定义对象范畴（<strong>21.4</strong>）；语法 site（<strong>21.5</strong>）。</div>
+
+  <div class="box prep">
+    <h4>极简回顾（五分钟）</h4>
+    <p><strong>1. 三块拼图已备好.</strong>(a) Diaconescu：\(\mathbf{Geom}(\mathcal E,\mathbf{Sh}(\mathbf C,J))\simeq\{\text{平坦连续函子 }\mathbf C\to\mathcal E\}\)（<strong>19.2</strong>）。(b) 模型 = 函子 \(\mathbf C_T\to\mathcal E\)（<strong>21.4.4</strong>）。(c) 语法拓扑把可证析取变成覆盖（<strong>21.5</strong>）。</p>
+    <p><strong>2. 缺的一环.</strong>要证分类定理，只需说明：模型给出的函子恰好是平坦且 \(J_T\)-连续的；反之亦然。</p>
+    <p><strong>3. 本节要跨的一步.</strong>补上这一环，得到全书最重要的定理：\(\mathbf{Set}[T]=\mathbf{Sh}(\mathbf C_T,J_T)\)。</p>
+  </div>
+
+  <h3 class="sub">21.6.1 主定理</h3>
+
+  <div class="prop">
+    <span class="lbl">定理 21.6.1（分类拓扑斯的存在）</span>
+    <p>设 \(T\) 是几何理论，\((\mathbf C_T,J_T)\) 是其语法 site。则 \(\mathbf{Sh}(\mathbf C_T,J_T)\) 是 \(T\) 的分类拓扑斯：对任意拓扑斯 \(\mathcal E\)，有自然等价</p>
+    <p class="math">\[\mathbf{Geom}\big(\mathcal E,\mathbf{Sh}(\mathbf C_T,J_T)\big)\;\simeq\;T\text{-}\mathbf{Mod}(\mathcal E).\]</p>
+    <div class="proof"><span class="pl">证.</span>由 Diaconescu 定理（<strong>19.2</strong>），左侧 \(\simeq\{\text{平坦 }J_T\text{-连续函子 }\mathbf C_T\to\mathcal E\}\)。我们证明这与右侧 \(T\)-模型范畴等价。<strong>模型 ⟹ 函子.</strong>给定模型 \(M\)，得函子 \(F_M([\vec x,\varphi])=\llbracket\varphi\rrbracket_M\)（<strong>21.4.4</strong>）。因模型满足几何公式的解释规则，\(F_M\) 保有限极限与余极限，特别平坦；对覆盖族 \(\{\varphi_i\to\varphi\}\)（即可证 \(\varphi=\bigvee_i\varphi_i\)），由 \(\llbracket\varphi\rrbracket_M=\bigvee_i\llbracket\varphi_i\rrbracket_M\)（几何公式的析取在模型中按并解释），故 \(F_M\) 连续。<strong>函子 ⟹ 模型.</strong>反过来，平坦连续函子 \(F\) 给出各符号的解释；公理相继式 \(\varphi\vdash\psi\) 成立因 \(F\) 保序；可证析取 \(\varphi=\bigvee_i\varphi_i\) 给出覆盖，连续性保证 \(F(\varphi)=\bigvee_iF(\varphi_i)\)，故析取公理成立。两侧互逆由公式解释的递归性验证 ✓。</div>
+  </div>
+
+  <div class="prop">
+    <span class="lbl">命题 21.6.2（同态对应）</span>
+    <p>模型同态 \(M\to N\) 对应几何态射之间的自然变换（2-态射），因此上述等价是范畴（甚至 2-范畴）等价。</p>
+    <div class="proof"><span class="pl">证（骨架）.</span>模型同态 \(h:M\to N\) 逐类给出箭头，恰构成函子间的自然变换 \(F_M\Rightarrow F_N\)（保持函数与关系符号对应自然性条件）；由 Diaconescu 的 2-范畴版本，这对应几何态射间的 2-态射 ✓。</div>
+  </div>
+
+  <div class="rmk"><strong>唯一性.</strong>由泛性质，分类拓扑斯在等价意义下唯一（命题 19.3.2）。定理 21.6.1 给出的是一个<strong>具体构造</strong>——语法 site 的层拓扑斯。因此每个几何理论都有一个"标准模型场所"，其所有其他模型都是它的像（几何态射）。</div>
+
+  <h3 class="sub">21.6.2 手把手：检验对象理论的分类拓扑斯</h3>
+
+  <div class="box walk">
+    <h4>③ 手把手：从主定理重新得到 \(\mathbf{Set}[\mathbb O]\)</h4>
+    <ol>
+      <li><strong>语法.</strong>\(\mathbb O\) 的 \(\mathbf C_T\simeq\mathbf{FinSet}^{\mathrm{op}}\)，\(J_T\) 平凡（<strong>21.4.3、21.5.2</strong>）。</li>
+      <li><strong>主定理.</strong>\(\mathbf{Set}[\mathbb O]=\mathbf{Sh}(\mathbf{FinSet}^{\mathrm{op}},J_{\text{triv}})=\mathbf{Set}^{\mathbf{FinSet}^{\mathrm{op}}}\)，与 <strong>19.3</strong> 一致 ✓。</li>
+      <li><strong>验证泛性质.</strong>\(\mathbf{Geom}(\mathcal E,\mathbf{Set}^{\mathbf{FinSet}^{\mathrm{op}}})\simeq\{\text{左正合 }\mathbf{FinSet}\to\mathcal E\}\simeq\mathcal E\)（因 \(\mathbf{FinSet}^{\mathrm{op}}\) 自由生成），而 \(\mathbb O\)-模型就是 \(\mathcal E\) 的对象 ✓。</li>
+      <li><strong>对比群理论.</strong>群理论的 \(\mathbf C_T\) 更复杂但 \(J_T\) 仍平凡，分类拓扑斯是某个预层拓扑斯；其点是通常的群（<strong>19.3</strong>），Deligne 保证有足够多点。</li>
+      <li><strong>结论.</strong>主定理不是抽象存在性，而是可计算的构造：写出理论 → 造 \(\mathbf C_T\) → 定 \(J_T\) → 取层，就得到分类拓扑斯。</li>
+    </ol>
+  </div>
+
+  <div class="cases">
+    <div class="ct">分类定理的四种检验</div>
+    <div class="case typ"><b>典型例</b><p><strong>对象的理论.</strong>主定理给出 \(\mathbf{Set}^{\mathbf{FinSet}^{\mathrm{op}}}\)，与独立构造一致。</p></div>
+    <div class="case deep"><b>本质例</b><p><strong>群的理论.</strong>\(\mathbf{Set}[\text{Group}]\) 是群对象的泛场所；任意拓扑斯 \(\mathcal E\) 中的群对象 = 几何态射 \(\mathcal E\to\mathbf{Set}[\text{Group}]\)。</p></div>
+    <div class="case edge"><b>边界与误解</b><p><strong>只有几何理论.</strong>若理论含本质非几何公理，\(\mathbf C_T\) 与 \(J_T\) 的构造失效（析取/存在不被覆盖保持），分类拓扑斯可能不存在。几何性是分类定理的适用前提。</p></div>
+    <div class="case use"><b>结构应用</b><p><strong>统一描述.</strong>不同拓扑斯中的模型被统一为到同一分类拓扑斯的几何态射。Caramello 的桥在此达到顶点：同一理论的多重呈现 = 同一分类拓扑斯的多重 site，几何态射 = 理论间的解释。</p></div>
+  </div>
+
+  <svg class="cd" viewBox="0 0 780 210" role="img" aria-label="分类定理的证明结构图">
+    <rect class="nodey" x="25" y="60" width="160" height="50" rx="7"/>
+    <text class="nt" x="105" y="90" text-anchor="middle">T-模型 in E</text>
+    <rect class="node" x="285" y="60" width="180" height="50" rx="7"/>
+    <text class="nt" x="375" y="90" text-anchor="middle">平坦连续函子 C_T→E</text>
+    <rect class="nodeg" x="595" y="60" width="165" height="50" rx="7"/>
+    <text class="nt" x="677" y="90" text-anchor="middle">Geom(E, Sh(C_T,J_T))</text>
+    <line class="arb" x1="185" y1="80" x2="283" y2="80"/>
+    <text class="hb" x="234" y="70" text-anchor="middle">21.4.4</text>
+    <line class="arb" x1="465" y1="80" x2="593" y2="80"/>
+    <text class="hb" x="529" y="70" text-anchor="middle">Diaconescu</text>
+    <text class="lb" x="390" y="155" text-anchor="middle">三段等价合成 ⟹ Sh(C_T,J_T) 是 T 的分类拓扑斯</text>
+    <text class="lb" x="390" y="180" text-anchor="middle" style="font-size:12px">公理成立 ⟺ 函子连续；模型同态 ⟺ 2-态射</text>
+  </svg>
+  <p class="figcap">图 21.5　主定理的证明：模型 ⟷ 函子 ⟷ 几何态射</p>
+
+  <div class="box exer">
+    <h4>④ 习题（21.6）</h4>
+    <ol>
+      <li id="ex21-6-1">陈述分类拓扑斯的存在定理并给出证明骨架。</li>
+      <li id="ex21-6-2">证明模型给出的函子是平坦且 \(J_T\)-连续的。</li>
+      <li id="ex21-6-3">证明平坦连续函子给出 \(T\)-模型。</li>
+      <li id="ex21-6-4">说明模型同态与 2-态射的对应。</li>
+      <li id="ex21-6-5">用主定理重算 \(\mathbf{Set}[\mathbb O]\)。</li>
+      <li id="ex21-6-6">解释为何分类定理要求理论是几何的。</li>
+    </ol>
+  </div>
+
+  <div class="box ans">
+    <h4>⑤ 参考答案（21.6）</h4>
+    <div class="item"><b>21.6.1</b>定理：\(\mathbf{Sh}(\mathbf C_T,J_T)\) 分类 \(T\)。证明：Diaconescu + 模型=函子 + 连续性对应公理 ✓。</div>
+    <div class="item"><b>21.6.2</b>\(F_M\) 保有限极限与余极限，故平坦；可证析取 \(\varphi=\bigvee\varphi_i\) 在模型中按并解释，故连续 ✓。</div>
+    <div class="item"><b>21.6.3</b>由函子读出符号解释；相继式成立因保序；析取公理成立因连续性 ✓。</div>
+    <div class="item"><b>21.6.4</b>模型同态逐类给箭头，构成函子间自然变换，对应几何态射间 2-态射 ✓。</div>
+    <div class="item"><b>21.6.5</b>\(\mathbf C_{\mathbb O}=\mathbf{FinSet}^{\mathrm{op}}\)、\(J_T\) 平凡，故 \(\mathbf{Set}[\mathbb O]=\mathbf{Set}^{\mathbf{FinSet}^{\mathrm{op}}}\) ✓。</div>
+    <div class="item"><b>21.6.6</b>非几何公式的解释不被所有几何态射逆像保持，分类泛性质（对任意 \(\mathcal E\)）失效 ✓。</div>
+  </div>
+</section>
+<section class="sec" id="s21-7">
+  <div class="sec-h"><span class="sec-no">21.7</span><h2>泛模型及其普遍性质</h2><span class="src">M Ch.X §7</span></div>
+
+  <div class="box learn">
+    <h4>① 本节学习目标</h4>
+    <ol>
+      <li>用米田嵌入在 \(\mathbf{Set}[T]\) 中构造 \(T\) 的泛模型 \(M_U\)；</li>
+      <li>证明泛模型的普遍性质：任意模型 \(M\) 在 \(\mathcal E\) 中都是某几何态射的逆像 \(f^\ast M_U\)，且 \(f\)  essentially 唯一；</li>
+      <li>理解"泛模型 = 所有模型的原点"这一说法的严格含义；</li>
+      <li>在对象的理论与群的理论中把泛模型具体写出；</li>
+      <li>回顾全书：从范畴结构、拓扑斯结构到几何逻辑与理论分类的完整路线在此闭合。</li>
+    </ol>
+  </div>
+
+  <div class="xref"><strong>沿用前文（不再复述）.</strong>米田引理与米田嵌入（<strong>6.4</strong>）；分类拓扑斯的定义（<strong>19.3</strong>）；语法 site 与主定理（<strong>21.5、21.6</strong>）。</div>
+
+  <div class="box prep">
+    <h4>极简回顾（五分钟）</h4>
+    <p><strong>1. 分类拓扑斯里有一个"原点模型".</strong>定理 21.6.1 说所有 \(T\)-模型都是到 \(\mathbf{Set}[T]\) 的几何态射的逆像。那么 \(\mathbf{Set}[T]\) 自己里面是否有一个模型，使得所有其他模型都是它的像？答案是肯定的——由米田嵌入给出。</p>
+    <p><strong>2. 米田嵌入的角色.</strong>语法范畴 \(\mathbf C_T\) 中的每个对象（公式）在层拓扑斯中给出一个表示层 \(y(c)\)；这些表示层拼起来就是泛模型。</p>
+    <p><strong>3. 本节要跨的一步.</strong>严格构造泛模型并证明其普遍性质——这一步完成后，全书的逻辑闭环（理论 → 语法 → 拓扑斯 → 内部语言 → 理论）彻底合拢。</p>
+  </div>
+
+  <h3 class="sub">21.7.1 泛模型的构造</h3>
+
+  <div class="defn">
+    <span class="lbl">定义 21.7.1（泛模型）</span>
+    <p>设 \(\mathbf{Set}[T]=\mathbf{Sh}(\mathbf C_T,J_T)\)。其中的<strong>泛模型</strong> \(M_U\) 定义如下：</p>
+    <ul>
+      <li>每个类 \(A\)（即 \(\mathbf C_T\) 中由 \([\vec x,\top_A]\) 给出的对象）解释为表示层 \(M_U(A)=y(A)\)；</li>
+      <li>函数符号 \(f:A\to B\) 解释为米田箭头 \(y(f):y(A)\to y(B)\)；</li>
+      <li>关系符号 \(R\hookrightarrow A\) 解释为表示子层 \(y(R)\hookrightarrow y(A)\)。</li>
+    </ul>
+    <p>由于 \(\mathbf C_T\) 中的箭头正是可定义函数、\(J_T\) 正是由公理析取生成的拓扑，\(M_U\) 满足 \(T\) 的所有公理。</p>
+  </div>
+
+  <div class="prop">
+    <span class="lbl">命题 21.7.2（普遍性质）</span>
+    <p>对任意拓扑斯 \(\mathcal E\) 与 \(T\)-模型 \(M\)，存在几何态射 \(f:\mathcal E\to\mathbf{Set}[T]\)，使 \(f^\ast M_U\cong M\)；且这样的 \(f\) 在 2-范畴意义下唯一。</p>
+    <div class="proof"><span class="pl">证.</span>由主定理 21.6.1，模型 \(M\) 对应平坦连续函子 \(F_M:\mathbf C_T\to\mathcal E\)，再由 Diaconescu 定理对应几何态射 \(f:\mathcal E\to\mathbf{Sh}(\mathbf C_T,J_T)\)。对表示层，逆像满足 \(f^\ast(y(c))=F_M(c)\)（Diaconescu 的基本性质：平坦函子给出的逆像在表示对象上就是函子值）。取 \(c=A\) 为类对应对象，得 \(f^\ast M_U(A)=F_M(A)=M(A)\)，函数与关系符号同理，故 \(f^\ast M_U\cong M\) ✓。唯一性：若 \(g^\ast M_U\cong M\) 也成立，则 \(g^\ast\) 与 \(f^\ast\) 在所有表示层上同构；表示层生成 \(\mathbf{Sh}(\mathbf C_T,J_T)\)，故 \(f^\ast\cong g^\ast\)，即 \(f\cong g\) ✓。</div>
+  </div>
+
+  <div class="motiv">
+    <span class="lbl">"泛"在何处？</span>
+    群的理论中有一个"泛群"——由生成元与关系自由生成的群，任何群都是它的商。这里 \(M_U\) 是类似的：它是 \(T\) 的<strong>最一般的模型</strong>，不含任何额外决定（不选基、不给具体元素），所有其他模型都是它在某个拓扑斯中的"投影"（逆像）。说 \(M_U\) 是原点，是因为从它出发沿几何态射可以到达所有模型。
+  </div>
+
+  <h3 class="sub">21.7.2 手把手：写出泛模型</h3>
+
+  <div class="box walk">
+    <h4>③ 手把手：两个泛模型的形状</h4>
+    <ol>
+      <li><strong>对象的理论.</strong>\(\mathbf{Set}[\mathbb O]=\mathbf{Set}^{\mathbf{FinSet}^{\mathrm{op}}}\)，泛模型的底层对象为 \(y(1)\)（在 \(n\) 处取值 \(\mathbf{FinSet}(1,n)\cong n\)）。任意拓扑斯 \(\mathcal E\) 中的对象 \(A\) 是 \(f^\ast(y(1))\)——这正重述了对象分类子的泛性质（<strong>19.3</strong>）✓。</li>
+      <li><strong>群的理论.</strong>\(M_U(G)=y(G)\)，其中 \(G=[\ast,\top]\) 是语言中唯一的类；\(y(G)\) 是 \(\mathbf{Set}[\text{Group}]\) 中的"泛群"。任意拓扑斯中的群对象是某几何态射 \(f\) 的 \(f^\ast(y(G))\)。</li>
+      <li><strong>局部环的理论.</strong>泛模型是 Zariski 拓扑斯上的"泛局部环"，它的茎给出通常的局部环——代数几何中"泛局部环"的范畴论版本。</li>
+      <li><strong>读闭环.</strong>\(M_U\) 在 \(\mathbf{Set}[T]\) 的内部语言中满足 \(T\)，而 \(\mathbf{Set}[T]\) 又由 \(T\) 的语法造出。理论、语法、拓扑斯、内部语言四者首尾相接——这就是本章开篇说的闭环。</li>
+    </ol>
+  </div>
+
+  <div class="cases">
+    <div class="ct">泛模型的四种读法</div>
+    <div class="case typ"><b>典型例</b><p><strong>对象.</strong>\(y(1)\in\mathbf{Set}^{\mathbf{FinSet}^{\mathrm{op}}}\) 是泛对象，任意对象是它的逆像。</p></div>
+    <div class="case deep"><b>本质例</b><p><strong>群.</strong>\(y(G)\) 是泛群，任意群对象是它的逆像——群的理论被"空间化"为一个拓扑斯中的泛群。</p></div>
+    <div class="case edge"><b>边界与误解</b><p><strong>泛 ≠ 初始.</strong>\(M_U\) 不是 \(T\)-模型范畴的初始对象（模型同态不唯一），而是"从它出发经几何态射可到达所有模型"的原点。这里的"泛"是 2-范畴意义的。</p></div>
+    <div class="case use"><b>结构应用</b><p><strong>Caramello 的终章回响.</strong>同一理论的不同呈现给出同一 \(\mathbf{Set}[T]\)，泛模型 \(M_U\) 与呈现无关；不同理论的拓扑斯之间的几何态射，把一边的泛模型送到另一边的模型——这就是"桥"上运输的货物。</p></div>
+  </div>
+
+  <svg class="cd" viewBox="0 0 660 220" role="img" aria-label="泛模型的普遍性质图">
+    <rect class="nodey" x="250" y="30" width="170" height="50" rx="7"/>
+    <text class="nt" x="335" y="60" text-anchor="middle">Set[T] 中的 M_U</text>
+    <rect class="node" x="30" y="150" width="170" height="50" rx="7"/>
+    <text class="nt" x="115" y="180" text-anchor="middle">E 中的模型 M</text>
+    <rect class="node" x="460" y="150" width="170" height="50" rx="7"/>
+    <text class="nt" x="545" y="180" text-anchor="middle">E' 中的模型 M'</text>
+    <path class="arb" d="M 290 80 Q 180 120 140 150"/>
+    <text class="hb" x="180" y="115" text-anchor="middle">f* M_U = M</text>
+    <path class="arb" d="M 380 80 Q 490 120 520 150"/>
+    <text class="hb" x="490" y="115" text-anchor="middle">f'* M_U = M'</text>
+    <text class="lb" x="335" y="125" text-anchor="middle">泛模型：所有模型的共同原点</text>
+    <text class="lb" x="335" y="210" text-anchor="middle" style="font-size:12px">理论 → 语法 site → 分类拓扑斯 → 泛模型 → 所有模型</text>
+  </svg>
+  <p class="figcap">图 21.6　泛模型：从 Set[T] 出发，几何态射生成所有模型</p>
+
+  <div class="phil">
+    <span class="lbl">全书收束（选读）</span>
+    <p>回头看这二十余章的路线：我们先学范畴（第 1–7 章），用米田引理把"对象"变成"函子"（第 6 章）；再学层与 site（第 14–15 章），把"局部"变成"覆盖"；然后公理化拓扑斯（第 16 章），给它装上逻辑（第 17–18 章），用 LT 拓扑和力迫看到逻辑的相对性；最后走到几何态射与空间（第 19–20 章），发现拓扑斯既能装理论又能装空间。今天这一章把两条线拧成一股：<strong>理论是空间的呈现，空间是理论的模型场所，而泛模型是这座桥的桥头堡</strong>。从"一个拓扑斯说什么"到"一个理论住在哪里"，全书的问题完成了转换。如果只带走一句话，那就带走这张图：<em>给定理论 \(T\)，造 \(\mathbf C_T\)，装 \(J_T\)，取层得 \(\mathbf{Set}[T]\)，其中的泛模型 \(M_U\) 经几何态射投出所有模型</em>。这就是范畴逻辑的核心机器。</p>
+  </div>
+
+  <div class="box exer">
+    <h4>④ 习题（21.7）</h4>
+    <ol>
+      <li id="ex21-7-1">用米田嵌入构造泛模型 \(M_U\)。</li>
+      <li id="ex21-7-2">证明任意模型 \(M\) 都是某几何态射的逆像 \(f^\ast M_U\)。</li>
+      <li id="ex21-7-3">证明这样的 \(f\) 在 2-范畴意义下唯一。</li>
+      <li id="ex21-7-4">写出对象的理论的泛模型。</li>
+      <li id="ex21-7-5">说明"泛"与"初始"的区别。</li>
+      <li id="ex21-7-6">（全书回顾）用一段话概括从范畴到分类拓扑斯的路线。</li>
+    </ol>
+  </div>
+
+  <div class="box ans">
+    <h4>⑤ 参考答案（21.7）</h4>
+    <div class="item"><b>21.7.1</b>类 \(A\) 送到表示层 \(y(A)\)，函数符号送到米田箭头 \(y(f)\)，关系符号送到表示子层；公理成立因语法 site 由公理析取生成 ✓。</div>
+    <div class="item"><b>21.7.2</b>模型 \(M\) 对应平坦函子 \(F_M\)，再对应几何态射 \(f\)；逆像在表示层上 \(f^\ast y(A)=F_M(A)=M(A)\)，故 \(f^\ast M_U\cong M\) ✓。</div>
+    <div class="item"><b>21.7.3</b>若 \(g^\ast M_U\cong M\) 则 \(g^\ast\) 与 \(f^\ast\) 在所有表示层上同构；表示层生成拓扑斯，故 \(f\cong g\) ✓。</div>
+    <div class="item"><b>21.7.4</b>\(\mathbf{Set}[\mathbb O]\) 中 \(M_U(A)=y(1)\)，任意对象是它的逆像 ✓。</div>
+    <div class="item"><b>21.7.5</b>初始对象要求到任意对象有唯一箭头；泛模型是从它出发经<em>几何态射</em>可达所有模型，且态射唯一到同构，是 2-范畴性质 ✓。</div>
+    <div class="item"><b>21.7.6</b>范畴与米田引理 → 层与 site → 拓扑斯公理与内部逻辑 → LT 拓扑与力迫 → 几何态射与空间 → 语法 site 与分类拓扑斯 → 泛模型投出所有模型。路线闭合于"理论即空间"这一范畴逻辑的核心命题 ✓。</div>
+  </div>
+</section>
+<footer>
+  <p><a href="范畴论-逻辑-拓扑斯_教材总目录.html">← 返回总目录</a> ｜ 上一章：<a href="范畴论-逻辑-拓扑斯_教材第20章.html">第 20 章 局部性拓扑斯</a> ｜ 本书终章</p>
+  <p>本章对应 Mac Lane &amp; Moerdijk, <em>Sheaves in Geometry and Logic</em>, Chapter X（§1 First-Order Theories、§2 Models in Topoi、§3 Geometric Theories、§4 Categories of Definable Objects、§5 Syntactic Sites、§6 The Classifying Topos of a Geometric Theory、§7 Universal Models）。进阶参考 P. T. Johnstone, <em>Sketches of an Elephant</em>（范畴逻辑与语法 site 的严格基础）、O. Caramello, <em>Theories, Sites, Toposes</em>（同一理论的多重呈现与 topos-theoretic bridges）、J. L. Bell, <em>Toposes and Local Set Theories</em>（完备性与模型论的对照）。公式由 MathJax 渲染。每节核心概念配"典型例 / 本质例 / 边界与误解 / 结构应用"四类例子。</p>
+</footer>
+
+</div>
+</body>
+</html>

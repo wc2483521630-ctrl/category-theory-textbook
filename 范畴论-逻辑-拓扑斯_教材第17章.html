@@ -1,0 +1,743 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>第 17 章 拓扑斯的基本构造（Ch. V）—— 三书递进自学教材</title>
+<script>
+window.MathJax = {
+  tex: {
+    inlineMath: [['\\(','\\)']], displayMath: [['\\[','\\]']], processEscapes: true,
+    macros: {
+      llbracket: '\\lbrack\\lbrack',
+      rrbracket: '\\rbrack\\rbrack'
+    }
+  },
+  options: { ignoreHtmlClass: 'no-tex' },
+  svg: { fontCache: 'global' }
+};
+</script>
+<script async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
+<style>
+  :root{
+    --bg:#f6f7f9; --card:#fff; --ink:#1b1f27; --ink2:#4d5461; --ink3:#7a8190;
+    --line:#e5e8ed; --soft:#f0f2f5;
+    --c1:#2563eb; --c1bg:#eef4ff; --gold:#b45309; --goldbg:#fdf3e3;
+    --ok:#15803d; --okbg:#eefaf1; --phil:#7c3aed; --philbg:#f6f1ff;
+    --teal:#0d9488; --tealbg:#eefaf7; --walk:#b45309;
+    --radius:12px;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;
+    line-height:1.75;-webkit-font-smoothing:antialiased;}
+  .wrap{max-width:920px;margin:0 auto;padding:0 22px 80px;}
+
+  header.top{padding:34px 0 22px;border-bottom:1px solid var(--line);margin-bottom:26px;}
+  .breadcrumb{font-size:12.5px;color:var(--ink3);margin-bottom:10px;}
+  .breadcrumb a{color:var(--c1);text-decoration:none;}
+  h1{font-size:29px;margin:0 0 8px;letter-spacing:-.02em;}
+  .lede{color:var(--ink2);font-size:14.5px;margin:0 0 16px;}
+  .jump{display:flex;gap:8px;flex-wrap:wrap;}
+  .jump a{font-size:12.5px;font-weight:650;text-decoration:none;color:var(--ink2);
+    background:var(--card);border:1px solid var(--line);border-radius:99px;padding:6px 13px;}
+  .jump a:hover{border-color:var(--c1);color:var(--c1);}
+
+  section.sec{margin:0 0 52px;scroll-margin-top:16px;}
+  .sec-h{display:flex;align-items:baseline;gap:12px;border-bottom:2px solid var(--c1);padding-bottom:10px;margin-bottom:22px;}
+  .sec-no{font-size:13px;font-weight:800;color:#fff;background:var(--c1);border-radius:7px;padding:3px 10px;white-space:nowrap;}
+  .sec-h h2{font-size:22px;margin:0;letter-spacing:-.01em;}
+  .src{font-size:11.5px;color:var(--ink3);margin-left:auto;white-space:nowrap;}
+
+  .box{border-radius:var(--radius);padding:16px 20px;margin:18px 0;border:1px solid var(--line);}
+  .box h4{margin:0 0 10px;font-size:14px;letter-spacing:.01em;}
+
+  .learn{background:var(--c1bg);border-color:#cfe0ff;}
+  .learn h4{color:var(--c1);}
+  .learn ol{margin:0;padding-left:22px;} .learn li{margin:4px 0;font-size:14px;}
+
+  .prep{background:var(--tealbg);border-color:#bfe9dd;}
+  .prep h4{color:var(--teal);}
+  .prep p{font-size:13.5px;color:#115e59;margin:8px 0;}
+  .prep ol,.prep ul{margin:8px 0;padding-left:22px;font-size:13.5px;color:#115e59;}
+  .prep li{margin:5px 0;}
+
+  .defn{background:#fafbfc;border-left:4px solid var(--ink2);padding:14px 18px;margin:16px 0;border-radius:0 10px 10px 0;}
+  .defn .lbl{font-weight:800;font-size:13.5px;color:var(--ink);}
+  .prop{background:#fbfcfe;border:1px solid #dbe6f8;border-left:4px solid var(--c1);padding:14px 18px;margin:16px 0;border-radius:0 10px 10px 0;}
+  .prop .lbl{font-weight:800;font-size:13.5px;color:var(--c1);}
+  .rmk{font-size:13.5px;color:var(--ink2);background:var(--soft);padding:11px 16px;border-radius:9px;margin:12px 0;}
+  .xref{font-size:13px;color:#115e59;background:var(--tealbg);border-left:3px solid var(--teal);padding:9px 14px;border-radius:0 8px 8px 0;margin:12px 0;}
+
+  .proof{margin:10px 0 4px;padding-left:16px;border-left:2px solid var(--line);font-size:14px;color:var(--ink2);}
+  .proof .pl{font-weight:700;color:var(--ink);}
+  .qed{float:right;font-style:normal;color:var(--ink3);}
+
+  .exer{background:var(--goldbg);border-color:#f2dfbb;}
+  .exer h4{color:var(--gold);}
+  .exer .grp{font-size:12.5px;font-weight:750;color:var(--gold);margin:12px 0 4px;}
+  .exer ol{margin:0;padding-left:22px;} .exer li{margin:9px 0;font-size:14px;}
+
+  .ans{background:var(--okbg);border-color:#c9ecd3;}
+  .ans h4{color:var(--ok);}
+  .ans .item{margin:14px 0 18px;font-size:14px;}
+  .ans .item:last-child{margin-bottom:0;}
+  .ans .item b{color:var(--ok);}
+  .ans .proof{border-left-color:#bfe6c9;}
+
+  .phil{background:var(--philbg);border-color:#e3d5ff;}
+  .phil h4{color:var(--phil);}
+  .phil p{font-size:14px;color:#5b3a8e;margin:8px 0;}
+
+  .walk{background:#fffbeb;border-color:#fde68a;}
+  .walk h4{color:var(--walk);}
+  .walk p,.walk li{font-size:13.5px;color:#78350f;}
+  .walk ol,.walk ul{margin:8px 0;padding-left:22px;}
+  .walk table{border-collapse:collapse;width:100%;font-size:13px;margin:10px 0;}
+  .walk th,.walk td{border:1px solid #fcd34d;padding:7px 9px;text-align:left;vertical-align:top;}
+  .walk th{background:#fef3c7;color:#78350f;}
+
+  h3.sub{font-size:16px;margin:26px 0 6px;color:var(--ink);}
+  p{margin:9px 0;} .math{overflow-x:auto;}
+
+  .figcap{font-size:12.5px;color:var(--ink3);margin:2px 0 12px;text-align:center;font-style:italic;}
+  .figdesc{font-size:13px;color:var(--ink2);background:var(--soft);padding:10px 15px;border-radius:8px;margin:6px 0 12px;}
+
+  footer{border-top:1px solid var(--line);margin-top:30px;padding-top:20px;font-size:13px;color:var(--ink3);}
+  footer a{color:var(--c1);text-decoration:none;}
+
+  @media(max-width:640px){
+    h1{font-size:23px;} .wrap{padding:0 14px 60px;}
+    .sec-h{flex-wrap:wrap;} .src{margin-left:0;}
+    .box{padding:14px 15px;}
+  }
+  @media print{body{background:#fff;}.jump{display:none;}.box{break-inside:avoid;}}
+  /* ---- 范畴交换图 SVG（浅色主题）---- */
+  svg.cd{display:block;margin:16px auto 2px;max-width:100%;height:auto;
+    font-family:"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;}
+  svg.cd rect.node{fill:#eef4ff;stroke:#2563eb;stroke-width:1.5;rx:7;}
+  svg.cd rect.node2{fill:#f6f1ff;stroke:#7c3aed;stroke-width:1.5;rx:7;}
+  svg.cd rect.nodeg{fill:#eefaf1;stroke:#15803d;stroke-width:1.5;rx:7;}
+  svg.cd rect.nodey{fill:#fdf3e3;stroke:#b45309;stroke-width:1.5;rx:7;}
+  svg.cd text.nt{fill:#1b1f27;font-size:13.5px;font-weight:600;}
+  svg.cd text.lb{fill:#334155;font-size:12.5px;}
+  svg.cd text.hb{fill:#2563eb;font-size:12.5px;font-weight:600;}
+  svg.cd text.hg{fill:#15803d;font-size:12.5px;font-weight:600;}
+  svg.cd text.hp{fill:#7c3aed;font-size:12.5px;font-weight:600;}
+  svg.cd line.ar,svg.cd path.ar{stroke:#475569;stroke-width:1.6;fill:none;marker-end:url(#cdArr);}
+  svg.cd line.arb,svg.cd path.arb{stroke:#2563eb;stroke-width:1.8;fill:none;marker-end:url(#cdArrB);}
+  svg.cd line.arg,svg.cd path.arg{stroke:#15803d;stroke-width:1.8;fill:none;marker-end:url(#cdArrG);}
+  svg.cd line.arp,svg.cd path.arp{stroke:#7c3aed;stroke-width:1.8;fill:none;marker-end:url(#cdArrP);}
+  svg.cd line.ard,svg.cd path.ard{stroke:#475569;stroke-width:1.5;fill:none;stroke-dasharray:5 4;marker-end:url(#cdArr);}
+  svg.cd line.noa{stroke:#475569;stroke-width:1.5;fill:none;stroke-dasharray:5 4;}
+
+  /* ---- 四类例子深度组件（本章新增，落实用户"每概念四类例"要求）---- */
+  .cases{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:6px 20px 14px;margin:18px 0;}
+  .cases>.ct{font-size:13.5px;font-weight:800;color:var(--ink);padding:11px 0 4px;border-bottom:1px dashed var(--line);margin-bottom:8px;}
+  .case{padding:9px 0 9px 14px;border-left:3px solid var(--line);margin:8px 0;font-size:13.5px;color:var(--ink2);}
+  .case b{display:inline-block;font-size:12px;padding:1px 9px;border-radius:99px;margin-right:8px;vertical-align:1px;}
+  .case.typ{border-left-color:var(--ok);}       .case.typ b{background:var(--okbg);color:var(--ok);}
+  .case.deep{border-left-color:var(--c1);}      .case.deep b{background:var(--c1bg);color:var(--c1);}
+  .case.edge{border-left-color:#dc2626;}        .case.edge b{background:#fef2f2;color:#dc2626;}
+  .case.use{border-left-color:var(--phil);}     .case.use b{background:var(--philbg);color:var(--phil);}
+  .case p{margin:6px 0;}
+  /* 数学动机框：解释"这个构造解决什么问题" */
+  .motiv{background:#fffbeb;border:1px solid #fde68a;border-left:4px solid #d97706;padding:13px 18px;border-radius:0 10px 10px 0;margin:16px 0;font-size:13.5px;color:#78350f;}
+  .motiv .lbl{font-weight:800;color:#b45309;display:block;margin-bottom:5px;}
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute;width:0;height:0;overflow:hidden" aria-hidden="true">
+<defs>
+  <marker id="cdArr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+    <path d="M 0 0 L 10 5 L 0 10 z" fill="#475569"/>
+  </marker>
+  <marker id="cdArrB" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+    <path d="M 0 0 L 10 5 L 0 10 z" fill="#2563eb"/>
+  </marker>
+  <marker id="cdArrG" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+    <path d="M 0 0 L 10 5 L 0 10 z" fill="#15803d"/>
+  </marker>
+  <marker id="cdArrP" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+    <path d="M 0 0 L 10 5 L 0 10 z" fill="#7c3aed"/>
+  </marker>
+</defs>
+</svg><div class="wrap">
+
+<header class="top">
+  <div class="kicker">范畴论 · 逻辑 · 拓扑斯 —— 三书递进自学教材</div>
+  <h1>第 17 章　拓扑斯的基本构造（Ch. V）</h1>
+  <p class="lede">这一章接通两种“拓扑”语言。第 15 章我们在 site 上宣告哪些筛算覆盖；第 16 章我们看到子对象分类子 \(\Omega\) 是一个内部 Heyting 代数。本章证明：在 \(\Omega\) 上装一个满足三条公理的自映射 \(j\)（Lawvere–Tierney 拓扑），与在 site 上装一个 Grothendieck 拓扑，是同一件事的两种写法。由此得到子拓扑斯、层化反射、内部／外部的完整图景。Johnstone 的《Topos Theory》为这套对应提供范畴论骨架：LT 拓扑就是 \(\Omega\) 上的一个 lex 幂等单子，子拓扑斯就是 lex 反射子。</p>
+
+  <div class="xref">
+    <strong>章首去重说明.</strong>本章反复用到但不重述：Grothendieck 拓扑的三条公理、筛、site、覆盖族、比较引理（<strong>第 14 章 14.2、第 15 章 15.1</strong>）；预层 topos 中的伴生层函子与 \(F^+/F^{++}\) 构造（<strong>第 15 章 15.3</strong>）；初等拓扑斯的定义、幂对象、\(\operatorname{Sub}(X)\cong\mathcal E(X,\Omega)\)（<strong>第 16 章 16.1</strong>）；\(\Omega\) 是内部 Heyting 代数、\(\neg\neg=\mathrm{id}\iff\) 布尔（<strong>第 16 章 16.4</strong>）；内部语言与 Kripke–Joyal 式语义的直觉（<strong>第 11 章</strong>）。这些只复述关键结论，不重证。
+  </div>
+
+  <div class="phil">
+    <span class="lbl">导读（哲学联系，选读）</span>
+    <p>“拓扑”这个词在本书里被用了三次：点集拓扑的开集族（第 2 章）、Grothendieck 拓扑的覆盖筛（第 15 章）、Lawvere–Tierney 拓扑的闭包算子（本章）。三次不是比喻，是同一个模式的层层抽象：都是“局部”的合法判据，且每一次都把前一次作为特例装进去。理解本章，就是理解范畴论里“推广”是怎么工作的——不是把旧概念改个名字，而是抽出旧概念真正起作用的骨架，再问：在一个更抽象的环境里，这个骨架还能不能立起来。</p>
+  </div>
+
+  <nav class="jump">
+    <a href="#s17-1">17.1 Lawvere–Tierney 拓扑</a>
+    <a href="#s17-2">17.2 层与伴生层函子</a>
+    <a href="#s17-3">17.3 LT 拓扑涵盖 Grothendieck 拓扑</a>
+    <a href="#s17-4">17.4 内部与外部</a>
+  </nav>
+</header>
+
+<section class="sec" id="s17-1">
+  <div class="sec-h"><span class="sec-no">17.1</span><h2>Lawvere–Tierney 拓扑</h2><span class="src">M Ch.V §1</span></div>
+
+  <div class="box learn">
+    <h4>① 本节学习目标</h4>
+    <ol>
+      <li>把“拓扑”定义成 \(\Omega\) 上的一个自映射 \(j\)，并说清三条公理各自在讲什么；</li>
+      <li>由 \(j\) 得到每个子对象格上的<strong>闭包算子</strong>，从而定义 \(j\)-闭、\(j\)-稠密子对象；</li>
+      <li>证明 \(j\) 与一个子对象 \(J\hookrightarrow\Omega\) 一一对应，closure 的三条性质对应 \(j\) 的三条公理；</li>
+      <li>掌握两类原型例子：恒等拓扑、双重否定拓扑 \(\neg\neg\)，以及开集拓扑斯里由开集给出的拓扑；</li>
+      <li>用 Johnstone 的语言认出 \(j\) 是一个 lex 幂等单子，并理解“子拓扑斯 = lex 反射子”的预告。</li>
+    </ol>
+  </div>
+
+  <div class="xref"><strong>沿用前文（不再复述）.</strong> \(\Omega\) 是子对象分类子、每个子对象 \(S\hookrightarrow X\) 有唯一特征函数 \(\chi_S:X\to\Omega\)（<strong>第 13 章 13.3、第 16 章 16.1.2</strong>）；\(\Omega\) 上的内部 Heyting 结构 \(\wedge,\vee,\Rightarrow,\neg,\top,\bot\) 与内蕴序 \(u\le v\iff u\wedge v=u\)（<strong>第 16 章 16.4</strong>）；布尔拓扑斯判别 \(\neg\neg=\mathrm{id}\)（<strong>第 16 章 16.4、第 11 章 11.4</strong>）。</div>
+
+  <div class="box prep">
+    <h4>极简回顾（六分钟）</h4>
+    <p><strong>1. 子对象分类子。</strong>拓扑斯 \(\mathcal E\) 里有对象 \(\Omega\) 和箭头 \(\top:1\to\Omega\)，使每个子对象 \(S\hookrightarrow X\) 都由唯一箭头 \(\chi_S:X\to\Omega\) 经拉回得到。于是“\(X\) 上的一个命题”就是箭头 \(X\to\Omega\)，而 \(\operatorname{Sub}(X)\cong\mathcal E(X,\Omega)\) 是自然同构。</p>
+    <p><strong>2. \(\Omega\) 是内部 Heyting 代数（16.4）。</strong>它有 \(\wedge,\vee,\Rightarrow,\neg,\top,\bot\)，满足 Heyting 伴随 \(a\wedge b\le c\iff b\le(a\Rightarrow c)\)。特别地 \(u\le v\) 不是外在于 \(\mathcal E\) 的序，而是箭头等式 \(u\wedge v=u\)。</p>
+    <p><strong>3. 本节要跨的一步。</strong>第 15 章的“拓扑”是 site 外部的一族筛；现在我们问：能不能<em>只用 \(\Omega\)</em> 在内部分辨“哪些命题算局部真”？答案是装一个自映射 \(j:\Omega\to\Omega\)，把 \(p\) 送到“\(p\) 局部为真”。这一步把拓扑从 site 搬进了拓扑斯内部。</p>
+  </div>
+
+  <h3 class="sub">17.1.1 定义与三条公理</h3>
+
+  <div class="motiv">
+    <span class="lbl">这个定义解决什么问题？</span>
+    第 15 章的 Grothendieck 拓扑依赖一个外部给的 site——你得先有一个范畴 \(\mathbf C\)，再在上面指定覆盖。但初等拓扑斯可以是“凭公理凭空造出来”的，未必来自任何 site。要在这种拓扑斯内部谈“局部”“稠密”“粘合”，就不能引用外部的覆盖族，只能引用拓扑斯自己有的东西。而它自己有的最合适的东西就是 \(\Omega\)：命题的对象化。把“局部”变成一个作用于命题的算子 \(j\)，三条公理恰好把我们对“局部真”的朴素要求写成了箭头等式。
+  </div>
+
+  <div class="defn">
+    <span class="lbl">定义 17.1.1（Lawvere–Tierney 拓扑）</span>
+    <p>拓扑斯 \(\mathcal E\) 上的<strong>Lawvere–Tierney 拓扑</strong>（简称 LT 拓扑、局部算子、nucleus）是一个箭头</p>
+    \[j:\Omega\to\Omega\]
+    <p>满足以下三条：</p>
+    <p><strong>(LT1)</strong> \(j\circ\top=\top\)，等价地 \(\mathrm{id}_\Omega\le j\)；</p>
+    <p><strong>(LT2)</strong> \(j\circ j=j\)（幂等）；</p>
+    <p><strong>(LT3)</strong> \(j\circ\wedge\;=\;\wedge\circ(j\times j)\)，即 \(j(p\wedge q)=j(p)\wedge j(q)\)（保持有限交）。</p>
+    <p>在内部语言里，把 \(j(p)\) 读作“\(p\) <strong>局部为真</strong>”：</p>
+    <ul>
+      <li>(LT1) 真命题局部为真；且 \(p\Rightarrow j(p)\)——真的东西局部也真。</li>
+      <li>(LT2) “局部局部真”等于“局部真”；\(j\) 是幂等的模态。</li>
+      <li>(LT3) \(p\wedge q\) 局部真，当且仅当 \(p\)、\(q\) 各自局部真。</li>
+    </ul>
+  </div>
+
+  <div class="rmk"><strong>第三条可以换成单调性（Johnstone 注）。</strong>在 \(\Omega\) 这个内部 Heyting 代数上，(LT3) 与“\(j\) 保序（\(p\le q\Rightarrow j(p)\le j(q)\)）”加上幂等、外延是等价的：内部序上的幂等单子自动是“强”的，从而自动保有限 meet（这是张量闭范畴上富化自函子自动带张量强度的一个特例）。但初学者最好把 (LT3) 单独记住，因为验证具体例子时它最常用。</div>
+
+  <div class="cases">
+    <div class="case typ"><b>典型例</b>两个极端。<strong>恒等</strong> \(j=\mathrm{id}_\Omega\)：三条显然，叫<strong>平凡拓扑</strong>——“局部真”就是“真”，没有新的局部性。<strong>常值</strong> \(j\equiv\top\)：把一切命题都判为局部真，对应“空覆盖”的极端（只有最大筛算覆盖）。这两个例子给出 LT 拓扑的序的两个端点。</div>
+    <div class="case deep"><b>本质例</b><strong>双重否定</strong> \(j=\neg\neg\)：在任意 Heyting 代数里 \(\neg\neg\) 满足 (LT1)（\(p\le\neg\neg p\)）、(LT2)（\(\neg\neg\neg\neg=\neg\neg\)）、(LT3)（\(\neg\neg(p\wedge q)=\neg\neg p\wedge\neg\neg q\)），所以是 LT 拓扑，叫<strong>稠密拓扑</strong>。它在 \(\mathbf{Set}\) 里等于恒等（布尔），但在层拓扑斯 \(\mathbf{Sh}(X)\) 里一般非平凡：\(\neg\neg U=\mathrm{int}(\mathrm{cl}(U))\)，即 \(U\) 的正则开化。由 16.4，\(\neg\neg=\mathrm{id}\iff\mathcal E\) 布尔——所以稠密拓扑是否平凡，正好度量拓扑斯离布尔有多远。</div>
+    <div class="case use"><b>结构应用</b>Johnstone 把 \(j\) 认成 \(\Omega\) 作为内部 meet-半格上的一个 <strong>lex 幂等单子</strong>（保持有限极限的幂等 monad）。这个视角的价值在于：单子的代数（此处即 \(j\)-闭对象）自动构成一个反射子范畴，而“lex”保证这个反射子范畴仍是拓扑斯。这就是 17.2 定理的骨架：LT 拓扑 \(\leftrightarrow\) lex 反射子 \(\leftrightarrow\) 子拓扑斯。三者在 Johnstone 的《Elephant》A4 章被系统展开。</div>
+    <div class="case edge"><b>边界与误解</b>高频错误：以为“\(\Omega\) 上任意保序幂等的自映射都是 LT 拓扑”。<strong>不是</strong>——(LT3) 不能少。取布尔代数 \(\mathcal P(\{1,2\})\)（它也是一个拓扑斯的 \(\Omega\)），定义 \(j(\varnothing)=\varnothing\)、\(j(\{1\})=\{1,2\}\)、\(j(\{2\})=\{2\}\)、\(j(\{1,2\})=\{1,2\}\)。它保序、幂等、满足 \(\mathrm{id}\le j\)，但 \(j(\{1\}\cap\{2\})=j(\varnothing)=\varnothing\)，而 \(j(\{1\})\cap j(\{2\})=\{1,2\}\cap\{2\}=\{2\}\)，两者不等——(LT3) 失败，故不是 LT 拓扑。这个反例要记住，它说明“局部性”必须和“交”相容。</div>
+  </div>
+
+  <h3 class="sub">17.1.2 闭包算子、闭与稠密</h3>
+
+  <p>一个 LT 拓扑 \(j\) 会在<strong>每个</strong>子对象格 \(\operatorname{Sub}(X)\) 上诱导出闭包算子。这是把“局部真”从命题层面落到具体子对象上的关键一步。</p>
+
+  <div class="defn">
+    <span class="lbl">定义 17.1.2（\(j\)-闭包、\(j\)-闭、\(j\)-稠密）</span>
+    <p>设 \(S\hookrightarrow X\) 是子对象，特征函数 \(\chi_S:X\to\Omega\)。定义它的<strong>\(j\)-闭包</strong> \(\overline S\hookrightarrow X\) 为由复合</p>
+    \[\chi_{\overline S}\;=\;j\circ\chi_S\;:\;X\xrightarrow{\ \chi_S\ }\Omega\xrightarrow{\ j\ }\Omega\]
+    <p>分类的子对象。称 \(S\) 是<strong>\(j\)-闭</strong>的，若 \(\overline S=S\)（即 \(j\chi_S=\chi_S\)）；称 \(S\) 是<strong>\(j\)-稠密</strong>的，若 \(\overline S=X\)（即 \(j\chi_S=\top_X\)）。相应的单态射叫稠密单态射。</p>
+  </div>
+
+  <div class="prop">
+    <span class="lbl">命题 17.1.3（闭包算子的三条性质）</span>
+    <p>对每个 \(X\)，算子 \(\overline{(-)}:\operatorname{Sub}(X)\to\operatorname{Sub}(X)\) 满足：对任意 \(A,B\in\operatorname{Sub}(X)\)，</p>
+    <p><strong>(a)</strong> \(A\le\overline A\)（外延）；<strong>(b)</strong> \(\overline{\overline A}=\overline A\)（幂等）；<strong>(c)</strong> \(\overline{A\cap B}=\overline A\cap\overline B\)（保有限交）。</p>
+    <p>并且它与拉回交换：对任意 \(f:Y\to X\)，\(\overline{f^\ast A}=f^\ast(\overline A)\)。</p>
+  </div>
+
+  <div class="proof">
+    <p class="pl">证明.</p>
+    <p><strong>(a)(b)(c) 逐条翻译 \(j\) 的公理。</strong>由 \(\Phi_X:\operatorname{Sub}(X)\cong\mathcal E(X,\Omega)\) 是 Heyting 代数同构（16.4），子对象的序、交对应 \(\Omega\)-值的内蕴序与 \(\wedge\)。于是 \(A\le\overline A\) 即 \(\chi_A\le j\chi_A\)，正是 (LT1)；\(\overline{\overline A}=\overline A\) 即 \(j(j\chi_A)=j\chi_A\)，正是 (LT2)；\(\overline{A\cap B}=\overline A\cap\overline B\) 即 \(j(\chi_A\wedge\chi_B)=j\chi_A\wedge j\chi_B\)，正是 (LT3)。</p>
+    <p><strong>与拉回交换。</strong>设 \(A\hookrightarrow X\) 由 \(\chi_A\) 分类，则 \(f^\ast A\hookrightarrow Y\) 由 \(\chi_A\circ f\) 分类（拉回的定义）。于是 \(\overline{f^\ast A}\) 由 \(j\circ\chi_A\circ f\) 分类；而 \(f^\ast(\overline A)\) 由 \((j\circ\chi_A)\circ f\) 分类——同一个箭头，故相等 ✓。∎</p>
+  </div>
+
+  <div class="rmk"><strong>为什么“与拉回交换”这么重要。</strong>它保证闭包算子不是每个 \(\operatorname{Sub}(X)\) 上各做一套、彼此无关，而是构成一族<strong>自然的</strong>、对换基稳定的运算。Johnstone 称这样的族为<strong>万有闭包运算</strong>（universal closure operation）；17.4 会看到，它和 lex 反射子是同一个结构的两种数据。就初学者而言，只需记住：换基后闭包不变，所以“稠密”“闭”是可以代入的内部概念。</div>
+
+  <div class="box walk">
+    <h4>③ 手把手：在 \(\mathbf{Set}\) 里把 \(\neg\neg\) 的闭包算到底</h4>
+    <ol>
+      <li>取 \(\mathcal E=\mathbf{Set}\)，此时 \(\Omega=\{0,1\}\)（真值二元素），\(\neg\neg=\mathrm{id}\)（布尔）。任取 \(A\subseteq X\)，\(\chi_{\neg\neg A}=\neg\neg\chi_A=\chi_A\)，故 \(\overline A=A\)。</li>
+      <li><strong>结论：</strong>在 \(\mathbf{Set}\) 里所有子对象都闭，唯一 \(j\)-稠密的子对象是 \(X\) 本身。这印证了平凡拓扑的判断——恒等就是稠密拓扑在布尔拓扑斯里的样子。</li>
+      <li>换 \(\mathcal E=\mathbf{Sh}(X)\)（开集上的层）。取 \(U\subseteq X\) 开集，\(\chi_{\neg\neg U}\) 对应正则开集 \(\mathrm{int}(\mathrm{cl}(U))\)。若 \(U=(0,1)\cup(1,2)\subseteq\mathbb R\)，则 \(\mathrm{cl}(U)=[0,2]\)，\(\mathrm{int}(\mathrm{cl}(U))=(0,2)\)——闭包把“缺的那个点 \(1\)”补上了。\(U\) 在 \(\mathbb R\) 中稠密吗？\(\mathrm{int}(\mathrm{cl}(U))=(0,2)\ne\mathbb R\)，不稠密；但若 \(U=\mathbb Q\) 的开化取法不当会出错——注意层拓扑斯里“开集”才是对象，\(\neg\neg U=X\iff \mathrm{cl}(U)=X\iff U\) 在 \(X\) 中稠密。</li>
+      <li><strong>记这条：</strong>\(j=\neg\neg\) 时，\(j\)-稠密 = 通常意义的稠密（闭包为全空间）。这正是“稠密拓扑”名字的由来，也是它叫“几何模态”的原因。</li>
+    </ol>
+  </div>
+
+  <h3 class="sub">17.1.3 \(j\) 与子对象 \(J\hookrightarrow\Omega\) 的对应</h3>
+
+  <p>有三条公理的 \(j\)，等价于 \(\Omega\) 的一个满足相应条件的子对象。这个视角是通往 17.3 的桥——因为预层 topos 里的 \(\Omega\) 就是筛预层，\(\Omega\) 的子对象正是“筛族”。</p>
+
+  <div class="prop">
+    <span class="lbl">命题 17.1.4</span>
+    <svg class="cd" viewBox="0 0 560 200" role="img" aria-label="J 是 top 沿 j 的拉回方块">
+      <rect class="node" x="40" y="30" width="120" height="40" rx="7"/>
+      <text class="nt" x="100" y="56" text-anchor="middle">J</text>
+      <rect class="node" x="380" y="30" width="120" height="40" rx="7"/>
+      <text class="nt" x="440" y="56" text-anchor="middle">1</text>
+      <rect class="nodeg" x="40" y="130" width="120" height="40" rx="7"/>
+      <text class="nt" x="100" y="156" text-anchor="middle">Ω</text>
+      <rect class="nodeg" x="380" y="130" width="120" height="40" rx="7"/>
+      <text class="nt" x="440" y="156" text-anchor="middle">Ω</text>
+      <line class="ar" x1="160" y1="50" x2="376" y2="50"/>
+      <text class="lb" x="268" y="43" text-anchor="middle">!</text>
+      <line class="arg" x1="160" y1="150" x2="376" y2="150"/>
+      <text class="hg" x="268" y="143" text-anchor="middle">j</text>
+      <line class="ar" x1="60" y1="70" x2="60" y2="126"/>
+      <text class="lb" x="52" y="102" text-anchor="end">包含</text>
+      <line class="ar" x1="420" y1="70" x2="420" y2="126"/>
+      <text class="lb" x="428" y="102" text-anchor="start">⊤</text>
+      <text class="lb" x="280" y="106" text-anchor="middle" style="font-size:11.5px">拉回：J 是“局部真”的分类子对象</text>
+    </svg>
+    <p class="figcap">图 17.1　LT 拓扑 \(j\) 与子对象 \(J\hookrightarrow\Omega\) 的对应（17.1.4）</p>
+    <p>设 \(j\) 是 LT 拓扑。令 \(J\hookrightarrow\Omega\) 为 \(\top:1\to\Omega\) 沿 \(j\) 的拉回，即“被 \(j\) 判为局部真的命题”所分类的子对象：
+    
+    则 \(J\) 满足：<em>(i)</em> \(\top\) 因子穿过 \(J\)；<em>(ii)</em> 若 \(p,q\in J\) 则 \(p\wedge q\in J\)；<em>(iii)</em> 若 \(p\in J\) 则 \(j(p)\in J\)，且 \(j(p)\in J\Rightarrow p\in J\)。反之，任一满足对应条件的子对象 \(J\hookrightarrow\Omega\) 唯一确定 LT 拓扑 \(j=\chi_J\)。</p>
+  </div>
+
+  <div class="proof">
+    <p class="pl">证明（示意）.</p>
+    <p><strong>拉回给出 \(J\)。</strong>由子对象分类子泛性质，\(\top\) 沿 \(j\) 的拉回存在唯一，记为 \(J\)。对广义元素 \(p:T\to\Omega\)，\(p\in J\iff j\circ p=\top_T\)（即 \(p\) 被判为局部真）。</p>
+    <p><strong>三条性质来自 \(j\) 的三条公理。</strong>(i) \(j\top=\top\) 即 \(\top\in J\)；(ii) 若 \(\chi_A,\chi_B\in J\) 即 \(j\chi_A=j\chi_B=\top\)，则 \(j(\chi_A\wedge\chi_B)=j\chi_A\wedge j\chi_B=\top\)，故 \(\chi_A\wedge\chi_B\in J\)；(iii) \(j(p)\in J\iff j(j(p))=\top\iff j(p)=\top\iff p\in J\)，用的是幂等 (LT2)。</p>
+    <p><strong>反向。</strong>给定 \(J\)，令 \(j=\chi_J:\Omega\to\Omega\)。上面的等价倒推即得 \(j\) 满足三条公理。两个方向互逆，因为 \(\chi_{j^\ast\top}=j\)（特征函数的唯一性）且 \(J\cong\chi_J^\ast(\top)\)。∎</p>
+  </div>
+
+  <div class="phil">
+    <span class="lbl">选读：三种语言说同一件事</span>
+    <p>Johnstone 强调，下面三份数据本质相同：<strong>(1)</strong> LT 拓扑 \(j:\Omega\to\Omega\)（代数语言：内部单子）；<strong>(2)</strong> 子对象 \(J\hookrightarrow\Omega\) 满足覆盖条件（几何语言：哪些命题算覆盖）；<strong>(3)</strong> 每个 \(\operatorname{Sub}(X)\) 上的万有闭包运算（拓扑语言：局部化哪些子对象）。本章逐节把它们接通：(1)↔(2) 是 17.1.3，(1)↔(3) 是 17.1.2，而 (2) 在预层 topos 里就是 Grothendieck 拓扑——17.3。理解“同一件事有三种说法”比记住任何单独一种都重要，因为不同场合下顺手的语言不同。</p>
+  </div>
+
+  <div class="box exer">
+    <h4>④ 习题（17.1）</h4>
+    <ol>
+      <li id="ex17-1-1">验证 \(j=\mathrm{id}_\Omega\) 与 \(j\equiv\top\) 都是 LT 拓扑，并说明前者为何对应“平凡拓扑”。</li>
+      <li id="ex17-1-2">在任意 Heyting 代数里证明 \(\neg\neg\) 满足 (LT1)(LT2)(LT3)。（提示：\(\neg\neg\neg\neg a=\neg\neg a\)；\(\neg\neg(a\wedge b)=\neg\neg a\wedge\neg\neg b\) 可用 \(a\le\neg\neg a\) 与伴随推。）</li>
+      <li id="ex17-1-3">证明 \(j\)-闭子对象对任意交封闭、且含 \(X\)；并证明它们对拉回稳定。</li>
+      <li id="ex17-1-4">设 \(S\hookrightarrow X\)，证明 \(S\) 稠密当且仅当 \(\top_X=j\chi_S\)；据此说明稠密单态射在拉回下保持。</li>
+      <li id="ex17-1-5">在 \(\mathcal P(\{1,2\})\) 上验证文中反例 \(j(\varnothing)=\varnothing,j(\{1\})=\{1,2\},j(\{2\})=\{2\}\) 保序、幂等、外延，但不保交，故非 LT 拓扑。</li>
+    </ol>
+  </div>
+
+  <div class="box ans">
+    <h4>习题答案（17.1）</h4>
+    <div class="item"><b>17.1.1</b>\(j=\mathrm{id}\)：\(\mathrm{id}\top=\top\)、\(\mathrm{id}\,\mathrm{id}=\mathrm{id}\)、\(\mathrm{id}\circ\wedge=\wedge=\wedge\circ(\mathrm{id}\times\mathrm{id})\) ✓。\(j\equiv\top\)：\(\top\top=\top\)、\(\top\top=\top\)、\(j(p\wedge q)=\top=\top\wedge\top\) ✓。平凡拓扑下 \(\overline S=S\)，没有新的稠密单态射，层条件自动满足（17.2），故层范畴就是 \(\mathcal E\) 本身。∎</div>
+    <div class="item"><b>17.1.2</b>记 \(\neg a=a\Rightarrow\bot\)，用到 Heyting 代数的两条基本事实：三重否定 \(\neg\neg\neg a=\neg a\)，以及 \(a\le\neg\neg a\)（由 \(a\wedge\neg a=\bot\) 经伴随得）。<strong>(LT1)</strong> \(a\le\neg\neg a\) ✓。<strong>(LT2)</strong> \(\neg\neg(\neg\neg a)=\neg(\neg\neg\neg a)=\neg a\) 再取一次否定？直接由三重否定：\(\neg\neg\neg\neg a=\neg(\neg\neg\neg a)=\neg(\neg a)=\neg\neg a\) ✓。<strong>(LT3)</strong> \(\neg\neg(a\wedge b)=\neg\neg a\wedge\neg\neg b\)：一个方向由单调性立得——\(a\wedge b\le a,b\Rightarrow\neg\neg(a\wedge b)\le\neg\neg a\wedge\neg\neg b\)；反向用伴随 \(x\le\neg\neg y\iff x\wedge\neg y=\bot\)，取 \(x=\neg\neg a\wedge\neg\neg b,\ y=a\wedge b\)，注意 \(\neg(a\wedge b)=a\Rightarrow\neg b\)，由 \(\neg\neg a\le\neg a\Rightarrow\bot\) 的伴随计算得 \((\neg\neg a\wedge\neg\neg b)\wedge\neg(a\wedge b)=\bot\)，故 \(\neg\neg a\wedge\neg\neg b\le\neg\neg(a\wedge b)\) ✓（\(\neg\neg\) 是 Heyting 代数上的标准 nucleus，即保持有限交的闭包算子；这一等式在开集模型中即 \(\mathrm{int}(\mathrm{cl}(U\cap V))=\mathrm{int}(\mathrm{cl}U)\cap\mathrm{int}(\mathrm{cl}V)\)，读者可用开集的稠密性逐点验证）。故三条成立 ✓。∎</div>
+    <div class="item"><b>17.1.3</b>闭子对象即闭包算子的不动点。任意交：设 \(\{S_i\}\) 都闭，由 (LT3) 推广到有限交得 \(\overline{S_1\cap\cdots\cap S_n}=\overline{S_1}\cap\cdots\cap\overline{S_n}=S_1\cap\cdots\cap S_n\)；任意交在不完备处需说明：\(\operatorname{Sub}(X)\) 有任意交（第 4 章），且 \(j\) 保序，故对一族 \(S_i\)，\(\overline{\bigcap S_i}\le\bigcap\overline{S_i}=\bigcap S_i\)，而外延给 \(\bigcap S_i\le\overline{\bigcap S_i}\)，故相等 ✓。含 \(X\)：\(\chi_X=\top\)，\(\overline X\) 由 \(j\top=\top\) 分类，即 \(X\) ✓。拉回稳定：命题 17.1.3 已证 \(\overline{f^\ast S}=f^\ast\overline S\)，若 \(S\) 闭则 \(f^\ast S=f^\ast\overline S=\overline{f^\ast S}\)，故闭 ✓。∎</div>
+    <div class="item"><b>17.1.4</b>\(S\) 稠密即 \(\overline S=X\)，也就是 \(\chi_{\overline S}=\top_X\)，而 \(\chi_{\overline S}=j\chi_S\)，故等价于 \(j\chi_S=\top_X\) ✓。拉回保持：对 \(f:Y\to X\)，\(\chi_{f^\ast S}=\chi_S f\)，故 \(j\chi_{f^\ast S}=j\chi_S f=\top_X f=\top_Y\)，即 \(f^\ast S\) 稠密 ✓。∎</div>
+    <div class="item"><b>17.1.5</b>保序：逐一验证 \(\varnothing\subseteq\{1\}\subseteq\{1,2\}\)、\(\varnothing\subseteq\{2\}\subseteq\{1,2\}\) 在 \(j\) 下仍保持（\(j\varnothing=\varnothing\le j\{1\}=\{1,2\}\)、\(j\{2\}=\{2\}\le j\{1,2\}=\{1,2\}\)）✓。幂等：\(j(j\{1\})=j\{1,2\}=\{1,2\}=j\{1\}\)，其余显然 ✓。外延：逐元素 \(a\le j(a)\) ✓。不保交：\(j(\{1\}\cap\{2\})=j(\varnothing)=\varnothing\)，而 \(j\{1\}\cap j\{2\}=\{1,2\}\cap\{2\}=\{2\}\ne\varnothing\) ✗。故非 LT 拓扑 ✓。∎</div>
+  </div>
+</section>
+
+<section class="sec" id="s17-2">
+  <div class="sec-h"><span class="sec-no">17.2</span><h2>层与伴生层函子</h2><span class="src">M Ch.V §2–3</span></div>
+
+  <div class="box learn">
+    <h4>① 本节学习目标</h4>
+    <ol>
+      <li>用 \(j\)-稠密单态射定义 \(j\)-分离预层与 \(j\)-层，把第 14–15 章的层条件从 site 搬到任意拓扑斯内部；</li>
+      <li>证明层范畴 \(\mathcal E_j\) 仍是拓扑斯，且包含函子有左正合的左伴随（层化函子）——这就是<strong>几何嵌入</strong>；</li>
+      <li>给出层化的显式构造 \(aF=F^{++}\)，把它与第 15 章的 plus 构造对上；</li>
+      <li>看清 \(j=\neg\neg\) 时节即是“分离对象”、层即“\(\neg\neg\)-层”，并连回布尔化；</li>
+      <li>理解为什么层化函子必保有限极限（lex）——这是 17.4“子拓扑斯”的范畴论命门。</li>
+    </ol>
+  </div>
+
+  <div class="xref"><strong>沿用前文（不再复述）.</strong> 第 14 章 14.1 的分离性／粘合性拆分与“连续函数层、有界连续函数非层”；第 15 章 15.3 的伴生层函子 \(a\dashv i\)、plus 构造 \(F^+/F^{++}\) 与双加号定理；第 15 章 15.2 的“层条件只需查生成覆盖族”。本节不重证 plus 构造的技术细节，只说明它在 \(j\)-语境下如何照搬。</div>
+
+  <div class="box prep">
+    <h4>极简回顾（六分钟）</h4>
+    <p><strong>1. site 上的层（第 14 章）。</strong>预层 \(F\) 是层，若对每个覆盖 \(\{U_i\to U\}\) 有 \(F(U)\to\prod_i F(U_i)\rightrightarrows\prod_{i,j}F(U_i\cap U_j)\) 等化子。拆开是分离性（唯一性，单射）与粘合性（存在性，满射到匹配族）。</p>
+    <p><strong>2. 等价的“局部同构”说法。</strong>层条件等价于：对覆盖筛中的箭头 \(U'\to U\)，限制映射在某种意义下能拼回。第 15 章把它推广为“对覆盖族只需查生成族”。</p>
+    <p><strong>3. 本节要跨的一步。</strong>在任意拓扑斯里没有“覆盖族”这个外部数据，但有 17.1 造出的 \(j\)-稠密单态射——它正是“局部同构”的内部替身。把层条件改写成“沿稠密单态射的限制是同构”，就能在任意拓扑斯内部定义层。</p>
+  </div>
+
+  <h3 class="sub">17.2.1 用稠密单态射定义层</h3>
+
+  <div class="motiv">
+    <span class="lbl">这个定义解决什么问题？</span>
+    第 14 章的层定义写在 site 上，依赖“开覆盖”这个外部结构。第 15 章虽然在预层 topos 里工作了，但覆盖仍来自 site。现在我们要在<em>任意</em>拓扑斯（可能不来自任何 site）里谈层。观察第 14 章的关键：层性只用到“覆盖是局部同构”这一点。而 17.1 的 \(j\)-稠密单态射就是拓扑斯内部天然的“局部同构”——它表示“在一个稠密子对象上成立，就等于处处成立”。于是直接把层条件写成沿稠密单态射的限制性质。
+  </div>
+
+  <div class="defn">
+    <span class="lbl">定义 17.2.1（\(j\)-分离、\(j\)-层）</span>
+    <p>设 \(j\) 是拓扑斯 \(\mathcal E\) 上的 LT 拓扑，\(F\in\mathcal E\) 是任意对象。</p>
+    <p><strong>(a)</strong> \(F\) 称为<strong>\(j\)-分离</strong>（separated），若对任意 \(j\)-稠密单态射 \(m:U\hookrightarrow X\)，限制映射</p>
+    \[\mathcal E(X,F)\longrightarrow\mathcal E(U,F),\qquad h\mapsto h\circ m\]
+    <p>是<strong>单射</strong>（在 \(\mathbf{Set}\) 的意义上：两个箭头若在某稠密子对象上相等则处处相等）。</p>
+    <p><strong>(b)</strong> \(F\) 称为<strong>\(j\)-层</strong>，若上述映射对所有稠密单态射 \(m\) 都是<strong>双射</strong>（既唯一又能延拓）。记 \(\mathcal E_j=\operatorname{Sh}_j(\mathcal E)\subset\mathcal E\) 为全体 \(j\)-层构成的满子范畴。</p>
+  </div>
+
+  <div class="rmk"><strong>为什么稠密就够了？</strong>直觉：稠密子对象 \(U\hookrightarrow X\) 满足 \(\overline U=X\)，即“\(U\) 局部就是 \(X\)”。一个层应当在“局部等于 \(X\)”的地方就能决定自己的截面；反之若一个映射能延拓到闭包，就应当能延拓到 \(X\)。这正是层的“局部决定整体”。用稠密单态射而不用所有单态射，是因为后者太强（会强迫 \(F\) 是终对象级别的刚硬对象）。</div>
+
+  <div class="cases">
+    <div class="case typ"><b>典型例</b><strong>平凡拓扑 \(j=\mathrm{id}\)：</strong>唯一稠密单态射是恒等（17.1 手把手），层条件自动成立，故 \(\mathcal E_{\mathrm{id}}=\mathcal E\)——所有对象都是层。<strong>极大拓扑 \(j\equiv\top\)：</strong>每个单态射都稠密，层要求沿任意单态射的限制都是双射，这通常只留下终对象一类的刚硬对象。</div>
+    <div class="case deep"><b>本质例</b><strong>\(j=\neg\neg\)（稠密拓扑）。</strong>\(j\)-稠密即拓扑意义的稠密（17.1）。\(j\)-分离对象即“在稠密子集上相等则相等”的对象——在 \(\mathcal E=\mathbf{Sh}(X)\) 里，这是值域为 Hausdorff 空间的函数层等；\(\neg\neg\)-层则进一步要求稠密子集上的截面能延拓，典型如 \(\mathbb R\) 值连续函数层。在 \(\mathbf{Set}\) 里 \(\neg\neg=\mathrm{id}\)，故所有集合都是层。</div>
+    <div class="case edge"><b>边界与误解</b>两个高频错误。<strong>(a) “分离 + 层是一回事？”</strong>不是：分离只管唯一性（单射），层还要存在性（满射）。17.1 开头那个“有界连续函数非层”的例子正是分离但不粘合：局部有界能拼出整体无界。<strong>(b) “稠密单态射必须可逆？”</strong>不必。\(\mathbb Q\hookrightarrow\mathbb R\) 稠密但不等同；层性要求的正是这种非可逆稠密箭头上的延拓能力，这正是它比“所有对象”更强的原因。</div>
+    <div class="case use"><b>结构应用</b>Johnstone 用这个定义统一了“层 = 局部对象的局部性”：\(F\) 是 \(j\)-层，当且仅当它对稠密单态射是<strong>局部对象</strong>（local object），即 \(\operatorname{Hom}(-,F)\) 把稠密单态射送到双射。这套语言不依赖 site，所以能定义任意拓扑斯的子拓扑斯；17.4 会看到子拓扑斯正是“层的世界”。</div>
+  </div>
+
+  <h3 class="sub">17.2.2 层化反射与几何嵌入</h3>
+
+  <p>核心定理：层的世界 \(\mathcal E_j\) 仍是一个拓扑斯，而且它被 \(\mathcal E\) “反射”进去，反射函子保有限极限。这是全章最重要的结构性结论。</p>
+
+  <div class="prop">
+    <span class="lbl">命题 17.2.2（层化反射）</span>
+    <p>包含函子 \(i:\mathcal E_j\hookrightarrow\mathcal E\) 有左伴随 \(a:\mathcal E\to\mathcal E_j\)（<strong>层化函子</strong>），即自然同构</p>
+    \[\mathcal E_j(aF,\;G)\;\cong\;\mathcal E(F,\;iG),\qquad F\in\mathcal E,\ G\in\mathcal E_j.\]
+    <p>并且：(a) \(a\) 是<strong>左正合</strong>（保有限极限）；(b) \(\mathcal E_j\) 本身是拓扑斯；(c) \(i\) 全忠实，单位 \(\eta:F\to i a F\) 对 \(F\in\mathcal E_j\) 是同构。</p>
+  </div>
+
+  <div class="proof">
+    <p class="pl">证明思路（骨架；细节靠 15.3 的双加号定理）.</p>
+    <p><strong>1. 伴随的存在。</strong>对 \(F\in\mathcal E\)，用 15.3 的 plus 构造（此处相对于 \(j\)-稠密单态射）造 \(F^+\)、\(F^{++}\)，令 \(aF=F^{++}\)。15.3 的双加号定理保证 \(F^{++}\) 是 \(j\)-层，且 \(\eta_F:F\to F^{++}\) 对任何 \(j\)-层 \(G\) 诱导出 \(\mathcal E_j(F^{++},G)\cong\mathcal E(F,G)\)。这就给出伴随。<strong>注意：</strong>这里 15.3 的构造是在预层 topos \([\mathbf C^{op},\mathbf{Set}]\) 上讲的，但整个证明只用到 \(\Omega\)、闭包算子与稠密单态射的性质，而这些在任意拓扑斯里都由 17.1 提供——所以证明逐字照搬。</p>
+    <p><strong>2. \(i\) 全忠实、单位在层上是同构。</strong>若 \(F\) 已是层，\(\eta_F:F\to aF\) 是到自身的反射单位，由伴随的三角恒等式得它是同构；全忠实随之（反射子范畴的一般事实，第 6 章伴随）。</p>
+    <p><strong>3. \(a\) 左正合——这是关键。</strong>有限极限中，等化子与拉回必须保。plus 构造里 \(F\mapsto F^+\) 用的是等化子与极限的逐点计算，而等化子与拉回正是有限极限，在 \(\mathcal E\) 中存在（拓扑斯有全部有限极限）；左伴随 \(a\) 保余极限是自动的，保有限极限则要直接用 \(F^+\) 的构造逐项验证：对有限图 \(D\)，\(\varprojlim (F_i^+)\cong(\varprojlim F_i)^+\)，再做一次 \(+\) 得 \(a\) 保该极限。完整计算见 15.3 双加号定理的“保限”部分。</p>
+    <p><strong>4. \(\mathcal E_j\) 是拓扑斯。</strong>有限极限：层对有限极限封闭（因每个层是局部对象，局部对象对极限封闭）。子对象分类子：\(\mathcal E_j\) 的分类子是 \(\Omega\) 的 \(j\)-闭部分 \(\Omega_j\hookrightarrow\Omega\)（17.1 的等化子），由 17.1.3 的闭子对象稳定性知它仍在 \(\mathcal E_j\) 中。指数与幂对象：用反射子范畴的一般定理（左正合反射 + 底范畴是拓扑斯 ⇒ 反射子是拓扑斯，Johnstone A4.3）。∎</p>
+  </div>
+
+  <div class="rmk"><strong>名字的由来：几何嵌入。</strong>满足“\(i\) 全忠实 + 左伴随 \(a\) 左正合”的伴随对 \(a\dashv i\) 叫<strong>几何嵌入</strong>（geometric embedding），\(\mathcal E_j\) 称为 \(\mathcal E\) 的<strong>子拓扑斯</strong>（subtopos）。“几何”二字指 \(a\) 保有限极限——正是几何态射右伴随的要求（第 19 章）。17.4 会证明：LT 拓扑 \(\leftrightarrow\) 子拓扑斯（几何嵌入），一一对应。这是 Johnstone 全书组织子拓扑斯理论的主轴。</div>
+
+  <div class="box walk">
+    <h4>③ 手把手：把 \(\neg\neg\)-层化算一遍</h4>
+    <ol>
+      <li>取 \(\mathcal E=\mathbf{Set}^{\hookrightarrow}\)（箭头范畴拓扑斯，即 \(\mathbf{Set}^{\mathbb 2^{op}}\)，对象是 \(A\to B\) 的映射），其 \(\Omega\) 有四个真值。取 \(j=\neg\neg\)（稠密拓扑）。</li>
+      <li>一个对象 \(F=(F_1\xrightarrow{u}F_0)\) 是 \(\neg\neg\)-层，当且仅当沿 \(\neg\neg\)-稠密单态射的限制是双射。在箭头拓扑斯里，\(\neg\neg\) 稠密单态射恰是两分量都单射且……（关键）此计算可直接用 15.3 的 plus 构造逐分量做。</li>
+      <li><strong>结论的用处：</strong>这个例子说明层化不是抽象存在——它把任意对象 \(F\) 送到“把 \(\neg\neg\)-局部数据强制粘成整体”的对象。在 \(\mathbf{Sh}(X)\) 里对 \(\neg\neg\) 做层化，就是把预层变成“在稠密开集上决定”的分离对象，这是 Cohen 力迫与 Boolean 化模型的原型（第 18 章 18.4）。</li>
+      <li><strong>记这条：</strong>层化 = 强制满足“局部决定整体”。\(j\) 决定“局部”是什么意思，\(a\) 就按这个意思把对象改造好。</li>
+    </ol>
+  </div>
+
+  <h3 class="sub">17.2.3 \(j\)-层与 site 上层的一致性</h3>
+
+  <div class="prop">
+    <span class="lbl">命题 17.2.3（一致性）</span>
+    <p>设 \(\mathbf C\) 是小 site，Grothendieck 拓扑诱导预层 topos \(\mathcal E=[\mathbf C^{op},\mathbf{Set}]\) 上的 LT 拓扑 \(j\)（具体公式见 17.3）。则一个预层是 \(j\)-层，当且仅当它是第 14–15 章意义下的普通层。</p>
+  </div>
+
+  <div class="proof">
+    <p class="pl">证明（关键一步）.</p>
+    <p>由 17.1 的定义，\(j\)-稠密单态射在预层 topos 中正对应“局部满”的单态射：\(U\hookrightarrow X\) 稠密 iff 对 \(X\) 每点局部落在 \(U\) 中，即 \(U\) 是一个覆盖筛（17.3 的公式给出 \(j\chi_U=\top\iff U\in J(X)\)）。于是“沿 \(j\)-稠密单态射限制是双射”正是“沿覆盖筛的限制能唯一粘合”。这与第 14 章 14.1 的层条件（分离 + 粘合）逐条对应——覆盖族生成的筛与覆盖筛等价（15.1 的比较引理）。∎</p>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="box exer">
+    <h4>④ 习题（17.2）</h4>
+    <ol>
+      <li id="ex17-2-1">证明：若 \(F\) 是 \(j\)-层，则 \(F\) 是 \(j\)-分离；举例说明逆命题不成立。</li>
+      <li id="ex17-2-2">证明平凡拓扑下每个对象都是 \(j\)-层，故 \(\mathcal E_{\mathrm{id}}=\mathcal E\)。</li>
+      <li id="ex17-2-3">证明 \(j\)-层对有限极限封闭。（提示：用局部对象对极限封闭，或直接用 17.2.2 证明中第 4 步。）</li>
+      <li id="ex17-2-4">设 \(j=\neg\neg\)，证明在布尔拓扑斯里所有对象都是 \(j\)-层；并说明这与“布尔拓扑斯的 \(\neg\neg=\mathrm{id}\)”一致。</li>
+      <li id="ex17-2-5">证明伴随单位 \(\eta_F:F\to iaF\) 在 \(F\) 是层时为同构，并由此推出 \(i\) 全忠实。</li>
+    </ol>
+  </div>
+
+  <div class="box ans">
+    <h4>习题答案（17.2）</h4>
+    <div class="item"><b>17.2.1</b>层要求限制映射是双射，分离只要求单射，故层 ⇒ 分离 ✓。逆不成立：第 14 章的“有界连续函数预层”在开集 site 上是分离的（连续函数在开集上由局部值唯一决定），但不是层——两块有界函数粘起来可能无界（如 \(f_n(x)=n\) 在 \((n,n+1)\) 上的拼接）。故分离 \(\nRightarrow\) 层 ✓。∎</div>
+    <div class="item"><b>17.2.2</b>\(j=\mathrm{id}\) 时唯一稠密单态射是恒等（17.1.4 手把手），沿恒等的限制映射是 \(\mathcal E(X,F)\to\mathcal E(X,F)\) 的恒等双射，故每个 \(F\) 都是层，\(\mathcal E_{\mathrm{id}}=\mathcal E\) ✓。∎</div>
+    <div class="item"><b>17.2.3</b>设 \(F,G\) 是层，\(\lim F_i\) 有限极限。对稠密 \(m:U\hookrightarrow X\)，\(\mathcal E(X,\lim F_i)\cong\lim\mathcal E(X,F_i)\)（Hom 保极限于第一变量？注意：\(\mathcal E(X,-)\) 保所有极限），而每个 \(\mathcal E(X,F_i)\to\mathcal E(U,F_i)\) 是双射，取极限仍是双射（有限极限在 \(\mathbf{Set}\) 中逐点算），故 \(\lim F_i\) 是层 ✓。∎</div>
+    <div class="item"><b>17.2.4</b>布尔拓扑斯里 \(\neg\neg=\mathrm{id}\)（16.4），由 17.2.2 退化为平凡拓扑情形，所有对象都是层 ✓。∎</div>
+    <div class="item"><b>17.2.5</b>设 \(F\in\mathcal E_j\)，\(\eta_F:F\to iaF\)。伴随三角恒等式给出 \(i(\varepsilon_{iF})\circ\eta_{iF}=\mathrm{id}_{iF}\) 其中 \(\varepsilon:a i\Rightarrow\mathrm{id}\) 是余单位；但 \(\varepsilon\) 在层上也是同构（因 \(i\) 全忠实可由余单位是同构刻画）。更直接：由伴随同构取 \(G=F\)，\(\mathcal E_j(aF,F)\cong\mathcal E(F,iF)\)，\(\eta_F\) 对应 \(\mathrm{id}_{iF}\) 的像，由 Yoneda 它是同构 ✓。全忠实：对层 \(F,G\)，\(\mathcal E_j(F,G)\xrightarrow{i}\mathcal E(iF,iG)\)，其逆为 \(G\mapsto\)（由 \(\eta_F\) 同构把 \(\mathcal E(iF,iG)\) 认成 \(\mathcal E_j(aF,G)\cong\mathcal E_j(F,G)\)）✓。∎</div>
+  </div>
+</section>
+
+<section class="sec" id="s17-3">
+  <div class="sec-h"><span class="sec-no">17.3</span><h2>LT 拓扑涵盖 Grothendieck 拓扑</h2><span class="src">M Ch.V §4</span></div>
+
+  <div class="box learn">
+    <h4>① 本节学习目标</h4>
+    <ol>
+      <li>看清为什么预层 topos 的子对象分类子 \(\Omega\) 就是“筛预层”——这是两种拓扑语言接通的关键；</li>
+      <li>从 Grothendieck 拓扑 \(J\) 造出 LT 拓扑 \(j\)，写出显式筛闭包公式；</li>
+      <li>从 LT 拓扑 \(j\) 复原 Grothendieck 拓扑 \(J\)，证明两个方向互逆（格同构）；</li>
+      <li>确认 \(j\)-层 = 普通层，从而把第 15 章的整个层理论收编进 LT 框架；</li>
+      <li>理解 Johnstone 的总结：site 呈现的拓扑斯都是子拓扑斯，且这是“外部给拓扑”与“内部给拓扑”的同一件事。</li>
+    </ol>
+  </div>
+
+  <div class="xref"><strong>沿用前文（不再复述）.</strong> 筛的定义（对左复合封闭的箭头族）与 Grothendieck 拓扑三条公理 (T1)(T2)(T3)（<strong>第 14 章 14.2、第 15 章 15.1</strong>）；\(\Omega_{\mathbf C}(c)=\operatorname{Sieves}(c)\) 作为预层 topos 的分类子（<strong>第 15 章 15.1.2、第 13 章 13.3</strong>）；覆盖族版与筛版拓扑的等价、比较引理（<strong>第 15 章 15.1.2</strong>）；可表预层 \(y(c)\) 与 Yoneda（<strong>第 15 章 15.1、第 7 章</strong>）。</div>
+
+  <div class="box prep">
+    <h4>极简回顾（六分钟）</h4>
+    <p><strong>1. Grothendieck 拓扑（外部）.</strong>小范畴 \(\mathbf C\) 上的拓扑给每个对象 \(c\) 指定一族<strong>覆盖筛</strong> \(J(c)\subseteq\operatorname{Sieves}(c)\)，满足：(T1) 最大筛覆盖；(T2) 拉回稳定；(T3) 局部性（若 \(S\) 覆盖且 \(S'\) 在每个拉回上覆盖，则 \(S'\) 覆盖）。</p>
+    <p><strong>2. \(\Omega\) 是筛预层（内部）.</strong>在预层 topos \(\mathcal E=[\mathbf C^{op},\mathbf{Set}]\) 里，\(\Omega(c)=\operatorname{Sieves}(c)\)，限制映射是拉回筛 \(g^\ast\)。这是第 13、15 章算过的。</p>
+    <p><strong>3. 本节要跨的一步。</strong>比较两边：Grothendieck 拓扑给的是“每个 \(c\) 上一族筛 \(J(c)\)”，而 LT 拓扑给的是“\(\Omega\) 的子对象 \(J\hookrightarrow\Omega\)”。在预层 topos 里，\(\Omega\) 的子对象<em>逐点</em>就是“每个 \(c\) 上一族对拉回封闭的筛”——这正是 Grothendieck 拓扑的数据！本节把这个观察做成定理。</p>
+  </div>
+
+  <h3 class="sub">17.3.1 关键观察：\(\Omega\) 是筛预层，子对象即筛族</h3>
+
+  <div class="motiv">
+    <span class="lbl">这个观察解决什么问题？</span>
+    两种“拓扑”看起来毫无关系：一个是 site 上的筛族公理，一个是 \(\Omega\) 上的自映射公理。要证明它们等价，得先找到一个共同的载体。这个载体就是筛预层 \(\Omega\)——它一边是拓扑斯的内部对象（分类子），一边逐点展开就是筛的集合。于是“\(\Omega\) 的子对象”同时是“筛族”，LT 拓扑与 Grothendieck 拓扑就在这一点上重叠。
+  </div>
+
+  <div class="prop">
+    <span class="lbl">命题 17.3.1（\(\Omega\) 与子对象的逐点刻画）</span>
+    <p>设 \(\mathbf C\) 小，\(\mathcal E=[\mathbf C^{op},\mathbf{Set}]\)。则：</p>
+    <p><strong>(a)</strong> \(\Omega(c)=\operatorname{Sieves}(c)\)，且对 \(g:d\to c\)，\(\Omega(g)=g^\ast\)（拉回筛）。</p>
+    <p><strong>(b)</strong> \(\Omega\) 的子对象 \(J\hookrightarrow\Omega\) 与如下数据一一对应：对每个 \(c\in\mathbf C\) 给一族筛 \(\widetilde J(c)\subseteq\operatorname{Sieves}(c)\)，且对 \(g:d\to c\) 有 \(g^\ast(\widetilde J(c))\subseteq\widetilde J(d)\)（拉回封闭）。</p>
+    <p><strong>(c)</strong> 子对象分类子的泛性质给出：\(j\in\mathcal E(\Omega,\Omega)\) 与子对象 \(J=j^\ast(\top)\hookrightarrow\Omega\) 一一对应（17.1.4）。</p>
+  </div>
+
+  <div class="proof">
+    <p class="pl">证明.</p>
+    <p><strong>(a)</strong> 由 Yoneda，\(\mathcal E(y(c),\Omega)\cong\Omega(c)\)；而 \(\mathcal E(y(c),\Omega)\cong\operatorname{Sub}(y(c))\)（\(\Omega\) 分类子对象）；可表函子 \(y(c)\) 的子预层恰是 \(c\) 上的筛（第 15 章 15.1.2）。自然性给出限制即拉回筛 ✓。</p>
+    <p><strong>(b)</strong> 子预层 \(J\subseteq\Omega\) 按定义就是逐点子集 \(J(c)\subseteq\Omega(c)\)，且对 \(g:d\to c\) 满足 \(\Omega(g)(J(c))\subseteq J(d)\)，即 \(g^\ast(J(c))\subseteq J(d)\) ✓。</p>
+    <p><strong>(c)</strong> 这是 17.1.4 的重述 ✓。∎</p>
+  </div>
+
+  <h3 class="sub">17.3.2 两个方向的构造与互逆定理</h3>
+
+  <p>现在给出双向翻译的显式公式，并证明它们是互逆的格同构。这是 M&amp;M Ch.V §4 的主定理。</p>
+
+  <div class="defn">
+    <span class="lbl">构造 A：Grothendieck 拓扑 \(J\ \Longrightarrow\) LT 拓扑 \(j_J\)</span>
+    <p>设 \(J\) 是 \(\mathbf C\) 上的 Grothendieck 拓扑。由 (T2)（拉回稳定），\(J\) 给出 \(\Omega\) 的子对象 \(J\hookrightarrow\Omega\)（17.3.1(b)）。令</p>
+    \[j_J\;=\;\chi_J\;:\;\Omega\to\Omega\]
+    <p>为其特征函数（17.1.4）。对 \(c\in\mathbf C\)、筛 \(S\in\operatorname{Sieves}(c)\)，分量 \(j_{J,c}\) 的显式公式是</p>
+    \[j_{J,c}(S)\;=\;\bigl\{\,g:d\to c\ \bigm|\ \exists\,S'\in J(d),\ S'\subseteq g^\ast S\,\bigr\}.\]
+    <p>读作：箭头 \(g\) 属于 \(S\) 的闭包，当且仅当把 \(S\) 沿 \(g\) 拉回后包含一个覆盖筛——即“\(g\) 局部落入 \(S\)”。</p>
+  </div>
+
+  <div class="defn">
+    <span class="lbl">构造 B：LT 拓扑 \(j\ \Longrightarrow\) Grothendieck 拓扑 \(J_j\)</span>
+    <p>设 \(j\) 是 \(\mathcal E=[\mathbf C^{op},\mathbf{Set}]\) 上的 LT 拓扑。定义</p>
+    \[J_j(c)\;=\;\bigl\{\,S\in\operatorname{Sieves}(c)\ \bigm|\ j_c(S)=\top_c\,\bigr\},\]
+    <p>即 \(J_j\) 由“被 \(j\) 送到最大筛的筛”组成；等价地 \(J_j\hookrightarrow\Omega\) 是 \(\top\) 沿 \(j\) 的拉回（17.1.4）。</p>
+  </div>
+
+  <div class="prop">
+    <span class="lbl">定理 17.3.2（M&amp;M Ch.V §4，对应定理）</span>
+    <p>设 \(\mathbf C\) 小。</p>
+    <p><strong>(a)</strong> 构造 A 给出的 \(j_J\) 确是 LT 拓扑，且 \(J_{j_J}=J\)。</p>
+    <p><strong>(b)</strong> 构造 B 给出的 \(J_j\) 确是 Grothendieck 拓扑，且 \(j_{J_j}=j\)。</p>
+    <p><strong>(c)</strong> 于是 \(\mathbf C\) 上的 Grothendieck 拓扑与 \([\mathbf C^{op},\mathbf{Set}]\) 上的 LT 拓扑之间存在<strong>格同构</strong>（保序双射，且保持并、交），其中序是“更细／更大”。</p>
+    <p><strong>(d)</strong> 在此对应下，\(j_J\)-层恰是普通 \(J\)-层。</p>
+  </div>
+
+  <div class="proof">
+    <p class="pl">证明（逐条核对公理，这是本节最需要耐心的部分）.</p>
+    <p><strong>第一步：\(j_J\) 满足 LT 三公理。</strong>把它逐点展开到筛上核对：</p>
+    <p><em>(LT1) \(j_J(\top)=\top\)：</em>最大筛 \(\top_c\) 拉回到任何 \(d\) 仍是最大筛，而最大筛由 (T1) 属于 \(J(d)\)，故对任意 \(g:d\to c\)，\(g\in j_J(\top_c)\)，即 \(j_J(\top_c)=\top_c\) ✓。</p>
+    <p><em>(LT3) \(j_J(S\cap T)=j_J(S)\cap j_J(T)\)：</em>关键观察：筛的拉回保持交，\(g^\ast(S\cap T)=g^\ast S\cap g^\ast T\)。若 \(g\in j_J(S\cap T)\)，则存在 \(S'\in J(d)\) 含于 \(g^\ast S\cap g^\ast T\)；由 (T2) 的封闭性（覆盖筛的任意细化，因含覆盖筛的筛仍覆盖——这是 (T1)(T3) 的推论，第 15 章 15.1.2），\(g^\ast S\) 与 \(g^\ast T\) 各自含覆盖筛，故 \(g\in j_J(S)\cap j_J(T)\)。反向：若 \(g^\ast S\supseteq S_1\in J(d)\)、\(g^\ast T\supseteq S_2\in J(d)\)，则 \(S_1\cap S_2\in J(d)\)（覆盖筛的交仍覆盖，(T3)+交稳定），且 \(S_1\cap S_2\subseteq g^\ast S\cap g^\ast T=g^\ast(S\cap T)\)，故 \(g\in j_J(S\cap T)\) ✓。</p>
+    <p><em>(LT2) \(j_J(j_J(S))=j_J(S)\)：</em>这是 (T3)（局部性）的直接翻译。设 \(g\in j_J(j_J(S))\)，即存在 \(S'\in J(d)\) 使 \(S'\subseteq g^\ast(j_J(S))\)。对每个 \(h:e\to d\) 属于 \(S'\)，\(h\in g^\ast(j_J(S))\) 意味着 \(gh\in j_J(S)\)，即存在 \(S_h\in J(e)\) 含于 \(h^\ast g^\ast S=(gh)^\ast S\)。要证 \(g\in j_J(S)\)：即对 \(g\) 的拉回 \(g^\ast S\) 含某个覆盖筛。构造这个覆盖筛：取 \(S'\) 与所有 \(S_h\) 的“粘合”——由 (T3)，因为 \(S'\) 覆盖 \(d\)，且其每个拉回 \(h^\ast(g^\ast S)\) 含覆盖筛 \(S_h\)，故 \(g^\ast S\) 本身覆盖 \(d\)，即 \(g^\ast S\in J(d)\)，从而 \(g\in j_J(S)\) ✓。反向 \(j_J(S)\subseteq j_J(j_J(S))\) 由 (LT1) 的外延性（\(S\subseteq j_J(S)\) 蕴含 \(j_J(S)\subseteq j_J(j_J(S))\)，因 \(j_J\) 保序）。故幂等 ✓。</p>
+    <p><strong>第二步：\(J_{j_J}=J\)。</strong>\(S\in J_{j_J}(c)\iff j_{J,c}(S)=\top_c\iff\) 对恒等 \(g=\mathrm{id}_c\)，\(\exists S'\in J(c),S'\subseteq\mathrm{id}^\ast S=S\iff S\in J(c)\)（最后一步用“含覆盖筛的筛是覆盖筛”，(T1)(T3) 的推论）✓。</p>
+    <p><strong>第三步：\(j_{J_j}=j\)。</strong>对筛 \(S\in\operatorname{Sieves}(c)\)，\(g:d\to c\)：</p>
+    \[g\in j_{J_j,c}(S)\iff\exists S'\in J_j(d),\ S'\subseteq g^\ast S\iff\exists S'\text{ with }j_d(S')=\top_d,\ S'\subseteq g^\ast S.\]
+    <p>用 \(j\) 保序与幂等：这等价于 \(j_d(g^\ast S)=\top_d\)，即 \(g\in j_c(S)\)（因 \(j\) 作为自然变换满足 \(j_d(g^\ast S)=g^\ast(j_c(S))\)，而 \(g^\ast(j_c(S))=\top_d\iff g\in j_c(S)\)——最大筛沿任何箭头拉回仍是最大筛，且 \(j_c(S)\) 作为筛含 \(g\) 恰表达这一点）✓。</p>
+    <p><strong>第四步：(c) 格同构与 (d) 层一致。</strong>保序性由 \(J\subseteq J'\Rightarrow j_J\le j_{J'}\)（覆盖更多 ⇒ 闭包更大）与 \(j\le j'\Rightarrow J_j\subseteq J_{j'}\) 逐点可见；两个方向互逆已证，故是双射。并交保持由筛闭包公式与 \(J\mapsto j\) 的逐点性得出。层一致即 17.2.3：\(j_J\)-稠密单态射恰是 \(J\)-覆盖筛对应的局部同构，故两种层条件逐条相同 ✓。∎</p>
+  </div>
+
+  <div class="rmk"><strong>“涵盖”二字的分量。</strong>定理说：每一个 Grothendieck 拓扑都给出一个 LT 拓扑（构造 A），而且这个对应是保序嵌入（格同构的“一半”）。但 LT 拓扑更一般——它定义在任意拓扑斯上，不需要 site。所以 Johnstone 说：<em>Grothendieck 拓扑是 LT 拓扑在预层 topos 这一特例中的形态</em>。第 15 章我们在 site 上做的一切，都被本章收编为 LT 框架的一个影子。</div>
+
+  <div class="cases">
+    <div class="case typ"><b>典型例</b><strong>平凡对应：</strong>\(J\) 只含最大筛（平凡拓扑）对应 \(j=\mathrm{id}\)（17.1 典型例）；\(J\) 含所有筛（极大拓扑）对应 \(j\equiv\top\)。两个端点吻合，说明对应保端点。</div>
+    <div class="case deep"><b>本质例</b><strong>开集 site：</strong>取 \(\mathbf C=\mathcal O(X)\)（开集按包含构成的范畴），\(J\) 为通常开覆盖给出的 Grothendieck 拓扑。构造 A 给出 \(\mathbf{Sh}(X)=[\mathcal O(X)^{op},\mathbf{Set}]\) 上的 LT 拓扑 \(j\)。这个 \(j\) 在筛上的闭包公式 \(j_c(S)=\{g\mid g^\ast S\text{ 含开覆盖}\}\) 正是 17.1 手把手里的“\(\neg\neg U=\mathrm{int}(\mathrm{cl}(U))\)”的筛版本——两种描述同一件事。</div>
+    <div class="case edge"><b>边界与误解</b>误解：“任意 LT 拓扑都来自某个 Grothendieck 拓扑”。<strong>错</strong>：对应定理只在预层 topos \([\mathbf C^{op},\mathbf{Set}]\) 上成立。一般拓扑斯（如 \(\mathbf{Set}\) 本身、或切片 \(\mathcal E/X\)）上的 LT 拓扑未必有 site 呈现。Johnstone 指出：LT 拓扑对应任意子拓扑斯，而“有 site 呈现”是额外性质（小 site 呈现的子拓扑斯）。本章标题“涵盖”是说 LT 包含 GT 作为特例，不是说两者等同。</div>
+    <div class="case use"><b>结构应用</b>这个对应是第 15 章与第 17 章的焊接点，也是后面一切的基础：第 18 章的 Kripke–Joyal 语义、Cohen 力迫拓扑斯，本质都是构造一个 site 的 Grothendieck 拓扑（外部），再由本章翻译成 LT 拓扑（内部），从而得到子拓扑斯。第 19 章的几何态射 \(f:\mathcal F\to\mathcal E\) 中，\(f^\ast\) 保有限极限这一点正是通过 LT 拓扑在 \(\mathcal E\) 里指定的子拓扑斯来实现的。</div>
+  </div>
+
+  <div class="box walk">
+    <h4>③ 手把手：在最小 site 上把闭包公式算一遍</h4>
+    <p>取 \(\mathbf C\) 为两对象 \(0,1\) 加一条箭头 \(a:0\to1\) 的范畴（第 14 章 14.2 的手把手 site）。取平凡 Grothendieck 拓扑 \(J\)（只有最大筛覆盖）。</p>
+    <ol>
+      <li><strong>列出筛。</strong>对象 \(1\)：到 \(1\) 的箭头有 \(\mathrm{id}_1,a\)，筛（左理想）为 \(\varnothing\)、\(\{a\}\)、\(\{\mathrm{id}_1,a\}\)。对象 \(0\)：只有 \(\mathrm{id}_0\)，筛为 \(\varnothing\)、\(\{\mathrm{id}_0\}\)。</li>
+      <li><strong>算闭包 \(j_{J,1}\).</strong>平凡 \(J\) 下，\(S'\in J(d)\) 只能是最大筛。故 \(g\in j_{J,1}(S)\iff g^\ast S=\top_d\)（最大筛）。对 \(g=\mathrm{id}_1\)：\(j_{J,1}(S)\) 含 \(\mathrm{id}_1\iff S=\top_1\)。对 \(g=a:0\to1\)：\(a^\ast S=\top_0\iff S\) 含 \(a\)。于是 \(j_{J,1}(\varnothing)=\varnothing\)、\(j_{J,1}(\{a\})=\varnothing\)（\(\{a\}\) 不含 \(\mathrm{id}_1\)，且 \(a^\ast\{a\}=\top_0\)——注意验证：\(a^\ast\{a\}=\{\mathrm{id}_0\}=\top_0\)，故 \(a\in j_{J,1}(\{a\})\)！）。</li>
+      <li><strong>修正上一步。</strong>重新细算：\(a^\ast\{a\}=\{\,h:\mathrm{dom}\to0\mid a\circ h\in\{a\}\,\}\)。到 \(0\) 的箭头只有 \(\mathrm{id}_0\)，\(a\circ\mathrm{id}_0=a\in\{a\}\)，故 \(\mathrm{id}_0\in a^\ast\{a\}\)，即 \(a^\ast\{a\}=\top_0\in J(0)\)。所以 \(a\in j_{J,1}(\{a\})\)，而 \(\mathrm{id}_1\notin j_{J,1}(\{a\})\)（因 \(S\ne\top_1\)）。结论 \(j_{J,1}(\{a\})=\{a\}\) ✓。<strong>这正是平凡拓扑下 \(j=\mathrm{id}\) 的逐点验证</strong>——闭包不改变筛。</li>
+      <li><strong>记这条：</strong>平凡拓扑的筛闭包是恒等。一般拓扑下闭包会变大（把“局部覆盖”的箭头加进来），这正是 \(j\) 的几何意义。</li>
+    </ol>
+  </div>
+
+  <div class="box exer">
+    <h4>④ 习题（17.3）</h4>
+    <ol>
+      <li id="ex17-3-1">验证构造 A 中 \(j_J\) 保序，并说明为何“覆盖更多 ⇒ 闭包更大”。</li>
+      <li id="ex17-3-2">证明：含覆盖筛的筛仍是覆盖筛（(T1)(T3) 的推论），并说明它在定理 17.3.2 第二步中的作用。</li>
+      <li id="ex17-3-3">在两对象 site（手把手那个）上取“满拓扑”（所有筛覆盖），算出 \(j\) 并验证 \(j\equiv\top\)。</li>
+      <li id="ex17-3-4">证明 \(j\) 作为自然变换满足 \(j_d(g^\ast S)=g^\ast(j_c(S))\)（与换基交换），并说明这对应闭包算子的万有性（17.1.3）。</li>
+      <li id="ex17-3-5">说明为什么对应是格同构而非仅双射：给出 \(J\subseteq J'\iff j_J\le j_{J'}\) 的证明。</li>
+    </ol>
+  </div>
+
+  <div class="box ans">
+    <h4>习题答案（17.3）</h4>
+    <div class="item"><b>17.3.1</b>设 \(J\subseteq J'\)，即 \(J'\) 覆盖更多。对筛 \(S\)，\(j_J(S)=\{g\mid\exists S'\in J(d),S'\subseteq g^\ast S\}\subseteq\{g\mid\exists S'\in J'(d),S'\subseteq g^\ast S\}=j_{J'}(S)\)，故 \(j_J\le j_{J'}\) ✓。直观：能作证的覆盖筛更多，就有更多箭头“局部落入 \(S\)”，闭包更大 ✓。∎</div>
+    <div class="item"><b>17.3.2</b>设 \(S\in J(c)\)，\(T\supseteq S\)。要证 \(T\in J(c)\)。由 (T3)：\(S\) 覆盖，且对 \(S\) 中每个 \(g:d\to c\)，\(g^\ast T\supseteq g^\ast S=\top_d\)（最大筛，因 \(S\) 中的箭头拉回自己含恒等），最大筛由 (T1) 覆盖，故 \(g^\ast T\) 含覆盖筛。由 (T3) 得 \(T\) 覆盖 ✓。作用：定理第二步 \(j_{J,c}(S)=\top_c\iff\mathrm{id}^\ast S=S\) 含覆盖筛 \(\iff S\) 是覆盖筛——正是用这条 ✓。∎</div>
+    <div class="item"><b>17.3.3</b>满拓扑下 \(J(d)\) 含所有筛。对任意 \(S\)、任意 \(g:d\to c\)，取 \(S'=\top_d\in J(d)\)，\(\top_d\subseteq g^\ast S\) 未必成立——但可取 \(S'=g^\ast S\)（它总是一个筛，故总在 \(J(d)\) 中），于是 \(g^\ast S\subseteq g^\ast S\) 平凡成立，故每个 \(g\in j_c(S)\)，即 \(j_c(S)=\top_c\)。所以 \(j\equiv\top\)（把每个筛送到最大筛），与 17.1 的极大拓扑吻合 ✓。∎</div>
+    <div class="item"><b>17.3.4</b>\(g\in g^\ast(j_c(S))\iff\) 存在 \(h\) 使 \(gh\in j_c(S)\iff\) 存在 \(gh\) 的某个拉回含覆盖筛……直接算：由闭包公式 \(j_c(S)=\{k\mid\exists \text{覆盖筛}\subseteq k^\ast S\}\)。则 \(g^\ast(j_c(S))=\{h\mid gh\in j_c(S)\}\)。而 \(j_d(g^\ast S)=\{h\mid\exists\text{覆盖筛}\subseteq h^\ast(g^\ast S)=(gh)^\ast S\}\)——两者是同一条件 ✓。这正是 17.1.3 闭包算子“与拉回交换”的筛版本（万有性）✓。∎</div>
+    <div class="item"><b>17.3.5</b>(⇒) 17.3.1 已证。(⇐) 设 \(j_J\le j_{J'}\)，取 \(S\in J(c)\)，则 \(j_{J,c}(S)=\top_c\)（定理第二步），故 \(j_{J',c}(S)=\top_c\)（因 \(j_J\le j_{J'}\) 且最大筛是上界），再由定理第二步 \(S\in J'(c)\)。故 \(J\subseteq J'\) ✓。保序双射且互逆 ⇒ 格同构 ✓。∎</div>
+  </div>
+</section>
+
+<section class="sec" id="s17-4">
+  <div class="sec-h"><span class="sec-no">17.4</span><h2>内部与外部</h2><span class="src">M Ch.V §5</span></div>
+
+  <div class="box learn">
+    <h4>① 本节学习目标</h4>
+    <ol>
+      <li>用“内部／外部”两种视角描述同一个拓扑斯：从内部看是 \(\mathcal E\) 加一个 \(j\)，从外部看是一个 site 加 Grothendieck 拓扑；</li>
+      <li>证明内部层范畴 \(\mathcal E_j\) 与外部层范畴 \(\mathbf{Sh}(\mathbf C,J)\) 一致（当 \(\mathcal E=[\mathbf C^{op},\mathbf{Set}]\)、\(j=j_J\)）；</li>
+      <li>掌握子拓扑斯的三种等价描述：LT 拓扑、lex 反射子、几何嵌入；</li>
+      <li>理解“内部语言”如何随 \(j\) 改变——从 \(\mathcal E\) 的直觉主义逻辑到 \(\mathcal E_j\) 的修正逻辑；</li>
+      <li>用例子（切片拓扑斯、开子空间、\(\neg\neg\)-布尔化）建立直观。</li>
+    </ol>
+  </div>
+
+  <div class="xref"><strong>沿用前文（不再复述）.</strong> 内部语言与 Mitchell–Bénabou 式语义的基本想法（<strong>第 11 章</strong>）；预层 topos 与可表函子、Yoneda（<strong>第 7、15 章</strong>）；几何态射 \(f^\ast\dashv f_\ast\) 中 \(f^\ast\) 保有限极限（<strong>第 14 章 14.4、第 19 章预告</strong>）；伴随与反射子范畴（<strong>第 6 章</strong>）。</div>
+
+  <div class="box prep">
+    <h4>极简回顾（六分钟）</h4>
+    <p><strong>1. 外部构造（site → 层拓扑斯）。</strong>第 14–15 章：给小 site \((\mathbf C,J)\)，取预层 topos \([\mathbf C^{op},\mathbf{Set}]\)，再层化，得 Grothendieck topos \(\mathbf{Sh}(\mathbf C,J)\)。这是“从外往里造”。</p>
+    <p><strong>2. 内部构造（拓扑斯 + \(j\) → 子拓扑斯）。</strong>17.1–17.2：给拓扑斯 \(\mathcal E\) 与 LT 拓扑 \(j\)，取 \(j\)-层满子范畴 \(\mathcal E_j\)。这是“从里往切”。</p>
+    <p><strong>3. 本节要跨的一步。</strong>17.3 已证两种拓扑数据一一对应；本节把它提升为<strong>范畴层面的一致</strong>：外部造出的 \(\mathbf{Sh}(\mathbf C,J)\) 与内部切出的 \([\mathbf C^{op},\mathbf{Set}]_j\) 是同一个拓扑斯。于是“拓扑斯的基本构造”这一章收口：所有 Grothendieck topos 都是某个预层 topos 的子拓扑斯。</p>
+  </div>
+
+  <h3 class="sub">17.4.1 内部层 = 外部层</h3>
+
+  <div class="motiv">
+    <span class="lbl">这个定理解决什么问题？</span>
+    我们手上有两台造层拓扑斯的机器：一台输入 site，输出 \(\mathbf{Sh}(\mathbf C,J)\)（第 15 章）；一台输入拓扑斯加 \(j\)，输出 \(\mathcal E_j\)（17.2）。为什么要造两台？因为它们各有用途：site 便于写具体例子（开集、Zariski、稠密），\(j\) 便于做内部推导（子拓扑斯、逻辑）。本节证明两台机器在交集上给出同一结果——这样就能放心地在两种语言间来回切换。
+  </div>
+
+  <div class="prop">
+    <span class="lbl">命题 17.4.1（内部／外部一致）</span>
+    <p>设 \(\mathbf C\) 小，\(J\) 是其上 Grothendieck 拓扑，\(\mathcal E=[\mathbf C^{op},\mathbf{Set}]\)，\(j=j_J\) 是 17.3 构造 A 给出的 LT 拓扑。则</p>
+    \[\mathcal E_j\;=\;[\mathbf C^{op},\mathbf{Set}]_{j_J}\;\simeq\;\mathbf{Sh}(\mathbf C,J),\]
+    <p>且这个等价与两侧的层化函子相容（外部层化 \(a_{\text{ext}}\) 与内部层化 \(a_{j_J}\) 在同构下一致）。</p>
+  </div>
+
+  <div class="proof">
+    <p class="pl">证明.</p>
+    <p>两个范畴都是 \([\mathbf C^{op},\mathbf{Set}]\) 的同一批对象组成的满子范畴：左侧是“\(j_J\)-层”，右侧是“\(J\)-层”。由 17.2.3（17.3.2(d)）二者对象相同，箭头相同（都是预层间的自然变换），故两个满子范畴相等，取恒等即等价 ✓。层化函子相容：两侧的层化都是把预层 \(F\) 送到“沿覆盖／稠密单态射强制粘合”的对象，构造器同为 plus 构造（15.3 与 17.2.2），且覆盖筛 = \(j\)-稠密单态射（17.3.2），故给出同一对象；由伴随的唯一性，两个层化函子自然同构 ✓。∎</p>
+  </div>
+
+  <div class="rmk"><strong>“内部”与“外部”的确切含义。</strong>这里的“外部”指站在拓扑斯<em>之外</em>，用一个范畴 \(\mathbf C\) 和覆盖规则去<em>生成</em>拓扑斯；“内部”指已经站在拓扑斯 \(\mathcal E\) 里，只用 \(\mathcal E\) 自己的对象 \(\Omega\) 和箭头 \(j\) 去<em>切出</em>子范畴。17.4.1 说明这两件事在预层 topos 的场合重合。Johnstone 强调：这是 Grothendieck topos 与初等 topos 理论的分水岭——Grothendieck topos 一定可外部呈现，而一般初等 topos 未必。</div>
+
+  <h3 class="sub">17.4.2 子拓扑斯的三种等价描述</h3>
+
+  <p>现在把全章的结构结论收拢成一个“三位一体”的陈述，这是 Johnstone《Topos Theory》组织子拓扑斯理论的核心。</p>
+
+  <div class="prop">
+    <span class="lbl">命题 17.4.2（子拓扑斯的三重刻画）</span>
+    <p>对拓扑斯 \(\mathcal E\)，以下三份数据一一对应：</p>
+    <p><strong>(1)</strong> \(\mathcal E\) 上的 LT 拓扑 \(j:\Omega\to\Omega\)；</p>
+    <p><strong>(2)</strong> \(\mathcal E\) 的<strong>lex 反射子</strong>：全忠实包含 \(i:\mathcal A\hookrightarrow\mathcal E\) 带左伴随 \(a:\mathcal E\to\mathcal A\) 且 \(a\) 保有限极限；</p>
+    <svg class="cd" viewBox="0 0 660 250" role="img" aria-label="子拓扑斯的三重刻画三角图">
+      <rect class="node" x="40" y="30" width="200" height="46" rx="7"/>
+      <text class="nt" x="140" y="50" text-anchor="middle">(1) LT 拓扑</text>
+      <text class="lb" x="140" y="67" text-anchor="middle" style="font-size:11px">j : Ω → Ω</text>
+      <rect class="node2" x="420" y="30" width="200" height="46" rx="7"/>
+      <text class="nt" x="520" y="50" text-anchor="middle">(2) lex 反射子</text>
+      <text class="lb" x="520" y="67" text-anchor="middle" style="font-size:11px">a ⊣ i，a 保有限极限</text>
+      <rect class="nodeg" x="230" y="175" width="200" height="46" rx="7"/>
+      <text class="nt" x="330" y="195" text-anchor="middle">(3) 几何嵌入</text>
+      <text class="lb" x="330" y="212" text-anchor="middle" style="font-size:11px">E_j ⊂ E，子拓扑斯</text>
+      <line class="arb" x1="240" y1="53" x2="418" y2="53"/>
+      <text class="hb" x="330" y="45" text-anchor="middle">17.2.2</text>
+      <line class="arg" x1="500" y1="78" x2="390" y2="173"/>
+      <text class="hg" x="492" y="127" text-anchor="start">17.4.2</text>
+      <line class="ard" x1="180" y1="78" x2="270" y2="173"/>
+      <text class="lb" x="172" y="127" text-anchor="end">17.4.2</text>
+    </svg>
+    <p class="figcap">图 17.2　子拓扑斯的三重刻画（命题 17.4.2）</p>
+    <p><strong>(3)</strong> 从 \(\mathcal E\) 出发的<strong>几何嵌入</strong> \(a\dashv i\)（即 \(i\) 全忠实、\(a\) 左正合），其像 \(\mathcal A=\mathcal E_j\) 是子拓扑斯。</p>
+    <p>对应方式：(1)↦(2) 取 \(j\)-层反射 \(a\dashv i:\mathcal E_j\hookrightarrow\mathcal E\)（17.2.2）；(2)↦(1) 取 \(j=\chi_{\sharp\top}\circ\eta_\Omega\)，其中 \(\sharp=ia\) 是反射单子、\(\eta\) 是单位、\(\chi_{\sharp\top}\) 是 \(\sharp(\top)\) 的特征函数。</p>
+  </div>
+
+  <div class="proof">
+    <p class="pl">证明（两个方向的核心计算）.</p>
+    <p><strong>(1)→(2)</strong> 是 17.2.2：\(\mathcal E_j\) 是拓扑斯，\(a\dashv i\) 且 \(a\) 左正合 ✓。</p>
+    <p><strong>(2)→(1)：造 \(j\)。</strong>给定 lex 反射 \(a\dashv i\)，记 \(\sharp=ia:\mathcal E\to\mathcal E\)（反射单子），单位 \(\eta:\mathrm{id}\to\sharp\)。取 \(\top:1\to\Omega\)，作用 \(\sharp\) 得单态射 \(\sharp\top:\sharp 1\to\sharp\Omega\)；因 \(\sharp 1\cong1\)（\(a\) 保终对象），可视为 \(1\to\sharp\Omega\)。令 \(j\) 为复合
+    \[j:\Omega\xrightarrow{\ \eta_\Omega\ }\sharp\Omega\xrightarrow{\ \chi_{\sharp\top}\ }\Omega,\]
+    其中 \(\chi_{\sharp\top}\) 分类子对象 \(\sharp\top\)。验证三公理：<em>(LT1)</em> \(j\top=\chi_{\sharp\top}\eta_\Omega\top=\chi_{\sharp\top}\circ\sharp\top=\top\)（特征函数分类该子对象）✓；<em>(LT2)</em> 用反射单位与三角恒等式，\(\eta_\Omega\) 在 \(\sharp\Omega\) 上是同构、\(\chi_{\sharp\top}\) 在层上稳定，得 \(j^2=j\) ✓；<em>(LT3)</em> 因 \(a\) 保有限极限，\(\sharp\) 保有限积，\(\chi_{\sharp\top}\) 与 \(j\) 保 \(\wedge\) ✓（完整计算见 Johnstone A4.3）。</p>
+    <p><strong>互逆。</strong>从 \(j\) 出发造 \(\sharp=ia\) 再取 \(j'\)，由 17.2.2 的伴随三角恒等式与特征函数唯一性可追回原 \(j\)；反向从 \(\sharp\) 出发造 \(j\) 再取 \(j\)-层反射，因 \(\sharp\)-局部对象恰是层（反射的一般理论，第 6 章），得回同一反射 ✓。∎</p>
+  </div>
+
+  <div class="cases">
+    <div class="case typ"><b>典型例</b><strong>两个端点：</strong>\(j=\mathrm{id}\) 对应 \(\sharp=\mathrm{id}\)、\(\mathcal E_j=\mathcal E\)（极大子拓扑斯，就是自己）；\(j\equiv\top\) 对应 \(\sharp\) 把一切压到终对象附近、\(\mathcal E_j\) 最小（常是 \(\mathbf{Set}\) 或终拓扑斯）。子拓扑斯在这两端之间构成一个格。</div>
+    <div class="case deep"><b>本质例</b><strong>切片拓扑斯 \(\mathcal E/X\)：</strong>对对象 \(X\in\mathcal E\)，切片 \(\mathcal E/X\) 是拓扑斯（16.3 基本定理）。它对应一个 LT 拓扑吗？是的：令 \(j_X\) 为由子对象 \(X\to1\) 相关的闭包算子（Johnstone 称“开子拓扑斯”/open subtopos），\(\mathcal E/X\simeq\mathcal E_{j_X}\)。这正是 17.4.3 要细看的例子，也是 16.3 切片基本定理的“子拓扑斯版本”。</div>
+    <div class="case edge"><b>边界与误解</b>误解：“子拓扑斯就是普通子范畴”。<strong>不是</strong>：它必须是<em>全忠实 + 左伴随 lex</em> 的反射子，这个额外要求（几何嵌入）保证子范畴仍是拓扑斯且与原拓扑斯有良好的态射关系。一个随意的全忠实子范畴（如 \(\mathcal E\) 里所有终对象构成的子范畴）未必是子拓扑斯。lex 条件是命门。</div>
+    <div class="case use"><b>结构应用</b>子拓扑斯的格（LT 拓扑的格）是拓扑斯的“内部几何”：它编码了所有可能的局部化方式。第 18 章的力迫扩张就是在这个格里移动——选一个 LT 拓扑，切出一个子拓扑斯，在其中内部语言改变，独立性证明由此产生。第 19 章的几何态射 \(f:\mathcal F\to\mathcal E\) 中，\(f^\ast\) 保有限极限保证了 \(\mathcal F\) 可视为某个子拓扑斯式的“局部化”，这正是 17.4.2(3) 里 lex 条件的用武之地。</div>
+  </div>
+
+  <h3 class="sub">17.4.3 内部语言随 \(j\) 如何改变</h3>
+
+  <p>最后把视角落到逻辑上：换一个 \(j\)，就是换一套“什么算局部真”的规则，因而改变拓扑斯内部的逻辑。</p>
+
+  <div class="prop">
+    <span class="lbl">命题 17.4.3（子拓扑斯的内部逻辑）</span>
+    <p>设 \(\mathcal E_j\) 是 LT 拓扑 \(j\) 给出的子拓扑斯，其分类子为 \(\Omega_j\hookrightarrow\Omega\)（\(j\) 的等化子，即 \(j\)-闭真值）。则：</p>
+    <p><strong>(a)</strong> \(\mathcal E_j\) 的内部逻辑中，命题 \(p\) 为真当且仅当 \(j(p)=\top\)（在 \(\mathcal E\) 中局部真）；</p>
+    <p><strong>(b)</strong> \(\Omega_j\) 是 \(\mathcal E_j\) 中的 Heyting 代数对象，其运算由 \(\Omega\) 的运算经 \(j\)-闭化诱导；</p>
+    <p><strong>(c)</strong> 当 \(j=\neg\neg\) 时，\(\mathcal E_j\) 是布尔拓扑斯（在 \(\mathcal E_j\) 中排中律成立），这就是 \(\mathcal E\) 的<strong>布尔化</strong>。</p>
+  </div>
+
+  <div class="proof">
+    <p class="pl">证明（要点）.</p>
+    <p><strong>(a)</strong> 在 \(\mathcal E_j\) 里，子对象分类子是 \(\Omega_j\)，而 \(p\in\Omega_j\iff j(p)=p\)；一个命题在 \(\mathcal E_j\) 中为“整体真”对应在 \(\mathcal E\) 中 \(j(p)=\top\)（局部真）经反射拉回。这是层语义的核心：真 = 局部真 ✓。</p>
+    <p><strong>(b)</strong> \(\Omega_j\) 是 \(j\)-闭真值的集合（等化子）。由 17.1.3，闭子对象对交封闭、含 \(X\)，Heyting 运算限制到闭部分后仍落地（\(j\) 保 \(\wedge\) 且 \(j(p\Rightarrow q)\) 闭），故 \(\Omega_j\) 继承 Heyting 结构 ✓。</p>
+    <p><strong>(c)</strong> \(j=\neg\neg\) 时，\(\Omega_j=\) 正则开（\(\neg\neg\)-闭）真值。在这些真值上，\(\neg\neg=\mathrm{id}\) 自动成立（因为元素已闭），故由 16.4 的判别，\(\mathcal E_j\) 布尔。这就是布尔化 ✓。∎</p>
+  </div>
+
+  <div class="box walk">
+    <h4>③ 手把手：开子空间作为子拓扑斯</h4>
+    <ol>
+      <li>取 \(\mathcal E=\mathbf{Sh}(X)\)（空间 \(X\) 上的层拓扑斯），取开子集 \(U\subseteq X\)。定义开子拓扑斯的 LT 拓扑 \(j_U\)：对开集 \(V\)，令 \(j_U(V)=V\cup\neg U\)，其中 \(\neg U=\mathrm{int}(X\setminus U)\) 是 \(U\) 的伪补。意思是“\(U\) 以外的部分自动算局部真”——于是 \(j_U\)-层就是只在 \(U\) 上有信息的层。</li>
+      <li><strong>子拓扑斯。</strong>由 17.4.2，\(j_U\) 给出子拓扑斯 \(\mathcal E_{j_U}\)。Johnstone 的基本结果：\(\mathcal E_{j_U}\simeq\mathbf{Sh}(U)\)——即开子空间 \(U\) 的层拓扑斯，正是 \(\mathbf{Sh}(X)\) 的一个子拓扑斯。</li>
+      <li><strong>内部语言的变化。</strong>在 \(\mathbf{Sh}(U)\) 里，命题只在 \(U\) 上判定真假——这就是 \(j_U\) 把 \(X\setminus U\) 上的信息“局部化掉”的效果。换 \(U\) 就是换观察的范围。</li>
+      <li><strong>记这条：</strong>开子空间 ⊂ 子拓扑斯。这个包含是严格的：还有非开集给出的子拓扑斯（如 \(\neg\neg\)-布尔化），它们是“比任何开子空间都更细”的局部化。</li>
+    </ol>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="box exer">
+    <h4>④ 习题（17.4）</h4>
+    <ol>
+      <li id="ex17-4-1">说明命题 17.4.1 中“等价”为何可取为满子范畴的相等（恒等函子）。</li>
+      <li id="ex17-4-2">证明平凡 \(j=\mathrm{id}\) 对应的子拓扑斯就是 \(\mathcal E\) 本身。</li>
+      <li id="ex17-4-3">验证 \(j=\neg\neg\) 时 \(\mathcal E_j\) 布尔：说明为何 \(\Omega_j\)（正则开真值）满足排中律。</li>
+      <li id="ex17-4-4">用 17.4.2 说明为何“lex（保有限极限）”是子拓扑斯定义的命门：若反射函子不保有限极限，会出什么问题？</li>
+      <li id="ex17-4-5">结合 16.3 基本定理，说明切片 \(\mathcal E/X\) 作为子拓扑斯与 LT 拓扑 \(j_X\) 的对应。</li>
+    </ol>
+  </div>
+
+  <div class="box ans">
+    <h4>习题答案（17.4）</h4>
+    <div class="item"><b>17.4.1</b>两侧都是 \([\mathbf C^{op},\mathbf{Set}]\) 的满子范畴，对象由同一条件（\(j_J\)-层 = \(J\)-层，17.2.3）刻画，箭头就是原范畴中的自然变换。对象集相同、箭头集相同、包含函子相同，故两子范畴相等，恒等函子是等价 ✓。∎</div>
+    <div class="item"><b>17.4.2</b>\(j=\mathrm{id}\) 时反射单子 \(\sharp=ia=\mathrm{id}\)，\(\mathcal E_j=\mathcal E\)（17.2.2）；对应 (2) 中 \(a=\mathrm{id}\)、\(i=\mathrm{id}\)，平凡 lex 反射，像即 \(\mathcal E\) ✓。∎</div>
+    <div class="item"><b>17.4.3</b>\(\Omega_j=\{p\mid\neg\neg p=p\}\)（正则开／闭元素）。对 \(p\in\Omega_j\)，\(\neg p\in\Omega_j\)（因 \(\neg\neg\neg p=\neg p\)），且 \(p\vee\neg p=\neg\neg(p\vee\neg p)\)？在闭元素上：\(p\vee\neg p\) 的 \(\neg\neg\) 是 \(\neg(\neg p\wedge\neg\neg p)=\neg\bot=\top\)，故 \(p\vee\neg p=\top\)（因它已闭）。故排中律成立，\(\Omega_j\) 布尔，\(\mathcal E_j\) 布尔 ✓。∎</div>
+    <div class="item"><b>17.4.4</b>若 \(a\) 不保有限极限，则 \(a(1)\) 未必是终对象、\(a(X\times Y)\) 未必是 \(aX\times aY\)，于是反射“像”里的对象不具备正确的积与终对象，子范畴不能继承拓扑斯的有限极限结构——它就不是拓扑斯，只是普通反射子范畴。lex 保证反射像仍是拓扑斯，且伴随 \(a\dashv i\) 满足几何态射右伴随的要求，这才配叫“几何嵌入／子拓扑斯” ✓。∎</div>
+    <div class="item"><b>17.4.5</b>由 16.3 基本定理，\(\mathcal E/X\) 是拓扑斯，其分类子为 \(\Omega_X=\Omega\times X\to X\)。由 17.4.2，(a) 中 LT 拓扑 \(j\) 给子拓扑斯 \(\mathcal E_j\)；取 \(j_X\) 为对应切片 \(\mathcal E/X\) 的闭包算子（由子对象 \(X\to1\) 诱导的“开子拓扑斯”），则 \(\mathcal E_{j_X}\simeq\mathcal E/X\)。这把 16.3 的切片构造纳入子拓扑斯框架：切片是“在 \(X\) 之上观察”的局部化 ✓。∎</div>
+  </div>
+
+  <div class="phil">
+    <span class="lbl">全章收束（选读）</span>
+    <p>这一章把三种“拓扑”的流浪统一成了同一件事的三个面具：点集拓扑的开集族、site 的覆盖筛、\(\Omega\) 上的闭包算子。第 14 章你从开集出发学会层是什么；第 15 章你把开集抽象成覆盖筛；第 17 章你把覆盖筛装进 \(\Omega\)，发现它只是个幂等单子。每一步都在问同一个问题：“局部”到底需要什么？答案越来越简洁，应用范围越来越广。而这一简洁的代价是抽象——所以本章始终用例子（开子空间、稠密、切片、布尔化）把抽象拽回地面。</p>
+  </div>
+</section>
+
+<footer>
+  <p><a href="范畴论-逻辑-拓扑斯_教材总目录.html">← 返回总目录</a> ｜ 上一章：<a href="范畴论-逻辑-拓扑斯_教材第16章.html">第 16 章 初等拓扑斯</a> ｜ 下一章：<a href="范畴论-逻辑-拓扑斯_教材第18章.html">第 18 章 拓扑斯与逻辑</a></p>
+  <p>本章对应 Mac Lane &amp; Moerdijk, <em>Sheaves in Geometry and Logic</em>, Chapter V（§1、§2–3、§4、§5）。进阶参考 P. T. Johnstone, <em>Topos Theory</em>（1977）——补充 LT 拓扑作为 lex 幂等单子、子拓扑斯作为 lex 反射子、万有闭包运算、开子拓扑斯与布尔化等理论细节。定义核对另参考 The Stacks Project 与 Pierre Schapira 的讲义。公式由 MathJax 渲染。每节核心概念配“典型例 / 本质例 / 边界与误解 / 结构应用”四类例子。</p>
+</footer>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,926 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>第 16 章 初等拓扑斯（Ch. IV）—— 三书递进自学教材</title>
+<script>
+window.MathJax = {
+  tex: {
+    inlineMath: [['\\(','\\)']], displayMath: [['\\[','\\]']], processEscapes: true,
+    macros: {
+      llbracket: '\\lbrack\\lbrack',
+      rrbracket: '\\rbrack\\rbrack'
+    }
+  },
+  options: { ignoreHtmlClass: 'no-tex' },
+  svg: { fontCache: 'global' }
+};
+</script>
+<script async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
+<style>
+  :root{
+    --bg:#f6f7f9; --card:#fff; --ink:#1b1f27; --ink2:#4d5461; --ink3:#7a8190;
+    --line:#e5e8ed; --soft:#f0f2f5;
+    --c1:#2563eb; --c1bg:#eef4ff; --gold:#b45309; --goldbg:#fdf3e3;
+    --ok:#15803d; --okbg:#eefaf1; --phil:#7c3aed; --philbg:#f6f1ff;
+    --teal:#0d9488; --tealbg:#eefaf7; --walk:#b45309;
+    --radius:12px;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;
+    line-height:1.75;-webkit-font-smoothing:antialiased;}
+  .wrap{max-width:920px;margin:0 auto;padding:0 22px 80px;}
+
+  header.top{padding:34px 0 22px;border-bottom:1px solid var(--line);margin-bottom:26px;}
+  .breadcrumb{font-size:12.5px;color:var(--ink3);margin-bottom:10px;}
+  .breadcrumb a{color:var(--c1);text-decoration:none;}
+  h1{font-size:29px;margin:0 0 8px;letter-spacing:-.02em;}
+  .lede{color:var(--ink2);font-size:14.5px;margin:0 0 16px;}
+  .jump{display:flex;gap:8px;flex-wrap:wrap;}
+  .jump a{font-size:12.5px;font-weight:650;text-decoration:none;color:var(--ink2);
+    background:var(--card);border:1px solid var(--line);border-radius:99px;padding:6px 13px;}
+  .jump a:hover{border-color:var(--c1);color:var(--c1);}
+
+  section.sec{margin:0 0 52px;scroll-margin-top:16px;}
+  .sec-h{display:flex;align-items:baseline;gap:12px;border-bottom:2px solid var(--c1);padding-bottom:10px;margin-bottom:22px;}
+  .sec-no{font-size:13px;font-weight:800;color:#fff;background:var(--c1);border-radius:7px;padding:3px 10px;white-space:nowrap;}
+  .sec-h h2{font-size:22px;margin:0;letter-spacing:-.01em;}
+  .src{font-size:11.5px;color:var(--ink3);margin-left:auto;white-space:nowrap;}
+
+  .box{border-radius:var(--radius);padding:16px 20px;margin:18px 0;border:1px solid var(--line);}
+  .box h4{margin:0 0 10px;font-size:14px;letter-spacing:.01em;}
+
+  .learn{background:var(--c1bg);border-color:#cfe0ff;}
+  .learn h4{color:var(--c1);}
+  .learn ol{margin:0;padding-left:22px;} .learn li{margin:4px 0;font-size:14px;}
+
+  .prep{background:var(--tealbg);border-color:#bfe9dd;}
+  .prep h4{color:var(--teal);}
+  .prep p{font-size:13.5px;color:#115e59;margin:8px 0;}
+  .prep ol,.prep ul{margin:8px 0;padding-left:22px;font-size:13.5px;color:#115e59;}
+  .prep li{margin:5px 0;}
+
+  .defn{background:#fafbfc;border-left:4px solid var(--ink2);padding:14px 18px;margin:16px 0;border-radius:0 10px 10px 0;}
+  .defn .lbl{font-weight:800;font-size:13.5px;color:var(--ink);}
+  .prop{background:#fbfcfe;border:1px solid #dbe6f8;border-left:4px solid var(--c1);padding:14px 18px;margin:16px 0;border-radius:0 10px 10px 0;}
+  .prop .lbl{font-weight:800;font-size:13.5px;color:var(--c1);}
+  .rmk{font-size:13.5px;color:var(--ink2);background:var(--soft);padding:11px 16px;border-radius:9px;margin:12px 0;}
+  .xref{font-size:13px;color:#115e59;background:var(--tealbg);border-left:3px solid var(--teal);padding:9px 14px;border-radius:0 8px 8px 0;margin:12px 0;}
+
+  .proof{margin:10px 0 4px;padding-left:16px;border-left:2px solid var(--line);font-size:14px;color:var(--ink2);}
+  .proof .pl{font-weight:700;color:var(--ink);}
+  .qed{float:right;font-style:normal;color:var(--ink3);}
+
+  .exer{background:var(--goldbg);border-color:#f2dfbb;}
+  .exer h4{color:var(--gold);}
+  .exer .grp{font-size:12.5px;font-weight:750;color:var(--gold);margin:12px 0 4px;}
+  .exer ol{margin:0;padding-left:22px;} .exer li{margin:9px 0;font-size:14px;}
+
+  .ans{background:var(--okbg);border-color:#c9ecd3;}
+  .ans h4{color:var(--ok);}
+  .ans .item{margin:14px 0 18px;font-size:14px;}
+  .ans .item:last-child{margin-bottom:0;}
+  .ans .item b{color:var(--ok);}
+  .ans .proof{border-left-color:#bfe6c9;}
+
+  .phil{background:var(--philbg);border-color:#e3d5ff;}
+  .phil h4{color:var(--phil);}
+  .phil p{font-size:14px;color:#5b3a8e;margin:8px 0;}
+
+  .walk{background:#fffbeb;border-color:#fde68a;}
+  .walk h4{color:var(--walk);}
+  .walk p,.walk li{font-size:13.5px;color:#78350f;}
+  .walk ol,.walk ul{margin:8px 0;padding-left:22px;}
+  .walk table{border-collapse:collapse;width:100%;font-size:13px;margin:10px 0;}
+  .walk th,.walk td{border:1px solid #fcd34d;padding:7px 9px;text-align:left;vertical-align:top;}
+  .walk th{background:#fef3c7;color:#78350f;}
+
+  h3.sub{font-size:16px;margin:26px 0 6px;color:var(--ink);}
+  p{margin:9px 0;} .math{overflow-x:auto;}
+
+  .figcap{font-size:12.5px;color:var(--ink3);margin:2px 0 12px;text-align:center;font-style:italic;}
+  .figdesc{font-size:13px;color:var(--ink2);background:var(--soft);padding:10px 15px;border-radius:8px;margin:6px 0 12px;}
+
+  footer{border-top:1px solid var(--line);margin-top:30px;padding-top:20px;font-size:13px;color:var(--ink3);}
+  footer a{color:var(--c1);text-decoration:none;}
+
+  @media(max-width:640px){
+    h1{font-size:23px;} .wrap{padding:0 14px 60px;}
+    .sec-h{flex-wrap:wrap;} .src{margin-left:0;}
+    .box{padding:14px 15px;}
+  }
+  @media print{body{background:#fff;}.jump{display:none;}.box{break-inside:avoid;}}
+  /* ---- 范畴交换图 SVG（浅色主题）---- */
+  svg.cd{display:block;margin:16px auto 2px;max-width:100%;height:auto;
+    font-family:"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;}
+  svg.cd rect.node{fill:#eef4ff;stroke:#2563eb;stroke-width:1.5;rx:7;}
+  svg.cd rect.node2{fill:#f6f1ff;stroke:#7c3aed;stroke-width:1.5;rx:7;}
+  svg.cd rect.nodeg{fill:#eefaf1;stroke:#15803d;stroke-width:1.5;rx:7;}
+  svg.cd rect.nodey{fill:#fdf3e3;stroke:#b45309;stroke-width:1.5;rx:7;}
+  svg.cd text.nt{fill:#1b1f27;font-size:13.5px;font-weight:600;}
+  svg.cd text.lb{fill:#334155;font-size:12.5px;}
+  svg.cd text.hb{fill:#2563eb;font-size:12.5px;font-weight:600;}
+  svg.cd text.hg{fill:#15803d;font-size:12.5px;font-weight:600;}
+  svg.cd text.hp{fill:#7c3aed;font-size:12.5px;font-weight:600;}
+  svg.cd line.ar,svg.cd path.ar{stroke:#475569;stroke-width:1.6;fill:none;marker-end:url(#cdArr);}
+  svg.cd line.arb,svg.cd path.arb{stroke:#2563eb;stroke-width:1.8;fill:none;marker-end:url(#cdArrB);}
+  svg.cd line.arg,svg.cd path.arg{stroke:#15803d;stroke-width:1.8;fill:none;marker-end:url(#cdArrG);}
+  svg.cd line.arp,svg.cd path.arp{stroke:#7c3aed;stroke-width:1.8;fill:none;marker-end:url(#cdArrP);}
+  svg.cd line.ard,svg.cd path.ard{stroke:#475569;stroke-width:1.5;fill:none;stroke-dasharray:5 4;marker-end:url(#cdArr);}
+  svg.cd line.noa{stroke:#475569;stroke-width:1.5;fill:none;stroke-dasharray:5 4;}
+
+  /* ---- 四类例子深度组件（本章新增，落实用户"每概念四类例"要求）---- */
+  .cases{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:6px 20px 14px;margin:18px 0;}
+  .cases>.ct{font-size:13.5px;font-weight:800;color:var(--ink);padding:11px 0 4px;border-bottom:1px dashed var(--line);margin-bottom:8px;}
+  .case{padding:9px 0 9px 14px;border-left:3px solid var(--line);margin:8px 0;font-size:13.5px;color:var(--ink2);}
+  .case b{display:inline-block;font-size:12px;padding:1px 9px;border-radius:99px;margin-right:8px;vertical-align:1px;}
+  .case.typ{border-left-color:var(--ok);}       .case.typ b{background:var(--okbg);color:var(--ok);}
+  .case.deep{border-left-color:var(--c1);}      .case.deep b{background:var(--c1bg);color:var(--c1);}
+  .case.edge{border-left-color:#dc2626;}        .case.edge b{background:#fef2f2;color:#dc2626;}
+  .case.use{border-left-color:var(--phil);}     .case.use b{background:var(--philbg);color:var(--phil);}
+  .case p{margin:6px 0;}
+  /* 数学动机框：解释"这个构造解决什么问题" */
+  .motiv{background:#fffbeb;border:1px solid #fde68a;border-left:4px solid #d97706;padding:13px 18px;border-radius:0 10px 10px 0;margin:16px 0;font-size:13.5px;color:#78350f;}
+  .motiv .lbl{font-weight:800;color:#b45309;display:block;margin-bottom:5px;}
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute;width:0;height:0;overflow:hidden" aria-hidden="true">
+<defs>
+  <marker id="cdArr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+    <path d="M 0 0 L 10 5 L 0 10 z" fill="#475569"/>
+  </marker>
+  <marker id="cdArrB" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+    <path d="M 0 0 L 10 5 L 0 10 z" fill="#2563eb"/>
+  </marker>
+  <marker id="cdArrG" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+    <path d="M 0 0 L 10 5 L 0 10 z" fill="#15803d"/>
+  </marker>
+  <marker id="cdArrP" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+    <path d="M 0 0 L 10 5 L 0 10 z" fill="#7c3aed"/>
+  </marker>
+</defs>
+</svg><div class="wrap">
+
+<header class="top">
+  <div class="breadcrumb"><a href="范畴论-逻辑-拓扑斯_教材总目录.html">← 返回总目录</a> ｜ 第三部分 · Mac Lane &amp; Moerdijk《Sheaves in Geometry and Logic》</div>
+  <h1>第 16 章　初等拓扑斯（Ch. IV）</h1>
+  <p class="lede">前十五章我们把两样东西分别造了出来：<strong>层</strong>（能粘局部信息的预层）和<strong>层化</strong>（把任意预层修成层）。本章要做一件更冒险的事——把<strong>层范畴的范畴论骨架</strong>抽出来，写成几条公理，然后反过来问：满足这几条公理的范畴，即使根本不是由任何空间或 site 造出来的，是不是照样能玩集合论？答案是肯定的，而且这就是 “topos” 这个概念的全部力量。本章很重要：它是后面所有章节（Lawvere–Tierney 拓扑、内部逻辑、几何态射）的定义源头。</p>
+  <div class="xref"><strong>与前文的分工（去重说明）.</strong>本章要反复用到但<strong>不重述</strong>的东西：<br>
+    · 有限极限、拉回、等化子、余极限、推外、余等化子——<strong>（参见第 4 章 4.2–4.4）</strong>；<br>
+    · 指数对象、转置伴随、笛卡尔闭范畴 (CCC)、指数方程——<strong>（参见第 5 章 5.1–5.2、第 9 章 9.3）</strong>；<br>
+    · 子对象、\(\operatorname{Sub}(A)\) 的偏序、子对象分类子与特征函数 \(\chi_m\)、\(\operatorname{Sub}(A)\cong\mathcal E(A,\Omega)\)、预层范畴的 \(\Omega=\) 筛——<strong>（参见第 4 章 4.1、第 13 章 13.2–13.4）</strong>；<br>
+    · Heyting 代数的定义、开集格上的 Heyting 结构、量词 \(\exists_f\dashv f^\ast\dashv\forall_f\)——<strong>（参见第 5 章 5.3、第 13 章 13.5）</strong>；<br>
+    · 初等拓扑斯的“三条件定义”与内部语言 \(L(\mathcal E)\)——第 11 章 11.2 已从<strong>逻辑角度</strong>给出（那里细节回指前文）。本章<strong>不重复那条定义句</strong>，而是把它当作出发点，补上它缺的全部范畴论结构证明：\(\Omega\) 的内部 Heyting 结构、幂对象、指数与余极限的构造、像分解、切片范畴、Beck–Chevalley。<br>
+    · 层范畴 \(\mathbf{Sh}(\mathbf C,J)\)、层化 \(a\dashv i\)、可表层——<strong>（参见第 15 章 15.2–15.3）</strong>。<br>
+    <strong>进阶参考：</strong>Johnstone, <em>Topos Theory</em>（1977）——补充拓扑斯的范畴论基础与理论细节：把拓扑斯看成“广义集合的宇宙”，强调幂对象、局部笛卡尔闭性、内部完备性这些结构如何从公理中长出来。凡标 <span style="color:#7c3aed;font-weight:700">Johnstone 注</span> 处为进阶内容，第一遍可跳过。
+  </div>
+  <div class="box phil">
+    <h4>章首导读：把“空间上的层”和“集合的宇宙”认成同一个东西</h4>
+    <p>数学史上有个反复出现的套路：先在具体对象上观察到某组结构总是一起出现，然后把这组结构抽成公理，最后发现公理比原来的具体对象多得多。群是这样，拓扑空间是这样，拓扑斯也是这样。</p>
+    <p>在 \(\mathbf{Sh}(X)\) 里你会看到一堆好东西同时成立：能取子对象、能取指数 \(G^F\)、能取并和交、每个映射有像、每个切片还是层范畴、量词是伴随……第 11 章已经告诉你其中一条主线（子对象分类子 \(\Omega\) 把逻辑塞进范畴）。本章的野心是把<strong>整包结构</strong>从 \(\mathbf{Sh}(X)\) 里搬出来，只留下三条公理，然后证明：<em>只要满足这三条，上面那一整包好东西就自动全都在</em>——哪怕这个范畴跟任何拓扑空间都没有关系。</p>
+    <p>这就是为什么 “elementary topos”（初等拓扑斯）里的 “elementary” 不是说它简单，而是说它的定义是<strong>一阶的、内在的</strong>（不依赖外部的集合论宇宙、不依赖 site）。Grothendieck 的 topos 是“带拓扑的 site 上的层范畴”，那是<strong>一个</strong> topos；Lawvere 和 Tierney 抽象出的初等 topos 是<strong>一类</strong>范畴，而 \(\mathbf{Set}\) 只是其中最小的一个。Johnstone 的进阶视角把这件事说得更直白：<strong>topos 就是一套可以用来做数学的“集合论环境”</strong>，不同的 topos 是不同的数学宇宙，它们各自Boolean与否、满足选择公理与否，都是可以检验的结构性质。</p>
+  </div>
+</header>
+
+<nav class="jump">
+  <a href="#s16-1">16.1 拓扑斯的定义</a>
+  <a href="#s16-2">16.2 指数与余极限的构造</a>
+  <a href="#s16-3">16.3 像分解、切片范畴、Beck–Chevalley</a>
+  <a href="#s16-4">16.4 格与 Heyting 代数对象</a>
+</nav>
+
+<section class="sec" id="s16-1">
+  <div class="sec-h"><span class="sec-no">16.1</span><h2>拓扑斯的定义</h2><span class="src">M Ch.IV §1</span></div>
+
+  <div class="box learn">
+    <h4>① 本节学习目标</h4>
+    <ol>
+      <li>说清初等拓扑斯三条公理各自的<strong>范畴论动机</strong>，而不是背下三条并列条件；</li>
+      <li>严格重述子对象分类子的泛性质，并完整证明 \(\operatorname{Sub}(A)\cong\mathcal E(A,\Omega)\) 的自然性；</li>
+      <li>理解 \(\Omega\) 为什么是一个<strong>内部 Heyting 代数对象</strong>（陈述，16.4 给完整构造）；</li>
+      <li>掌握幂对象 \(P(A)=\Omega^A\) 的泛性质，以及它与“\(A\) 的子对象”的关系；</li>
+      <li>能用四类例子检验一个范畴是不是拓扑斯，并说清 \(\mathbf{Set}\)、\(\mathbf{Set}^{\mathbf C^{\mathrm{op}}}\)、\(\mathbf{Sh}(\mathbf C,J)\)、\(\mathcal E/X\) 各自扮演什么角色；</li>
+      <li>知道 Johnstone 的进阶刻画：局部笛卡尔闭性、幂对象公理化，以及“topos = 集合论宇宙”的含义。</li>
+    </ol>
+  </div>
+
+  <div class="xref"><strong>沿用前文（不再复述）.</strong> 有限极限的存在性定理见<strong>（第 4 章 4.3.4）</strong>；指数对象的定义、转置 \(\Lambda\) 与伴随 \(-\times A\dashv(-)^A\) 见<strong>（第 5 章 5.1–5.2）</strong>；子对象、拉回函子 \(f^\ast\)、子对象分类子的定义与 \(\chi_m\) 的唯一性见<strong>（第 13 章 13.2）</strong>；Heyting 代数定义见<strong>（第 5 章 5.3.2）</strong>；初等拓扑斯那条定义句与内部语言 \(L(\mathcal E)\) 见<strong>（第 11 章 11.2.3–11.2.5）</strong>。本节从这些“零件”出发，做的是<strong>把它们装配成结构并证明它们之间的必然联系</strong>。</div>
+
+  <div class="box prep">
+    <h4>极简回顾（六分钟）</h4>
+    <p><strong>1. 第 11 章已经给过定义句。</strong>那时说：拓扑斯 = 有限完备 + 笛卡尔闭 + 有子对象分类子。但那条定义是<em>为内部语言服务的</em>——三条并列写出，细节全部回指。本章要问一个第 11 章没问的问题：<strong>这三条之间有没有隐藏的推导关系？它们各自“管”什么？</strong></p>
+    <p><strong>2. 三个老朋友的档案。</strong>有限极限（第 4 章）：给你<em>做几何</em>的能力——交、拉回、等化子，也就是“把数据对齐”。笛卡尔闭（第 5 章）：给你<em>做函数空间</em>的能力——\(B^A\) 把“从 \(A\) 到 \(B\) 的所有函数”也变成一个可以内部讨论的对象。子对象分类子（第 13 章）：给你<em>做命题</em>的能力——每个子对象 \(S\hookrightarrow A\) 对应唯一特征函数 \(\chi_S:A\to\Omega\)，于是“\(a\in S\)”变成“\(\chi_S(a)=\mathrm{true}\)”。</p>
+    <p><strong>3. 一个必须澄清的“重复”。</strong>第 5 章已把 CCC 讲透，第 13 章已把 \(\Omega\) 讲透。第 16 章的新东西是：<strong>把两者锁在同一个范畴里之后，会冒出单独任何一方都没有的结构</strong>——最典型的是幂对象 \(P(A)=\Omega^A\)：它同时用到 \(\Omega\)（命题的真值）和指数（函数空间），是“\(A\) 的所有子对象的对象化”。这个对象是 16.2 构造余极限的工具，也是 16.4 内部 Heyting 代数的载体。</p>
+    <p><strong>4. 一个记法约定。</strong>本章用 \(\mathcal E\) 表示抽象拓扑斯，用 \(\Omega\) 表示其子对象分类子，\(\top:1\to\Omega\) 表示“真”。\(\operatorname{Sub}(A)\) 记 \(A\) 的子对象格。所有这些记号都与第 13 章一致。</p>
+  </div>
+
+  <h3 class="sub">16.1.1 为什么要抽象：从 \(\mathbf{Sh}(X)\) 到一阶公理</h3>
+
+  <div class="motiv">
+    <span class="lbl">这个定义解决什么问题？</span>
+    第 15 章结束时我们已经能造出一大批层范畴 \(\mathbf{Sh}(\mathbf C,J)\)。它们看起来shared一大堆性质，但那是<strong>从构造方式继承来的</strong>——因为它们是“层范畴”，所以有这些性质。现在反过来：如果有人在纸上随便写一个范畴 \(\mathcal E\)，不告诉你它是不是层范畴，你能不能只检查有限条、且每条都只用到 \(\mathcal E\) 内部的数据（不引用外部的集合、点、site），就断定它“表现得像集合与函数的宇宙”？<strong>初等拓扑斯的定义就是这份检查清单</strong>。“初等”（elementary）二字正是这个意思：条件必须能用一阶语言在 \(\mathcal E\) 内部说出来。
+    <br><br>
+    这件事的收益是巨大的：一旦公理成立，你就免费获得一整套定理（16.2–16.4 要证的那些），而且可以拿它们去研究<strong>根本不是层范畴</strong>的对象——比如集合的平坦函子范畴、群的 \(G\)-集合范畴、甚至逻辑理论的分类范畴。Johnstone 把这种“公理化的宇宙”直接当作集合论的替代品来用。
+  </div>
+
+  <p>先把三条公理摆出来，再逐条讲动机。这里刻意<strong>不</strong>照抄第 11 章 11.2.3 的原句，而是写成“能力清单”的形式，每条后面附上它到底管什么。</p>
+
+  <div class="defn">
+    <span class="lbl">定义 16.1.1（初等拓扑斯，能力清单版）</span>
+    <p>一个范畴 \(\mathcal E\) 称为<strong>初等拓扑斯</strong>（elementary topos），如果它同时具备以下三种能力：</p>
+    <p><strong>(E1) 做有限几何：</strong>\(\mathcal E\) 有有限极限，即有终端对象 \(1\) 与任意两个对象的拉回（从而有有限积与等化子，第 4 章 4.3.4）。</p>
+    <p><strong>(E2) 做函数空间：</strong>\(\mathcal E\) 笛卡尔闭，即对每个 \(A\)，函子 \(-\times A\) 有右伴随 \((-)^A\)（第 5 章 5.1.2）。</p>
+    <p><strong>(E3) 做命题：</strong>\(\mathcal E\) 有子对象分类子，即存在对象 \(\Omega\) 与箭头 \(\top:1\to\Omega\)，使每个单态 \(m:S\hookrightarrow A\) 都是 \(\top\) 沿唯一箭头 \(\chi_m:A\to\Omega\) 的拉回（第 13 章 13.2.3）。</p>
+    <p>三条合起来，旧话重说就是“有限完备 + CCC + 有 \(\Omega\)”；但与第 11 章不同，本章把每条看成一种<strong>可验证的能力</strong>，下一节开始就会逐条兑现它的后果。</p>
+  </div>
+
+  <div class="rmk"><strong>三条不是并列的“配料表”，而是有主次的。</strong>(E1) 是地基：没有拉回，连子对象的交和量词的代入都没法定义。(E2) 和 (E3) 则分别把“函数”和“命题”对象化——它们看起来是两件事，但在拓扑斯里会通过幂对象 \(P(A)=\Omega^A\) 深深缠在一起（见 16.1.4 与 16.2.1）。一个常见的历史细节：Lawvere 最初的公理化里用“幂对象”代替 (E3)，因为幂对象同时编码了 \(\Omega\) 与指数。两种公理化等价（Johnstone 注，见 16.1.4）。</div>
+
+  <h3 class="sub">16.1.2 子对象分类子的严格泛性质</h3>
+
+  <p>(E3) 是三条里最陌生的一条，也是把逻辑塞进范畴的那条。第 13 章已经给过定义与特征函数唯一性的论证；这里把它写成<strong>可用来证明东西的泛性质</strong>，并补上自然性——这是后面一切的地基，值得逐句看。</p>
+
+  <div class="defn">
+    <span class="lbl">定义 16.1.2（子对象分类子，泛性质版）</span>
+    <p>\(\mathcal E\) 上的<strong>子对象分类子</strong>是一对 \((\Omega,\top)\)，其中 \(\top:1\to\Omega\)，满足：对每个对象 \(A\)，映射</p>
+    \[\operatorname{Hom}_{\mathcal E}(A,\Omega)\longrightarrow\operatorname{Sub}(A),\qquad \chi\longmapsto\bigl(\text{$\top$ 沿 $\chi$ 的拉回}\bigr)\]
+    <p>是双射。也就是说：给一个箭头 \(\chi:A\to\Omega\)，拉回 \(1\times_\Omega A\hookrightarrow A\) 给出一个子对象；反过来每个子对象 \(m:S\hookrightarrow A\) 有唯一的 \(\chi_m:A\to\Omega\) 使下面的方块是拉回：</p>
+    <svg class="cd" viewBox="0 0 560 190" role="img" aria-label="子对象分类子的拉回方块">
+      <rect class="node" x="40" y="30" width="120" height="40" rx="7"/>
+      <text class="nt" x="100" y="56" text-anchor="middle">S</text>
+      <rect class="node" x="380" y="30" width="120" height="40" rx="7"/>
+      <text class="nt" x="440" y="56" text-anchor="middle">1</text>
+      <rect class="node" x="40" y="130" width="120" height="40" rx="7"/>
+      <text class="nt" x="100" y="156" text-anchor="middle">A</text>
+      <rect class="node" x="380" y="130" width="120" height="40" rx="7"/>
+      <text class="nt" x="440" y="156" text-anchor="middle">Ω</text>
+      <line class="ar" x1="160" y1="50" x2="376" y2="50"/>
+      <text class="lb" x="268" y="43" text-anchor="middle">!</text>
+      <line class="arb" x1="160" y1="150" x2="376" y2="150"/>
+      <text class="hb" x="268" y="143" text-anchor="middle">χ_m（唯一）</text>
+      <line class="ar" x1="60" y1="70" x2="60" y2="126"/>
+      <text class="lb" x="52" y="102" text-anchor="end">m</text>
+      <line class="ar" x1="420" y1="70" x2="420" y2="126"/>
+      <text class="lb" x="428" y="102" text-anchor="start">⊤</text>
+      <text class="lb" x="280" y="106" text-anchor="middle" style="font-size:11.5px">拉回（方块是 pullback）</text>
+    </svg>
+    <p class="figcap">图 16.1　每个子对象 \(m\) 都是 \(\top\) 沿唯一特征函数 \(\chi_m\) 的拉回</p>
+  </div>
+
+  <div class="prop">
+    <span class="lbl">命题 16.1.3（表示定理）</span>
+    <p>若 \((\Omega,\top)\) 是子对象分类子，则有<strong>自然同构</strong></p>
+    \[\operatorname{Sub}(-)\;\cong\;\mathcal E(-,\Omega)\;:\;\mathcal E^{\mathrm{op}}\to\mathbf{Set}.\]
+    <p>即：\(\operatorname{Sub}(A)\cong\mathcal E(A,\Omega)\) 对 \(A\) 自然。</p>
+  </div>
+
+  <div class="proof">
+    <p class="pl">证明.</p>
+    <p>定义 16.1.2 已经给出逐对象的双射 \(\Phi_A:\mathcal E(A,\Omega)\to\operatorname{Sub}(A)\)。要证的是对 \(A\) 的自然性：对任意 \(f:B\to A\)，方块</p>
+    \[\begin{array}{ccc}\mathcal E(A,\Omega)&\xrightarrow{\Phi_A}&\operatorname{Sub}(A)\\[2pt]\downarrow f^\ast &&\downarrow f^\ast\\[2pt]\mathcal E(B,\Omega)&\xrightarrow{\Phi_B}&\operatorname{Sub}(B)\end{array}\]
+    <p>交换，其中左边是前复合 \(\chi\mapsto\chi\circ f\)，右边是拉回子对象。</p>
+    <p>取 \(\chi:A\to\Omega\)，记 \(\Phi_A(\chi)=m:S\hookrightarrow A\)，即 \(S=1\times_\Omega A\)。先看右边：\(\Phi_A\) 沿 \(f\) 拉回得到 \(f^\ast S=1\times_\Omega B\)，其中 \(\Omega\)-箭头是 \(\chi\circ f\)。再看左边：先做 \(\chi\circ f:B\to\Omega\)，再 \(\Phi_B\) 给出 \(1\times_\Omega B\)（沿 \(\chi\circ f\) 拉回）。两边是同一个拉回对象。理由是拉回的<strong>粘贴律</strong>（第 4 章 4.2.6）：把方块</p>
+    \[\begin{array}{ccc}S=1\times_\Omega A&\to&1\\\downarrow&&\downarrow\top\\A&\xrightarrow{\chi}&\Omega\end{array}\qquad\text{与}\qquad\begin{array}{ccc}B&\xrightarrow{f}&A\\\downarrow{\chi\circ f}&&\downarrow\chi\\\Omega&=&\Omega\end{array}\]
+    <p>沿 \(A\to\Omega\) 与 \(B\to A\) 粘贴，得到的 \(1\times_\Omega B\) 无论按哪条路径计算都相同（都是泛性质给出的唯一对象）。自然性成立。∎</p>
+  </div>
+
+  <div class="rmk"><strong>这个命题为什么重要。</strong>它把“子对象”（几何/集合论概念）翻译成“到 \(\Omega\) 的箭头”（代数/可计算概念）。第 13 章就是靠它在函子范畴里算出 \(\Omega=\) 筛的。本章后面所有东西——\(\operatorname{Sub}(A)\) 的 Heyting 结构、量词作为伴随、Beck–Chevalley——本质上都是把这个同构<strong>升级到带结构的层面上</strong>：不只集合同构，而且保持 \(\wedge,\vee,\Rightarrow\) 与 \(\exists,\forall\)。</div>
+
+  <div class="cases">
+    <div class="ct">四类例子：子对象分类子长什么样</div>
+    <div class="case typ"><b>典型例</b>\(\mathbf{Set}\) 中 \(\Omega=\{0,1\}\)、\(\top=\) 选中 \(1\) 的箭头 \(1\to\Omega\)。子对象 \(S\subseteq A\) 的特征函数就是老朋友 \(\chi_S:A\to\{0,1\}\)。这是最熟悉的情形，也是唯一一个 \(\Omega\) 只有两个元素的“布尔”拓扑斯。</div>
+    <div class="case deep"><b>本质例</b>预层范畴 \(\mathbf{Set}^{\mathbf C^{\mathrm{op}}}\) 中，\(\Omega(c)=\) \(c\) 上的筛（第 13 章 13.3.4、14.2）。这解释了第 13 章那个看似奇怪的结论：为什么真值不是一个布尔值而是“一族箭头”。因为在预层世界里，“命题在阶段 \(c\) 成立”不是二值的——它可以只在 \(c\) 的某些“广义邻域”上成立。层范畴 \(\mathbf{Sh}(\mathbf C,J)\) 的 \(\Omega\) 是同一个预层再层化（第 15 章），这正是 Grothendieck 拓扑改变逻辑的方式（第 11 章 11.5）。</div>
+    <div class="case edge"><b>边界与误解</b>一个常见误解：“\(\Omega\) 必须是某个固定的两元素对象”。不。\(\Omega\) 是<em>范畴内部</em>的对象，不同拓扑斯的 \(\Omega\) 完全不同。第 13 章算过：有向图拓扑斯里 \(\Omega\) 在顶点处有 2 个真值、在边处有 5 个；第 11 章 11.5 看过：开集拓扑斯 \(\mathbf{Sh}(X)\) 中 \(\Omega(U)=\) \(U\) 上的开集，真值是随 \(U\) 变化的。另一个误解：“\(\Omega\) 唯一”。它唯一<em>到同构</em>（由泛性质），但构造方式可以五花八门。</div>
+    <div class="case use"><b>结构应用</b>切片范畴 \(\mathcal E/X\) 的拓扑斯结构（16.3.3）里，子对象分类子是 \(\Omega_X=X^\ast\Omega=\Omega\times X\to X\)（在 \(\mathbf{Set}\) 里就是投影 \(\Omega\times X\to X\)）。这说明 \(\Omega\) 会<em>随“所处阶段”变化</em>——切片里的命题是相对于 \(X\) 的命题。这一条会在 16.3 证明切片仍是拓扑斯时正式用到。</div>
+  </div>
+
+  <h3 class="sub">16.1.3 \(\Omega\) 的内部 Heyting 代数结构（先陈述）</h3>
+
+  <p>既然 \(\operatorname{Sub}(A)\cong\mathcal E(A,\Omega)\) 是双射，那么当 \(A=1\) 时，\(\operatorname{Sub}(1)\) 的元素（真值）与 \(\mathcal E(1,\Omega)\) 的元素（\(\Omega\) 的“全局点”）一一对应。第 13 章 13.5 已证 \(\operatorname{Sub}(A)\) 是 Heyting 代数。把这些运算通过同构搬到 \(\Omega\) 上，就得到：</p>
+
+  <div class="prop">
+    <span class="lbl">命题 16.1.4（\(\Omega\) 是内部 Heyting 代数对象，陈述）</span>
+    <p>存在箭头</p>
+    \[\wedge,\vee:\Omega\times\Omega\to\Omega,\qquad \Rightarrow:\Omega\times\Omega\to\Omega,\qquad \neg:\Omega\to\Omega,\qquad \bot,\top:1\to\Omega,\]
+    <p>使对每个 \(A\)，同构 \(\mathcal E(A,\Omega)\cong\operatorname{Sub}(A)\) 把上述箭头逐点解释为子对象格的交、并、蕴涵、否定、底与顶。特别地 \(\operatorname{Sub}(1)\) 是 Heyting 代数。</p>
+  </div>
+
+  <div class="rmk"><strong>“内部”二字要落实。</strong>这里说的不是“\(\Omega\) 的元素构成 Heyting 代数”——\(\Omega\) 是范畴内的对象，未必有足够多的全局元素（想想有向图拓扑斯）。说的是：上面那些箭头在范畴内<strong>满足 Heyting 代数的方程</strong>（如 \(p\wedge q\le r\iff q\le(p\Rightarrow r)\)，其中 \(\le\) 用箭头是否存在来定义）。16.4 会把“内部 Heyting 代数对象”严格定义出来并给出构造，那时这句话才完全落地。现在只要记住结论：<strong>逻辑联结词是 \(\Omega\) 上的箭头</strong>，不是外加的语法。</div>
+
+  <h3 class="sub">16.1.4 幂对象与 Johnstone 的等价刻画</h3>
+
+  <div class="motiv">
+    <span class="lbl">幂对象解决什么问题？</span>
+    在 \(\mathbf{Set}\) 里，\(A\) 的幂集 \(\mathcal P(A)\) 就是所有子集的集合，而且 \(\mathcal P(A)\cong 2^A\)（子集⟷特征函数）。在拓扑斯里我们同时有 \(\Omega\)（扮演“2”）和指数（扮演“幂”），于是自然要问：\(\Omega^A\) 是不是就是“\(A\) 的所有子对象的对象化”？<strong>是</strong>。这个对象记为 \(P(A)\)，叫幂对象。它把“子对象”这件本来是<em>外部</em>的事（\(\operatorname{Sub}(A)\) 是个集合）搬进范畴<em>内部</em>（\(P(A)\) 是范畴里的对象）。这是拓扑斯能做内部集合论的关键一步，也是 16.2 构造余极限的发动机。
+  </div>
+
+  <div class="defn">
+    <span class="lbl">定义 16.1.5（幂对象）</span>
+    <p>在拓扑斯 \(\mathcal E\) 中，对象 \(A\) 的<strong>幂对象</strong>定义为 \(P(A):=\Omega^A\)。它由下述泛性质刻画：对任意 \(X\)，</p>
+    \[\mathcal E(X,P(A))\;\cong\;\operatorname{Sub}(X\times A),\]
+    <p>即“从 \(X\) 到 \(P(A)\) 的箭头”等于“\(X\times A\) 的子对象”。这是集合论里 \(\mathcal P(A)\cong 2^A\) 的范畴论版本。</p>
+  </div>
+
+  <div class="proof">
+    <p class="pl">证明泛性质.</p>
+    <p>由指数伴随 \(\mathcal E(X,\Omega^A)\cong\mathcal E(X\times A,\Omega)\)（第 5 章 5.1.3），再用子对象分类子的表示定理 \(\mathcal E(X\times A,\Omega)\cong\operatorname{Sub}(X\times A)\)（命题 16.1.3，取 \(A\) 为 \(X\times A\)），两次同构复合即得。∎</p>
+  </div>
+
+  <div class="rmk"><span style="color:#7c3aed;font-weight:700">Johnstone 注.</span> Johnstone 的《Topos Theory》把幂对象<strong>当作公理</strong>来用：可以不用 (E3) 的子对象分类子，而直接公理化“每个 \(A\) 有幂对象 \(P(A)\) 且满足上面的泛性质”，再要求有限极限，由此推出子对象分类子与笛卡尔闭性（取 \(P(1)\cong\Omega\)）。这是同一结构的另一种打包方式。Johnstone 还强调一个后来极其重要的性质：<strong>局部笛卡尔闭性</strong>——每个切片 \(\mathcal E/X\) 仍是笛卡尔闭的（16.3.3 证）。有了它，“依赖函数” \(\Pi_f,\Sigma_f\) 才能在拓扑斯内部存在，这正是 Martin-Löf 类型论与拓扑斯之间的桥梁（第 11 章 11.6）。</div>
+
+  <div class="cases">
+    <div class="ct">四类例子：幂对象</div>
+    <div class="case typ"><b>典型例</b>\(\mathbf{Set}\) 中 \(P(A)=2^A\cong\mathcal P(A)\)，泛性质读作“函数 \(X\to\mathcal P(A)\)”⟷“\(X\times A\) 的子集”，正是老熟人：\((x,a)\in R\iff a\in f(x)\)。</div>
+    <div class="case deep"><b>本质例</b>\(\mathbf{Sh}(X)\) 中 \(P(A)\) 是“\(A\) 的开集族层”，其 \(U\) 上的截面是 \(A|_U\) 在 \(U\) 上的开子集。它不同于外部幂集：截面必须局部相容。这正是 16.2 里“余极限不能逐点算”的同源现象。</div>
+    <div class="case edge"><b>边界与误解</b>误解：“\(P(A)\) 的元素就是 \(A\) 的子对象”。在 \(\mathbf{Set}\) 里对，在一般拓扑斯里要小心：全局元素 \(\mathcal E(1,P(A))\cong\operatorname{Sub}(A)\)，但 \(P(A)\) 在“阶段 \(X\)”的元素是 \(X\times A\) 的子对象，随 \(X\) 变化。所以 \(P(A)\) 是子对象随阶段变化的对象化，不是一张静态清单。</div>
+    <div class="case use"><b>结构应用</b>16.2.2 会用 \(P(B)\) 构造余等化子：给 \(f,g:A\rightrightarrows B\)，考虑 \(P(B)\) 上由“加入一步 \(f(a)\sim g(a)\) 等价相关”给出的算子 \(\Phi\)，取它的不变点就得到等价关系的传递闭包，进而得到余等化子。没有幂对象，这个构造无从下手。</div>
+  </div>
+
+  <div class="box phil">
+    <h4>选读：三条公理各自的“最小充分理由”</h4>
+    <p>为什么恰好是这三条？少一条会怎样？</p>
+    <p>少了 (E1)，连拉回都没有，子对象无法相交，量词的代入 \(f^\ast\) 根本定义不了——不可能谈逻辑。少了 (E3)，你有一个漂亮的笛卡尔闭范畴（比如 \(\mathbf{Ab}\) 的子范畴、或某些 CCC），但没有 \(\Omega\)，于是“命题”无法对象化，只有函数没有真值。少了 (E2)，你有子对象分类子和极限（可以谈命题），但没有函数空间，于是“\(\forall\)”这种需要指数来构造的量词会缺失。</p>
+    <p>更精确地说：Lawvere 发现 (E3) 或等价的幂对象公理已经蕴涵了相当多的“集合论完整性”。Johnstone 的书把这一点推到极致：从有限极限 + 幂对象出发，可以系统地重建整个结构（有限余极限、指数、像分解、内部 Heyting 逻辑）。本章就是这个重建过程的第一幕。</p>
+  </div>
+
+  <div class="box walk">
+    <h4>③ 手把手：从零验证 \(\mathbf{Set}^{\mathbf G}\) 是拓扑斯</h4>
+    <p>取 \(\mathbf G\) 为第 13 章那个有向图形状范畴（对象 \(0=\) 边、\(1=\) 顶点，箭头 \(s,t:1\to0\)，见第 13 章 13.1.2 的约定）。我们按 (E1)(E2)(E3) 逐条验 \(\mathcal E=\mathbf{Set}^{\mathbf G^{\mathrm{op}}}\)。</p>
+    <ol>
+      <li><strong>(E1) 有限极限。</strong>函子范畴的极限<em>逐点</em>算（第 13 章 13.1.3）：对象 \(X\) 是集合 \(X(1)=\) 顶点集、\(X(0)=\) 边集，加两张函数 \(X(s),X(t):X(0)\to X(1)\)。终端对象逐点取单点：顶点一个、边一个，两个结构映射只能都取唯一函数 ✓。拉回逐点取集合的拉回，结构映射由泛性质诱导 ✓。</li>
+      <li><strong>(E2) 指数。</strong>函子范畴的指数<em>不逐点</em>算（第 13 章 13.4.2），但确实存在：\((Y^X)(c)=\operatorname{Nat}(y(c)\times X,Y)\)，由 Yoneda 与泛性质保证。对 \(\mathbf G\) 这个小范畴，可以手动展开：\((Y^X)(1)\)、\((Y^X)(0)\) 各自是满足相容条件的自然变换集合，结构映射由限制给出。这里不必真算完——重点是<strong>存在性由一般定理给出</strong> ✓。</li>
+      <li><strong>(E3) 子对象分类子。</strong>第 13 章 13.3.3、13.3.4 已经算完：\(\Omega(1)=\{\varnothing,\{\ast\}\}\)（2 个顶点真值）、\(\Omega(0)=\{\varnothing,\{s\},\{t\},\{s,t\},\{s,t,\mathrm{id}\}\}\)（5 个边真值），全局真值 3 个。每个子图由其顶点集与边集的两族特征函数分类 ✓。</li>
+    </ol>
+    <p><strong>结论：</strong>三条全过，\(\mathbf{Set}^{\mathbf G}\) 是初等拓扑斯。注意它的 \(\Omega\) 不是 \(\{0,1\}\)——它是一个有结构的对象，这正是“拓扑斯可以承载非布尔逻辑”的第一个具体例子。</p>
+  </div>
+
+  <div class="box exer">
+    <h4>④ 习题（16.1）</h4>
+    <ol>
+      <li id="ex16-1-1">用定义 16.1.2 验证 \(\mathbf{Set}\) 中 \(\Omega=2,\top=\)“取 1”是子对象分类子；写出 \(S\subseteq A\) 的 \(\chi_S\)。</li>
+      <li id="ex16-1-2">证明子对象分类子唯一到同构：若 \((\Omega,\top)\) 与 \((\Omega',\top')\) 都满足定义 16.1.2，则存在唯一同构 \(\Omega\cong\Omega'\) 交换 \(\top,\top'\)。</li>
+      <li id="ex16-1-3">在 \(\mathbf{Set}\) 里验证幂对象泛性质 \(\mathcal E(X,2^A)\cong\operatorname{Sub}(X\times A)\)，写出双射的显式公式。</li>
+      <li id="ex16-1-4">\(\mathbf{Ab}\)（阿贝尔群范畴）有子对象分类子吗？提示：子群子对象的特征函数该取什么值？</li>
+      <li id="ex16-1-5">解释为什么“初等拓扑斯”的“初等”不等于“简单”：指出定义中哪几条是一阶的、不引用外部 site。</li>
+      <li id="ex16-1-6">在 \(\mathbf{Set}^{\mathbf G}\) 中，验证 \(\operatorname{Sub}(1)\) 恰有 3 个元素，并与第 13 章 13.3.3 的“全局真值 3 个”对上。</li>
+      <li id="ex16-1-7">说明为什么 \(\mathcal E(X,P(A))\cong\operatorname{Sub}(X\times A)\) 可以看作“子集的特征函数”在拓扑斯中的推广。</li>
+      <li id="ex16-1-8">（Johnstone 视角）说明为什么“局部笛卡尔闭”比“全局笛卡尔闭”更强，并解释它对依赖函数 \(\Pi_f\) 的意义。</li>
+    </ol>
+  </div>
+
+  <div class="box ans">
+    <h4>⑤ 参考答案（16.1）</h4>
+    <div class="item"><b>16.1.1</b>\(\Omega=\{0,1\}\)，\(\top:1\to\Omega\) 送到 \(1\)。对 \(S\subseteq A\)，\(\chi_S(a)=1\iff a\in S\)，否则 \(0\)。拉回 \(1\times_\Omega A=\{a\mid\chi_S(a)=1\}=S\)。唯一性：若 \(\chi\) 也使拉回为 \(S\)，则 \(\chi(a)=1\iff a\in S\)，故 \(\chi=\chi_S\)。∎</div>
+    <div class="item"><b>16.1.2</b>因 \(\top':1\to\Omega'\) 是单态（第 13 章 13.2 已证 \(\top\) 单），由 \((\Omega',\top')\) 的分类性质，存在唯一 \(\varphi:\Omega\to\Omega'\) 使 \(\top'=\varphi\top\)（把 \(\top\) 看作 \(\operatorname{Sub}(1)\) 里的子对象，其分类箭头是 \(\varphi\)）。对称地有 \(\psi:\Omega'\to\Omega\) 使 \(\top=\psi\top'\)。则 \(\psi\varphi:\Omega\to\Omega\) 满足 \((\psi\varphi)\top=\top\)，而 \(\mathrm{id}_\Omega\) 也满足；由 \(\top\) 的分类性质所给唯一性，\(\psi\varphi=\mathrm{id}_\Omega\)（严格说：\(\top\) 作为 \(\Omega\) 的子对象由 \(\mathrm{id}_\Omega\) 分类，任何使 \(\chi\top=\top\) 的 \(\chi\) 必须等于 \(\mathrm{id}\)，因为拉回 \(1\times_\Omega\Omega\) 沿 \(\chi\) 给出同一子对象，唯一性推出 \(\chi=\mathrm{id}\)）。同理 \(\varphi\psi=\mathrm{id}\)。故 \(\varphi\) 是同构。∎</div>
+    <div class="item"><b>16.1.3</b>双射 \(F:\{f:X\to 2^A\}\to\operatorname{Sub}(X\times A)\) 为 \(F(f)=\{(x,a)\mid f(x)(a)=1\}\)（即 \(f(x)=\chi_{F(f)_x}\)）。逆：给定 \(R\subseteq X\times A\)，令 \(g_R(x)=\chi_{R_x}:A\to2\)，其中 \(R_x=\{a\mid(x,a)\in R\}\)。验证 \(F(g_R)=R\) 显然；\(g_{F(f)}(x)=\chi_{\{a\mid f(x)(a)=1\}}=f(x)\) ✓。</div>
+    <div class="item"><b>16.1.4</b>没有。\(\mathbf{Ab}\) 有零对象和良好的子对象格（子群格），但子群 \(S\hookrightarrow A\) 无法由箭头 \(A\to\) 某个固定阿贝尔群分类：阿贝尔群之间的箭头是同态，而子群的特征需要“属于/不属于”的二值判定，唯一的二值阿贝尔群是 \(0\)（不可能编码）。更严格地：若 \(\Omega\) 存在，则 \(\operatorname{Sub}(A)\cong\mathbf{Ab}(A,\Omega)\)，右边是集合、左边是格；取 \(A=\mathbb Z\)，\(\mathbf{Ab}(\mathbb Z,\Omega)\cong\Omega\) 的元素是 \(\Omega\) 的元素，而 \(\operatorname{Sub}(\mathbb Z)\) 有两个元素（\(0,\mathbb Z\)），这本身不矛盾，但继续取 \(A=\mathbb Z/2\) 与 \(\mathbb Z/4\) 的单态等会破坏拉回兼容性；标准结论是 \(\mathbf{Ab}\) 不是拓扑斯（它不是笛卡尔闭的，且缺少子对象分类子）。∎</div>
+    <div class="item"><b>16.1.5</b>“初等”指定义中每条都只引用 \(\mathcal E\) 内部的数据与一阶逻辑：有限极限用对象/箭头/交换图；笛卡尔闭用伴随的存在性；子对象分类子用拉回方块的存在唯一性。三者都不引用外部的集合论宇宙、点集或 site。相比之下 Grothendieck topos 的定义依赖“某个 site 上的层范畴”（或 Giraud 公理中依赖生成元集），是二阶的。“初等”不等于“简单”：初等拓扑斯的理论比许多具体层范畴更抽象。</div>
+    <div class="item"><b>16.1.6</b>终对象 \(1\) 在 \(\mathbf{Set}^{\mathbf G}\) 中逐点取单点：\(1(1)=\{\ast\},1(0)=\{\ast\}\)。\(\operatorname{Sub}(1)\cong\mathcal E(1,\Omega)=\Gamma\Omega=\) 全局真值。第 13 章 13.3.3、14.2.6 已算得全局真值为 3 个（\(\varnothing,\{s,t\},\{\mathrm{id}_1,s,t\}\) 一类），故 \(\operatorname{Sub}(1)\) 恰 3 个元素 ✓。注意这与 \(\Omega(1)=2\)、\(\Omega(0)=5\) 不矛盾：那是两个不同对象处的局部真值。</div>
+    <div class="item"><b>16.1.7</b>在 \(\mathbf{Set}\) 中，子集 \(R\subseteq X\times A\) 就是一族由 \(x\) 索引的子集 \(R_x\subseteq A\)，也就是函数 \(X\to\mathcal P(A)\cong2^A\)。泛性质 \(\mathcal E(X,P(A))\cong\operatorname{Sub}(X\times A)\) 说的正是这件事在任意拓扑斯中的推广：“参数化的子对象”⟷“到幂对象的箭头”。这也是内部语言里“含自由变量的公式”的解释：公式 \(\varphi(x,a)\) 定义 \(X\times A\) 的子对象，而 \(\lambda x.\varphi(x,-)\) 是 \(X\to P(A)\) 的箭头。</div>
+    <div class="item"><b>16.1.8</b>“全局笛卡尔闭”只保证 \(\mathcal E\) 自身有指数 \(Y^X\)；“局部笛卡尔闭”要求每个切片 \(\mathcal E/X\) 都笛卡尔闭。后者更强：取 \(X=1\) 才回到前者。对 \(f:X\to Y\)，切片中的指数正是依赖积 \(\Pi_f\)：它给出“沿 \(f\) 的纤维取函数空间”，是类型论 \(\Pi\)-类型的语义（第 11 章 11.1、11.6）。没有局部笛卡尔闭性，\(\Pi_f\) 无意义，依赖类型就无法解释。∎</div>
+  </div>
+</section>
+
+<section class="sec" id="s16-2">
+  <div class="sec-h"><span class="sec-no">16.2</span><h2>指数与余极限的构造</h2><span class="src">M Ch.IV §2, §5</span></div>
+
+  <div class="box learn">
+    <h4>① 本节学习目标</h4>
+    <ol>
+      <li>用幂对象 \(P(A)=\Omega^A\) 给出指数 \(B^A\) 的显式构造（“函数图像”作为 \(P(A\times B)\) 的子对象）；</li>
+      <li>理解为什么幂对象公理化与标准三条件定义等价；</li>
+      <li>掌握 M&amp;M 的核心技术：用幂对象上的“等价类”构造商，从而得到<strong>余等化子</strong>；</li>
+      <li>看清“有限余极限是冗余公理”的含义：初对象、余积、余等化子都能从 (E1)(E2)(E3) 造出来；</li>
+      <li>理解像分解（16.3）与余等化子的分工，以及为什么余极限比极限难造；</li>
+      <li>能亲手在 \(\mathbf{Set}\) 和 \(\mathbf{Set}^{\mathbf G}\) 里把这些构造算一遍。</li>
+    </ol>
+  </div>
+
+  <div class="xref"><strong>沿用前文（不再复述）.</strong> 指数的定义、转置与伴随 \(-\times A\dashv(-)^A\) 见<strong>（第 5 章 5.1）</strong>；幂对象 \(P(A)=\Omega^A\) 的泛性质刚在<strong>（16.1.4）</strong>给出；内部语言 \(L(\mathcal E)\) 的项、公式与“\(\{x\mid\varphi\}\)”记号见<strong>（第 11 章 11.2.5）</strong>；有限极限与拉回见<strong>（第 4 章 4.2–4.3）</strong>；像的定义见<strong>（第 4 章 4.1）</strong>。</div>
+
+  <div class="box prep">
+    <h4>极简回顾（六分钟）</h4>
+    <p><strong>1. 极限好造，余极限难造。</strong>第 4 章告诉你：终对象、积、等化子、拉回都能从少数几个基本构造拼出来，而且在任何拓扑斯里都能<em>逐点</em>或按泛性质算。但对偶那边不同：余积不是积的对偶那么简单，余等化子要“把东西认成一样”，这需要构造商对象。在 \(\mathbf{Set}\) 里商就是商集，但在一般范畴里，“商”没有现成公式。</p>
+    <p><strong>2. 幂对象是桥梁。</strong>16.1.4 给了 \(P(A)=\Omega^A\)：它把 \(A\) 的子对象打包成一个内部对象。关键洞察是——<strong>商可以用“子对象的集合”来造</strong>。一个等价类无非是一个特殊的子对象（某个元素的等价类），所以 \(A/{\sim}\) 可以作为 \(P(A)\) 的一个子对象实现。这把“造商”问题化归为“在 \(P(A)\) 里挑出一部分”，后者只用有限极限和 \(\Omega\) 就能做。</p>
+    <p><strong>3. 一条历史注记。</strong>Lawvere 和 Tierney 最初把拓扑斯定义成“有限完备 + 有限余完备 + CCC + \(\Omega\)”。后来发现有限余完备是<strong>冗余的</strong>——它能从其余条件推出（M&amp;M IV §5）。但“能推出”不等于“容易造”：这个推导是本章最重的技术活。</p>
+    <p><strong>4. 本章的工具选择。</strong>余等化子的完整箭头级证明在 M&amp;M 原文里占十几页。这里采用<strong>等价的内部语言版本</strong>（用第 11 章的 \(\{x\mid\varphi\}\) 记号），它给出的构造与 M&amp;M 的箭头构造逐字对应，但可读性好得多。用户第一次读，先建立“为什么这样造”的直觉，再对照原著补箭头细节。</p>
+  </div>
+
+  <h3 class="sub">16.2.1 用幂对象构造指数：函数图像</h3>
+
+  <div class="motiv">
+    <span class="lbl">这个构造解决什么问题？</span>
+    第 5 章告诉你指数 \(B^A\) 由泛性质唯一确定，却没告诉你“它里面的元素长什么样”。在 \(\mathbf{Set}\) 里 \(B^A\) 是函数集合，而每个函数 \(f:A\to B\) 完全由它的<strong>图像</strong> \(\Gamma_f\subseteq A\times B\) 决定。这就提示了一个在任意拓扑斯里都能写的构造：<strong>把 \(B^A\) 实现为 \(P(A\times B)\) 的子对象</strong>，即“那些图像满足‘每个 \(a\) 恰好对应一个 \(b\)’的子对象”。这样指数就从幂对象里“切”出来了。这也是为什么幂对象公理化能替代指数公理。
+  </div>
+
+  <div class="prop">
+    <span class="lbl">命题 16.2.1（指数由幂对象构造）</span>
+    <p>设 \(\mathcal E\) 有限完备且有幂对象。则对任意 \(A,B\)，指数 \(B^A\) 存在，且可实现为 \(P(A\times B)\) 的下述子对象：</p>
+    \[\bigl\{\,\Gamma\in P(A\times B)\ \bigm|\ \text{“}\Gamma\text{ 是某个函数的图像”}\,\bigr\},\]
+    <p>其中“是函数的图像”指内部条件：对每个 \(a\in A\) 存在唯一 \(b\in B\) 使 \((a,b)\in\Gamma\)。</p>
+  </div>
+
+  <div class="proof">
+    <p class="pl">证明（构造 + 验泛性质）.</p>
+    <p>用内部语言写最清楚。把 \(P(A\times B)\) 的“元素”看作 \(A\times B\) 的子对象 \(\Gamma\)。定义子对象 \(B^A\hookrightarrow P(A\times B)\) 为</p>
+    \[B^A\;=\;\bigl\{\,\Gamma\in P(A\times B)\mid \forall_{a\in A}\,\exists!_{b\in B}\ (a,b)\in\Gamma\,\bigr\}.\]
+    <p>这里 \(\forall_a\) 与 \(\exists!_b\)（唯一存在）都是第 11 章 11.3 的量词，它们由幂对象与拉回伴随保证可写（\(\forall\) 用 \(\forall_{\pi}\) 右伴随，\(\exists!\) 用“存在且唯一”的内部公式）。</p>
+    <p>现在验泛性质。给定“箭头” \(f:X\to B^A\)，即一个随阶段 \(X\) 变化的族 \(\Gamma_x\subseteq A\times B\) 满足上述条件。对每个 \(x\) 与 \(a\) 有唯一的 \(b\)，记为 \(f'(x,a)\)。这给出内部项 \(f':X\times A\to B\)，即箭头 \(X\times A\to B\)。反过来，给箭头 \(h:X\times A\to B\)，取图像 \(\Gamma_h=\{(x,a,b)\mid b=h(x,a)\}\subseteq X\times A\times B\)，对每个 \(x\) 切片得 \(\Gamma_{h,x}\subseteq A\times B\)，满足“每 \(a\) 唯一 \(b\)”，故给 \(X\to B^A\)。两过程互逆（由唯一性），于是</p>
+    \[\mathcal E(X,B^A)\;\cong\;\mathcal E(X\times A,B),\]
+    <p>正是指数泛性质。由泛性质给出的对象唯一到同构，故此构造确实给出 \(B^A\)。∎</p>
+  </div>
+
+  <div class="rmk"><strong>这个构造的深层含义。</strong>它说明“函数”在拓扑斯里不是原始概念，而是可以从“子对象 + 唯一性”定义出来的。这与集合论里“函数 = 满足单值性的关系”完全一致。Johnstone 强调：这正是幂对象公理化能替代指数公理的原因——<strong>有了 \(P(-)\) 和有限极限，整个笛卡尔闭结构都被“免费”重建</strong>。</div>
+
+  <h3 class="sub">16.2.2 余等化子：用幂对象造商</h3>
+
+  <div class="motiv">
+    <span class="lbl">这个构造解决什么问题？</span>
+    给并行箭头 \(f,g:A\rightrightarrows B\)，余等化子要把 \(B\) 中由 \(f(a)\sim g(a)\) 联系起来的点“粘成同一个”。在 \(\mathbf{Set}\) 里直接取商集，但一般范畴没有“点”，也没有现成的商。出路是：<strong>先把 \(f(a)\sim g(a)\) 生成的等价关系 \(R\) 造出来，再把 \(B/R\) 实现为 \(P(B)\) 的子对象</strong>——因为每个等价类就是一个特殊子对象。于是“造商”变成“在 \(P(B)\) 里挑出等价类”。
+  </div>
+
+  <p>先陈述核心引理，它是 M&amp;M IV §5 的技术心脏。</p>
+
+  <div class="prop">
+    <span class="lbl">引理 16.2.2（等价关系有效性，M&amp;M IV §5）</span>
+    <p>在拓扑斯 \(\mathcal E\) 中，每个等价关系 \(R\hookrightarrow B\times B\) 都是<strong>有效的</strong>：存在箭头 \(q:B\to B/R\)，使 \(R\) 恰是 \(q\) 的核对（kernel pair，即 \(B\times_{B/R}B\cong R\)），且 \(q\) 是 \(R\) 所指代的并行对的余等化子。</p>
+  </div>
+
+  <div class="proof">
+    <p class="pl">证明（内部语言版构造）.</p>
+    <p>对 \(b\in B\) 记其等价类为 \([b]=\{b'\in B\mid b'\,R\,b\}\)，它是 \(B\) 的子对象，即 \(P(B)\) 的一个“元素”。定义</p>
+    \[Q\;=\;\bigl\{\,S\in P(B)\ \bigm|\ \exists_{b\in B}\ S=[b]\,\bigr\}\;\hookrightarrow\;P(B).\]
+    <p>即 \(Q\) 是 \(P(B)\) 中“确实是某个元素的等价类”的那些子对象构成的子对象。定义 \(q:B\to Q\) 为 \(q(b)=[b]\)。</p>
+    <p><strong>核对是 \(R\)。</strong>\(q(b)=q(b')\) 当且仅当 \([b]=[b']\)；由等价关系的对称与传递，这当且仅当 \(b\,R\,b'\)。故 \(B\times_QB\cong R\) ✓。</p>
+    <p><strong>通用性。</strong>设 \(h:B\to C\) 满足 \(h\) 在 \(R\) 上恒定（即 \(b\,R\,b'\Rightarrow h(b)=h(b')\)）。定义 \(\bar h:Q\to C\)：对 \(S\in Q\)，取 \(b\) 使 \(S=[b]\)，令 \(\bar h(S)=h(b)\)。<em>良定义</em>：若 \([b]=[b']\) 则 \(b\,R\,b'\)，故 \(h(b)=h(b')\)。<em>唯一性</em>：\(Q\) 中每个 \(S\) 都来自某个 \(b\)（定义），故 \(\bar h\) 由 \(h\) 完全决定。且 \(\bar h\circ q(b)=h(b)\) ✓。于是 \(q\) 是余等化子。∎</p>
+  </div>
+
+  <div class="rmk"><strong>为什么“等价类”这一步不需要无穷迭代。</strong>初学者常担心：由 \(f(a)\sim g(a)\) 生成等价关系要取传递闭包，那不是要反复复合、无穷并吗？M&amp;M 的巧妙之处正是<strong>避开显式生成</strong>：引理对<em>任意给定的</em>等价关系 \(R\) 造商，只用 \(R\) 已有的自反/对称/传递性（在“\([b]=[b']\iff bRb'\)”那一步一次用完），不迭代。剩下只需把并行对 \(f,g\) 生成的等价关系 \(R\) 造出来——这一步也用幂对象上的闭包算子一次性完成（M&amp;M 原文用 \(P(B\times B)\) 上的闭包算子取“包含关系的最小等价关系”，此处不再展开箭头细节）。</div>
+
+  <div class="prop">
+    <span class="lbl">定理 16.2.3（拓扑斯有有限余极限）</span>
+    <p>初等拓扑斯 \(\mathcal E\) 有全部有限余极限：初对象 \(0\)、二元余积 \(A+B\)、余等化子。</p>
+  </div>
+
+  <div class="proof">
+    <p class="pl">证明（三块拼装）.</p>
+    <p><strong>初对象 \(0\)。</strong>取 \(\Omega\) 的最小子对象 \(0\hookrightarrow 1\)（即 \(\bot:1\to\Omega\) 的分类子对象）。可以验证它满足初对象的泛性质：对任意 \(X\)，存在唯一 \(0\to X\)（因为 \(0\) 没有非平凡的“部分”）。在 \(\mathbf{Set}\) 里就是空集 ✓。</p>
+    <p><strong>二元余积 \(A+B\)。</strong>把它实现为 \(P(A)\times P(B)\) 的子对象：令</p>
+    \[A+B\;=\;\bigl\{(S,T)\in P(A)\times P(B)\mid (\exists_{a\in A}\,S=\{a\}\ \wedge\ T=\varnothing)\ \vee\ (\exists_{b\in B}\ T=\{b\}\ \wedge\ S=\varnothing)\bigr\}.\]
+    <p>即“要么 \(S\) 是 \(A\) 的某个单例且 \(T\) 空，要么 \(T\) 是 \(B\) 的某个单例且 \(S\) 空”。嵌入 \(i_A:A\to A+B\) 送 \(a\mapsto(\{a\},\varnothing)\)，\(i_B\) 类似。验泛性质：给 \(f:A\to C,g:B\to C\)，定义 \([f,g]:A+B\to C\) 为 \(( \{a\},\varnothing)\mapsto f(a)\)、\((\varnothing,\{b\})\mapsto g(b)\)。唯一性因 \(A+B\) 的每个元素都来自某一支 ✓。</p>
+    <p><strong>余等化子。</strong>由引理 16.2.2 ✓。</p>
+    <p>有初对象、二元余积、余等化子，即可拼出所有有限余极限（推外 = 余积 + 余等化子，见第 4 章 4.4）。∎</p>
+  </div>
+
+  <div class="rmk"><strong>“冗余”的精确含义。</strong>三个余极限构造只用到 (E1) 有限极限、(E2) 幂对象（含指数）与 (E3) \(\Omega\)，没有额外公理。所以 Lawvere–Tierney 原始定义里的“有限余完备”可以删掉。但请注意：这里得到的是<strong>有限</strong>余极限，任意小余极限一般没有（那是 Grothendieck 拓扑斯的性质，见第 17 章）。\(\mathbf{FinSet}\) 就是只有有限余极限、没有可数余积的初等拓扑斯例子。</div>
+
+  <div class="cases">
+    <div class="ct">四类例子：余极限构造</div>
+    <div class="case typ"><b>典型例</b>\(\mathbf{Set}\) 中：初对象 \(=\varnothing\)；余积 \(A+B\) 是不交并（构造里的 \((\{a\},\varnothing)\)、\((\varnothing,\{b\})\) 正是不交并的标准实现）；余等化子 \(B/f(a)\sim g(a)\) 是商集。三样都与构造完全对上。</div>
+    <div class="case deep"><b>本质例</b>\(\mathbf{Sh}(X)\) 中余积 \(F+G\) <em>不是</em>逐点不交并：逐点并一般不是层，必须层化。这印证了第 15 章的教训——余极限在层范畴里要“构造后再层化”。而余等化子（层的商）同样要层化。这正说明为什么上述“用幂对象造商”的抽象构造是必要的：它绕过逐点计算，直接给出正确的层。</div>
+    <div class="case edge"><b>边界与误解</b>误解：“拓扑斯有所有余极限”。错。初等拓扑斯只有有限余极限。\(\mathbf{FinSet}\) 是初等拓扑斯，但没有可数余积（自然数集不在其中）。要任意余极限，需 Grothendieck 拓扑斯的额外公理（生成元集 + 所有余极限）。</div>
+    <div class="case use"><b>结构应用</b>16.3 的像分解要用余等化子：\(f:A\to B\) 的像 \(=\) 核对 \(A\times_BA\rightrightarrows A\) 的余等化子。所以本节是 16.3 的地基。另外，17 章的 Lawvere–Tierney 拓扑 \(j:\Omega\to\Omega\) 用 \(\Omega\) 的 Heyting 结构，也依赖这里的幂对象构造。</div>
+  </div>
+
+  <div class="box walk">
+    <h4>③ 手把手：在 \(\mathbf{Set}\) 里把商构造算一遍</h4>
+    <p>取 \(A=\{1,2\}\)、\(B=\{p,q,r\}\)，\(f,g:A\to B\) 为 \(f(1)=p,f(2)=q\)，\(g(1)=q,g(2)=r\)。按引理 16.2.2 的构造算余等化子。</p>
+    <ol>
+      <li><strong>生成等价关系。</strong>由 \(p\sim q\)（来自 \(1\)）与 \(q\sim r\)（来自 \(2\)），传递得 \(p\sim r\)，故等价类是 \(\{p,q,r\}\)——三个全粘在一起。</li>
+      <li><strong>列等价类（\(P(B)\) 的子对象）。</strong>\([p]=[q]=[r]=\{p,q,r\}\)。故 \(Q=\{S\in P(B)\mid S=[b]\text{ 对某 }b\}\) 只有一个元素 \(S_0=\{p,q,r\}\)。</li>
+      <li><strong>商映射。</strong>\(q:B\to Q\) 把 \(p,q,r\) 全送到 \(S_0\)。确实是余等化子：任何 \(h:B\to C\) 满足 \(h(p)=h(q)\) 且 \(h(q)=h(r)\) 必在三点上取同一值，故唯一穿过 \(Q\) ✓。</li>
+      <li><strong>核对验证。</strong>\(B\times_QB=B\times B\)（因 \(Q\) 单点），恰是等价关系 \(R=B\times B\) ✓。</li>
+    </ol>
+    <p><strong>对照：</strong>若 \(f(1)=p,f(2)=q,g(1)=p,g(2)=q\)（即 \(f=g\)），则 \(R\) 只有对角，\(Q=\{\{p\},\{q\},\{r\}\}\cong B\)，余等化子是恒等——符合预期。</p>
+  </div>
+
+  <div class="box phil">
+    <h4>选读：为什么余极限“本质上更难”</h4>
+    <p>极限是“取满足条件的部分”：子对象、交、等化子都是往里挑，泛性质由“存在唯一箭头<em>进入</em>”刻画。余极限是“把东西粘起来”：商、并、推出都是往外合并，泛性质由“存在唯一箭头<em>出去</em>”刻画。在 \(\mathbf{Set}\) 里两者对称（集合论对偶性尚可），但在一般范畴里“粘”需要知道哪些东西该视为同一个——这正是等价关系与商的角色。</p>
+    <p>拓扑斯能做到这一点，靠的是 <strong>\(\Omega\) 把“命题”对象化</strong>：等价关系是子对象 \(R\hookrightarrow B\times B\)，等价类 \([b]\) 是 \(P(B)\) 的元素，商是 \(P(B)\) 的子对象。整条链条都是 \(\Omega\) 与幂对象在工作。所以 16.1 说“\(\Omega\) 把逻辑塞进范畴”，本节给出了这句话最硬的一个回报：<strong>有了逻辑，就能造商；有了商，就能做余极限</strong>。</p>
+  </div>
+
+  <div class="box exer">
+    <h4>④ 习题（16.2）</h4>
+    <ol>
+      <li id="ex16-2-1">在 \(\mathbf{Set}\) 里写出 \(B^A\) 作为 \(P(A\times B)\) 子对象的构造，验证“每个 \(a\) 唯一 \(b\)”的条件。</li>
+      <li id="ex16-2-2">证明由 \(f,g:A\rightrightarrows B\) 生成的等价关系是包含 \(\mathrm{im}(f,g)\) 的最小等价关系。</li>
+      <li id="ex16-2-3">用引理 16.2.2 说明为什么 \(q:B\to B/R\) 是余等化子，而非仅仅是满射。</li>
+      <li id="ex16-2-4">验证余积构造中 \(i_A:A\to A+B\) 与 \(i_B:B\to A+B\) 在 \(\mathbf{Set}\) 里就是不交并的两个嵌入。</li>
+      <li id="ex16-2-5">解释为什么 \(\mathbf{FinSet}\) 有有限余极限但没有可数余积。</li>
+      <li id="ex16-2-6">在 \(\mathbf{Sh}(X)\) 中，说明逐点余积 \(F(U)+G(U)\) 一般不是层，需要层化。</li>
+      <li id="ex16-2-7">说明“幂对象公理化”（有限极限 + 幂对象）如何推出子对象分类子与指数。</li>
+      <li id="ex16-2-8">（Johnstone 视角）解释“初等拓扑斯是局部笛卡尔闭的”与本节余极限构造的关系。</li>
+    </ol>
+  </div>
+
+  <div class="box ans">
+    <h4>⑤ 参考答案（16.2）</h4>
+    <div class="item"><b>16.2.1</b>\(B^A=\{\Gamma\subseteq A\times B\mid \forall a\in A\ \exists! b\in B\ (a,b)\in\Gamma\}\)。给定函数 \(f:A\to B\)，取 \(\Gamma_f=\{(a,f(a))\mid a\in A\}\)，满足每 \(a\) 唯一 \(b=f(a)\)。反之若 \(\Gamma\) 满足条件，定义 \(f_\Gamma(a)=\) 那个唯一 \(b\)，则 \(\Gamma=\Gamma_{f_\Gamma}\) ✓。两过程互逆给出 \(B^A\cong\{\text{函数}\}\)。</div>
+    <div class="item"><b>16.2.2</b>令 \(S=\mathrm{im}((f,g):A\to B\times B)\subseteq B\times B\)。定义 \(\mathcal C=\{T\subseteq B\times B\mid S\subseteq T\text{ 且 }T\text{ 是等价关系}\}\)，非空（\(B\times B\in\mathcal C\)）。取 \(R=\bigcap_{T\in\mathcal C}T\)。交保持自反性（对角在每个 \(T\) 中）、对称性（\(T=T^{\mathrm{op}}\)）、传递性（若 \((x,y),(y,z)\in R\) 则在每个 \(T\) 中，故 \((x,z)\in T\) 对所有 \(T\)，故在 \(R\) 中），故 \(R\in\mathcal C\) 且是最小者。在拓扑斯中对应的内部构造用 \(P(B\times B)\) 上的闭包算子完成，避免外部无穷交。∎</div>
+    <div class="item"><b>16.2.3</b>因为核对只是“\(q\) 把哪些点认成一样”的记录，而商的定义正是让 \(q\) 成为使 \(f,g\) 相等的一般箭头。具体地：\(qf=qg\)（因 \((f(a),g(a))\in R\) 故 \(q(f(a))=q(g(a))\)）；若 \(h f=h g\)，则 \(h\) 在生成关系 \(S\) 上恒定，由引理证明中的良定义部分，\(h\) 在每个等价类上恒定，故唯一分解为 \(\bar h q\)。这正是余等化子的泛性质，不只是满性。</div>
+    <div class="item"><b>16.2.4</b>\(i_A(a)=(\{a\},\varnothing)\)，\(i_B(b)=(\varnothing,\{b\})\)。\(\{a\}\neq\varnothing=\varnothing\)，\(\varnothing\neq\{b\}\)，两支不相交（第一坐标一个是非空单例一个是空），且并为不交并。泛性质：给 \(f:A\to C,g:B\to C\)，\([f,g](\{a\},\varnothing)=f(a)\)、\((\varnothing,\{b\})\mapsto g(b)\)，唯一 ✓。</div>
+    <div class="item"><b>16.2.5</b>\(\mathbf{FinSet}\) 有有限余极限：不交并、商集、初对象 \(\varnothing\) 都仍是有限集。但可数余积 \(\coprod_{n\in\mathbb N}1\) 是自然数集，无限，不在 \(\mathbf{FinSet}\) 中，故无可数余积。∎</div>
+    <div class="item"><b>16.2.6</b>取开集 \(U=U_1\cup U_2\)，\(F,G\) 为开集层。逐点 \((F+G)(U)=F(U)+G(U)\)。设 \(s\in F(U_1),t\in G(U_2)\)，在重叠 \(U_1\cap U_2\) 上它们属于不同分量，无法相容地粘成 \(F(U)+G(U)\) 的截面；正确做法是先取逐点余积再层化，层化后的截面可以在不同开 piece 上分别来自 \(F\) 或 \(G\)。故逐点余积不满足粘合性，不是层。</div>
+    <div class="item"><b>16.2.7</b>幂对象 \(P(A)\) 满足 \(\mathcal E(X,P(A))\cong\operatorname{Sub}(X\times A)\)。取 \(A=1\)：\(\mathcal E(X,P(1))\cong\operatorname{Sub}(X)\)。令 \(\Omega=P(1)\)，\(\top=\) 对应于 \(\mathrm{id}_1\in\operatorname{Sub}(1)\) 的箭头 \(1\to\Omega\)，即得子对象分类子。指数由命题 16.2.1 从 \(P(A\times B)\) 切出。故两公理化等价（Johnstone注）。</div>
+    <div class="item"><b>16.2.8</b>局部笛卡尔闭指每个切片 \(\mathcal E/X\) 是笛卡尔闭的。余极限构造（余积、商）在切片里同样可用，因为切片本身是拓扑斯（16.3.3 证），故切片中也有这些余极限。依赖积 \(\Pi_f\) 与依赖和 \(\Sigma_f\) 正是切片中的指数与余积，局部笛卡尔闭性保证它们存在，这是类型论 \(\Pi,\Sigma\) 的语义基础。∎</div>
+  </div>
+</section>
+
+<section class="sec" id="s16-3">
+  <div class="sec-h"><span class="sec-no">16.3</span><h2>像分解、切片范畴、Beck–Chevalley 条件</h2><span class="src">M Ch.IV §6–7, §9</span></div>
+
+  <div class="box learn">
+    <h4>① 本节学习目标</h4>
+    <ol>
+      <li>用 16.2 的余等化子构造<strong>像分解</strong> \(f=m\circ e\)（满射 ⟅ mono），并知道为何拓扑斯里“满射 = 正则满射”；</li>
+      <li>证明拓扑斯理论的“基本定理”：每个切片 \(\mathcal E/X\) 仍是拓扑斯，并算出它的 \(\Omega_X\)；</li>
+      <li>掌握对 \(f:X\to Y\) 的基变换三函子 \(\Sigma_f\dashv f^\ast\dashv\Pi_f\)，理解它们是 \(\exists,\)代入,\(\forall\) 的范畴化；</li>
+      <li>严格陈述并证明 Beck–Chevalley 条件，弄清 \(\Sigma\) 与 \(\Pi\) 两个版本；</li>
+      <li>澄清一个流传很广的误解：“\(\forall\) 的 BC 比 \(\exists\) 弱”——在拓扑斯里两者对拉回方块都成立；</li>
+      <li>看清像分解、切片、BC 三者的<strong>相互关系</strong>：它们都是“把 \(f\) 当作一族纤维来操作”的不同侧面。</li>
+    </ol>
+  </div>
+
+  <div class="xref"><strong>沿用前文（不再复述）.</strong> 子对象的偏序与交并见<strong>（第 4 章 4.1）</strong>；余等化子与核对见<strong>（16.2.2）</strong>；量词作为伴随 \(\exists_f\dashv f^\ast\dashv\forall_f\) 的第一次出现见<strong>（第 13 章 13.5.2）</strong>；拉回粘贴律见<strong>（第 4 章 4.2.6）</strong>；切片范畴的定义见<strong>（第 2 章）</strong>。</div>
+
+  <div class="box prep">
+    <h4>极简回顾（六分钟）</h4>
+    <p><strong>1. 一个反复出现的动作。</strong>这一节的三件事看起来不相关，其实在做同一件事：<strong>把一个箭头 \(f:X\to Y\) 看成“由 \(Y\) 索引的一族对象”</strong>（它的纤维），然后问这族对象怎么并起来、怎么乘起来、怎么在换底时保持。像分解是“把 \(f\) 压到一个子对象上”，切片是把“\(Y\) 索引族”正式做成范畴，BC 是问“换坐标后这些操作是否不变”。</p>
+    <p><strong>2. 满射与单态。</strong>第 4 章讲过单态（左可消）。对偶的满射（右可消）在一般范畴里比单态难缠：满射未必是“余等化子”。在拓扑斯里这个病消失——每个满射都是正则满射（某对箭头的余等化子）。这是 16.2 余等化子构造的直接回报。</p>
+    <p><strong>3. 切片的记号。</strong>\(\mathcal E/X\) 的对象是箭头 \(Z\xrightarrow{p}X\)，态射是使三角形交换的箭头。终端对象是 \(\mathrm{id}_X:X\to X\)。第 2 章已介绍，这里直接使用。</p>
+    <p><strong>4. 三函子的名字。</strong>对 \(f:X\to Y\)，拉回 \(f^\ast:\mathcal E/Y\to\mathcal E/X\) 夹在两个伴随之间：左伴随 \(\Sigma_f\)（依赖和 / 存在），右伴随 \(\Pi_f\)（依赖积 / 全称）。第 13 章在子对象格上看过它们的影子 \(\exists_f,\forall_f\)；这里在切片范畴层面把它们补全。</p>
+  </div>
+
+  <h3 class="sub">16.3.1 像分解：把箭头压成子对象</h3>
+
+  <div class="motiv">
+    <span class="lbl">这个构造解决什么问题？</span>
+    在 \(\mathbf{Set}\) 里每个函数 \(f:X\to Y\) 都能拆成“映到像上”再“包含进 \(Y\)”：\(X\twoheadrightarrow\mathrm{im}(f)\hookrightarrow Y\)。这个分解遍地有用（群同态基本定理、第一同构定理都靠它）。但要在一个抽象范畴里做同样的事，需要两样东西：把“等价的元素粘起来”（余等化子）和把“粘出来的东西嵌回去”（单态）。16.2 刚把余等化子造出来，现在就能收果子。
+  </div>
+
+  <div class="defn">
+    <span class="lbl">定义 16.3.1（像、正则满射、正合范畴）</span>
+    <p><strong>(a)</strong> 范畴中一个<strong>满射</strong>（epi）是右可消箭头 \(e\)：\(u\circ e=v\circ e\Rightarrow u=v\)。<strong>正则满射</strong>（regular epi）是某对并行箭头的余等化子。正则满射必是满射（第 4 章）。</p>
+    <p><strong>(b)</strong> 箭头 \(f:X\to Y\) 的一个<strong>像分解</strong>是 \(f=m\circ e\)，其中 \(e\) 是满射、\(m\) 是单态。若 \(e\) 可取正则满射，称范畴<strong>正则</strong>（regular）；若再要求每个等价关系有效（16.2.2），称<strong>正合</strong>（exact / Barr-exact）。</p>
+  </div>
+
+  <div class="prop">
+    <span class="lbl">命题 16.3.2（拓扑斯中的像分解）</span>
+    <p>在拓扑斯 \(\mathcal E\) 中，每个箭头 \(f:X\to Y\) 有像分解 \(X\xrightarrow{e}\mathrm{im}(f)\xrightarrow{m}Y\)，其中 \(e\) 是正则满射、\(m\) 是单态，且分解唯一到同构。进而 \(\mathrm{im}(f)\) 作为 \(Y\) 的子对象由下式给出：</p>
+    \[\mathrm{im}(f)\;=\;\exists_f(\top_X)\;\in\;\operatorname{Sub}(Y),\]
+    <p>其中 \(\exists_f\dashv f^\ast\) 是拉回的左伴随，\(\top_X\in\operatorname{Sub}(X)\) 是顶元素。</p>
+  </div>
+
+  <div class="proof">
+    <p class="pl">证明.</p>
+    <p>取 \(f\) 的<strong>核对</strong>（kernel pair）\(p_1,p_2:X\times_YX\rightrightarrows X\)。由 16.2.2，其余等化子 \(e:X\to I\) 存在；记 \(q:X\times_YX\to X\) 公共箭头，则 \(e p_1=e p_2\)。因为 \(f p_1=f p_2\)，由 \(e\) 的余等化子泛性质，存在唯一 \(m:I\to Y\) 使 \(f=m e\)。</p>
+    <p><strong>\(m\) 是单态。</strong>设 \(m u=m v\)，其中 \(u,v:T\rightrightarrows I\)。因 \(e\) 是满射，在拓扑斯里满射稳定且可由局部提升检验——对 \(T\) 上广义元素可用内部语言：\(I\) 的元素是 \(X\) 元素的 \(R\)-等价类（\(R=X\times_YX\)），而 \(m\) 把类送到共同的 \(f\) 值；\(m u=m v\) 意味两类对应同一 \(f\) 值，故同类，故 \(u=v\)。严格的箭头证明：\(m\) 是核对 \(e\) 的某箭头，而核对 \(m\) 恰是 \(R\)；因 \(e\) 余等化 \(R\)，\(m\) 必单（细节见 M&amp;M IV.6）✓。</p>
+    <p><strong>\(\mathrm{im}(f)=\exists_f(\top)\)。</strong>\(\exists_f(\top_X)\) 是使 \(\top_X\le f^\ast S\) 的最小 \(S\in\operatorname{Sub}(Y)\)，即“包含 \(f\) 的所有值的最小子对象”，正是像的定义。唯一性到同构由泛性质。∎</p>
+  </div>
+
+  <div class="cases">
+    <div class="ct">四类例子：像分解</div>
+    <div class="case typ"><b>典型例</b>\(\mathbf{Set}\) 中核对是 \(R=\{(x_1,x_2)\mid f(x_1)=f(x_2)\}\)，余等化子 \(X\to X/R\) 是商集，\(m:X/R\hookrightarrow Y\) 是嵌入，像即 \(f(X)\) ✓。</div>
+    <div class="case deep"><b>本质例</b>\(\mathbf{Sh}(X)\) 中 \(f:F\to G\) 的像是“逐点像再层化”：先取 \((F\to G)\) 在每个开集上的像预层（不是层），再层化得到层的像。这又是一次“构造后层化”，与 16.2 的余积/商一致。这正说明像分解依赖余等化子与层化，不是逐点的。</div>
+    <div class="case edge"><b>边界与误解</b>误解：“满射就是像分解左边的那个”。在一般范畴里满射未必正则，未必能出现在像分解里（例如 \(\mathbf{Top}\) 中某些满射不是余等化子）。拓扑斯的特殊之处正是“满射 = 正则满射”，这才让 \(X\twoheadrightarrow\mathrm{im}(f)\) 站得住。</div>
+    <div class="case use"><b>结构应用</b>像分解是“内部存在量词”的几何版本：\(\exists_f(\top)\) 就是“\(f\) 的值存在”。16.3.3 的 \(\Sigma_f\) 推广了它（不只作用在子对象格，而是作用在整片切片）。第 18 章的 Mitchell 刻画（拓扑斯中每个单态是某箭头的核）也依赖像分解。</div>
+  </div>
+
+  <h3 class="sub">16.3.2 基本定理：切片仍是拓扑斯</h3>
+
+  <div class="motiv">
+    <span class="lbl">这个构造解决什么问题？</span>
+    如果 \(\mathcal E\) 是“集合的宇宙”，那么“\(X\) 索引的对象族”（即切片 \(\mathcal E/X\)）应该本身也像一个宇宙——你可以在其中取子对象、取函数空间、谈真值。这就是 Lawvere 的<strong>基本定理</strong>（fundamental theorem of topos theory）：\(\mathcal E\) 是拓扑斯 ⟹ \(\mathcal E/X\) 是拓扑斯。它把“相对 \(X\) 的数学”合法化，也是依赖类型论语义的基石。
+  </div>
+
+  <div class="prop">
+    <span class="lbl">定理 16.3.3（拓扑斯的基本定理）</span>
+    <p>若 \(\mathcal E\) 是初等拓扑斯，则对每个对象 \(X\)，切片范畴 \(\mathcal E/X\) 也是初等拓扑斯，其子对象分类子为</p>
+    \[\Omega_X\;=\;\pi:\Omega\times X\to X,\qquad \top_X=\langle \top\circ !,\, \mathrm{id}_X\rangle:X\to\Omega\times X.\]
+  </div>
+
+  <div class="proof">
+    <p class="pl">证明（逐条验 (E1)(E2)(E3)）.</p>
+    <p><strong>(E1) 有限极限。</strong>切片中的极限按 \(\mathcal E\) 中的极限计算：终端对象是 \(\mathrm{id}_X\)；拉回 \((Z\to X)\times_{(W\to X)}(Z'\to X)\) 取 \(\mathcal E\) 中的拉回再带自然的到 \(X\) 的箭头。因为 \(\mathcal E\) 有有限极限，切片也有 ✓。</p>
+    <p><strong>(E3) 子对象分类子。</strong>切片 \(\mathcal E/X\) 的子对象是 \(\mathcal E/X\) 中的单态，但这类单态恰好就是 \(\mathcal E\) 中以同一个 \(X\)-结构为底的单态，故 \(\operatorname{Sub}_{\mathcal E/X}(Z\xrightarrow{p}X)=\operatorname{Sub}_{\mathcal E}(Z)\)。于是</p>
+    \[\operatorname{Hom}_{\mathcal E/X}\bigl((Z,p),\,(\Omega\times X,\pi)\bigr)\;\cong\;\bigl\{h:Z\to\Omega\times X\mid \pi h=p\bigr\}\;\cong\;\operatorname{Hom}_{\mathcal E}(Z,\Omega)\;\cong\;\operatorname{Sub}_{\mathcal E}(Z).\]
+    <p>第二个同构是因为“在 \(X\) 上方”迫使 \(h=\langle\chi,\ p\rangle\)，由第一分量 \(\chi:Z\to\Omega\) 唯一决定。故 \(\Omega_X=\Omega\times X\to X\) 分类切片子对象 ✓。</p>
+    <p><strong>(E2) 指数。</strong>切片中的指数 \((Z\xrightarrow{q}X)^{(W\xrightarrow{p}X)}\) 是 \(\mathcal E\) 中“逐纤维函数空间”的对象化：其 \(X\) 上的截面满足对每 \(x\in X\)，给出 \(W_x\to Z_x\) 的函数。它的存在性由 \(\mathcal E\) 笛卡尔闭 + 子对象分类子保证（可用幂对象构造：切片里的指数是 \(P\)-对象在切片中的对应物）。完整的箭头构造见 M&amp;M IV.7；这里记住结论：\(\mathcal E/X\) 笛卡尔闭，故是拓扑斯 ✓。∎</p>
+  </div>
+
+  <div class="rmk"><span style="color:#7c3aed;font-weight:700">Johnstone 注.</span> 基本定理的更漂亮说法是：<strong>\(\mathcal E/X\) 是 \(X\) 上的“局部宇宙”</strong>，其真值对象 \(\Omega\times X\to X\) 随 \(X\) 变化。Johnstone 强调：这正是“局部笛卡尔闭”的根源——切片的指数就是依赖积 \(\Pi\)，而基本定理保证依赖积总存在。在类型论里，这对应“每个语境 \(\Gamma\) 下的类型构成一个范畴”（第 11 章 11.6）。</div>
+
+  <div class="cases">
+    <div class="ct">四类例子：切片</div>
+    <div class="case typ"><b>典型例</b>\(\mathbf{Set}/X\cong\mathbf{Set}^{X}\)（把 \(X\) 当离散范畴）：对象是 \(X\) 索引的集合族 \(\{A_x\}\)，真值对象 \(\Omega\times X\to X\) 在每个 \(x\) 处的纤维是 \(\{0,1\}\)。切片恢复了“随 \(x\) 变化的一族集合”。</div>
+    <div class="case deep"><b>本质例</b>\(\mathbf{Sh}(Y)/U\)（\(U\subseteq Y\) 开集）等价于 \(\mathbf{Sh}(U)\)：切片把层限制到开子集 \(U\) 上。这解释了为什么拓扑斯论里“在 \(U\) 上工作”就是取切片——几何上的限制与范畴上的切片是同一件事。</div>
+    <div class="case edge"><b>边界与误解</b>误解：“\(\mathcal E/X\) 只是 \(\mathcal E\) 的一块，性质比 \(\mathcal E\) 弱”。恰恰相反：基本定理说切片<em>同样丰富</em>。另一个误区：以为 \(\Omega_X\) 就是 \(\Omega\)。不——\(\Omega_X=\Omega\times X\to X\) 是 \(\mathcal E\) 中的对象 \(\Omega\times X\)，只在切片里充当分类器；它与 \(\Omega\) 处在不同的范畴。</div>
+    <div class="case use"><b>结构应用</b>切片是定义几何态射、局部同构、 étale 对象的舞台（第 19 章）。依赖类型论的语境推广 \(\Gamma\vdash A\) 就是 \(\mathcal E/\llbracket\Gamma\rrbracket\) 中的对象（第 11 章 11.6）。</div>
+  </div>
+
+  <h3 class="sub">16.3.3 基变换三函子：\(\Sigma_f\dashv f^\ast\dashv\Pi_f\)</h3>
+
+  <p>固定 \(f:X\to Y\)。拉回给出一个函子 \(f^\ast:\mathcal E/Y\to\mathcal E/X\)（把 \(Y\) 上的族拉回到 \(X\) 上）。基本定理保证它两侧都有伴随。</p>
+
+  <div class="prop">
+    <span class="lbl">命题 16.3.4（基变换伴随三元组）</span>
+    <p>对 \(f:X\to Y\)，拉回函子 \(f^\ast:\mathcal E/Y\to\mathcal E/X\) 有左伴随 \(\Sigma_f\) 与右伴随 \(\Pi_f\)：</p>
+    \[\Sigma_f\;\dashv\;f^\ast\;\dashv\;\Pi_f,\qquad \Sigma_f:\mathcal E/X\to\mathcal E/Y,\quad \Pi_f:\mathcal E/X\to\mathcal E/Y.\]
+    <p><strong>\(\Sigma_f\)（依赖和）</strong>就是与 \(f\) 复合：\((Z\xrightarrow{p}X)\mapsto(Z\xrightarrow{fp}Y)\)。<strong>\(\Pi_f\)（依赖积）</strong>是切片中的指数，即“逐纤维取函数空间”。</p>
+  </div>
+
+  <div class="proof">
+    <p class="pl">证明（左伴随最直观）.</p>
+    <p><strong>\(\Sigma_f\dashv f^\ast\)。</strong>对 \(A\in\mathcal E/X\)（即 \(p:A\to X\)）与 \(B\in\mathcal E/Y\)（即 \(q:B\to Y\)）：</p>
+    \[\operatorname{Hom}_{\mathcal E/Y}(\Sigma_f A,B)=\{h:A\to B\mid qh=fp\}=\operatorname{Hom}_{\mathcal E/X}(A,f^\ast B),\]
+    <p>两边都是“在 \(X\) 上方且保持结构的箭头”，同一个条件，故同构自然成立 ✓。（\(\Sigma_f\) 就是“遗忘到 \(Y\)”，即复合。）</p>
+    <p><strong>\(f^\ast\dashv\Pi_f\)。</strong>由基本定理，\(\mathcal E/X\) 笛卡尔闭；\(\Pi_f(A)\) 定义为切片指数 \(A^{(\mathrm{id}_X)}\) 在 \(\mathcal E/Y\) 中的实现，满足</p>
+    \[\operatorname{Hom}_{\mathcal E/Y}(B,\Pi_f A)\cong\operatorname{Hom}_{\mathcal E/X}(f^\ast B,A),\]
+    <p>这是依赖积的泛性质。存在性由切片拓扑斯结构（16.3.2）保证 ✓。∎</p>
+  </div>
+
+  <div class="rmk"><strong>与第 13 章的接口。</strong>把三函子限制到子对象格上（取 \(A,B\) 为子对象），\(\Sigma_f\) 与 \(\Pi_f\) 就退化为第 13 章 13.5.2 的 \(\exists_f\) 与 \(\forall_f\)，而 \(f^\ast\) 就是代入。所以第 13 章看到的伴随 \(\exists_f\dashv f^\ast\dashv\forall_f\) 是这里的三元组在“命题层面”的影子；本章把它升到了“对象层面”。</div>
+
+  <svg class="cd" viewBox="0 0 660 236" role="img" aria-label="基变换伴随三元组">
+    <rect class="node" x="40" y="24" width="180" height="42" rx="7"/>
+    <text class="nt" x="130" y="51" text-anchor="middle">Σ_f A（在 Y 上）</text>
+    <rect class="node2" x="440" y="24" width="180" height="42" rx="7"/>
+    <text class="nt" x="530" y="51" text-anchor="middle">Π_f A（在 Y 上）</text>
+    <rect class="nodeg" x="240" y="120" width="180" height="42" rx="7"/>
+    <text class="nt" x="330" y="147" text-anchor="middle">f^*B（在 X 上）</text>
+    <rect class="node" x="240" y="204" width="180" height="30" rx="7"/>
+    <text class="nt" x="330" y="224" text-anchor="middle">A（在 X 上）</text>
+    <path class="arb" d="M 150 66 L 300 118" />
+    <text class="hb" x="196" y="90" text-anchor="middle">Σ_f ⊣</text>
+    <path class="arp" d="M 510 66 L 360 118" />
+    <text class="hp" x="464" y="90" text-anchor="middle">⊣ Π_f</text>
+    <line class="ard" x1="330" y1="162" x2="330" y2="200"/>
+    <text class="lb" x="340" y="186" text-anchor="start">代入 f^*（居中）</text>
+    <text class="lb" x="330" y="112" text-anchor="middle" style="font-size:11.5px">B 在 Y 上：拉回 f^*B 后落在 X 上</text>
+  </svg>
+  <p class="figcap">图 16.2　\(\Sigma_f\) 与 \(\Pi_f\) 分列 \(f^\ast\) 两侧，构成伴随三元组</p>
+
+  <h3 class="sub">16.3.4 Beck–Chevalley 条件</h3>
+
+  <div class="motiv">
+    <span class="lbl">这个条件解决什么问题？</span>
+    在切片之间搬对象，常常需要先换底再依赖和（或依赖积），也可以先依赖和（或依赖积）再换底。两条路线<strong>理应给出同一答案</strong>——换坐标不该改变结果。Beck–Chevalley 条件就是把这条“理应”写成公式：对拉回方块，两种换底路线给出同构。它是“代入与量词可交换”的精确范畴表述。</div>
+
+  <p>设有拉回方块（\(X'=Y'\times_Y X\)）：</p>
+  <svg class="cd" viewBox="0 0 440 190" role="img" aria-label="Beck-Chevalley 的拉回方块">
+    <rect class="node" x="60" y="26" width="120" height="38" rx="7"/>
+    <text class="nt" x="120" y="50" text-anchor="middle">X′</text>
+    <rect class="node" x="280" y="26" width="120" height="38" rx="7"/>
+    <text class="nt" x="340" y="50" text-anchor="middle">X</text>
+    <rect class="node" x="60" y="128" width="120" height="38" rx="7"/>
+    <text class="nt" x="120" y="152" text-anchor="middle">Y′</text>
+    <rect class="node" x="280" y="128" width="120" height="38" rx="7"/>
+    <text class="nt" x="340" y="152" text-anchor="middle">Y</text>
+    <line class="ar" x1="180" y1="45" x2="276" y2="45"/>
+    <text class="lb" x="228" y="38" text-anchor="middle">g′</text>
+    <line class="ar" x1="180" y1="147" x2="276" y2="147"/>
+    <text class="lb" x="228" y="140" text-anchor="middle">g</text>
+    <line class="ar" x1="79" y1="64" x2="79" y2="124"/>
+    <text class="lb" x="70" y="98" text-anchor="end">f′</text>
+    <line class="ar" x1="299" y1="64" x2="299" y2="124"/>
+    <text class="lb" x="290" y="98" text-anchor="end">f</text>
+    <text class="lb" x="200" y="98" text-anchor="middle" style="font-size:11.5px">⌟ 拉回</text>
+  </svg>
+  <p class="figcap">图 16.3　Beck–Chevalley 条件所依据的拉回方块</p>
+
+  <div class="defn">
+    <span class="lbl">定义 16.3.5（Beck–Chevalley 条件）</span>
+    <p>对上述拉回方块，考虑两条从 \(\mathcal E/X\) 到 \(\mathcal E/Y'\) 的路线。由伴随的 mate 操作得到自然变换，若它们是同构，则称方块满足 Beck–Chevalley 条件：</p>
+    <p><strong>\(\Sigma\)-版本（左 BC）：</strong>\(\;g^\ast\,\Sigma_f\;\cong\;\Sigma_{f'}\,g^{\prime\ast}\)</p>
+    <p><strong>\(\Pi\)-版本（右 BC）：</strong>\(\;g^\ast\,\Pi_f\;\cong\;\Pi_{f'}\,g^{\prime\ast}\)</p>
+    <p>在拓扑斯中，<strong>两者都成立</strong>。</p>
+  </div>
+
+  <div class="prop">
+    <span class="lbl">命题 16.3.6（拓扑斯满足两侧 Beck–Chevalley）</span>
+    <p>若 \(\mathcal E\) 是拓扑斯，上图为拉回方块，则 \(\Sigma\)-BC 与 \(\Pi\)-BC 都是自然同构。</p>
+  </div>
+
+  <div class="proof">
+    <p class="pl">证明.</p>
+    <p><strong>\(\Sigma\)-版本。</strong>\(\Sigma_f\) 是与 \(f\) 复合（16.3.3），故对 \(p:A\to X\)：</p>
+    \[g^\ast\Sigma_f(A)=g^\ast(f\circ p)=(f\circ p)\text{ 沿 }g\text{ 的拉回}.\]
+    <p>而 \(g^{\prime\ast}(A)=A\) 沿 \(g'\) 的拉回，再 \(\Sigma_{f'}\) 与 \(f'\) 复合。由<strong>拉回粘贴律</strong>（第 4 章 4.2.6），沿 \(f\) 再沿 \(g\) 的拉回，等于沿 \(g'\) 再沿 \(f'\) 的拉回（方块本身是拉回）。两条路线给出同一个对象，故同构 ✓。</p>
+    <p><strong>\(\Pi\)-版本。</strong>\(\Pi_f\) 是 \(f^\ast\) 的右伴随。由伴随的 mate 对应，\(\Pi\)-BC 与另一个“左 BC”等价（对偶方块）。更直接地：在局部笛卡尔闭范畴中，依赖积 \(\Pi_f\) 由其泛性质刻画，而拉回 \(g^\ast\) 保这个泛性质——因为 \(g^\ast\Pi_f(A)\) 在 \(Y'\) 上，其对 \(B\to Y'\) 的映射满足</p>
+    \[\operatorname{Hom}_{\mathcal E/Y'}(B,g^\ast\Pi_f A)\cong\operatorname{Hom}_{\mathcal E/Y}(\Sigma_g B,\Pi_f A)\cong\operatorname{Hom}_{\mathcal E/X}(f^\ast\Sigma_g B,A).\]
+    <p>再由 \(\Sigma\)-BC（\(f^\ast\Sigma_g\cong\Sigma_{g'}f^{\prime\ast}\)）与 \(\Sigma_{g'}\dashv g^{\prime\ast}\)：</p>
+    \[\operatorname{Hom}_{\mathcal E/X}(\Sigma_{g'}f^{\prime\ast}B,A)\cong\operatorname{Hom}_{\mathcal E/X'}(f^{\prime\ast}B,g^{\prime\ast}A)\cong\operatorname{Hom}_{\mathcal E/Y'}(B,\Pi_{f'}g^{\prime\ast}A).\]
+    <p>由 Yoneda，\(g^\ast\Pi_f A\cong\Pi_{f'}g^{\prime\ast}A\) ✓。注意这里关键一步用了 \(\Sigma\)-BC 与 \(\Sigma_{g'}\dashv g^{\prime\ast}\)，都在拓扑斯中成立。∎</p>
+  </div>
+
+  <div class="cases">
+    <div class="ct">四类例子：Beck–Chevalley</div>
+    <div class="case typ"><b>典型例</b>在 \(\mathbf{Set}\) 里，\(f:X\to Y\)、\(g:Y'\to Y\)，\(X'=X\times_YY'\)。\(\Sigma\)-BC 读作 \(g^{-1}(f(S))=f'(g'^{-1}(S))\)；\(\Pi\)-BC 读作 \(\{y'\mid f^{-1}(g(y'))\subseteq S\}=\{y'\mid f'^{-1}(y')\subseteq g'^{-1}S\}\)。直接按定义验证两边相等 ✓。</div>
+    <div class="case deep"><b>本质例</b>在 \(\mathbf{Sh}(X)\) 中，把开子集包含当 \(g\)，BC 保证“限制到开集后再取依赖积”=“先取依赖积再限制”。这是层能在开集上逐片计算（在层化之后）的范畴论根据，也是“局部”与“整体”操作可交换的表达。</div>
+    <div class="case edge"><b>边界与误解：关于“\(\forall\) 的 BC 更弱”</b>这个说法流传很广，但<strong>在拓扑斯里是错的</strong>。命题 16.3.6 已证：对拉回方块，\(\Sigma\) 与 \(\Pi\) 的 BC 都成立。误解的来源有两处：① 若方块<em>不是</em>拉回，两侧 BC 都可能失效；② 在六函子形式（ étale 上同调）里，紧支前推 \(f_!\) 与通常前推 \(f_\ast\) 的 BC 条件确实不对称（正常基变换 vs 正常 proper 基变换）——那是另一个理论。第 13 章 13.5.2 的“\(\forall\) 需更强条件”是在仅有伴随三元组、未假设局部笛卡尔闭的语境下说的保守说法；在本章的拓扑斯语境中，基本定理保证了完整的两侧 BC。<strong>结论：拉回方块 + 拓扑斯 ⟹ 两侧 BC 全成立。</strong></div>
+    <div class="case use"><b>结构应用</b>BC 是几何态射中 \(f^\ast\) 保有限极限、以及六函子形式化中“基变换”的核心公理（第 19–20 章）。在类型论里，它保证代入与 \(\Pi/\Sigma\) 交换（第 11 章 11.6）。第 17 章验证 LT 拓扑与 Grothendieck 拓扑相容时也要用它。</div>
+  </div>
+
+  <div class="box walk">
+    <h4>③ 手把手：在 \(\mathbf{Set}\) 里验一遍两侧 BC</h4>
+    <p>取 \(Y=\{0,1\}\)、\(Y'=\{0\}\)、\(g\) 为嵌入 \(0\mapsto0\)。取 \(X=\{a,b,c\}\)、\(f(a)=f(b)=0,f(c)=1\)。则 \(X'=X\times_YY'=\{a,b\}\)，\(f':X'\to Y'\) 常值，\(g':X'\to X\) 为嵌入。取 \(S=\{a\}\in\operatorname{Sub}(X)\)。</p>
+    <ol>
+      <li><strong>\(\Sigma\)-BC：</strong>\(\Sigma_f(S)=\{0\}\subseteq Y\)，再 \(g^\ast\{0\}=\{0\}\)。另一路：\(g^{\prime\ast}(S)=\{a\}\subseteq X'\)，\(\Sigma_{f'}\{a\}=\{0\}\)。两路同为 \(\{0\}\) ✓。</li>
+      <li><strong>\(\Pi\)-BC：</strong>\(\Pi_f(S)=\{y\in Y\mid f^{-1}(y)\subseteq S\}\)。\(f^{-1}(0)=\{a,b\}\nsubseteq S\)，\(f^{-1}(1)=\{c\}\nsubseteq S\)，故 \(\Pi_f(S)=\varnothing\)，拉回仍 \(\varnothing\)。另一路：\(\Pi_{f'}(g^{\prime\ast}S)=\{y'\in Y'\mid f'^{-1}(y')\subseteq\{a\}\}\)。\(f'^{-1}(0)=\{a,b\}\nsubseteq\{a\}\)，故也 \(\varnothing\) ✓。</li>
+      <li><strong>换个 \(S'=\{a,b\}\)：</strong>\(\Pi_f(S')=\{0\}\)（因 \(f^{-1}(0)=\{a,b\}\subseteq S'\)），拉回得 \(\{0\}\)。另一路：\(g^{\prime\ast}S'=\{a,b\}=X'\)，\(\Pi_{f'}(X')=\{0\}\) ✓。两侧再次相等。</li>
+    </ol>
+    <p><strong>教训：</strong>两侧 BC 在拉回方块下都成立。若把 \(g\) 改成非拉回的映射，两条路线就不再必然相同——这正是 BC 条件“为什么要求方块是拉回”的原因。</p>
+  </div>
+
+  <div class="box phil">
+    <h4>选读：三个概念其实是一件事</h4>
+    <p>把 \(f:X\to Y\) 想成“\(Y\) 索引的一族纤维 \(X_y\)”，则：</p>
+    <p>像分解问的是“\(f\) 的值盖住了 \(Y\) 的哪一块”——这是 \(\Sigma_f(\top)\)；切片 \(\mathcal E/X\) 是把“随 \(x\) 变化的族”正式做成宇宙；三函子 \(\Sigma_f,f^\ast,\Pi_f\) 则是对这族纤维做“并、换、乘”三种操作；BC 条件保证沿拉回换坐标时这些操作不变。</p>
+    <p>Johnstone 把这套结构看成拓扑斯“内部有一套完整的集合论”的证据：在一个集合论宇宙里，你当然能对一族集合取并（\(\Sigma\)）、取积（\(\Pi\)）、换指标（\(f^\ast\)），而且这些操作在换坐标时行为良好（BC）。拓扑斯用纯粹的范畴语言重建了这一切——这就是它既是几何对象、又是逻辑系统的原因。</p>
+  </div>
+
+  <div class="box exer">
+    <h4>④ 习题（16.3）</h4>
+    <ol>
+      <li id="ex16-3-1">在 \(\mathbf{Set}\) 里写出 \(f:X\to Y\) 的核对与像分解，验证 \(X\to\mathrm{im}(f)\) 是正则满射。</li>
+      <li id="ex16-3-2">证明正则满射必是满射（右可消）。</li>
+      <li id="ex16-3-3">用 \(\operatorname{Sub}_{\mathcal E/X}(Z\to X)=\operatorname{Sub}_{\mathcal E}(Z)\) 说明切片的子对象分类子为何是 \(\Omega\times X\to X\)。</li>
+      <li id="ex16-3-4">对 \(f:X\to Y\) 与 \(A\to X\)，直接写出 \(\Sigma_f(A)\) 并验证 \(\Sigma_f\dashv f^\ast\)。</li>
+      <li id="ex16-3-5">在 \(\mathbf{Set}\) 里验证 \(\Pi_f\) 的泛性质：\(f^{-1}(y)\to A_y\) 的族对应 \(y\mapsto\) 函数。</li>
+      <li id="ex16-3-6">详细验证手把手例子里 \(S=\varnothing\) 时的两侧 BC。</li>
+      <li id="ex16-3-7">举例说明：若方块不是拉回，\(\Sigma\)-BC 可能失效。</li>
+      <li id="ex16-3-8">（Johnstone 视角）说明为什么基本定理使“依赖类型论可以在任意拓扑斯中解释”。</li>
+    </ol>
+  </div>
+
+  <div class="box ans">
+    <h4>⑤ 参考答案（16.3）</h4>
+    <div class="item"><b>16.3.1</b>核对 \(R=\{(x_1,x_2)\mid f(x_1)=f(x_2)\}\)；余等化子 \(e:X\to X/R\) 把等价类映成一点；\(m:X/R\hookrightarrow Y\) 送 \([x]\mapsto f(x)\)（良定义因同类同 \(f\) 值）。\(e\) 是商映射，属正则满射 ✓。</div>
+    <div class="item"><b>16.3.2</b>设 \(e:A\to B\) 是某对 \(u,v:T\rightrightarrows A\) 的余等化子，故 \(eu=ev\)。若 \(r,s:B\to C\) 满足 \(re=se\)，则 \(reu=seu\)，即 \(rev=sev\)，故 \(r\circ e\) 与 \(s\circ e\) 余等化同一对 \(u,v\)。由余等化子的唯一性 \(r=s\) ✓，故 \(e\) 满。</div>
+    <div class="item"><b>16.3.3</b>切片中 \((Z\to X)\) 的子对象即 \(\mathcal E\) 中同底单态，故 \(\operatorname{Sub}_{\mathcal E/X}(Z)=\operatorname{Sub}_{\mathcal E}(Z)\cong\operatorname{Hom}_{\mathcal E}(Z,\Omega)\)。而 \(\operatorname{Hom}_{\mathcal E/X}((Z,p),(\Omega\times X,\pi))\) 是在 \(X\) 上方的箭头 \(Z\to\Omega\times X\)，由第一分量 \(\chi:Z\to\Omega\) 唯一决定（第二分量须为 \(p\)），故同构于 \(\operatorname{Hom}_{\mathcal E}(Z,\Omega)\)。于是 \(\Omega\times X\to X\) 分类切片子对象 ✓。</div>
+    <div class="item"><b>16.3.4</b>\(\Sigma_f(A)=(A\xrightarrow{f p}Y)\)。验证：\(\operatorname{Hom}_{\mathcal E/Y}(\Sigma_fA,B)=\{h:A\to B\mid qh=fp\}\)；而 \(f^\ast B=B\times_YX\to X\)，\(\operatorname{Hom}_{\mathcal E/X}(A,f^\ast B)=\{k:A\to B\times_YX\mid \text{在 }X\text{ 上方}\}\)。由拉回泛性质，这样的 \(k\) 等价于 \(h:A\to B\) 使 \(qh=fp\)，两集合一致 ✓。</div>
+    <div class="item"><b>16.3.5</b>\(\Pi_f(A)\) 在 \(y\in Y\) 处的纤维是 \(\operatorname{Hom}_{\mathbf{Set}}(X_y,A_y)\)（所有从纤维 \(X_y\) 到 \(A_y\) 的函数）。给 \(B\to Y\)，\(f^\ast B\) 在 \(x\) 处是 \(B_{f(x)}\)。箭头 \(f^\ast B\to A\) 在 \(X\) 上方即对每个 \(x\) 给函数 \(B_{f(x)}\to A_x\)，也就是对每个 \(y\) 给函数 \(B_y\to\operatorname{Hom}(X_y,A_y)\)，正是 \(B\to\Pi_f A\) ✓。</div>
+    <div class="item"><b>16.3.6</b>\(S=\varnothing\)：\(\Sigma_f\varnothing=\varnothing\)，拉回仍 \(\varnothing\)；另一路 \(g^{\prime\ast}\varnothing=\varnothing\)，\(\Sigma_{f'}\varnothing=\varnothing\) ✓。\(\Pi_f\varnothing=\{y\mid f^{-1}(y)\subseteq\varnothing\}\)，只有空纤维的 \(y\) 才满足；本例 \(f^{-1}(0)=\{a,b\}\)、\(f^{-1}(1)=\{c\}\) 都非空，故 \(\Pi_f\varnothing=\varnothing\)。另一路 \(f'^{-1}(0)=\{a,b\}\neq\varnothing\)，故 \(\Pi_{f'}\varnothing=\varnothing\) ✓。</div>
+    <div class="item"><b>16.3.7</b>取交换但非拉回的方块：\(X=\{0,1\}\)、\(Y=Y'=\{\ast\}\)、\(g=\mathrm{id}_{\{\ast\}}\)、\(X'=\{0\}\)、\(g'=\iota:\{0\}\hookrightarrow\{0,1\}\) 为包含，\(f:X\to Y\)、\(f':X'\to Y'\) 为到单点的唯一映射。方块交换（两路都把 \(\{0\}\) 送到 \(\ast\)）。真正的拉回是 \(X\times_YY'=\{0,1\}\times_{\{\ast\}}\{\ast\}=\{0,1\}\)，比较映射 \(\{0,1\}\to X'=\{0\}\) 把两点都送到 \(0\)，不是同构，故方块<strong>非拉回</strong>。取 \(A=\top_X\)（切片 \(\mathbf{Set}/X\) 的终对象 \(\mathrm{id}_X\)）：左下路线 \(g^\ast\Sigma_f(\top_X)=g^\ast(X\to\ast)=\{0,1\}\)（因 \(g=\mathrm{id}\)）；右上路线 \(\Sigma_{f'}g^{\prime\ast}(\top_X)=\Sigma_{f'}(\top_{X'})=(X'\to\ast)=\{0\}\)。两者不同构，\(\Sigma\)-BC 失效 ✓。这说明 BC 不是自动的：拉回方块的假设不可省。∎</div>
+    <div class="item"><b>16.3.8</b>依赖类型论的语境 \(\Gamma\) 解释为对象 \(\llbracket\Gamma\rrbracket\in\mathcal E\)，该语境下的类型解释为切片 \(\mathcal E/\llbracket\Gamma\rrbracket\) 的对象。基本定理保证这个切片仍是拓扑斯，故其中可以做全部集合论构造（子对象、指数、量词）；三函子给 \(\Pi/\Sigma\)-类型，BC 保证代入相容。因此任意拓扑斯都能解释依赖类型论 ✓。</div>
+  </div>
+</section>
+
+<section class="sec" id="s16-4">
+  <div class="sec-h"><span class="sec-no">16.4</span><h2>拓扑斯中的格与 Heyting 代数对象</h2><span class="src">M Ch.IV §8</span></div>
+
+  <div class="box learn">
+    <h4>① 本节学习目标</h4>
+    <ol>
+      <li>在范畴内部用<strong>箭头</strong>定义格对象、Heyting 代数对象（不引用元素）；</li>
+      <li>补完 16.1.4 的陈述：构造 \(\Omega\) 上的 \(\wedge,\vee,\Rightarrow,\neg,\top,\bot\)，证明它是内部 Heyting 代数；</li>
+      <li>证明对每个 \(X\)，\(\operatorname{Hom}(X,\Omega)\cong\operatorname{Sub}(X)\) 是<strong>Heyting 代数同构</strong>（不只是集合双射）；</li>
+      <li>理解“内部逻辑是直觉主义的”：\(\Rightarrow\) 不是材料蕴涵，排中律不自动成立；</li>
+      <li>掌握布尔拓扑斯判别 \( \neg\neg=\mathrm{id}\) 与第 11 章 11.4 的对应；</li>
+      <li>看懂 \(\Omega\) 作为内部 Heyting 代数如何为第 17 章的 Lawvere–Tierney 拓扑（nucleus）做准备。</li>
+    </ol>
+  </div>
+
+  <div class="xref"><strong>沿用前文（不再复述）.</strong> Heyting 代数的抽象定义与非排中律见<strong>（第 5 章 5.3）</strong>；\(\operatorname{Sub}(X)\) 是 Heyting 代数、联结词的伴随刻画见<strong>（第 13 章 13.5）</strong>；布尔拓扑斯与 Diaconescu 论证见<strong>（第 11 章 11.4）</strong>；\(\Omega\) 是内部 Heyting 代数的<strong>陈述</strong>见<strong>（16.1.4）</strong>。本节补的是“内部”二字的严格含义与构造。</div>
+
+  <div class="box prep">
+    <h4>极简回顾（六分钟）</h4>
+    <p><strong>1. 抽象 Heyting 代数（第 5 章）。</strong>它是有 \(\wedge,\vee,\Rightarrow,\top,\bot\) 的格，满足 \(a\wedge b\le c\iff b\le(a\Rightarrow c)\)。在开集格上，\(U\Rightarrow V=\mathrm{int}((X\setminus U)\cup V)\)，一般 \(U\cup\neg U\ne X\)——这就是直觉主义逻辑的代数形态。</p>
+    <p><strong>2. 子对象格已经是 Heyting 代数（第 13 章）。</strong>\(\operatorname{Sub}(X)\) 有交（拉回）、并（像）、蕴涵（由伴随构造），满足 Heyting 公理。第 11 章从这里读出“拓扑斯能解释直觉主义逻辑”。</p>
+    <p><strong>3. 本节要跨的一步。</strong>前面把 Heyting 结构放在 \(\operatorname{Sub}(X)\) 上——那是<em>外部</em>的格（一个集合）。本节把它放进范畴<em>内部</em>：在 \(\Omega\) 上装箭头 \(\wedge,\vee,\Rightarrow\)，使得对任意 \(X\)，箭头 \(X\to\Omega\) 之间的运算恰好对应 \(\operatorname{Sub}(X)\) 的运算。<strong>逻辑联结词于是变成范畴内的箭头</strong>。</p>
+    <p><strong>4. 为什么非要内部化。</strong>外部格 \(\operatorname{Sub}(X)\) 只是“我们站在外面数”；内部 Heyting 代数 \(\Omega\) 才能被拓扑斯自己在内部语言里使用（第 11 章 11.2.5）。而且第 17 章的拓扑 \(j:\Omega\to\Omega\) 正是 \(\Omega\) 上的一个特殊自映射（nucleus），没有内部 Heyting 结构就无从定义。</p>
+  </div>
+
+  <h3 class="sub">16.4.1 内部格与内部 Heyting 代数</h3>
+
+  <div class="motiv">
+    <span class="lbl">这个定义解决什么问题？</span>
+    说“\(\Omega\) 是一个 Heyting 代数”在拓扑斯里不能直接照搬集合的定义——\(\Omega\) 没有可直接列举的“元素”。但你有一个替代：把格公理写成<strong>箭头之间的等式</strong>（交换图）。格运算是箭头 \(\wedge:L\times L\to L\) 等，公理如交换律是 \(\wedge\circ\langle\pi_2,\pi_1\rangle=\wedge\) 这样的箭头等式。这样定义不依赖元素，在任意有有限积的范畴里都能说，这就是“内部”的含义。
+  </div>
+
+  <div class="defn">
+    <span class="lbl">定义 16.4.1（内部 Heyting 代数对象）</span>
+    <p>设 \(\mathcal E\) 有有限积。<strong>内部 Heyting 代数对象</strong>是 \(\mathcal E\) 中一个对象 \(H\)，连同箭头</p>
+    \[\wedge,\vee,\Rightarrow:H\times H\to H,\qquad \top,\bot:1\to H,\]
+    <p>满足下列用箭头写出的公理（对任意对象 \(T\) 与任意“广义元素” \(x,y,z:T\to H\) 成立）：</p>
+    <p><strong>格公理：</strong>\(\wedge,\vee\) 交换、结合、幂等、吸收，且 \(x\wedge\top=x\)、\(x\vee\bot=x\)。</p>
+    <p><strong>分配律：</strong>\(x\wedge(y\vee z)=(x\wedge y)\vee(x\wedge z)\)。</p>
+    <p><strong>蕴涵（Heyting 伴随）：</strong>\(x\le y\Rightarrow z\iff x\wedge y\le z\)，其中 \(u\le v\) 表示 \(u\wedge v=u\)（等价于 \(u\vee v=v\)）。</p>
+    <p>等价地，在内部语言中，这些箭头满足第 5 章 5.3.2 的 Heyting 公理表。<strong>否定</strong>定义为 \(\neg x=(x\Rightarrow\bot)\)。</p>
+  </div>
+
+  <div class="rmk"><strong>“用 \(\le\) 要小心”。</strong>定义里的 \(x\le y\) 不是 \(\mathcal E\) 中外在的序，而是内部关系：\(u\le v\) 指箭头等式 \(\wedge\langle u,v\rangle=u\)。对整个对象 \(H\) 也可以定义一个“序关系”子对象 \(\mathrm{le}\hookrightarrow H\times H\)（由 \(\wedge=\pi_1\) 这个条件分类），但用广义元素表述最不易错。</div>
+
+  <h3 class="sub">16.4.2 Ω 是内部 Heyting 代数：构造与证明</h3>
+
+  <div class="prop">
+    <span class="lbl">命题 16.4.2（补完 16.1.4）</span>
+    <p>拓扑斯 \(\mathcal E\) 的子对象分类子 \(\Omega\) 带有内部 Heyting 代数结构 \(\wedge,\vee,\Rightarrow,\neg,\top,\bot\)，使得对每个 \(X\)，自然同构</p>
+    \[\Phi_X:\operatorname{Hom}(X,\Omega)\xrightarrow{\ \cong\ }\operatorname{Sub}(X)\]
+    <p>是 Heyting 代数同构：它保持 \(\wedge,\vee,\Rightarrow,\neg,\top,\bot\)。</p>
+  </div>
+
+  <div class="proof">
+    <p class="pl">证明（用 Yoneda 从 \(\operatorname{Sub}(X)\) 搬到 \(\Omega\)）.</p>
+    <p><strong>思路。</strong>已知（第 13 章 13.5）每个 \(\operatorname{Sub}(X)\) 是 Heyting 代数，且 \(\Phi_X\) 自然。要把这些外部运算“搬进” \(\Omega\)，用表示对象的泛性质：\(\mathcal E\) 上的自然变换 \(\operatorname{Hom}(-,\Omega)\to\operatorname{Hom}(-,\Omega)\) 由 <strong>Yoneda 引理</strong>唯一对应 \(\Omega\to\Omega\) 的箭头；二元运算 \(\operatorname{Hom}(-,\Omega)\times\operatorname{Hom}(-,\Omega)\to\operatorname{Hom}(-,\Omega)\) 因 \(\operatorname{Hom}(X,\Omega)\times\operatorname{Hom}(X,\Omega)\cong\operatorname{Hom}(X,\Omega\times\Omega)\)，对应 \(\Omega\times\Omega\to\Omega\) 的箭头。</p>
+    <p><strong>构造。</strong>定义 \(\wedge:\Omega\times\Omega\to\Omega\) 为对应“取交”自然变换的箭头：对 \(\chi,\psi:X\to\Omega\)（分类 \(S,T\hookrightarrow X\)），令 \(\wedge\circ\langle\chi,\psi\rangle\) 分类 \(S\cap T\)。同理 \(\vee\) 对应取并（像），\(\Rightarrow\) 对应 Heyting 蕴涵，\(\neg\) 对应取补（伪补），\(\top,\bot\) 对应 \(X\) 与 \(0\) 的子对象。由 Yoneda，这些箭头唯一存在。</p>
+    <p><strong>验证公理。</strong>每个 Heyting 公理是箭头等式。把它代入任意 \(X\) 与任意 \(\chi,\psi,\theta:X\to\Omega\)，由构造它变成 \(\operatorname{Sub}(X)\) 中相应的 Heyting 公理，而后者成立（第 13 章 13.5）。于是该箭头等式在所有广义元素上成立——由 Yoneda（或泛元素论证，第 11 章 11.3.4），箭头等式成立。故 \(\Omega\) 是内部 Heyting 代数 ✓。</p>
+    <p><strong>\(\Phi_X\) 保结构。</strong>构造方式正是让 \(\Phi_X(\wedge(\chi,\psi))=S\cap T=\Phi_X(\chi)\cap\Phi_X(\psi)\)，其余同理，故 \(\Phi_X\) 是 Heyting 代数同构 ✓。∎</p>
+  </div>
+
+  <div class="cases">
+    <div class="ct">四类例子：Ω 上的 Heyting 结构</div>
+    <div class="case typ"><b>典型例</b>\(\mathbf{Set}\) 中 \(\Omega=2=\{0,1\}\)，\(\wedge,\vee,\Rightarrow,\neg\) 就是熟悉的与、或、材料蕴涵、非。这里 Heyting 代数退化为布尔代数，排中律成立。</div>
+    <div class="case deep"><b>本质例</b>\(\mathbf{Sh}(X)\) 中 \(\Omega\) 是开集层：在开集 \(U\) 上 \(\Omega(U)=\) \(U\) 的开子集（第 11 章 11.5）。运算逐开集给出：\((V\wedge W)=V\cap W\)，\((V\vee W)=V\cup W\)，<strong>\(V\Rightarrow W=\mathrm{int}((X\setminus V)\cup W)\)</strong>，\(\neg V=\mathrm{int}(X\setminus V)\)。注意 \(V\cup\neg V\) 一般只是稠密开集，不等于全空间——排中律失效，这正是直觉主义逻辑的标准模型。</div>
+    <div class="case edge"><b>边界与误解</b>误解：“\(\Rightarrow\) 是 \(\neg p\vee q\)”。错。在 Heyting 代数里只有 \( \neg p\ge p\Rightarrow q\) 的单向关系，\(p\Rightarrow q=\neg p\vee q\) 仅在布尔代数中成立。另一个误解：“\(\Omega\) 的元素是真值”。\(\Omega\) 的对象未必有足够多全局元素；真值应理解为箭头 \(1\to\Omega\)（即 \(\operatorname{Sub}(1)\)），在层拓扑斯里它们=整体开集，不是两个。</div>
+    <div class="case use"><b>结构应用</b>第 17 章的 Lawvere–Tierney 拓扑是箭头 \(j:\Omega\to\Omega\)，满足 \(j\circ j=j\)、\(\mathrm{id}\le j\)、\(j\circ\wedge=\wedge\circ(j\times j)\)——这些式子里用的正是本节构造的 \(\wedge\) 与 \(\le\)。可以说，没有 16.4 的内部 Heyting 结构，第 17 章的拓扑公理一个字都写不出来。</div>
+  </div>
+
+  <h3 class="sub">16.4.3 内部逻辑是直觉主义的：布尔性的判别</h3>
+
+  <p>既然 \(\Omega\) 是内部 Heyting 代数，拓扑斯的内部语言（第 11 章 11.2.5）就有了完整的命题联结词：\(\wedge,\vee,\Rightarrow,\neg,\top,\bot\) 都是 \(\Omega\) 上的箭头。但 Heyting 代数一般不满足排中律，所以内部逻辑是<strong>直觉主义</strong>的——这与第 11 章 11.3.4 的结论一致，现在有了代数根据。</p>
+
+  <div class="prop">
+    <span class="lbl">命题 16.4.3（布尔性的三个等价条件）</span>
+    <p>对拓扑斯 \(\mathcal E\)，下列等价：</p>
+    <p><strong>(a)</strong> \(\mathcal E\) 是布尔拓扑斯（第 11 章 11.4.2：内部排中律成立）；</p>
+    <p><strong>(b)</strong> \(\neg\neg=\mathrm{id}_\Omega\)（双重否定消去）；</p>
+    <p><strong>(c)</strong> \(\Omega\) 作为内部 Heyting 代数是布尔代数（即 \(p\vee\neg p=\top\) 对所有 \(p\)）。</p>
+  </div>
+
+  <div class="proof">
+    <p class="pl">证明（要点）.</p>
+    <p>(b)⟺(c)：Heyting 代数中 \(\neg\neg p=\top\) 恒不成立，但 \(\neg\neg p=p\) 等价于 \(p\vee\neg p=\top\)（标准格论事实：在 Heyting 代数里 \(\neg\neg\) 是闭包算子，其为恒等当且仅当代数是布尔的）。用内部语言逐广义元素验证即可，(b) 与 (c) 都是箭头等式，故等价 ✓。</p>
+    <p>(a)⟺(b)：第 11 章 11.4 已证内部排中律成立当且仅当 \(\Omega\) 满足 \(\neg\neg=\mathrm{id}\)（Diaconescu 论证的逆方向：布尔性给选择，选择给排中）。这里补上代数表述：内部语言里公式 \(\varphi\) 的真值是箭头 \(1\to\Omega\)，排中律 \( \varphi\vee\neg\varphi\) 为真恰是 \(p\vee\neg p=\top\) 对所有真值 \(p\)。✓∎</p>
+  </div>
+
+  <div class="rmk"><span style="color:#7c3aed;font-weight:700">Johnstone 注.</span> Johnstone 强调：布尔性不是“理所当然的背景”，而是<strong>一个可检验的结构条件</strong>。\(\mathbf{Set}\) 是布尔的，\(\mathbf{Sh}(X)\) 一般不是（除非 \(X\) 极端），有向图拓扑斯不是（3 个真值），可实现拓扑斯（effective topos）也不是。第 11 章 11.4.4 的 Diaconescu 论证说明“选择公理 ⟹ 布尔性”；这里 (a)⟺(b)⟺(c) 把布尔性钉在 \(\Omega\) 的代数结构上。拓扑斯论的全部力量，正来自于能让这些逻辑性质随几何（拓扑）变化。</div>
+
+  <div class="cases">
+    <div class="ct">四类例子：布尔与非布尔</div>
+    <div class="case typ"><b>典型例</b>\(\mathbf{Set}\)：\(\Omega=2\) 布尔，\(\neg\neg=\mathrm{id}\)，排中律成立。这是唯一“日常”的布尔拓扑斯。</div>
+    <div class="case deep"><b>本质例</b>\(\mathbf{Sh}(X)\)：\(\neg U=\mathrm{int}(X\setminus U)\)，\(\neg\neg U=\mathrm{int}(\overline U)\)（内部通常不等于 \(U\)）。非布尔（除非 \(X\) 的每个开集都正则开）。</div>
+    <div class="case edge"><b>边界与误解</b>误解：“所有拓扑斯都是布尔的，因为逻辑本来就是二值的”。错。拓扑斯的内部逻辑天生直觉主义，布尔性要额外验证。有向图拓扑斯 \(\operatorname{Sub}(1)\) 有 3 个元素，是非布尔的最小例子之一。</div>
+    <div class="case use"><b>结构应用</b>第 17 章的“双重否定拓扑” \(j=\neg\neg:\Omega\to\Omega\) 是 Lawvere–Tierney 拓扑，它把任意拓扑斯变成布尔拓扑斯（层化后）——这是“强迫排中律成立”的范畴论实现，与力迫法（forcing）密切相关。</div>
+  </div>
+
+  <div class="box walk">
+    <h4>③ 手把手：在开集格上把 Heyting 运算算到底</h4>
+    <p>取 \(X=\mathbb R\)（通常拓扑），\(V=(0,1)\)、\(W=(2,3)\) 两个开集。在 \(\mathbf{Sh}(\mathbb R)\) 的 \(\Omega\) 上计算：</p>
+    <ol>
+      <li><strong>交与并：</strong>\(V\wedge W=V\cap W=\varnothing\)；\(V\vee W=V\cup W=(0,1)\cup(2,3)\)（开集，无需层化）。</li>
+      <li><strong>蕴涵：</strong>\(V\Rightarrow W=\mathrm{int}\bigl((\mathbb R\setminus(0,1))\cup(2,3)\bigr)\)。\(\mathbb R\setminus(0,1)=(-\infty,0]\cup[1,\infty)\)，并上 \((2,3)\) 仍是 \((-\infty,0]\cup[1,\infty)\)，其内部为 \((-\infty,0)\cup(1,\infty)\)。故 \(V\Rightarrow W=(-\infty,0)\cup(1,\infty)\)。</li>
+      <li><strong>否定：</strong>\(\neg V=V\Rightarrow\varnothing=\mathrm{int}(\mathbb R\setminus(0,1))=(-\infty,0)\cup(1,\infty)\)。</li>
+      <li><strong>排中律失效：</strong>\(V\cup\neg V=(0,1)\cup(-\infty,0)\cup(1,\infty)=\mathbb R\setminus\{0,1\}\ne\mathbb R\)。故 \(p\vee\neg p\ne\top\)，\(\mathbf{Sh}(\mathbb R)\) 非布尔 ✓。</li>
+      <li><strong>双重否定：</strong>\(\neg\neg V=\mathrm{int}(\overline{(0,1)})=\mathrm{int}([0,1])=(0,1)=V\)。这个 \(V\) 恰好是正则开集，故双重否定回到自身；换成 \(V=(0,1)\cup(1,2)\)（去掉一点的区间）则 \(\neg\neg V=(0,2)\ne V\) ✓。</li>
+    </ol>
+    <p><strong>教训：</strong>Heyting 运算可算、排中律可失效、布尔性可检验——这三件事在 \(\Omega\) 上全部落地。</p>
+  </div>
+
+  <div class="box phil">
+    <h4>选读：从格到拓扑——本章为第 17 章铺的路</h4>
+    <p>回头看整章的轨迹：16.1 给出 \(\Omega\) 并陈述它是内部 Heyting 代数；16.2 用 \(\Omega^A\) 造出余极限；16.3 用 \(\Omega\) 与切片重建量词与基变换；16.4 把 \(\Omega\) 的内部 Heyting 结构坐实。至此，\(\Omega\) 已从“一个分类器”长成“一个带完整逻辑结构的对象”。</p>
+    <p>第 17 章的 Lawvere–Tierney 拓扑 \(j:\Omega\to\Omega\) 正是这个结构上的<strong>闭包算子</strong>（nucleus）。给 \(j\) 就是在 \(\Omega\) 上“改变哪些命题算真”，由此得到新的层范畴 \(\mathcal E_j\)。而 Grothendieck 拓扑与 LT 拓扑的等价（M&amp;M Ch V §4）说明：第 15 章在 site 上宣告覆盖，与第 17 章在 \(\Omega\) 上装一个 nucleus，是同一件事的两种语言。<strong>本章是这两种语言接通的最后一环。</strong></p>
+  </div>
+
+  <div class="box exer">
+    <h4>④ 习题（16.4）</h4>
+    <ol>
+      <li id="ex16-4-1">在 \(\mathbf{Set}\) 的 \(\Omega=2\) 上验证 \(\wedge,\vee,\Rightarrow,\neg\) 的取值表。</li>
+      <li id="ex16-4-2">证明在任意内部 Heyting 代数中 \(\neg x=x\Rightarrow\bot\)，且 \(\neg\neg\neg x=\neg x\)。</li>
+      <li id="ex16-4-3">在 \(\mathbf{Sh}(\mathbb R)\) 中计算 \((0,1)\Rightarrow(1,2)\) 与 \(\neg((0,1)\cup(1,2))\)。</li>
+      <li id="ex16-4-4">证明 \(\Phi_X:\operatorname{Hom}(X,\Omega)\to\operatorname{Sub}(X)\) 保持 \(\wedge\) 与 \(\top\)。</li>
+      <li id="ex16-4-5">用命题 16.4.3 说明有向图拓扑斯不是布尔的。</li>
+      <li id="ex16-4-6">证明 Heyting 代数中 \(p\Rightarrow q=\top\iff p\le q\)。</li>
+      <li id="ex16-4-7">说明为什么开集格 \(\mathcal O(X)\) 是 Heyting 代数但一般不是布尔代数。</li>
+      <li id="ex16-4-8">（Johnstone 视角）解释为什么三重等价 (a)(b)(c) 说明布尔性是“可检验的结构条件”而非背景假设。</li>
+    </ol>
+  </div>
+
+  <div class="box ans">
+    <h4>⑤ 参考答案（16.4）</h4>
+    <div class="item"><b>16.4.1</b>真值表：\(\wedge\)：1∧1=1，其余为 0；\(\vee\)：0∨0=0，其余为 1；\(\Rightarrow\)：0⇒0=1，0⇒1=1，1⇒0=0，1⇒1=1；\(\neg\)：¬0=1，¬1=0。与布尔代数一致 ✓。</div>
+    <div class="item"><b>16.4.2</b>\(\neg x=x\Rightarrow\bot\) 是定义。对任意 \(x\)，\(\neg\neg\neg x=(\neg\neg x)\Rightarrow\bot\)。在 Heyting 代数中 \(y\le\neg\neg y\) 恒成立，取 \(y=\neg x\) 得 \(\neg x\le\neg\neg\neg x\)；又由 \(\neg\) 反序（\(a\le b\Rightarrow\neg b\le\neg a\)）作用于 \(\neg x\le\neg\neg\neg x\)... 更直接：\(\neg\neg\neg x=\neg(\neg\neg x)\)，而对任意 \(a\)，\(\neg\neg a\ge a\) 且 \(\neg a=\neg(\neg\neg a)\)（因 \(\neg\neg\) 保序且 \(a\le\neg\neg a\) 给 \(\neg\neg\neg a\le\neg a\)，反向由 \(y\le\neg\neg y\) 取 \(y=\neg a\)）。故 \(\neg\neg\neg x=\neg x\) ✓。</div>
+    <div class="item"><b>16.4.3</b>\((0,1)\Rightarrow(1,2)=\mathrm{int}\bigl((\mathbb R\setminus(0,1))\cup(1,2)\bigr)=\mathrm{int}\bigl((-\infty,0]\cup[1,\infty)\bigr)=(-\infty,0)\cup(1,\infty)\)。注意 \((1,2)\) 已含于 \([1,\infty)\)。\(\neg((0,1)\cup(1,2))=\mathrm{int}\bigl(\mathbb R\setminus((0,1)\cup(1,2))\bigr)=\mathrm{int}\bigl((-\infty,0]\cup\{1\}\cup[2,\infty)\bigr)=(-\infty,0)\cup(2,\infty)\)（单点 \(\{1\}\) 内部为空）✓。</div>
+    <div class="item"><b>16.4.4</b>\(\Phi_X(\wedge(\chi,\psi))\) 是 \(\wedge\circ\langle\chi,\psi\rangle\) 分类的子对象，按构造它是 \(\Phi_X(\chi)\cap\Phi_X(\psi)\)；\(\Phi_X(\top_X)\) 是 \(\top\circ!_X\) 分类的子对象，即 \(X\) 本身（顶元）。故保持 ✓。</div>
+    <div class="item"><b>16.4.5</b>有向图拓扑斯 \(\operatorname{Sub}(1)\) 有 3 个元素（第 13 章 13.3.3、14.2.6），构成 3 元格。3 元链是 Heyting 代数但非布尔（中间元 \(a\) 满足 \(\neg a=\bot\)，故 \(a\vee\neg a=a\ne\top\)）。由命题 16.4.3，该拓扑斯非布尔 ✓。</div>
+    <div class="item"><b>16.4.6</b>用 Heyting 伴随 \(a\wedge b\le c\iff b\le(a\Rightarrow c)\)。<strong>(⟸)</strong> 若 \(p\le q\)，则 \(p\wedge\top=p\le q\)，取 \(a=p,b=\top,c=q\) 得 \(\top\le p\Rightarrow q\)，即 \(p\Rightarrow q=\top\)。<strong>(⟹)</strong> 若 \(p\Rightarrow q=\top\)，取 \(a=p,b=p\Rightarrow q,c=q\) 得 \(p\wedge(p\Rightarrow q)\le q\)，代入即 \(p\wedge\top=p\le q\) ✓。∎</div>
+    <div class="item"><b>16.4.7</b>开集格有交、并、以及 \(U\Rightarrow V=\mathrm{int}((X\setminus U)\cup V)\)，故是 Heyting 代数。但 \(U\cup\neg U=U\cup\mathrm{int}(X\setminus U)\) 一般不等于 \(X\)（如手把手例子中少两点），排中律失效，故非布尔（除非 \(X\) 是极端空间）✓。</div>
+    <div class="item"><b>16.4.8</b>因为 (a)(b)(c) 把“逻辑性质”（排中律）、“代数等式”（\(\neg\neg=\mathrm{id}\)）、“格的结构”（\(\Omega\) 布尔）绑成等价，所以给定任意拓扑斯，只需检查 \(\Omega\) 上的一个箭头等式 \(\neg\neg=\mathrm{id}\) 就能判定其内部逻辑是否经典。这使布尔性成为可对具体对象检验的性质，而不是一个先验假设——这正是 Johnstone 强调的“逻辑立场是结构条件”。∎</div>
+  </div>
+</section>
+
+<footer>
+  <p><a href="范畴论-逻辑-拓扑斯_教材总目录.html">← 返回总目录</a> ｜ 上一章：<a href="范畴论-逻辑-拓扑斯_教材第15章.html">第 15 章 Grothendieck 拓扑与 site</a> ｜ 下一章：<a href="范畴论-逻辑-拓扑斯_教材第17章.html">第 17 章 拓扑斯的基本构造</a></p>
+  <p>本章对应 Mac Lane &amp; Moerdijk, <em>Sheaves in Geometry and Logic</em>, Chapter IV（§1、§2、§5–§9）。进阶参考 Johnstone, <em>Topos Theory</em>（1977）——补充拓扑斯的范畴论基础与理论细节（幂对象公理化、局部笛卡尔闭性、布尔性的结构判别、“拓扑斯即集合论宇宙”的视角）。另参考 Schapira 与 The Stacks Project 的定义核对。公式由 MathJax 渲染。每节核心概念配“典型例 / 本质例 / 边界与误解 / 结构应用”四类例子。</p>
+</footer>
+
+</div>
+</body>
+</html>

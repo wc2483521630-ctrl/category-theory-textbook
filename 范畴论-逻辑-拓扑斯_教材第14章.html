@@ -1,0 +1,1237 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>第 14 章 集合的层（Ch. II）—— 三书递进自学教材</title>
+<script>
+window.MathJax = {
+  tex: {
+    inlineMath: [['\\(','\\)']], displayMath: [['\\[','\\]']], processEscapes: true,
+    macros: {
+      llbracket: '\\lbrack\\lbrack',
+      rrbracket: '\\rbrack\\rbrack'
+    }
+  },
+  options: { ignoreHtmlClass: 'no-tex' },
+  svg: { fontCache: 'global' }
+};
+</script>
+<script async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
+<style>
+  :root{
+    --bg:#f6f7f9; --card:#fff; --ink:#1b1f27; --ink2:#4d5461; --ink3:#7a8190;
+    --line:#e5e8ed; --soft:#f0f2f5;
+    --c1:#2563eb; --c1bg:#eef4ff; --gold:#b45309; --goldbg:#fdf3e3;
+    --ok:#15803d; --okbg:#eefaf1; --phil:#7c3aed; --philbg:#f6f1ff;
+    --teal:#0d9488; --tealbg:#eefaf7; --walk:#b45309;
+    --radius:12px;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;
+    line-height:1.75;-webkit-font-smoothing:antialiased;}
+  .wrap{max-width:920px;margin:0 auto;padding:0 22px 80px;}
+
+  header.top{padding:34px 0 22px;border-bottom:1px solid var(--line);margin-bottom:26px;}
+  .breadcrumb{font-size:12.5px;color:var(--ink3);margin-bottom:10px;}
+  .breadcrumb a{color:var(--c1);text-decoration:none;}
+  h1{font-size:29px;margin:0 0 8px;letter-spacing:-.02em;}
+  .lede{color:var(--ink2);font-size:14.5px;margin:0 0 16px;}
+  .jump{display:flex;gap:8px;flex-wrap:wrap;}
+  .jump a{font-size:12.5px;font-weight:650;text-decoration:none;color:var(--ink2);
+    background:var(--card);border:1px solid var(--line);border-radius:99px;padding:6px 13px;}
+  .jump a:hover{border-color:var(--c1);color:var(--c1);}
+
+  section.sec{margin:0 0 52px;scroll-margin-top:16px;}
+  .sec-h{display:flex;align-items:baseline;gap:12px;border-bottom:2px solid var(--c1);padding-bottom:10px;margin-bottom:22px;}
+  .sec-no{font-size:13px;font-weight:800;color:#fff;background:var(--c1);border-radius:7px;padding:3px 10px;white-space:nowrap;}
+  .sec-h h2{font-size:22px;margin:0;letter-spacing:-.01em;}
+  .src{font-size:11.5px;color:var(--ink3);margin-left:auto;white-space:nowrap;}
+
+  .box{border-radius:var(--radius);padding:16px 20px;margin:18px 0;border:1px solid var(--line);}
+  .box h4{margin:0 0 10px;font-size:14px;letter-spacing:.01em;}
+
+  .learn{background:var(--c1bg);border-color:#cfe0ff;}
+  .learn h4{color:var(--c1);}
+  .learn ol{margin:0;padding-left:22px;} .learn li{margin:4px 0;font-size:14px;}
+
+  .prep{background:var(--tealbg);border-color:#bfe9dd;}
+  .prep h4{color:var(--teal);}
+  .prep p{font-size:13.5px;color:#115e59;margin:8px 0;}
+  .prep ol,.prep ul{margin:8px 0;padding-left:22px;font-size:13.5px;color:#115e59;}
+  .prep li{margin:5px 0;}
+
+  .defn{background:#fafbfc;border-left:4px solid var(--ink2);padding:14px 18px;margin:16px 0;border-radius:0 10px 10px 0;}
+  .defn .lbl{font-weight:800;font-size:13.5px;color:var(--ink);}
+  .prop{background:#fbfcfe;border:1px solid #dbe6f8;border-left:4px solid var(--c1);padding:14px 18px;margin:16px 0;border-radius:0 10px 10px 0;}
+  .prop .lbl{font-weight:800;font-size:13.5px;color:var(--c1);}
+  .rmk{font-size:13.5px;color:var(--ink2);background:var(--soft);padding:11px 16px;border-radius:9px;margin:12px 0;}
+  .xref{font-size:13px;color:#115e59;background:var(--tealbg);border-left:3px solid var(--teal);padding:9px 14px;border-radius:0 8px 8px 0;margin:12px 0;}
+
+  .proof{margin:10px 0 4px;padding-left:16px;border-left:2px solid var(--line);font-size:14px;color:var(--ink2);}
+  .proof .pl{font-weight:700;color:var(--ink);}
+  .qed{float:right;font-style:normal;color:var(--ink3);}
+
+  .exer{background:var(--goldbg);border-color:#f2dfbb;}
+  .exer h4{color:var(--gold);}
+  .exer .grp{font-size:12.5px;font-weight:750;color:var(--gold);margin:12px 0 4px;}
+  .exer ol{margin:0;padding-left:22px;} .exer li{margin:9px 0;font-size:14px;}
+
+  .ans{background:var(--okbg);border-color:#c9ecd3;}
+  .ans h4{color:var(--ok);}
+  .ans .item{margin:14px 0 18px;font-size:14px;}
+  .ans .item:last-child{margin-bottom:0;}
+  .ans .item b{color:var(--ok);}
+  .ans .proof{border-left-color:#bfe6c9;}
+
+  .phil{background:var(--philbg);border-color:#e3d5ff;}
+  .phil h4{color:var(--phil);}
+  .phil p{font-size:14px;color:#5b3a8e;margin:8px 0;}
+
+  .walk{background:#fffbeb;border-color:#fde68a;}
+  .walk h4{color:var(--walk);}
+  .walk p,.walk li{font-size:13.5px;color:#78350f;}
+  .walk ol,.walk ul{margin:8px 0;padding-left:22px;}
+  .walk table{border-collapse:collapse;width:100%;font-size:13px;margin:10px 0;}
+  .walk th,.walk td{border:1px solid #fcd34d;padding:7px 9px;text-align:left;vertical-align:top;}
+  .walk th{background:#fef3c7;color:#78350f;}
+
+  h3.sub{font-size:16px;margin:26px 0 6px;color:var(--ink);}
+  p{margin:9px 0;} .math{overflow-x:auto;}
+
+  .figcap{font-size:12.5px;color:var(--ink3);margin:2px 0 12px;text-align:center;font-style:italic;}
+  .figdesc{font-size:13px;color:var(--ink2);background:var(--soft);padding:10px 15px;border-radius:8px;margin:6px 0 12px;}
+
+  footer{border-top:1px solid var(--line);margin-top:30px;padding-top:20px;font-size:13px;color:var(--ink3);}
+  footer a{color:var(--c1);text-decoration:none;}
+
+  @media(max-width:640px){
+    h1{font-size:23px;} .wrap{padding:0 14px 60px;}
+    .sec-h{flex-wrap:wrap;} .src{margin-left:0;}
+    .box{padding:14px 15px;}
+  }
+  @media print{body{background:#fff;}.jump{display:none;}.box{break-inside:avoid;}}
+  /* ---- 范畴交换图 SVG（浅色主题）---- */
+  svg.cd{display:block;margin:16px auto 2px;max-width:100%;height:auto;
+    font-family:"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;}
+  svg.cd rect.node{fill:#eef4ff;stroke:#2563eb;stroke-width:1.5;rx:7;}
+  svg.cd rect.node2{fill:#f6f1ff;stroke:#7c3aed;stroke-width:1.5;rx:7;}
+  svg.cd rect.nodeg{fill:#eefaf1;stroke:#15803d;stroke-width:1.5;rx:7;}
+  svg.cd rect.nodey{fill:#fdf3e3;stroke:#b45309;stroke-width:1.5;rx:7;}
+  svg.cd text.nt{fill:#1b1f27;font-size:13.5px;font-weight:600;}
+  svg.cd text.lb{fill:#334155;font-size:12.5px;}
+  svg.cd text.hb{fill:#2563eb;font-size:12.5px;font-weight:600;}
+  svg.cd text.hg{fill:#15803d;font-size:12.5px;font-weight:600;}
+  svg.cd text.hp{fill:#7c3aed;font-size:12.5px;font-weight:600;}
+  svg.cd line.ar,svg.cd path.ar{stroke:#475569;stroke-width:1.6;fill:none;marker-end:url(#cdArr);}
+  svg.cd line.arb,svg.cd path.arb{stroke:#2563eb;stroke-width:1.8;fill:none;marker-end:url(#cdArrB);}
+  svg.cd line.arg,svg.cd path.arg{stroke:#15803d;stroke-width:1.8;fill:none;marker-end:url(#cdArrG);}
+  svg.cd line.arp,svg.cd path.arp{stroke:#7c3aed;stroke-width:1.8;fill:none;marker-end:url(#cdArrP);}
+  svg.cd line.ard,svg.cd path.ard{stroke:#475569;stroke-width:1.5;fill:none;stroke-dasharray:5 4;marker-end:url(#cdArr);}
+  svg.cd line.noa{stroke:#475569;stroke-width:1.5;fill:none;stroke-dasharray:5 4;}
+
+  /* ---- 四类例子深度组件（本章新增，落实用户"每概念四类例"要求）---- */
+  .cases{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:6px 20px 14px;margin:18px 0;}
+  .cases>.ct{font-size:13.5px;font-weight:800;color:var(--ink);padding:11px 0 4px;border-bottom:1px dashed var(--line);margin-bottom:8px;}
+  .case{padding:9px 0 9px 14px;border-left:3px solid var(--line);margin:8px 0;font-size:13.5px;color:var(--ink2);}
+  .case b{display:inline-block;font-size:12px;padding:1px 9px;border-radius:99px;margin-right:8px;vertical-align:1px;}
+  .case.typ{border-left-color:var(--ok);}       .case.typ b{background:var(--okbg);color:var(--ok);}
+  .case.deep{border-left-color:var(--c1);}      .case.deep b{background:var(--c1bg);color:var(--c1);}
+  .case.edge{border-left-color:#dc2626;}        .case.edge b{background:#fef2f2;color:#dc2626;}
+  .case.use{border-left-color:var(--phil);}     .case.use b{background:var(--philbg);color:var(--phil);}
+  .case p{margin:6px 0;}
+  /* 数学动机框：解释"这个构造解决什么问题" */
+  .motiv{background:#fffbeb;border:1px solid #fde68a;border-left:4px solid #d97706;padding:13px 18px;border-radius:0 10px 10px 0;margin:16px 0;font-size:13.5px;color:#78350f;}
+  .motiv .lbl{font-weight:800;color:#b45309;display:block;margin-bottom:5px;}
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute;width:0;height:0;overflow:hidden" aria-hidden="true">
+<defs>
+  <marker id="cdArr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+    <path d="M 0 0 L 10 5 L 0 10 z" fill="#475569"/>
+  </marker>
+  <marker id="cdArrB" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+    <path d="M 0 0 L 10 5 L 0 10 z" fill="#2563eb"/>
+  </marker>
+  <marker id="cdArrG" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+    <path d="M 0 0 L 10 5 L 0 10 z" fill="#15803d"/>
+  </marker>
+  <marker id="cdArrP" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+    <path d="M 0 0 L 10 5 L 0 10 z" fill="#7c3aed"/>
+  </marker>
+</defs>
+</svg><div class="wrap">
+
+<header class="top">
+  <div class="breadcrumb"><a href="范畴论-逻辑-拓扑斯_教材总目录.html">← 返回总目录</a> ｜ 第三部分 · Mac Lane &amp; Moerdijk《Sheaves in Geometry and Logic》</div>
+  <h1>第 14 章　集合的层（Ch. II）</h1>
+  <p class="lede">第 13 章造出了预层范畴这座工厂，但工厂里生产的还不是正品——预层只是“给每个阶段配一批数据”，并不保证这些数据彼此相容。本章要装上唯一一道真正的质检关卡：<strong>层条件</strong>。它是整本书的技术心脏，也是你之前觉得最虚的那个词“局部”第一次被写成方程的地方。因为你没有层论背景，本章不从定义开始，而从一个大一就该认识的现象开始：<em>为什么“局部处处成立”推不出“整体成立”，而“局部处处相容”却能推出“整体存在”</em>。这两句话的差别，就是层与预层的差别。四节路线：先把层条件拆开看清（14.1），再把“覆盖”从开集解放成筛与 site（14.2），然后给层一个看得见的几何身体——étale 空间与丛（14.3），最后学层怎么沿映射搬运（14.4）。</p>
+  <div class="xref"><strong>与前文的分工（去重说明）.</strong>下列已在前面章节给出，本章只回指、不重述：<br>
+    · 函子范畴、预层 \(\mathbf{Set}^{\mathbf C^{\mathrm{op}}}\)、逐点极限——<strong>（参见第 13 章 13.1）</strong>；<br>
+    · 子对象分类子、筛作为预层拓扑斯的 \(\Omega\)、Grothendieck 拓扑与层范畴的初步介绍——<strong>（参见第 13 章 13.3、第 11 章 11.5）</strong>；<br>
+    · 拉回、等化子作为极限——<strong>（参见第 4 章 4.2–4.3）</strong>；<br>
+    · Yoneda 引理与可表示函子——<strong>（参见第 6 章 6.3）</strong>；<br>
+    · 伴随、单位与余单位——<strong>（参见第 7 章 7.1–7.2）</strong>；<br>
+    · 开集格作为 Heyting 代数、\(\neg U=\mathrm{int}(U^c)\)——<strong>（参见第 5 章 3 节）</strong>。<br>
+    本章新增（都是前面只提过名字、没有真正建立的东西）：层条件的等化子形式与“分离 / 粘合”两半的分离、茎（stalk）的完整理论、\(\mathbf{Sh}(X)\simeq\mathbf{LH}/X\) 这一范畴等价、层与丛 / 向量丛 / 覆叠空间的层次关系、逆像层 \(f^{-1}\) 的构造与 \(f^{-1}\dashv f_*\)、几何态射的初步。<strong>第 11 章 11.5 只是“预告版”</strong>：那里为了讲内部语言顺手用了层范畴，定义给得快、例子少；本章是它的正式版，凡与 11.5 重叠处一律加深并补足例子，记号保持一致。</div>
+  <div class="box phil">
+    <h4>章首导读：如果只记一件事，记这个</h4>
+    <p>把“层”这个词暂时忘掉，先记一个动作：<strong>拼</strong>。你手上有空间 \(X\)，把它切成许多小块 \(U_i\)，在每块上有一个对象（一个函数、一个向量场、一个解），并且这些对象在两两重叠处<em>完全一致</em>。问：能不能把它们拼成整体上的一个对象？</p>
+    <p>数学分析的回答是“看情况”：连续函数能拼，有界连续函数不能拼（每块上有界，整体可能无界）。这就麻烦了——同样是“函数”，有的能拼有的不能。层论的做法不是逐个函数类去研究，而是<strong>把“能拼”这件事本身抽出来当成公理</strong>：一个预层若对<em>所有</em>开覆盖都满足“相容即可唯一拼接”，它就是层。于是“连续函数构成层”变成一句可证明的话，而“有界函数不构成层”变成一个反例。这就是层的全部内容——不多不少。</p>
+    <p>那为什么值得为它写一整章？因为这个看似朴素的“拼”，一旦抽象化，就同时变成了四件东西：几何上它是<em>局部同胚的空间</em>（14.3）；代数上是<em>局部化与茎</em>；逻辑上是<em>真值随阶段变化</em>（第 11 章已见）；而在第 15 章它还会变成<em>拓扑斯</em>的定义方式。你现在学的不是一个小技巧，是整本书反复回访的那个交汇点。</p>
+  </div>
+</header>
+
+<nav class="jump">
+  <a href="#s14-1">14.1 层</a>
+  <a href="#s14-2">14.2 筛与层</a>
+  <a href="#s14-3">14.3 层与流形、丛、étale 空间</a>
+  <a href="#s14-4">14.4 逆像层</a>
+</nav>
+
+<section class="sec" id="s14-1">
+  <div class="sec-h"><span class="sec-no">14.1</span><h2>层</h2><span class="src">M Ch.II §1</span></div>
+
+  <div class="box learn">
+    <h4>① 本节学习目标</h4>
+    <ol>
+      <li>从“连续函数的局部与整体”这一具体现象，自己推出预层的两条函子性公理，而不是背下来；</li>
+      <li>精确写出层条件，并且<strong>会读</strong>那个双箭头等化子图——知道每一项是什么、两个箭头分别做什么；</li>
+      <li>把层条件拆成“唯一性（分离）”与“存在性（粘合）”两半，并各掌握一个反例，能说清哪一半坏了；</li>
+      <li>掌握六个标准例子：连续函数、光滑 / 全纯函数、局部常值函数、有界函数（非层）、常值预层（非层）、任意函数（是层），并理解后两个为什么反直觉；</li>
+      <li>知道层范畴 \(\mathbf{Sh}(X)\) 与层化 \(a\dashv i\) 是什么，为什么需要它，细节留给 14.2–14.3。</li>
+    </ol>
+  </div>
+
+  <div class="xref"><strong>沿用前文（不再复述）.</strong> 范畴、函子、自然变换见<strong>（参见第 2 章、第 6 章 6.1）</strong>；反变函子与 \(\mathbf{Set}^{\mathbf C^{\mathrm{op}}}\) 的记号见<strong>（参见第 6 章 6.2、第 13 章 13.1）</strong>；等化子的泛性质见<strong>（参见第 4 章 4.3）</strong>。本节只需要这三样，其余全部从零建立。</div>
+
+  <div class="box prep">
+    <h4>极简回顾（八分钟，够用即可）</h4>
+    <p><strong>1. 我们要处理的场景。</strong>取一个拓扑空间 \(X\)（你就想成 \(\mathbb R\) 或一个曲面）。把 \(X\) 的所有开集收集起来，记作 \(\mathcal O(X)\)。开集之间有关系：一个包含另一个。\(V\subseteq U\) 这个包含关系，在第 2 章的语言里就是一条箭头 \(V\to U\)——注意方向：<em>小的开集指向大的开集</em>。</p>
+    <p><strong>2. 什么叫“\(X\) 上的一个几何对象”。</strong>最朴素的答案：一个函数。但要小心，我们真正关心的不是“一个函数 \(f:X\to\mathbb R\)”，而是<strong>一族函数</strong>：对每个开集 \(U\)，给出 \(U\) 上定义的函数之集合。因为只有这样才能谈“局部”。这就是“截面”的观点：\(U\) 上的截面 = 只在 \(U\) 上有定义的对象。</p>
+    <p><strong>3. 限制。</strong>若 \(V\subseteq U\)，一个 \(U\) 上的函数 \(f\) 自动给出 \(V\) 上的函数，记 \(f|_V\)。这个“白拿”的操作是整个理论的关键：它让“不同开集上的数据”之间有了通道，因此可以谈“两个数据在重叠处是否一致”。</p>
+    <p><strong>4. 一句话预告。</strong>预层 = “每个开集给一批截面 + 会做限制”；层 = 预层 + “相容的局部截面总能唯一拼成整体截面”。就这两行，剩下的都是把它们写严格。</p>
+    <p><em>预备提示：</em>若你没有学过拓扑空间，只需知道“开集”满足：任意并是开集、有限交是开集、\(\varnothing\) 与 \(X\) 是开集。\(\mathbb R\) 的开集就是一堆开区间的并。这足够读懂全章。</p>
+  </div>
+
+  <h3 class="sub">14.1.1 动机：为什么“函数”要变成“一族函数”</h3>
+  <div class="motiv">
+    <span class="lbl">这个构造解决什么问题？</span>
+    十九世纪的解析延拓提出过一个尖锐的问题：一个函数能不能只靠“一小片上的信息”确定？答案是能——如果它满足很强的方程（如全纯）。但更基本的问题是：<strong>什么样的“局部信息”配得上被称为“某个整体对象的片段”？</strong>随便给每个开集塞一堆符号是不行的，符号之间必须能对上。层论把这个“能对上”精确化为两条：限制映射的函子性（同一对象在不同开集上的影子彼此一致），以及层条件（一致的影子必定来自唯一的对象）。<br>
+    换句话说，层论不是给函数加条件，而是给<em>“局部数据的系统”</em>加条件，使得这个系统<strong>可以被当作一个几何对象来使用</strong>。一旦通过质检，你就可以合法地在局部做计算、再把结果拼回整体——这是微分几何、复分析、代数几何里每一次“局部地……”的严格依据。
+  </div>
+
+  <h3 class="sub">14.1.2 预层：把“一族截面”写成函子</h3>
+  <p>先把上面第 2、3 条写成定义。注意这里的“函子”用的是反变版本，因为限制的方向与包含的方向相反。</p>
+
+  <div class="defn">
+    <span class="lbl">定义 14.1.1（\(X\) 上的预层）</span>
+    <p>拓扑空间 \(X\) 上的一个<strong>预层</strong>（presheaf）\(F\) 由以下数据组成：</p>
+    <p>（i）对每个开集 \(U\subseteq X\)，一个集合 \(F(U)\)，其元素称为 \(U\) 上的<strong>截面</strong>（section）；</p>
+    <p>（ii）对每一对开集 \(V\subseteq U\)，一个<strong>限制映射</strong> \(\rho^{U}_{V}:F(U)\to F(V)\)，元素 \(s\) 的像记作 \(s|_{V}\)；</p>
+    <p>使得：</p>
+    <p>（F1）\(\rho^{U}_{U}=\mathrm{id}_{F(U)}\)，即 \(s|_{U}=s\)；</p>
+    <p>（F2）若 \(W\subseteq V\subseteq U\)，则 \(\rho^{V}_{W}\circ\rho^{U}_{V}=\rho^{U}_{W}\)，即 \((s|_{V})|_{W}=s|_{W}\)。</p>
+    <p>用范畴的语言一句话：\(F\) 是反变函子 \(F:\mathcal O(X)^{\mathrm{op}}\to\mathbf{Set}\)，其中 \(\mathcal O(X)\) 以开集为对象、以包含 \(V\subseteq U\) 为箭头 \(V\to U\)。</p>
+  </div>
+
+  <div class="rmk"><strong>为什么公理只有这两条，而且必须是这两条？</strong>因为这两条正好是“限制”这个动作的全部内容，不多不少。（F1）说“不限制等于没做”；（F2）说“限制两次等于直接限制到最小的那个”。任何一条不成立，“\(s|_{V}\)”这个记号就不可靠——你会得到 \(s\) 在 \(W\) 上有两个不同影子，那“局部数据”这个概念就崩了。反过来说，只要这两条成立，你就有了一个可以沿着包含关系搬运信息的机器，这正是后面所有拼接操作的燃料。<strong>注意这里没有要求任何“连续性”“线性”“可微”</strong>——预层完全不关心截面的性质，只关心它们如何相互限制。</div>
+
+  <div class="cases">
+    <div class="ct">预层：四类例子</div>
+    <div class="case typ"><b>典型例</b>\(X=\mathbb R\)，令 \(F(U)=\{f:U\to\mathbb R\text{ 连续}\}\)，限制就是通常的函数限制。这是全章的原型，你可以把所有抽象讨论都代回这里检验。</div>
+    <div class="case deep"><b>本质例</b>取 \(X\) 为任意空间，\(A\) 为任意集合，令 \(F(U)=A\) 对所有 \(U\)（限制映射取恒等）。这叫<strong>常值预层</strong>，记 \(\underline{A}^{\mathrm{pre}}\)。<strong>它是理解“预层 ≠ 层”的关键</strong>：它对每个开集都“一视同仁”地给同一个集合，完全无视开集的大小与形状。直觉上它是一种坏掉的预层——明明 \(U\) 分成两块，两块的截面居然被强制相同。14.1.5 会看到它确实不是层。</div>
+    <div class="case edge"><b>边界与误解</b>最常见的错误是以为预层就是“给每个开集配一个集合”。漏掉了限制映射就漏掉了一切：<em>没有限制映射，你无法比较两个局部截面，层条件根本无从写起</em>。第二个误解是把 \(\mathcal O(X)\) 的方向弄反，把预层写成共变函子。判断方法：<strong>包含 \(V\subseteq U\) 是“变小”，限制也是“变小”，两者方向必须相反，所以预层必反变</strong>。若写成共变，你就得到“从 \(V\) 上的函数推出 \(U\) 上的函数”这种不存在的操作。</div>
+    <div class="case use"><b>结构中的应用</b>预层是“所有可能的局部数据系统”的大仓库。第 13 章已证：对任意小范畴 \(\mathbf C\)，\(\mathbf{Set}^{\mathbf C^{\mathrm{op}}}\) 自动是拓扑斯，有 \(\Omega\)、指数、有限极限。也就是说<strong>预层范畴本身已经足够好，好到能内部做逻辑</strong>。层要做的事，是在这个好范畴里挑出 “几何上真实” 的那部分——那些真正由某个空间 / 丛 / 模给出的预层。这个挑选用一个条件完成，正是下一小节。</div>
+  </div>
+
+  <h3 class="sub">14.1.3 层条件：相容族与唯一拼接</h3>
+  <p>现在给预层装质检。质检的输入是：一个开覆盖，以及覆盖的每一块上的一个截面。输出是一个判定：这些截面能不能拼。</p>
+
+  <div class="defn">
+    <span class="lbl">定义 14.1.2（相容族 / 匹配族）</span>
+    <p>设 \(F\) 是 \(X\) 上的预层，\(\{U_i\}_{i\in I}\) 是开集 \(U\) 的一个覆盖，即 \(U=\bigcup_{i\in I}U_i\)。一族元素 \(s_i\in F(U_i)\)（\(i\in I\)）称为<strong>相容的</strong>（compatible，或称<strong>匹配族</strong> matching family），若对所有的 \(i,j\in I\) 都有
+      \[s_i|_{U_i\cap U_j}\;=\;s_j|_{U_i\cap U_j}\quad\text{in } F(U_i\cap U_j).\]
+    </p>
+    <p>“相容”的意思是：任意两块在它们的重叠处给出<strong>完全一样</strong>的数据。注意重叠 \(U_i\cap U_j\) 可能为空；若为空，则 \(F(\varnothing)\) 只有一个元素（这一点层条件会强制，见 14.1.6），条件自动满足，所以不交的覆盖不提供任何约束——这个细节后面会变成一个漂亮的反例。</p>
+  </div>
+
+  <div class="defn">
+    <span class="lbl">定义 14.1.3（层）</span>
+    <p>预层 \(F\) 称为 \(X\) 上的<strong>层</strong>（sheaf），若对<strong>每个</strong>开集 \(U\)、<strong>每个</strong>覆盖 \(U=\bigcup_i U_i\)、<strong>每个</strong>相容族 \((s_i)_{i\in I}\)，都存在<strong>唯一</strong>的元素 \(s\in F(U)\) 使得
+      \[s|_{U_i}=s_i\qquad\text{对一切 } i\in I.\]
+    </p>
+    <p>这样的 \(s\) 称为该相容族的<strong>拼接</strong>（gluing）。层的全体截面系统，就是从“局部数据”到“整体数据”的可逆翻译。</p>
+  </div>
+
+  <div class="rmk"><strong>定义里三个“每个”都不能省。</strong>“每个 \(U\)”而非“某个 \(U\)”：层性必须是全局性质，不能挑开集。“每个覆盖”而非“某个覆盖”：换一个覆盖仍要成立，否则你只是碰巧能拼。“唯一”与“存在”并列：少任何一个都会得到更弱的对象（14.1.5 会分别给反例）。这三个“每个”加上“唯一”，正是把“局部决定整体”这句话的全部锋利之处榨出来的最小配置。</div>
+
+  <p>层条件可以写成一个交换图，这个图你必须会读——它后面会以各种形状反复出现。</p>
+
+  <div class="prop">
+    <span class="lbl">命题 14.1.4（层条件的等化子形式）</span>
+    <p>预层 \(F\) 是层，当且仅当对每个开集 \(U\) 与每个覆盖 \(\{U_i\}_{i\in I}\)，下图是 \(\mathbf{Set}\) 中的<strong>等化子</strong>：
+      \[
+      F(U)\;\xrightarrow{\ \rho\ }\;\prod_{i\in I}F(U_i)\;\overset{\alpha}{\underset{\beta}{\rightrightarrows}}\;\prod_{(i,j)\in I\times I}F(U_i\cap U_j),
+      \]
+      其中 \(\rho(s)=(s|_{U_i})_{i}\)，而两个箭头由两个投影定义：
+      \[\alpha\bigl((s_i)_i\bigr)_{(i,j)}=s_i|_{U_i\cap U_j},\qquad \beta\bigl((s_i)_i\bigr)_{(i,j)}=s_j|_{U_i\cap U_j}.\]
+    </p>
+    <div class="proof">
+      <p class="pl">证明（逐字翻译定义）.</p>
+      <p><strong>等化子是什么意思。</strong>回忆（第 4 章 4.3）：\(\rho\) 是 \(\alpha,\beta\) 的等化子，意思是 (a) \(\alpha\rho=\beta\rho\)；(b) 对任何集合 \(T\) 与映射 \(h:T\to\prod_i F(U_i)\) 满足 \(\alpha h=\beta h\)，存在唯一 \(\bar h:T\to F(U)\) 使 \(\rho\bar h=h\)。</p>
+      <p><strong>(a) 就是相容性的自动版本。</strong>\(\alpha\rho(s)_{(i,j)}=s|_{U_i}|_{U_i\cap U_j}=s|_{U_i\cap U_j}\)（用 F2），\(\beta\rho(s)_{(i,j)}=s|_{U_j}|_{U_i\cap U_j}=s|_{U_i\cap U_j}\)。相等。也就是说：<em>任何整体截面给出的局部族自动相容</em>。这不是层性，任何预层都满足。</p>
+      <p><strong>(b) 就是层性。</strong>取 \(T\) 为单点集 \(\{*\}\)。则 \(h\) 就是一个元素 \((s_i)_i\in\prod_i F(U_i)\)（“\(T\) 点处取什么值”），而 \(\alpha h=\beta h\) 恰好就是相容性条件 \(s_i|_{U_i\cap U_j}=s_j|_{U_i\cap U_j}\)（对所有 \(i,j\) 同时成立，因为等式两边都是 \(\prod_{(i,j)}\) 中的元素）。此时(b)说：存在唯一 \(\bar h:\{*\}\to F(U)\) 即唯一元素 \(s\in F(U)\)，使 \(\rho(s)=h\)，也就是 \(s|_{U_i}=s_i\) 对一切 \(i\)。这正好是定义 14.1.3。</p>
+      <p>两个方向都验完：等化子 ⟺ 层。一般 \(T\) 的部分其实由 \(T=\{*\}\) 的部分自动得到（逐点取），所以只需检验单点情形。∎</p>
+    </div>
+  </div>
+
+  <div class="figdesc"><strong>图 14.1 读图说明（层条件的等化子）.</strong>三个层次从上到下逐级“变小”。最上面 \(F(U)\) 是整体截面；中间 \(\prod_iF(U_i)\) 是“把每块上的截面独立地选一个”，即一个<em>族</em>；最下面 \(\prod_{(i,j)}F(U_i\cap U_j)\) 记录“每两块在重叠处的值”。两个箭头 \(\alpha,\beta\) 是<strong>两种取出重叠值的方式</strong>：\(\alpha\) 先取第 \(i\) 块再限制，\(\beta\) 先取第 \(j\) 块再限制。等化子的意思是：<strong>中间那族里，满足“两种取法答案相同”的那些，恰好是上面整体截面下来的那些，一个不多一个不少</strong>。“不多”是唯一性（若两个整体截面给出同一族，它们相等）；“不少”是存在性（任何相容族都真的有来源）。</div>
+
+  <svg class="cd" viewBox="0 0 660 258" role="img" aria-label="层条件的等化子图">
+    <text x="330" y="22" text-anchor="middle" class="hb" style="font-size:13px">层条件 = 等化子</text>
+    <rect class="node" x="228" y="38" width="204" height="42" rx="7"/>
+    <text x="330" y="64" text-anchor="middle" class="nt">F(U)</text>
+    <line class="arb" x1="330" y1="80" x2="330" y2="110"/>
+    <text x="344" y="100" class="hb">ρ：限制到每块</text>
+    <rect class="node" x="180" y="114" width="300" height="44" rx="7"/>
+    <text x="330" y="135" text-anchor="middle" class="nt">∏ᵢ F(Uᵢ)</text>
+    <text x="330" y="151" text-anchor="middle" class="lb" style="font-size:11.5px">（局部族）</text>
+    <line class="ar" x1="300" y1="158" x2="272" y2="186"/>
+    <line class="ar" x1="360" y1="158" x2="388" y2="186"/>
+    <text x="248" y="184" text-anchor="end" class="lb">α</text>
+    <text x="412" y="184" text-anchor="start" class="lb">β</text>
+    <rect class="node2" x="150" y="190" width="360" height="42" rx="7"/>
+    <text x="330" y="211" text-anchor="middle" class="nt">∏ᵢⱼ F(Uᵢ∩Uⱼ)</text>
+    <text x="330" y="227" text-anchor="middle" class="lb" style="font-size:11.5px">（重叠数据）</text>
+    <text x="330" y="250" text-anchor="middle" class="lb" style="font-size:11.5px">α、β：两种取重叠值的方式</text>
+  </svg>
+  <p class="figcap">图 14.1　层条件：相容族 ⟺ 来自唯一的整体截面</p>
+
+  <h3 class="sub">14.1.4 把条件拆成两半：唯一性与存在性</h3>
+  <p>层条件其实是两个独立的要求捆在一起，分开看会清楚得多，而且能解释为什么有的“坏预层”坏在存在性、有的坏在唯一性。</p>
+
+  <div class="prop">
+    <span class="lbl">命题 14.1.5（层 = 分离 + 粘合）</span>
+    <p>对预层 \(F\)，考虑以下两条性质：</p>
+    <p><strong>唯一性（分离）：</strong>对每个覆盖与每个相容族，满足 \(s|_{U_i}=s_i\ (\forall i)\) 的 \(s\in F(U)\) <strong>至多一个</strong>。等价地：若 \(s,t\in F(U)\) 且 \(s|_{U_i}=t|_{U_i}\) 对一切 \(i\) 成立，则 \(s=t\)。等价地：\(\rho:F(U)\to\prod_iF(U_i)\) 是单射。</p>
+    <p><strong>存在性（粘合）：</strong>对每个覆盖与每个相容族，这样的 \(s\) <strong>至少一个</strong>。等价地：\(\rho\) 的像恰好是 \(\alpha,\beta\) 的等化子子集。</p>
+    <p>则：\(F\) 是层 \(\iff\) 唯一性与存在性同时成立。</p>
+    <div class="proof">
+      <p class="pl">证明.</p>
+      <p>“\(\Rightarrow\)”：层的唯一性给出分离性，存在性给出粘合性。</p>
+      <p>“\(\Leftarrow\)”：给定相容族，粘合性给一个 \(s\)，分离性保证它唯一。合起来即定义 14.1.3。∎</p>
+    </div>
+  </div>
+
+  <div class="rmk"><strong>为什么这个拆分值得单独提出来。</strong>因为分离性是纯粹的“局部化不丢信息”，它只涉及<em>单个</em>截面，是个很弱的条件：任何“由函数组成且相等是局部概念”的预层都满足它。粘合性才是真正的分析内容：它等价于“局部可解 ⟹ 整体可解”，而这在数学里常常<strong>失败</strong>（整体可解有拓扑 / 有界性障碍）。分离性成立而粘合性失败的预层叫<strong>分离预层</strong>；14.2.6 会看到它正是“层化两步走”的第一步（先分离化，再粘合）。记住这条分界：<em>唯一性几乎总是免费，存在性才是要花钱的</em>。<strong>一个常见的误解要提前挡掉：</strong>分离预层<em>不是</em>某种“较弱的层”，它是层化的中间产物；把分离预层当成层会犯实质错误（14.2.5 会给出一个分离却远非层的例子）。</div>
+
+  <h3 class="sub">14.1.5 六个必须记住的例子</h3>
+  <p>层论的抽象度很高，靠定义记不住，必须靠例子。下面六个覆盖了“是层”“不是层”“反直觉地是层”三类，全都要能徒手验证。</p>
+
+  <div class="cases">
+    <div class="ct">连续函数层：四类例子</div>
+    <div class="case typ"><b>典型例</b>\(F(U)=\mathcal C^0(U,\mathbb R)\)（\(U\) 上连续实值函数），限制为通常限制。<strong>这是层。</strong>验证：给定相容族 \((f_i)\)，定义 \(f:U\to\mathbb R\) 为 \(f(x)=f_i(x)\) 若 \(x\in U_i\)。良定义性正是相容性（在重叠处两个 \(f_i\) 取同值）。\(f\) 连续：任取 \(x\in U\)，取 \(i\) 使 \(x\in U_i\)，\(f_i\) 在 \(x\) 连续，且 \(f\) 在 \(U_i\) 上与 \(f_i\) 相等，故 \(f\) 在 \(x\) 连续。唯一性：两个连续函数若在覆盖的每块上相等则处处相等。∎</div>
+    <div class="case deep"><b>本质例</b>光滑流形上的 \(\mathcal C^\infty\)、复流形上的全纯函数 \(\mathcal O_X\)、以及微分形式层 \(\Omega^k\)，全部是层。<strong>本质原因不是“函数好”，而是“光滑性 / 全纯性 / 闭性都是逐点的局部性质”</strong>——一个函数是否光滑，只需在每点的一个小邻域里检查。凡是这种“局部可判定”的性质，对应的预层都是层。反过来说，凡需要“全局信息”才能判定的性质（有界、可积、单值），通常造出非层。这条判据比逐个验证好用得多。</div>
+    <div class="case edge"><b>边界与误解</b>反面例子同样重要。令 \(F(U)=\{f:U\to\mathbb R\text{ 连续且有界}\}\)。<strong>它不是层</strong>：取 \(X=\mathbb R\)，\(U_n=(-n,n)\)，\(f_n(x)=x\)（在 \(U_n\) 上有界，界为 \(n\)）。这族显然相容（都是 \(x\) 的限制）。若存在 \(f\in F(\mathbb R)\) 使 \(f|_{U_n}=f_n\) 对一切 \(n\)，则 \(f(x)=x\) 对一切 \(x\)，但 \(x\mapsto x\) 在 \(\mathbb R\) 上<em>无界</em>，故 \(f\notin F(\mathbb R)\)。<strong>存在性失败，唯一性完好</strong>。这是“局部可解、整体不可解”的最干净的模型，也是层上同调的原始动机：障碍来自空间的无界性。</div>
+    <div class="case use"><b>结构中的应用</b>\(\mathcal C^0_X\) 是 \(X\) 上最“自由”的环层：任何连续映射 \(X\to Y\) 都给出 \(Y\) 上函数层到 \(\mathcal C^0_X\) 的映射。在微分几何里，\(\mathcal C^\infty_X\) 与 \(\Omega^\bullet_X\) 构成 de Rham 复形，其层上同调等于 de Rham 上同调（14.3.4 会算 \(S^1\) 的例子）。在代数几何里把 \(\mathcal C^\infty\) 换成正则函数就得到结构层 \(\mathcal O_X\)——同一套形式，不同的“好函数”概念。</div>
+  </div>
+
+  <div class="cases">
+    <div class="ct">常值预层 vs 局部常值层：四类例子</div>
+    <div class="case typ"><b>典型例</b><strong>局部常值函数层</strong> \(\underline A\)：\(F(U)=\{f:U\to A\text{ 局部常值}\}\)（\(A\) 取离散拓扑，局部常值 = 每点有邻域使 \(f\) 在其上为常数），限制为通常限制。<strong>它是层。</strong>验证：相容族的拼接 \(f(x)=f_i(x)\) 自动局部常值，因为每点落在某个 \(U_i\) 内。</div>
+    <div class="case deep"><b>本质例</b><strong>常值预层</strong> \(\underline A^{\mathrm{pre}}\)：\(F(U)=A\) 对一切 \(U\)，限制映射全取恒等。它<strong>不是层</strong>（除非 \(A\) 是单点集）。反例：取 \(X=\{0,1\}\) 为两点离散空间，覆盖为两块单点集 \(U_0=\{0\}\)、\(U_1=\{1\}\)（不交！），取 \(A=\{0,1\}\) 并令 \(s_0=0\in F(U_0)\)、\(s_1=1\in F(U_1)\)。因为 \(U_0\cap U_1=\varnothing\)，相容性条件空真，所以这是一个相容族。若存在 \(s\in F(X)=A\) 使 \(s|_{U_0}=s_0=0\) 且 \(s|_{U_1}=s_1=1\)，则因限制是恒等，需要 \(s=0\) 且 \(s=1\)，矛盾。<strong>存在性失败</strong>。<em>关键洞见：常值预层把“两块互不相干”误当成“两块必须相同”</em>，而层允许不交的块各自独立，这正是 \(\underline A\) 与 \(\underline A^{\mathrm{pre}}\) 的区别：前者在不连通的开集上给出 \(A^{\#\text{块数}}\)，后者永远只给 \(A\)。</div>
+    <div class="case edge"><b>边界与误解</b>“常值预层不是层”这件事常被误解成“常值层不存在”。<strong>恰好相反</strong>：常值预层有层化 \(\underline A=(\underline A^{\mathrm{pre}})^{\sim}\)，正常叫“常值层”。在<em>连通</em>空间上两者恰好一致（因为连通开集上局部常值 = 常值），所以很多教材在连通流形上不加区分地写 \(\underline A\)，这埋下了隐患：一旦空间不连通（哪怕是两点），两者就不同。判断方法：<strong>层的 \(\underline A(U)\) 是 \(U\) 的连通分支个数的 \(A\) 拷贝</strong>。</div>
+    <div class="case use"><b>结构中的应用</b>局部常值层是覆叠空间的代数化身（14.3.3 详述）：\(\pi_1(X)\) 的表示 \(\leftrightarrow\) \(X\) 上的局部常值层，单值化（monodromy）就是表示本身。这个对应让“基本群”从同伦论对象变成“层范畴里的自同构群”，也是代数几何里 étale 基本群的起点。</div>
+  </div>
+
+  <div class="cases">
+    <div class="ct">反直觉的一例与两个人造反例：四类例子</div>
+    <div class="case typ"><b>典型例</b><strong>开集层</strong>：\(F(U)=\mathcal O(U)=\{V: V\subseteq U\text{ 开}\}\)，限制 \(V\mapsto V\cap W\)（\(W\subseteq U\)）。检查：\((V\cap W_1)\cap W_2=V\cap(W_1\cap W_2)\) 给 (F2)，\(V\cap U=V\) 给 (F1)。层条件：给定覆盖 \(U=\bigcup U_i\) 与相容族 \(V_i\subseteq U_i\)（相容 = \(V_i\cap U_j=V_j\cap U_i\)），拼接为 \(V=\bigcup_i V_i\subseteq U\)，验证 \(V\cap U_i=V_i\)（用相容性）且唯一。<strong>这是层</strong>，且 \(\mathrm{Sub}(1)\cong\Omega\)，正是第 11 章 11.5.4 的“\(\Omega(U)=\mathcal O(U)\)”。</div>
+    <div class="case deep"><b>本质例（反直觉）</b><strong>任意函数预层</strong>：\(F(U)=\mathbb R^{U}=\{\text{所有函数 }U\to\mathbb R\}\)（<em>不</em>要求连续）。<strong>它是层！</strong>因为拼接 \(f(x)=f_i(x)\) 只是逐点定义，不需要任何正则性。这条例子极其重要：它证明<strong>层条件与“函数是否良好”完全无关</strong>，层只关心“相容性能否粘”。因此不要用“层 = 好函数”来记层，那是错的；正确的记法是“层 = 相容即可粘”。<em>（也正因如此，光滑性、全纯性之所以是层，是因为它们“局部可判定”，而不是因为“它们好”。）</em></div>
+    <div class="case edge"><b>边界与误解（唯一性失效）</b>要造唯一性失效必须刻意做坏。取 \(X=\{0,1\}\) 离散，令 \(F(X)=\{0,1\}\)（两个元素），而 \(F(\{0\})=F(\{1\})=F(\varnothing)=\{*\}\)（单点）。限制映射只能取唯一可能的映射（到单点集）。这是合法的预层（(F1)(F2) 自动成立）。取覆盖 \(\{0\},\{1\}\)，相容族只能是 \((*,*)\)（因为每块只有唯一元素）。但 \(s=0\) 与 \(s=1\) 都满足 \(s|_{\{0\}}=*\)、\(s|_{\{1\}}=*\)。<strong>两个不同的拼接 → 唯一性失效 → 不是层</strong>。这个例子是人造的，但它精确隔离出分离性：<em>当限制映射“丢失信息”时，局部数据无法确定整体</em>。真实的数学里，商预层（把一个预层模掉一个关系）就常常这样坏掉，这也是为什么“层的商”必须先层化再取商（第 15 章会用到）。</div>
+    <div class="case use"><b>结构中的应用</b><strong>摩天大楼层</strong>（skyscraper sheaf）：固定 \(p\in X\) 与集合 \(A\)，令 \(F(U)=A\) 若 \(p\in U\)，\(F(U)=\{*\}\) 若 \(p\notin U\)；限制：\(p\in V\subseteq U\) 时取恒等，否则到单点。它是层（唯一可能是 \(p\) 附近的黏合，重叠必含 \(p\)，恒等映射保证相容；不含 \(p\) 的块全是单点）。它对应“只在一点有纤维”的 étale 空间（14.3.3），是“层可以极端局部化”的标准模型，也是 \(i_*A\)（闭点包含的直接像）的原型（14.4.4）。</div>
+  </div>
+
+  <div class="rmk"><strong>六个例子的速查表。</strong>连续函数 ✓｜光滑 / 全纯 / 微分形式 ✓｜局部常值 ✓｜开集层 ✓｜任意函数 ✓（反直觉）｜有界连续函数 ✗（存在性失效）｜常值预层 ✗（存在性失效）｜人造两点预层 ✗（唯一性失效）｜摩天大楼 ✓。<strong>建议动手：</strong>把“有界”换成“平方可积”“紧支撑”“取整数值”，逐个判断是层 / 分离非层 / 都不是，并找出坏在哪一半。这比读十遍定义有用。</div>
+
+  <h3 class="sub">14.1.6 两个小推论：空覆盖与基</h3>
+
+  <div class="prop">
+    <span class="lbl">命题 14.1.6（层在空集上取单点）</span>
+    <p>若 \(F\) 是层，则 \(F(\varnothing)\) 是单点集（终对象）。</p>
+    <div class="proof">
+      <p class="pl">证明.</p>
+      <p>取 \(U=\varnothing\)，它的一个覆盖是<strong>空族</strong>（没有任何 \(U_i\)；空族的并是 \(\varnothing\)，故确实是覆盖）。此时 \(\prod_{i\in\varnothing}F(U_i)\) 是空积，等于单点集 \(\{*\}\)；\(\prod_{(i,j)\in\varnothing}F(U_i\cap U_j)\) 也单点。等化子图变为 \(F(\varnothing)\to\{*\}\rightrightarrows\{*\}\)，两个箭头都是唯一映射，等化子即 \(F(\varnothing)\cong\{*\}\)。∎</p>
+    </div>
+  </div>
+
+  <div class="rmk">这条小结论有两个用处。<strong>（a）判别：</strong>若你算出的预层有 \(F(\varnothing)\ne\{*\}\)，它一定不是层，不必再找反例。<strong>（b）解释人造例：</strong>14.1.5 的人造例里 \(F(\varnothing)=\{*\}\)，所以它没在空集上露馅，坏在别处——这提醒你“通过一个测试不等于通过全部”。<strong>注意：</strong>反过来说“\(F(\varnothing)=\{*\}+\text{分离}\)”仍不足以保证是层，存在性还要单独验。</div>
+
+  <div class="prop">
+    <span class="lbl">命题 14.1.7（只需在基上检查）</span>
+    <p>若 \(\mathcal B\) 是 \(X\) 拓扑的一个基（每个开集是基元素的并），则预层 \(F\) 是层，当且仅当层条件对<em>只由基元素构成的覆盖</em>成立。</p>
+    <div class="proof">
+      <p class="pl">证明（要点）.</p>
+      <p>“\(\Rightarrow\)”显然。“\(\Leftarrow\)”：给定任意覆盖 \(\{U_i\}\) 与相容族 \(s_i\)，取所有落在某个 \(U_i\) 内的基元素 \(B\subseteq U_i\)，得基覆盖 \(\{B_j\}\)；令 \(t_j=s_i|_{B_j}\)（\(B_j\subseteq U_i\) 时），相容性保证与 \(i\) 的选择无关。先由基覆盖拼出 \(s\in F(U)\)，再验证 \(s|_{U_i}=s_i\)（两边在每个 \(B_j\subseteq U_i\) 上相等，而 \(U_i\) 被这些 \(B_j\) 覆盖，用分离性）。唯一性同理由基覆盖的分离性给出。∎</p>
+    </div>
+  </div>
+
+  <div class="rmk"><strong>实践意义。</strong>验证层性时不必枚举所有开集和所有覆盖，只需在基上（例如 \(\mathbb R\) 的开区间、流形的坐标球）检查。这是所有教材都在用却很少明说的一步；14.3 计算茎与验证 \(\mathbf{Sh}(X)\simeq\mathbf{LH}/X\) 时都依赖它。</div>
+
+  <h3 class="sub">14.1.7 层范畴与层化：先给结论</h3>
+  <p>层的态射就是保持结构的自然变换，定义无需新东西：</p>
+
+  <div class="defn">
+    <span class="lbl">定义 14.1.8（层态射、层范畴）</span>
+    <p>预层之间的<strong>态射</strong> \(\varphi:F\to G\) 是一族映射 \(\varphi_U:F(U)\to G(U)\)（\(U\) 遍历开集），与限制交换：
+      \[\varphi_V\bigl(s|_{V}\bigr)=\varphi_U(s)\big|_{V}\qquad(V\subseteq U,\ s\in F(U)).\]
+    </p>
+    <p>即 \(\varphi\) 是自然变换。若 \(F,G\) 都是层，则 \(\varphi\) 自动给出层的态射。全体层与层态射构成范畴 \(\mathbf{Sh}(X)\)，它是预层范畴 \(\mathbf{PSh}(X)=\mathbf{Set}^{\mathcal O(X)^{\mathrm{op}}}\) 的<strong>满子范畴</strong>（层之间的态射与预层态射一样多）。</p>
+  </div>
+
+  <div class="prop">
+    <span class="lbl">命题 14.1.9（层化，存在性先记账）</span>
+    <p>包含函子 \(i:\mathbf{Sh}(X)\hookrightarrow\mathbf{PSh}(X)\) 有左伴随
+      \[a\ \dashv\ i,\qquad \operatorname{Hom}_{\mathbf{Sh}(X)}(aF,G)\;\cong\;\operatorname{Hom}_{\mathbf{PSh}(X)}(F,iG),\]
+      称为<strong>层化</strong>（sheafification，也叫“相伴层”）。\(aF\) 称为 \(F\) 的层化。它具有两条刻画性质：</p>
+    <p>（i）存在自然变换 \(\eta:F\to i(aF)\)，且 \(aF\) 是“最接近 \(F\) 的层”；</p>
+    <p>（ii）层化<strong>不改变茎</strong>：\((aF)_x\cong F_x\) 对一切 \(x\in X\)（茎的定义见 14.3.1）。</p>
+    <div class="proof">
+      <p class="pl">构造思路（细节见 14.2.6 的一般版本）.</p>
+      <p>两步走：先“分离化” \(F\mapsto F^{+}\)（把唯一性修好：\(F^{+}(U)=\) 覆盖上的相容族模去“在细化上相等”），再对 \(F^{+}\) 重复一次得 \(F^{++}=aF\)（把存在性也修好）。对拓扑空间这一步在第二遍就稳定；对一般 site 同样两遍足够。泛性质由构造直接验证：任何到层 \(G\) 的映射必在相容族上被强制，故唯一地穿过 \(aF\)。∎</p>
+    </div>
+  </div>
+
+  <div class="rmk"><strong>为什么这个伴随重要。</strong>① 它告诉我们“层的范畴”虽然只是预层范畴的满子范畴，但<em>不是</em>“封闭”的：预层的商、余极限、指数一般不再是层，必须先层化。② \(a\dashv i\) 是第 11 章 11.5 那个图的正式版，也是第 15 章把 site 变成拓扑斯的引擎。③ 注意方向：<em>层化是左伴随</em>，直觉是“自由地加上层条件”，与“自由群的构造”同构。<strong>但有一个陷阱</strong>：\(a\) 不保持有限极限以外的东西，尤其不保一般余极限的同构——这正是层范畴里“余极限要层化”的根源。</div>
+
+  <div class="phil">
+    <h4>② 选读：层条件的哲学——“局部”是被定义的，不是被发现的</h4>
+    <p>日常语言里“局部成立”是什么意思？大致是“在每一点附近成立”。但这个说法在数学上有歧义：<em>附近</em>多大？谁来保证不同点的“附近”能对上？层条件给出的答案是：不要谈“点附近”，要谈<strong>覆盖</strong>——一组你指定的开集，它们的并是整个空间，并且你在每一块上都有数据、在重叠处完全一致。这样一来，“局部”不再是一个模糊的副词，而是一个<em>结构</em>：覆盖的选取 + 相容性。</p>
+    <p>这个转向有一个哲学后果，值得你停一下。<strong>“整体由局部决定”这句话在层论里不是形而上学断言，而是一个可以被违反、并且违反它的地方可以被精确定位的性质。</strong>有界函数违反它，违反点是“无界性”；全纯函数满足它，原因是“全纯性可由局部幂级数判定”。于是“局部—整体”从一句口号变成了一把尺子：你拿它去量一个数学对象，量出来的偏差（层上同调）就是这个对象“整体上多出来的东西”。</p>
+    <p>这也是为什么第 11 章说“真值随阶段变化”并非修辞。在一个层拓扑斯里，“命题在 \(U\) 上为真”就是“截面属于某个子层”，而“在覆盖的每块上为真且相容”就能推出“在整体上为真”——<strong>层条件就是直觉主义逻辑的语义基础</strong>。你现在学的粘合公式，其实是“构造性证明可以局部进行再拼起来”这件事的代数形式。</p>
+  </div>
+
+  <div class="box walk">
+    <h4>③ 手把手：把“有界函数不是层”算到底</h4>
+    <p>这个例子值得完整走一遍，因为它是全章唯一一个你可以在纸上完全验证的反例，也是后面所有“障碍”例子的模板。</p>
+    <ol>
+      <li><strong>设定。</strong>\(X=\mathbb R\)（通常拓扑）。\(F(U)=\{f:U\to\mathbb R:\ f\text{ 连续且存在 }M,\ |f|\le M\}\)。</li>
+      <li><strong>它是预层。</strong>限制 \(f|_V\) 仍有界（同一 \(M\) 可用），(F1)(F2) 显然。</li>
+      <li><strong>选覆盖。</strong>\(U_n=(-n,n)\)，\(n=1,2,3,\dots\)。\(\bigcup_n U_n=\mathbb R\)。</li>
+      <li><strong>选相容族。</strong>\(f_n:U_n\to\mathbb R\)，\(f_n(x)=x\)。相容性：\(f_n|_{U_m}=f_m\) 当 \(m\le n\)（都是 \(x\mapsto x\) 的限制），成立。</li>
+      <li><strong>找拼接。</strong>任何 \(f\in F(\mathbb R)\) 满足 \(f|_{U_n}=f_n\ \forall n\)，必须 \(f(x)=x\ \forall x\in\mathbb R\)（每点 \(x\) 落在某个 \(U_n\) 里）。</li>
+      <li><strong>检查是否在 \(F(\mathbb R)\) 里。</strong>\(f(x)=x\) 在 \(\mathbb R\) 上无界，故 \(f\notin F(\mathbb R)\)。</li>
+      <li><strong>结论。</strong>相容族无拼接，存在性失败，\(F\) 不是层。它的层化是什么？是“局部有界连续函数”层，而 \(\mathbb R\) 上任何连续函数都局部有界，所以层化就是全体连续函数层 \(\mathcal C^0\)。<em>注意：层化把“有界”这个全局条件整个扔掉了</em>——这解释了为什么“有界性”在层论里根本不是一个层论性质，它必须用别的手段（如 \(\ell^\infty\) 空间、或者上同调）来表达。</li>
+    </ol>
+    <p><strong>推广练习：</strong>把“有界”换成“\(L^1\)”（勒贝格可积）。取 \(U_n=(-n,n)\)，\(f_n\equiv1\)，相容，拼接为常函数 \(1\)，而 \(\int_{\mathbb R}1=\infty\)。同样的失败，同样的层化——注意层化后的对象不是连续函数层，而是“局部可积函数”层，它比连续函数层<strong>大</strong>。<strong>要点：层化不是“修补”，它可能彻底改变对象类。</strong></p>
+  </div>
+
+  <div class="box exer">
+    <h4>④ 习题（14.1）</h4>
+    <ol>
+      <li id="ex14-1-1">验证：\(F(U)=\{f:U\to\mathbb R\text{ 局部常值}\}\) 是层，并说明它在 \(X=\mathbb R\) 与 \(X=\{0,1\}\)（离散）上分别给出什么。</li>
+      <li id="ex14-1-2">判断下列预层是否为层，并指出坏在哪一半（唯一性 / 存在性）：(a) \(F(U)=\{f:U\to\mathbb R\text{ 有界连续}\}\)；(b) \(F(U)=\{f:U\to\mathbb R\text{ 多项式}\}\)；(c) \(F(U)=\{\text{常数函数 }U\to\mathbb R\}\)；(d) \(F(U)=\mathbb R^{U}\)（所有函数）。</li>
+      <li id="ex14-1-3">设 \(F\) 是层，\(U=V\cup W\) 为两个开集。证明：给出 \(F(U)\) 的元素等价于给出一对 \((s_V,s_W)\in F(V)\times F(W)\) 满足 \(s_V|_{V\cap W}=s_W|_{V\cap W}\)。用等化子图写出这个等价。</li>
+      <li id="ex14-1-4">证明：若层条件对一切<strong>二元</strong>覆盖 \(U=U_1\cup U_2\) 成立，则它对一切<strong>有限</strong>覆盖成立。<em>（提示：对覆盖的块数归纳；关键是把 \(U_n\) 与 \(U_1\cup\cdots\cup U_{n-1}\) 先拼成两块。）</em></li>
+      <li id="ex14-1-5">设 \(\varphi:F\to G\) 是层态射。证明：\(\varphi\) 是同构当且仅当对每个 \(x\in X\)，茎上的映射 \(\varphi_x:F_x\to G_x\) 是双射（茎的定义见 14.3.1，此处可先用“对足够小的开集 \(U\ni x\)，\(\varphi_U\) 是双射”的等价形式）。</li>
+      <li id="ex14-1-6">说明为什么“分离预层”这个概念不能替代“层”：给出一个分离但非层的预层，并说明它的层化严格大于它本身。</li>
+      <li id="ex14-1-7">说明为什么“分离预层”不能保证粘合：验证分离性只涉及“比较两个已有截面”，而粘合性要求“造出一个新截面”。由此解释为什么这两条必须分开验。</li>
+    </ol>
+  </div>
+
+  <div class="box ans">
+    <h4>⑤ 参考答案（14.1）</h4>
+    <div class="item"><b>14.1.1</b>设 \(U=\bigcup U_i\)，\((f_i)\) 相容（\(f_i|_{U_i\cap U_j}=f_j|_{U_i\cap U_j}\)）。定义 \(f(x)=f_i(x)\)（\(x\in U_i\)），良定义由相容性。局部常值：取 \(x\in U_i\)，有邻域 \(N\subseteq U_i\) 使 \(f_i|_N\) 为常数，则 \(f|_N=f_i|_N\) 常数。唯一性：局部常值函数在覆盖的每块上相等则相等。故是层。在 \(X=\mathbb R\)（连通）：局部常值 = 常值，\(\underline A(\mathbb R)=A\)。在 \(X=\{0,1\}\) 离散：\(F(X)=\{(a,b):a,b\in A\}=A^2\)，因为每点单独可选值。这个差别正是常值预层与常值层的分野。</div>
+    <div class="item"><b>14.1.2</b>(a) <b>非层，存在性失败</b>。取 \(X=\mathbb R\)、\(U_n=(-n,n)\)、\(f_n(x)=x\)：相容，拼接只能是 \(x\)，而它在 \(\mathbb R\) 上无界。<br>
+      (b) <b>非层，存在性失败</b>——而且坏法与常值预层一模一样，这一点值得看清楚。记 \(F(U)=\) 限制在 \(U\) 上的实系数多项式之全体。只要 \(U\) 含非空开集，一个多项式由它在任一非空开子集上的值唯一确定，故限制映射 \(F(U)\to F(V)\)（\(V\subseteq U\) 非空开）是<strong>双射</strong>；于是 \(F(U)\cong\mathbb R[x]\) 对所有非空开 \(U\) 成立，\(F\) 与取值 \(\mathbb R[x]\) 的常值预层（在非空开集上）同构。取 \(X=\mathbb R\)、\(U=(0,1)\cup(2,3)\)，覆盖为两块不交开集，\(p_1=0\)、\(p_2=1\)：相容（交集空），但拼接 \(p\) 须满足 \(p|_{(0,1)}=0\) 与 \(p|_{(2,3)}=1\)，由刚性得 \(p\equiv0\) 且 \(p\equiv1\)，矛盾。<br>
+      <em>教益：</em>这是本章最值得警惕的陷阱。多项式的刚性极强，直觉会说“这么刚的东西粘合当然没问题”；<strong>恰恰相反——越刚，限制映射越是双射，越像常值预层，越不能处理不交的两块</strong>。对比：光滑函数的限制映射是单射不满，所以它在不交的块上可以自由取值，反而能拼。记住这条反直觉的规律：<em>层性要求限制映射“丢失信息”</em>，全知全能的限制映射是层的敌人。<br>
+      (c) <b>非层，存在性失败</b>。\(X=\{0,1\}\) 离散，\(U=X=U_0\sqcup U_1\)，取常函数 \(0\) 与 \(1\)，相容（交为空），但无常函数同时在两块上取 0 和 1。<br>
+      (d) <b>是层</b>。\(\mathbb R^{U}\) 的拼接 \(f(x)=f_i(x)\) 不需任何正则性；唯一性显然。此例证明层条件与“函数好坏”无关，见 14.1.5。</div>
+    <div class="item"><b>14.1.3</b>等化子图：\(F(U)\to F(V)\times F(W)\rightrightarrows F(V\cap W)\)，\(\rho(s)=(s|_V,s|_W)\)，\(\alpha(s_V,s_W)=s_V|_{V\cap W}\)，\(\beta(s_V,s_W)=s_W|_{V\cap W}\)。等化子条件正是：\(\rho\) 的像 = \(\{(s_V,s_W): \text{两者在交上相等}\}\)，且 \(\rho\) 单（分离性）。这正是所要求的等价。注意这里 \(I=\{1,2\}\) 时 \(\prod_{(i,j)}\) 有四项，但 \((1,1),(2,2)\) 两项由 (F1) 自动相等，有效约束只有 \((1,2)\) 与 \((2,1)\)，而这两项条件相同（都是 \(s_V|_{V\cap W}=s_W|_{V\cap W}\)），故只需一项。</div>
+    <div class="item"><b>14.1.4</b>对 \(n\) 归纳。\(n=1\) 平凡（\(U=U_1\)，相容族就是一个元素，拼接即它本身）。设对 \(n-1\) 块成立，考虑 \(U=U_1\cup\cdots\cup U_n\) 与相容族 \((s_1,\dots,s_n)\)。<br>
+      令 \(V=U_1\cup\cdots\cup U_{n-1}\)。由归纳假设，\((s_1,\dots,s_{n-1})\) 在 \(V\) 上有唯一拼接 \(s_V\in F(V)\)。再取二元覆盖 \(U=V\cup U_n\)，其重叠为 \(V\cap U_n=\bigcup_{i\lt n}(U_i\cap U_n)\)。<br>
+      需验证 \(s_V\) 与 \(s_n\) 相容：在每块 \(U_i\cap U_n\)（\(i\lt n\)）上，\(s_V|_{U_i\cap U_n}=s_i|_{U_i\cap U_n}=s_n|_{U_i\cap U_n}\)（第一个等号用 \(s_V\) 是 \((s_i)\) 的拼接，第二个用原相容族）。这些小块覆盖 \(V\cap U_n\)，由分离性得 \(s_V|_{V\cap U_n}=s_n|_{V\cap U_n}\)。<br>
+      于是二元情形的层条件给出唯一 \(s\in F(U)\)。它满足 \(s|_{U_i}=s_i\)（\(i\lt n\) 由 \(s|_V=s_V\)，\(i=n\) 由相容性），唯一性由分离性。∎<br>
+      <em>这个练习的技术价值：</em>验证层性时只需处理“两块”，繁琐的多块相容性由归纳免费得到。教材里“只需验证二元覆盖”这句话的依据就是它。<br><br>
+      <b>附注。</b>若 \(s\in F(U)\) 存在，则每个 \(F(U_i)\ne\varnothing\) 自动成立（\(s|_{U_i}\) 就是元素）；这不需要层性，只需要限制映射存在。反过来“局部处处有截面 ⟹ 整体有截面”才是层性真正买下的那一半。</div>
+    <div class="item"><b>14.1.5</b>“\(\Rightarrow\)”显然。“\(\Leftarrow\)”：设每茎 \(\varphi_x\) 双射。单性：若 \(\varphi_U(s)=\varphi_U(t)\)，则对每 \(x\in U\)，\(\varphi_x(s_x)=\varphi_x(t_x)\)，由单性得 \(s_x=t_x\)；两个截面在所有茎上相等，由层的分离性得 \(s=t\)（取充分细的覆盖，每块上二者相等）。满性：给定 \(t\in G(U)\)，对每 \(x\) 取 \(\varphi_x\) 的原像 \(s^{(x)}\in F_x\)，表示为某开集 \(U_x\ni x\) 上的截面 \(\tilde s_x\) 的芽；缩小 \(U_x\) 使 \(\varphi(\tilde s_x)=t|_{U_x}\)（这用到茎上等式可以“下降到某个邻域”，因为茎是余极限）。得覆盖 \(\{U_x\}\) 与相容族 \(\tilde s_x\)（在重叠处两截面的芽在所有点相同，由分离性它们相等），拼成 \(s\in F(U)\)，且 \(\varphi(s)=t\)（在每块上相等）。∎</div>
+    <div class="item"><b>14.1.6</b>“有界连续函数”预层 \(F\) 是分离的：若两个有界连续函数在覆盖每块上相等，则处处相等（相等是局部性质）。粘合性失败（14.1.5）。其层化为 \(\mathcal C^0\)（\(\mathbb R\) 上连续函数局部有界，故任意连续函数的相容族都能拼；且层化后每个截面局部有界即连续），严格大于 \(F\)（\(x\mapsto x\) 属于层化而不属于 \(F\)）。这说明“分离”远弱于“层”，且层化会真正扩大截面集。</div>
+    <div class="item"><b>14.1.7</b>分离性的形式是“若 \(s,t\in F(U)\) 且 \(s|_{U_i}=t|_{U_i}\) 对一切 \(i\) 成立，则 \(s=t\)”——它的假设<em>已经给了两个整体截面</em>，只要求它们相等。所以分离性是关于“局部化是否丢信息”的断言，与“局部数据能否被拼出来”无关。<br>
+      粘合性的形式是“给定相容族，则<em>存在</em> \(s\)”——它的结论是要求一个可能根本不存在的对象。二者的逻辑类型不同：分离性是<strong>单射性</strong>，粘合性是<strong>满射性</strong>（精确说：像等于等化子）。单射与满射互不蕴含（在任何范畴里都是如此），所以必须分开验。<br>
+      <em>一个更细的观察：</em>若 \(F\) 满足粘合性却对某个覆盖失败分离性，那么同一个相容族有两个拼接，这会让“拼接”这个操作不是函数——在实践中这比“拼不出来”更糟（你算出的东西依赖覆盖的选取）。所以分离性虽然在逻辑上“免费”，在实用上反而是不能让步的那一条。</div>
+  </div>
+</section>
+<section class="sec" id="s14-2">
+  <div class="sec-h"><span class="sec-no">14.2</span><h2>筛与层</h2><span class="src">M Ch.II §2</span></div>
+
+  <div class="box learn">
+    <h4>① 本节学习目标</h4>
+    <ol>
+      <li>说清“为什么不能只在开集上做层论”——即为什么必须把 \(\mathcal O(X)\) 换成一般范畴 \(\mathbf C\)；</li>
+      <li>掌握 sieve（筛）的两种等价描述：一族对左复合封闭的箭头 / 可表预层 \(y(c)\) 的子预层；</li>
+      <li>把 14.1 的“覆盖 + 相容族”逐字翻译成筛的语言，写出筛版本的层条件；</li>
+      <li>掌握 Grothendieck 拓扑三条公理，并理解每条各自防止什么病；</li>
+      <li>掌握六个 site：开集 site、\(BG\) 的平凡拓扑与满拓扑、Zariski site、稠密拓扑、点空间（退化情形）；</li>
+      <li>理解比较引理（comparing lemma）：什么时候“换一个更粗的 site 不改变层范畴”。</li>
+    </ol>
+  </div>
+
+  <div class="xref"><strong>沿用前文（不再复述）.</strong> 预层范畴 \(\mathbf{Set}^{\mathbf C^{\mathrm{op}}}\)、Yoneda 嵌入 \(y:\mathbf C\to\mathbf{Set}^{\mathbf C^{\mathrm{op}}}\)、\(y(c)=\mathbf C(-,c)\) 见<strong>（参见第 6 章 6.2–6.3、第 13 章 13.1）</strong>；筛作为预层拓扑斯 \(\Omega\) 的元素、以及 Grothendieck 拓扑与层范畴的<em>预告版</em>见<strong>（参见第 13 章 13.3、第 11 章 11.5）</strong>；子预层、子对象见<strong>（参见第 13 章 13.2）</strong>。本节新增：<strong>覆盖族（coverage）与拓扑的等价、筛形式的层条件、比较引理、以及六个必须掌握的具体 site</strong>——这些 11.5 一个都没讲。</div>
+
+  <div class="box prep">
+    <h4>极简回顾（六分钟）</h4>
+    <p><strong>1. 14.1 留下了什么。</strong>我们只在一种“索引范畴”上做层论：\(\mathbf C=\mathcal O(X)\)（开集按包含）。所有概念——覆盖、相容族、拼接——都用到了 \(\mathcal O(X)\) 的两个特殊性质：<em>包含关系是偏序</em>，<em>两块的交 \(U\cap V\) 仍是这块覆盖里的对象</em>。</p>
+    <p><strong>2. 为什么不够。</strong>很多几何场景里，“局部”不是按开集切的。例如：</p>
+    <ul>
+      <li>代数几何里的 Zariski 拓扑：只允许“开得很少”的集合（多项式非零集），但覆盖仍然要靠它们；</li>
+      <li>一个群 \(G\) 的作用：局部数据沿子群变化，“重叠”不再是交，而是两个映射的<strong>拉回</strong>；</li>
+      <li>一般范畴：你想在“所有环”“所有概形”“所有光滑流形”上同时说话。此时“两块重叠”没有交集，只有拉回方块。</li>
+    </ul>
+    <p><strong>3. 关键替换。</strong>把“包含 \(V\subseteq U\)”换成“任意箭头 \(f:d\to c\)”，把“两块的交”换成“拉回 \(d\times_c d'\)”，把“覆盖 \(U=\bigcup U_i\)”换成“一族箭头 \(\{f_i:c_i\to c\}\) 使得……（待定）”。第三项的“待定”就是本节要解决的问题：<strong>在一般范畴里，“覆盖”该怎么定义？</strong></p>
+    <p><strong>4. 答案预告。</strong>用<strong>筛</strong>：一个筛是把“一组指向 \(c\) 的箭头”打包成一个整体，且对细化封闭。于是“覆盖”变成一个<em>筛的性质</em>（这个筛够不够大），而不是一族箭头的性质。这一步把全部信息压进一个对象，正是 Grothendieck 的天才之处：<em>覆盖 = 一个子对象</em>。</p>
+  </div>
+
+  <h3 class="sub">14.2.1 动机：为什么“覆盖”需要一个新定义</h3>
+  <div class="motiv">
+    <span class="lbl">这个构造解决什么问题？</span>
+    在 \(\mathcal O(X)\) 里，“\(U_i\) 覆盖 \(U\)”等价于“\(U=\bigcup U_i\)”，而这个等式可以用两种方式说：(i) 每个点 \(x\in U\) 落在某个 \(U_i\) 里；(ii) \(U\) 是这些 \(U_i\) 的上确界。<strong>两种说法都用了“点”或“并”，而一般范畴里既没有点也没有并</strong>。Grothendieck 的解法是把“覆盖”变成<em>你宣告的</em>而不是<em>你算出的</em>：你指着一个筛说“这个筛算覆盖”，只要你的宣告满足三条自洽公理（恒等、稳定、传递）。<br>
+    这么做的代价是：“覆盖”不再有唯一的正确答案，同一范畴上可以装不同的拓扑（Zariski、étale、fppf……）。回报是巨大的：<strong>几何从“空间 + 开集”变成了“范畴 + 拓扑”，于是代数、数论、逻辑里的结构都能当空间用</strong>。这就是“没有点的拓扑学”的起点，也是第 15 章“site 与拓扑斯”的全部铺垫。
+  </div>
+
+  <h3 class="sub">14.2.2 筛：把一族箭头打包</h3>
+
+  <div class="defn">
+    <span class="lbl">定义 14.2.1（筛）</span>
+    <p>设 \(\mathbf C\) 是小范畴，\(c\in\mathbf C\)。\(c\) 上的一个<strong>筛</strong>（sieve）\(S\) 是一族以 \(c\) 为<strong>终点</strong>的箭头，
+      \[S\subseteq\{\text{所有箭头 } f:d\to c\},\]
+      满足<strong>对左复合封闭</strong>：若 \(f:d\to c\in S\) 且 \(g:e\to d\) 是任意箭头（终点是 \(d\)），则 \(f\circ g:e\to c\in S\)。</p>
+    <p>“左复合封闭”读作：<em>若一条箭头 \(f:d\to c\) 在筛里，那么任何“先走 \(g:e\to d\) 再走 \(f\)”的路径 \(f\circ g\) 也在筛里</em>——即筛对“细化”封闭。等价地，\(S\) 是预层 \(y(c)=\mathbf C(-,c)\) 的一个<strong>子预层</strong>：对每个 \(d\)，\(S(d)\subseteq\mathbf C(d,c)\) 是子集，且对任意 \(h:d'\to d\)，\(S(d)\) 中元素前复合 \(h\) 后仍在 \(S(d')\) 中。</p>
+    <p>\(c\) 上全体筛的集合记作 \(\mathrm{Sieve}(c)\)（或 \(\Omega(c)\)，因为第 13 章已证它就是预层拓扑斯的子对象分类子在 \(c\) 处的值）。</p>
+  </div>
+
+  <div class="cases">
+    <div class="ct">筛：四类例子</div>
+    <div class="case typ"><b>典型例</b>\(\mathbf C=\mathcal O(X)\)，\(c=U\)。箭头 \(V\to U\) 只有一条（当 \(V\subseteq U\)），故 \(U\) 上的筛就是“一族子开集 \(S\subseteq\{V:V\subseteq U\}\)，且对取更小开集封闭”：若 \(V\in S\)、\(W\subseteq V\)，则 \(W\in S\)。这正是“下集”（down-set）。<strong>开覆盖 \(\{U_i\}\) 给出筛</strong>：取 \(S=\{V: V\subseteq U_i\text{ 对某个 }i\}\)（把所有落在某块内的开集都收进来）。注意：<em>同一覆盖对应的筛是“饱和化”的</em>——覆盖本身只是筛里“极大”的那些块，筛把它们的子集也全收了。</div>
+    <div class="case deep"><b>本质例</b>\(\mathbf C=BG\)（单对象，箭头 = 群元素）。\(c=*\) 上的筛 \(S\subseteq G\) 满足：\(g\in S\) 且 \(h\in G\) ⟹ \(gh\in S\)（左复合 = 群乘）。这正是 \(G\) 的<strong>左理想</strong>（在群论里只有 \(S=\varnothing\) 与 \(S=G\) 两个）。所以 \(BG\) 上的筛只有两个：空筛与全筛。<strong>这个“退化”正是群作用拓扑只有两种的原因</strong>（平凡拓扑 / 满拓扑，见 14.2.6），也解释了第 13 章 13.3 说的“幺半群 \(M\) 上 \(\Omega(M)=\) 左理想集，非布尔”：群没有真左理想，幺半群有。</div>
+    <div class="case edge"><b>边界与误解</b>两个高频误解。<strong>(a) 以为“任何子集都是筛”</strong>：筛的关键是封闭性，而恒等箭头最容易破坏它。在 14.2.6 的图范畴 \(\mathbf G\) 里（对象 \(0=\) 边、\(1=\) 顶点，箭头 \(s,t:1\to0\)），取 \(S=\{\mathrm{id}_0\}\)：因为 \(\mathrm{id}_0\circ s=s\)，而 \(s\notin S\)，故 \(S\) <strong>不是</strong> \(0\) 上的筛。<em>记这条反例，它比定义更能防止你数错筛的个数</em>（14.2.6 会看到 \(0\) 上只有 5 个筛，而不是直觉的 \(2^3=8\) 个）。<strong>(b) 以为“筛 = 覆盖”</strong>：筛是候选，覆盖是“被拓扑选中的那些筛”。筛属于几何，拓扑属于你额外装上去的结构。</div>
+    <div class="case use"><b>结构中的应用</b>筛是“覆盖”的<strong>饱和形式</strong>，这个饱和有三个技术好处：① 覆盖的“细化”关系变成筛的包含关系（偏序，好操作）；② 两个覆盖的公共细化 = 两个筛的交（自动存在！）；③ 层条件只需对一个筛写一次，而不是对覆盖里每对 \(i,j\) 写——这就是筛版本层条件比 14.1.3 简洁的原因（下一小节）。第 13 章 13.3 的 \(\Omega(c)=\mathrm{Sieve}(c)\) 在此获得几何意义：<strong>子对象分类子的元素 = 候选覆盖</strong>，“真值”就是“这个覆盖够不够”。</div>
+  </div>
+
+  <h3 class="sub">14.2.3 筛形式的层条件</h3>
+  <p>有了筛，覆盖与相容族都能重写。先看覆盖：</p>
+
+  <div class="defn">
+    <span class="lbl">定义 14.2.2（Grothendieck 拓扑）</span>
+    <p>\(\mathbf C\) 上的一个<strong>Grothendieck 拓扑</strong> \(J\) 是：对每个对象 \(c\)，指定一族筛 \(J(c)\subseteq\mathrm{Sieve}(c)\)（称为<strong>覆盖筛</strong>），满足三条公理：</p>
+    <p><strong>(T1) 恒等（极大性）：</strong>最大筛 \(t_c=\{\text{所有箭头到 }c\}\in J(c)\)。</p>
+    <p><strong>(T2) 稳定（拉回）：</strong>若 \(S\in J(c)\) 且 \(f:d\to c\) 是任意箭头，则拉回筛
+      \[f^{\ast}S=\{\,g:e\to d: f\circ g\in S\,\}\;\in\;J(d).\]
+    </p>
+    <p><strong>(T3) 传递（局部覆盖的覆盖是覆盖）：</strong>若 \(S\in J(c)\)，且对每个 \(f:d\to c\in S\) 给定 \(R_f\in J(d)\)，则
+      \[S\circ\{R_f\}=\{\,f\circ g: f\in S,\ g\in R_f\,\}\;\in\;J(c).\]
+    </p>
+    <p>配对 \((\mathbf C,J)\) 称为一个 <strong>site</strong>（site，或“景”）。</p>
+  </div>
+
+  <div class="rmk"><strong>三条公理各自防什么病。</strong>(T1) 防“什么都不覆盖”：若最大筛都不算覆盖，则没有任何 \(c\) 被覆盖，层条件空真，理论退化。(T2) 防“覆盖不能限制”：几何里一切都要能拉回，若 \(S\) 覆盖 \(c\) 而某个 \(f^{\ast}S\) 不覆盖 \(d\)，则“在 \(c\) 上局部成立”无法传递到子对象 \(d\) 上——层条件就会与拉回不兼容。(T3) 防“覆盖的覆盖不是覆盖”：它保证“先在粗覆盖上局部化、再在每个局部上细覆盖”得到的细筛仍算覆盖。<strong>合起来，(T1)(T2)(T3) 正好是“覆盖”作为一个<em>拓扑概念</em>必须满足的最小自洽集</strong>，与拓扑空间开覆盖的三条性质（整空间覆盖自身、覆盖可交、覆盖的细化仍是覆盖）逐条对应。这不是类比，是祖谱：14.2.6 会看到开集 site 上的拓扑恰好就是开覆盖。</div>
+
+  <div class="defn">
+    <span class="lbl">定义 14.2.3（层，筛形式）</span>
+    <p>设 \((\mathbf C,J)\) 是 site。预层 \(F:\mathbf C^{\mathrm{op}}\to\mathbf{Set}\) 称为<strong>层</strong>，若对每个 \(c\in\mathbf C\)、每个 \(S\in J(c)\)，限制映射
+      \[F(c)\;\longrightarrow\;\varprojlim_{f\in S}F(\mathrm{dom}\,f)\]
+      是<strong>双射</strong>。其中右边的极限是对 \(S\) 作为范畴（对象 = \(S\) 中的箭头，箭头 = 交换三角形）取的极限，具体写出就是
+      \[\varprojlim_{f\in S}F(\mathrm{dom}f)=\Bigl\{\,(x_f)_{f\in S}\in\prod_{f\in S}F(\mathrm{dom}f)\;:\;F(g)(x_f)=x_{f\circ g}\ \text{ 对一切 } g:e\to\mathrm{dom}f\,\Bigr\}.\]
+    </p>
+    <p>用大白话：一个“\(S\)-相容族”就是给 \(S\) 里每条箭头 \(f:d\to c\) 指定 \(x_f\in F(d)\)，且沿着任何 \(g:e\to d\) 限制都自洽（\(x_f|_e=x_{f\circ g}\)）。层条件 = <strong>每个 \(S\)-相容族都来自唯一的 \(x\in F(c)\)</strong>。</p>
+  </div>
+
+  <div class="prop">
+    <span class="lbl">命题 14.2.4（两种层条件一致）</span>
+    <p>取 \(\mathbf C=\mathcal O(X)\)，\(J\) 为开覆盖给出的拓扑（14.2.6 的构造）。则定义 14.2.3 与定义 14.1.3 等价。</p>
+    <div class="proof">
+      <p class="pl">证明.</p>
+      <p><strong>从覆盖到筛。</strong>给定覆盖 \(\mathcal U=\{U_i\}\)，令 \(S_{\mathcal U}=\{V: V\subseteq U_i\text{ 某个 }i\}\)（饱和化）。\(S_{\mathcal U}\) 是 \(U\) 上的筛（对取子开集封闭）。</p>
+      <p><strong>相容族一一对应。</strong>给定覆盖上的相容族 \((s_i)\)，定义 \(S_{\mathcal U}\)-相容族为 \(x_V=s_i|_V\) 若 \(V\subseteq U_i\)；<em>良定义</em>由相容性（\(V\subseteq U_i\cap U_j\) 时 \(s_i|_V=s_j|_V\)）。反向：给定 \(S_{\mathcal U}\)-相容族，取 \(x_{U_i}\) 得覆盖上的族，其相容性即 \(x_{U_i}|_{U_i\cap U_j}=x_{U_j}|_{U_i\cap U_j}\)（因为 \(U_i\cap U_j\in S_{\mathcal U}\) 且它在两者之下，用相容族的定义沿 \(U_i\cap U_j\hookrightarrow U_i\) 限制）。</p>
+      <p><strong>拼接一致。</strong>层条件 14.2.3 要求 \(F(U)\to\varprojlim_{V\in S}F(V)\) 双射；而该极限与 \(\varprojlim_iF(U_i)\) 在等化子意义下同构——因为 \(S\) 中每个 \(V\) 落在某个 \(U_i\) 内，故 \(F(V)\) 由上方的 \(F(U_i)\) 通过限制决定，极限可只取覆盖的“极大元”\(\{U_i\}\) 再补上重叠条件。于是 14.2.3 的“相容族 ⟷ 唯一整体截面”正是 14.1.3。∎</p>
+    </div>
+  </div>
+
+  <div class="rmk"><strong>为什么要费劲换成筛。</strong> 因为只有筛版本能推广到没有交的范畴。在 14.1.3 里你必须写 \(F(U_i\cap U_j)\)——这要求“两块的交存在”。在一般范畴里 \(U_i\cap U_j\) 不存在，但有<strong>拉回</strong> \(d_i\times_c d_j\)，而筛版本的相容族 \(F(g)(x_f)=x_{f\circ g}\) 自动把“所有可能的拉回”一起处理了（每条 \(g:e\to\mathrm{dom}f\) 就是一个“把 \(f\) 拉回到 \(e\)”的动作）。这就是筛的技术优越性：<em>把“两两重叠”换成“沿任意箭头限制”，从二元关系升级为全体的、函子性的条件</em>。</div>
+
+  <h3 class="sub">14.2.4 覆盖族：等价但更好用的版本</h3>
+  <p>Grothendieck 拓扑在实践里几乎总是由“覆盖族”给出，而不是直接指定一堆筛。两种说法等价，但后者好验证得多。</p>
+
+  <div class="defn">
+    <span class="lbl">定义 14.2.5（覆盖族 / pretopology）</span>
+    <p>\(\mathbf C\) 上的一个<strong>覆盖族</strong>（coverage）\(\mathrm{Cov}\) 是：对每个 \(c\)，指定一族“覆盖”\(\{f_i:c_i\to c\}_{i\in I}\)（允许 \(I\) 为空集），满足</p>
+    <p><strong>(C1)</strong> 同构 \(\{f:c'\to c\}\) 是覆盖；</p>
+    <p><strong>(C2)</strong> 若 \(\{f_i:c_i\to c\}\) 是覆盖，\(g:d\to c\) 任意，则取拉回 \(c_i\times_c d\to d\)（假定存在），得到的族覆盖 \(d\)；</p>
+    <p><strong>(C3)</strong> 若 \(\{f_i:c_i\to c\}\) 覆盖，且每个 \(\{g_{ij}:d_{ij}\to c_i\}\) 覆盖 \(c_i\)，则复合族 \(\{f_i\circ g_{ij}\}\) 覆盖 \(c\)。</p>
+    <p>覆盖族生成的拓扑：\(S\in J(c)\) 当且仅当 \(S\) 包含某个覆盖族的饱和化。<strong>反方向</strong>（Grothendieck 覆盖定理）：任何拓扑都可由某个覆盖族生成。</p>
+  </div>
+
+  <div class="rmk"><strong>实践建议。</strong>算例子时用覆盖族（好写），做理论时用拓扑（好证）。两者转换只在需要时进行：\(S\) 覆盖 \(c\) ⟺ 存在覆盖族 \(\{f_i\}\) 使每个 \(f_i\in S\)（把 \(f_i\) 看作 \(S\) 的元素）。<strong>注意方向</strong>：覆盖族要“进入”筛，不是“等于”筛；筛比覆盖族大（饱和化）。</div>
+
+  <h3 class="sub">14.2.5 六个必须掌握的 site</h3>
+
+  <div class="cases">
+    <div class="ct">开集 site \(\mathcal O(X)\)：四类例子</div>
+    <div class="case typ"><b>典型例</b>对象 = 开集，箭头 = 包含。覆盖族 = 开覆盖（\(U=\bigcup U_i\)）。层 = 14.1 意义下的层。这是全章的基准：<strong>任何新 site 都该先代回这里检查你的直觉</strong>。</div>
+    <div class="case deep"><b>本质例</b>层范畴 \(\mathbf{Sh}(\mathcal O(X))\) 与“\(X\) 上的 étale 空间”范畴等价（14.3 全节的主题）。这条等价说明<em>site 的全部信息可以被一个几何对象（étale 空间）复原</em>，而这也是“层 = 空间”的第一处显现。</div>
+    <div class="case edge"><b>边界与误解</b>覆盖族 (C1) 要求“同构是覆盖”，这排除了“只允许真包含覆盖”的病态。另外注意：<strong>\(\mathcal O(X)\) 里的覆盖族必须允许空族</strong>（覆盖空开集），否则 (T1) 对 \(c=\varnothing\) 失效（\(\varnothing\) 上最大筛是空筛，需要空族覆盖它）。这个细节是 14.1.6 的来源。</div>
+    <div class="case use"><b>结构中的应用</b>把 \(X\) 换成“一个概形的 Zariski 开集”就得到 Zariski site（下例）；换成“流形的开集”得到光滑 site；换成“拓扑空间的开集但只允许可数覆盖”得到可数 site（用于 Bornologie 与可测性）。<strong>同一个空间，不同拓扑，层范畴大不相同</strong>——这是几何里选择“拓扑”的实质。</div>
+  </div>
+
+  <div class="cases">
+    <div class="ct">\(BG\) 上的两种拓扑：四类例子</div>
+    <div class="case typ"><b>典型例（平凡拓扑）</b>只宣告最大筛 \(t_c\) 为覆盖（\(J(c)=\{t_c\}\)）。则层条件只对 \(S=t_c\) 检查，而 \(t_c\)-相容族恰好就是一个 \(G\)-集合的元素（每条 \(g:*\to*\) 给一个元素 \(x_g\in X\)，相容性 \(x_{gh}=h\cdot x_g\) 由函子性自动——实际上 \(t_c\) 版本的条件恒真）。故<strong>层 = 全体 \(G\)-集合 = \(\mathbf{Set}^{BG}\)</strong>。这是“最粗拓扑给出最大层范畴”的极端。</div>
+    <div class="case deep"><b>本质例（满拓扑）</b>把 <strong>\(* \) 上的每一个筛都宣告为覆盖</strong>，即 \(J(*)=\{\varnothing,\,t_*\}\)（这是 \(*\) 上仅有的两个筛，14.2.2 已算出）。关键是空筛也被算作覆盖：空筛上的相容族是空积，只有唯一一个元素，于是层条件要求 \(F(*)\to\{*\}\) 是双射，即 \(F(*)\) 必须是单点集。又因 \(G\) 的作用必须保持这个唯一元素，得到<strong>层 = 单点集带平凡作用，即终预层</strong>，层范畴退化成单对象范畴。<em>教益：拓扑越细，层越少</em>——满拓扑是最细的，所以层最少。这与开集情形方向一致（Zariski 比欧氏拓扑粗，所以 Zariski 层更多）。</div>
+    <div class="case edge"><b>边界与误解</b>为什么 \(BG\) 的筛只有两个（14.2.2 本质例）？因为 \(G\) 是群，任何非空子集 \(S\) 对左乘封闭就必含 \(1\)（取 \(g\in S\)，\(g^{-1}g=1\in S\)），再由 \(1\in S\) 得 \(S=G\)。<strong>换成幺半群 \(M\)，左理想可以很多，于是 \(M\) 上能装很多不同的拓扑</strong>——这是“群作用层论贫乏、幺半群作用层论丰富”的根源，也是第 13 章 \(\Omega(M)\) 非布尔的几何解释。</div>
+    <div class="case use"><b>结构中的应用</b>\(BG\) 的层论是等变上同调（\(H^\ast_G(X)\)）的起点：把 \(X\) 换成拓扑空间、\(G\) 换成拓扑群、拓扑换成“局部截面存在”的覆盖，就得到等变层。在代数拓扑里，\(G\)-层 ≃ \(G\)-空间 的局部化，是 Borel 构造的层论版本。</div>
+  </div>
+
+  <div class="cases">
+    <div class="ct">Zariski site：四类例子</div>
+    <div class="case typ"><b>典型例</b>取 \(\mathbf C\) 为<strong>交换环的反范畴</strong> \(\mathbf{CRing}^{\mathrm{op}}\)（等价地：仿射概形的范畴 \(\mathbf{Aff}\)，因为 \(\mathrm{Spec}\) 给出 \(\mathbf{CRing}^{\mathrm{op}}\simeq\mathbf{Aff}\)）。这样 \(\mathbf C\) 的对象写成一个环 \(R\)，而 \(\mathbf C\) 中的箭头 \(R\to R'\) 对应环同态 \(R'\to R\)。覆盖族取成<strong>有限族</strong> \(\{R\to R_{f_i}\}\) 使 \((f_1,\dots,f_n)=R\)（即 \(f_i\) 生成单位理想）。这是“Zariski 开覆盖”的代数翻译：\(R_{f}\) = 局部化 = “\(f\ne0\) 的开集”。</div>
+    <div class="case deep"><b>本质例</b>Zariski 层 = 拟凝聚层（quasi-coherent sheaf）。最关键的例子：\(\Omega_{R/\mathbb Z}\)（Kähler 微分）作为 \(R\)-模给出 Zariski 层。Zariski 拓扑的<strong>贫乏</strong>（开集太少，例如 \(\mathbb A^2\) 去掉一点不是 Zariski 开集）使得很多几何信息不在 Zariski 层里——这正是 Grothendieck 引入 étale / fppf 拓扑的动机：<em>要在代数几何里做“真正的”局部化（隐函数定理级别的），必须换更细的拓扑</em>。</div>
+    <div class="case edge"><b>边界与误解</b>新手常以为“Zariski 层 = 概形上的层”就够了。不够：Stokes 定理、隐函数定理、连通性判别都需要 étale 拓扑。反过来，<strong>Zariski 层有个好性质：它由“局部化 \(R\to R_f\)”完全决定</strong>，因此可以用纯代数方法计算——这就是为什么 Hartshorne 能只用 Zariski 层讲完全书，而不必碰 site。</div>
+    <div class="case use"><b>结构中的应用</b>Zariski site 上的层范畴 \(\mathbf{Sh}(\mathrm{Zar})\) 与“环层化空间”的范畴有精细关系；加上“准凝聚”条件后得到 \(\mathbf{QCoh}\)，它是代数几何的主力范畴（导出范畴、凝聚层上同调都在这里做）。第 15 章会看到它也是个拓扑斯（在适当大小假设下）。</div>
+  </div>
+
+  <div class="cases">
+    <div class="ct">稠密拓扑与点空间：四类例子</div>
+    <div class="case typ"><b>典型例（稠密拓扑）</b>\(\mathbf C=\mathcal O(X)\)，宣告 \(S\) 为覆盖当且仅当 \(\bigcup_{V\in S}V\) 在 \(U\) 中<strong>稠密</strong>（\(U\) 中每个非空开集都与某个 \(V\in S\) 相交）。层条件因此压成一句话：<strong>只要 \(V\subseteq U\) 稠密，\(F(U)\to F(V)\) 就必须是双射</strong>。最干净的模型是<em>不可约空间</em>（任一非空开集都稠密，例如带一般点的代数簇）：此时非空开集全都“一样大”，层完全由一般点 \(\eta\) 处的茎 \(F_\eta\) 决定，\(F(U)\cong F_\eta\) 对所有非空 \(U\)。这正是稠密拓扑想捕捉的“一般点决定一切”。</div>
+    <div class="case deep"><b>本质例（点空间）</b>\(\mathbf C=\mathbf 1\)（单对象、单箭头）。则唯一的筛是 \(t\)，唯一拓扑是平凡拓扑。层范畴 = \(\mathbf{Set}\)。<strong>这是“site 的退化情形”，对应“一个点的空间”</strong>。任何 site 到 \(\mathbf 1\) 的“拉回”就是取整体截面 \(\Gamma=F(\text{终对象})\)——这个操作在 14.4 会以 \(f_*\) 的身份回来（\(f:X\to *\) 的直接像）。</div>
+    <div class="case edge"><b>边界与误解</b>稠密拓扑是<strong>非标准</strong>的：它不是由开覆盖生成的（“稠密”弱于“覆盖”）。方向必须算清：任何开覆盖的并是 \(U\)，当然稠密，所以<strong>开覆盖筛都是稠密覆盖筛</strong>，即 \(J_{\text{开}}\subseteq J_{\text{稠密}}\)，稠密拓扑<em>更细</em>。由比较引理，稠密层 ⊆ 开覆盖层，<strong>层更少</strong>。这与“稠密 ⟹ 更粗”的语感相反，务必按“覆盖更多 = 更细 = 层更少”来记。另一个易错点：<em>分离预层不是稠密层</em>——稠密拓扑的层要求 \(F(U)\cong F(V)\) 对一切稠密开 \(V\subseteq U\) 成立（因为单元素的稠密覆盖就是一个覆盖），这比分离性强得多；例如 \(\mathbb R\) 上的常值层 \(\underline A\) 取 \(V=\mathbb R\setminus\{0\}\) 就失败（\(F(\mathbb R)=A\) 而 \(F(V)=A^2\)，\(V\) 有两个连通分支）。</div>
+    <div class="case use"><b>结构中的应用</b>稠密拓扑出现在：① 力迫（Cohen 力迫的层论版本）；② 拓扑斯里的“稠密子拓扑斯”（第 19 章）；③ 有理函数域 \(\mathbb C(x)\) 上的层论（由其在 Zariski 稠密开集上的值决定）。它是“局部化到一般点”的拓扑表达。</div>
+  </div>
+
+  <h3 class="sub">14.2.6 比较引理：换拓扑何时不改变层</h3>
+  <p>一个自然的担心：拓扑选得随便，会不会得到完全不同的层范畴？比较引理给出判据：<strong>若一个拓扑比另一个“细”，层范畴反向包含</strong>。</p>
+
+  <div class="prop">
+    <span class="lbl">命题 14.2.6（比较引理）</span>
+    <p>设 \(J,J'\) 是 \(\mathbf C\) 上两个 Grothendieck 拓扑，且 \(J\subseteq J'\)（即每个 \(J\)-覆盖筛也是 \(J'\)-覆盖筛，\(J'\) 更细）。则
+      \[\mathbf{Sh}(\mathbf C,J')\;\subseteq\;\mathbf{Sh}(\mathbf C,J)\]
+      作为 \(\mathbf{PSh}(\mathbf C)\) 的满子范畴，且包含函子有左伴随（层化）。特别地，“细拓扑的层是粗拓扑的层”。</p>
+    <div class="proof">
+      <p class="pl">证明.</p>
+      <p>层条件是对“每个覆盖筛”的双射要求。\(J\subseteq J'\) 意味着 \(J'\) 要求更多筛满足双射，故 \(J'\)-层必满足 \(J\) 的要求：\(\mathbf{Sh}(J')\subseteq\mathbf{Sh}(J)\)。满子范畴显然（态射都是预层态射）。左伴随由一般层化定理给出（每个 site 的层范畴都是反射子范畴）。∎</p>
+    </div>
+  </div>
+
+  <div class="rmk"><strong>为什么“更细 ⟹ 层更少”值得单独记。</strong>因为它的反直觉程度很高：直觉上“覆盖更多、限制更多”应该让层<em>更容易</em>满足，但实际上覆盖越多，需要拼接的相容族越多，<strong>越难</strong>通过。<em>层 = 能处理所有被宣告的覆盖</em>，宣告得越多，要求越高。这条规律在几何里天天用：Zariski 层很容易是层（开集少），étale 层难得多；而 fppf 层更难。Grothendieck 的洞见正是：<strong>要证明一个东西是层，选越粗的拓扑越省力；要用层，选越细的拓扑越有力</strong>。这个张力就是整个 Grothendieck 拓扑理论的实用核心。</div>
+
+  <div class="rmk"><strong>比较引理的第二形态（常用）。</strong>若 \(u:\mathbf C\to\mathbf D\) 是函子，且 \(J_{\mathbf C}\)-覆盖的像被 \(J_{\mathbf D}\)-覆盖，则拉回 \(u^{\ast}:\mathbf{Sh}(\mathbf D)\to\mathbf{Sh}(\mathbf C)\) 有右伴随 \(u_*\)，构成几何态射（第 19 章）。14.4 的逆像层就是 \(u^{\ast}\) 的最简单情形。这里只需记住：<strong>比较引理保证“换 site 不丢信息”的技术条件</strong>，是后面所有“同一拓扑斯的不同 site 表示”的依据。</div>
+
+  <div class="phil">
+    <h4>② 选读：Grothendieck 的那一步——“覆盖”是被宣告的</h4>
+    <p>传统拓扑学里，拓扑是一个<strong>给定</strong>的东西：空间 \(X\) 带着它的开集族，你不能改。Grothendieck 把这件事翻了过来：拓扑变成你在范畴上<em>额外安装</em>的结构，同一范畴可以装多个拓扑，每个给出一个不同的“几何”。这个翻转的哲学分量很重。</p>
+    <p>它意味着“局部”不再依附于“点”，而依附于<strong>你允许的探测方式</strong>。在 Zariski 拓扑下，“局部”= 局部化到一个元；在 étale 拓扑下，“局部”= 局部化到一个 étale 邻域（可以“展开”分支点）；在 fppf 拓扑下，“局部”= 平坦局部。同一个环，三种局部，三种几何。<em>哪一种“对”？</em>——取决于你要证什么定理。这不是相对主义，而是工具论：拓扑是<strong>分辨率的选择</strong>，如同显微镜的倍数。</p>
+    <p>这一步还有一个逻辑后果，值得你现在就埋下：一旦“覆盖”变成宣告，<strong>层条件就变成一种“广义的完备性”</strong>——每个相容族都有唯一拼接，恰似每个 Cauchy 序列都有唯一极限。层范畴因此像“完备化”，而层化像“完备化函子”。第 15 章会把这个类比做成定理：<em>拓扑斯 = 某个预层范畴的完备化</em>。</p>
+  </div>
+
+  <div class="box walk">
+    <h4>③ 手把手：在 \(\mathbf G\)（有向图形状范畴）上枚举所有筛</h4>
+    <p>\(\mathbf G\)：对象 \(0\)（边）、\(1\)（顶点）；非恒等箭头 \(s,t:1\to0\)（起点、终点）。<strong>方向别搞反</strong>：预层是反变函子，\(s:1\to0\) 才给出 \(X(s):X(0)\to X(1)\)（边集 \(\to\) 顶点集）。筛数的是"以 \(c\) 为<strong>终点</strong>的箭头"，所以两个对象的答案天然不对称。第 13 章 13.3 算过这里的 \(\Omega\)；现在我们用筛的语言重算一遍，<strong>先把一个最容易踩的坑踩掉</strong>。</p>
+    <ol>
+      <li><strong>先纠正一个错误直觉。</strong>很多人以为"任何子集都是筛"，于是在终点箭头最多的 \(0\)（边）上数出 \(2^3=8\) 个。错。取 \(S=\{\mathrm{id}_0\}\)：因为 \(\mathrm{id}_0\circ s=s\)，而 \(s\notin S\)，违反左复合封闭。所以 <strong>\(\{\mathrm{id}_0\}\) 不是筛</strong>。记住这个反例，它比定义更能防止你算错。</li>
+      <li><strong>\(0\)（边）上的筛。</strong>以 \(0\) 为终点的箭头是 \(\mathrm{id}_0,s,t\)。约束有两条叠加：\(\mathrm{id}_0\in S\Rightarrow s,t\in S\)（因为 \(\mathrm{id}_0\circ s=s,\ \mathrm{id}_0\circ t=t\)）；而 \(s,t\) 自身不再强制任何东西（\(s\circ g\) 中 \(g:d\to1\) 只有 \(\mathrm{id}_1\)，给回 \(s\)）。枚举：\(\varnothing\)、\(\{s\}\)、\(\{t\}\)、\(\{s,t\}\)、\(\{\mathrm{id}_0,s,t\}\)。<strong>共 5 个，即 \(\Omega(0)=5\)</strong>。</li>
+      <li><strong>\(1\)（顶点）上的筛。</strong>以 \(1\) 为终点的箭头只有 \(\mathrm{id}_1\)（\(s,t\) 的终点是 \(0\)，不算在内），无约束。\(\varnothing\) 与 \(\{\mathrm{id}_1\}\)，<strong>共 2 个，即 \(\Omega(1)=2\)</strong>。<em>注意这里的"2"不是"因为顶点只有两种状态"，而是因为以顶点为终点的箭头只有一条</em>——这两个"2"纯属巧合，别把它们当成同一个道理。</li>
+      <li><strong>全局真值（整体截面）。</strong>自然变换 \(1\Rightarrow\Omega\) 给出 \(A\in\Omega(1)\)、\(B\in\Omega(0)\)，自然性要求沿 \(s\) 与沿 \(t\) 走给出同一个 \(A\)：\(\Omega(s)(B)=\{g:d\to1\mid s\circ g\in B\}\)，而到 \(1\) 的箭头只有 \(\mathrm{id}_1\)、\(s\circ\mathrm{id}_1=s\)，故 \(\Omega(s)(B)=\{\mathrm{id}_1\}\) 若 \(s\in B\)，否则 \(\varnothing\)；\(\Omega(t)\) 同理。于是须 \(s\in B\iff t\in B\)，且 \(A\) 按该真伪取 \(\{\mathrm{id}_1\}\) 或 \(\varnothing\)。在 5 个筛里，满足 \(s\in B\iff t\in B\) 的是 \(\varnothing\)、\(\{s,t\}\)、\(\{\mathrm{id}_0,s,t\}\)，各配唯一的 \(A\)。<strong>恰好 3 个全局真值</strong>。</li>
+      <li><strong>对照第 13 章。</strong>13.3 记录的正是"\(\Omega\) 有 2 个顶点、5 条边、3 个全局真值，非布尔"——顶点处 \(2\)、边处 \(5\)，与这里逐个对象算出的 \(\Omega(1)=2\)、\(\Omega(0)=5\) 一一对应。两种算法吻合，说明筛的定义与 13.3 的 \(\Omega(c)=\mathrm{Sieve}(c)\) 是同一件事。<em>为什么非布尔？</em>因为 3 个真值不是 \(2\)；而且 \(\{s\}\) 与 \(\{t\}\) 这两个筛互不为补——一个子图可以含起点不含终点，于是"这条边的两端在不在子图里"不是二值的。这也正是 13.3 图 13.2 里 \(\Omega\) 有 5 条边的原因：筛 \(\{s\}\)、\(\{t\}\)、\(\{s,t\}\)、\(\{\mathrm{id}_0,s,t\}\) 恰好对应"仅起点在、仅终点在、两端在但边不在、边也在"。</li>
+      <li><strong>要点。</strong>筛的枚举是纯组合的、机械的：列出所有到 \(c\) 的箭头，找出“\(\mathrm{id}_c\) 强制了谁”，再取所有封闭子集。觉得筛抽象的时候，就做一次枚举，立刻具体。</li>
+    </ol>
+  </div>
+
+  <div class="box exer">
+    <h4>④ 习题（14.2）</h4>
+    <ol>
+      <li id="ex14-2-1">设 \(\mathbf C\) 是偏序集（作为范畴）。证明：\(c\) 上的筛恰好是 \(c\) 的下集（down-set）：\(S\subseteq\{d:d\le c\}\) 且 \(d'\le d\in S\Rightarrow d'\in S\)。</li>
+      <li id="ex14-2-2">证明空筛 \(\varnothing\) 在 \(\mathbf C\) 的任意对象上都是筛，并说明为什么“空筛是覆盖”会强制 \(F(c)\) 为单点。</li>
+      <li id="ex14-2-3">在 \(\mathbf C=\mathbf 1\) 上，列出所有 Grothendieck 拓扑，并说明各自给出什么层范畴。</li>
+      <li id="ex14-2-4">验证：稠密拓扑满足 (T1)(T2)(T3)。（提示：(T3) 需用“稠密开集的稠密开子集并”仍稠密。）</li>
+      <li id="ex14-2-5">设 \(J\subseteq J'\) 为两拓扑。证明：若 \(F\) 是 \(J'\)-层，则 \(F\) 是 \(J\)-层；并举例说明反向不成立。</li>
+      <li id="ex14-2-6">在开集 site 上，说明“拓扑 \(J\)”由“哪些覆盖族算覆盖”完全决定；并指出“覆盖族 \(\mapsto\) 饱和筛”不是单射（举例），因此两者只在<strong>饱和化</strong>意义下一一对应。</li>
+      <li id="ex14-2-7">设 \(S\in J(c)\) 是覆盖筛，且 \(f:d\to c\) <strong>属于</strong> \(S\)。证明 \(f^{\ast}S=t_d\)（最大筛）。<em>（这条引理在层论里天天用：覆盖筛限制到它的一个成员上，就是该成员上的平凡覆盖。）</em></li>
+      <li id="ex14-2-8">设 \(f:d\to c\) 是<strong>同构</strong>。证明 \(f^{\ast}:\mathrm{Sieve}(c)\to\mathrm{Sieve}(d)\) 是双射，且 \(S\in J(c)\iff f^{\ast}S\in J(d)\)。由此说明“拓扑在同构下不变”。</li>
+    </ol>
+  </div>
+
+  <div class="box ans">
+    <h4>⑤ 参考答案（14.2）</h4>
+    <div class="item"><b>14.2.1</b>偏序集里 \(\mathrm{Hom}(d,c)\) 至多一个元素，非空当且仅当 \(d\le c\)。筛 \(S\) = 一族 \(d\le c\) 且对“左复合封闭”：\(d\in S\) 且 \(d'\le d\) 则 \(d'\in S\)（因为箭头 \(d'\to d\to c\) 复合后是 \(d'\to c\)，必须在 \(S\)）。这正是下集的定义。反之下集显然封闭。∎</div>
+    <div class="item"><b>14.2.2</b>空集对左复合封闭（无条件真），是筛。若 \(\varnothing\in J(c)\)，则层条件要求 \(F(c)\to\varprojlim_{\varnothing}F=\{{*}\}\) 双射，即 \(F(c)\cong\{*\}\)。直观：空筛说“什么也不覆盖”，若这算覆盖，则“在这个覆盖上相容”是空条件，但要求整体截面唯一存在——即 \(F(c)\) 只能有一个元素。这是“允许空覆盖”的代价，也是为什么标准拓扑只在空对象上允许空覆盖（14.2.5）。</div>
+    <div class="item"><b>14.2.3</b>\(\mathbf 1\) 上唯一的对象 \(*\) 上的筛只有 \(\varnothing\) 与 \(t_*\)。可能的拓扑：\(\{t_*\}\)（平凡）、\(\{t_*,\varnothing\}\)（满拓扑，即“全部筛”）、\(\{\varnothing\}\)（不可，违反 (T1)：最大筛必须在）。故只有两种。① \(J=\{t_*\}\)：层 = 全体集合（\(F(*)\) 任意），\(\mathbf{Sh}\cong\mathbf{Set}\)。② \(J=\{t_*,\varnothing\}\)：层要求 \(F(*)\cong\{*\}\)，\(\mathbf{Sh}\cong\mathbf 1\)（单对象范畴）。</div>
+    <div class="item"><b>14.2.4</b>(T1)：稠密开集族包含 \(U\) 本身（\(U\) 在 \(U\) 中稠密），故 \(t_U\) 含稠密开集，是覆盖。(T2)：若 \(\bigcup_{V\in S}V\) 在 \(U\) 中稠密，\(f:W\to U\) 即 \(W\subseteq U\) 开。\(f^{\ast}S=\{V\cap W:V\in S\}\)，其并在 \(W\) 中稠密：任取非空开 \(O\subseteq W\)，\(O\) 也是 \(U\) 的非空开集，与 \(\bigcup S\) 相交，交点 \(\in V\cap W\) 某 \(V\)，故 \(O\cap(V\cap W)\ne\varnothing\)。(T3)：\(S\) 稠密，每个 \(R_f\)（在 \(\mathrm{dom}f\) 中稠密）——复合筛含所有 \(V\cap W\)（\(V\in S,W\in R_V\)），其并在 \(U\) 中稠密：任取非空开 \(O\subseteq U\)，\(O\cap V\ne\varnothing\) 某 \(V\)（\(S\) 稠密），\(O\cap V\) 是 \(\mathrm{dom}V\) 的非空开集，与 \(\bigcup R_V\) 相交，得 \(O\cap W\ne\varnothing\) 某 \(W\in R_V\)。∎</div>
+    <div class="item"><b>14.2.5</b>\(F\) 是 \(J'\)-层 ⟹ 对每个 \(S\in J'(c)\) 层条件成立 ⟹ 因 \(J(c)\subseteq J'(c)\)，对每个 \(S\in J(c)\) 也成立 ⟹ \(F\) 是 \(J\)-层。<br>
+      <strong>反向的反例。</strong>取 \(\mathbf C=\mathcal O(\mathbb R)\)，\(J\)=开覆盖，\(J'\)=稠密拓扑（14.2.5）。已知 \(J\subseteq J'\)（开覆盖必稠密），故 \(J'\) 更细。取 \(F(U)=\{f:U\to\mathbb R\text{ 连续}\}\)：它是 \(J\)-层（14.1.5）。它<strong>不是</strong> \(J'\)-层：取稠密开集 \(V=\mathbb R\setminus\{0\}\)（单元素覆盖 \(\{V\}\)，因 \(V\) 在 \(\mathbb R\) 中稠密），相容族为 \(f=1/x\in F(V)\)（在 \(V\) 上连续），若 \(F\) 是 \(J'\)-层则须存在 \(g\in F(\mathbb R)\) 使 \(g|_V=f\)，即 \(g(x)=1/x\) 对 \(x\ne0\)，而 \(g\) 在 \(0\) 处无法连续延拓，矛盾。故 \(\mathcal C^0\) 是 \(J\)-层而非 \(J'\)-层。∎</div>
+    <div class="item"><b>14.2.6</b><strong>“饱和筛”与“覆盖族”不是单射。</strong>给定覆盖族 \(\mathcal U=\{U_i\}\)，\(S_{\mathcal U}=\{V:V\subseteq U_i\text{ 某 }i\}\)。若 \(\mathcal V=\{V_j\}\) 是 \(\mathcal U\) 的细化（每个 \(V_j\subseteq\) 某 \(U_i\)）且仍覆盖 \(U\)，则 \(S_{\mathcal V}=S_{\mathcal U}\)——所以多个覆盖族给同一个筛。反过来，<strong>筛 \(S\) 决定覆盖族</strong>：取 \(S\) 的全部成员（它们并起来是 \(U\)，因为 \(S\in J(U)\) 且拓扑保证覆盖筛饱和），这族唯一。<br>
+      因此正确的表述是：<em>拓扑 \(J\) 由“哪些筛是覆盖筛”唯一决定（这是定义的直接内容）；而“覆盖族”只在饱和化意义下对应筛，且任何拓扑都可由某个覆盖族生成（Grothendieck 覆盖定理）。</em>实践含义：<strong>算例子时用覆盖族，做理论时用筛</strong>——两者之间的转换是“取饱和 / 取极大元”，不要误以为是双射。</div>
+    <div class="item"><b>14.2.7</b>记 \(f:d\to c\in S\)。要证 \(f^{\ast}S=t_d\)，即每个 \(g:e\to d\) 都在 \(f^{\ast}S\) 里。按定义，\(g\in f^{\ast}S\iff f\circ g\in S\)。而 \(f\in S\)、\(g:e\to d\)，由筛对左复合封闭得 \(f\circ g\in S\)。故 \(g\in f^{\ast}S\)，即 \(f^{\ast}S=t_d\)。∎<br>
+      <em>为什么这条重要：</em>它说“覆盖筛限制到一个成员上时，变成该成员上的最大筛”。用在层条件上就是：<em>一个相容族若在覆盖 \(S\) 上给定，则在每个成员 \(f:d\to c\) 自身上已被完全钉死（因为 \(t_d\) 上的数据就是全部）</em>。这是“局部数据 = 一个成员上的数据”的精确表达，14.4 计算逆像层时反复用到。</div>
+    <div class="item"><b>14.2.8</b>若 \(f:d\to c\) 是同构，逆 \(f^{-1}\)。对 \(c\) 上的筛 \(S\)，\(f^{\ast}S=\{g:e\to d: fg\in S\}\)。映射 \(g\mapsto fg\) 是 \(\mathrm{Hom}(e,d)\to\mathrm{Hom}(e,c)\) 的双射（同构复合），故 \(g\in f^{\ast}S\iff fg\in S\) 给出筛的一一对应；同理 \((f^{-1})^{\ast}\) 是其逆，故 \(f^{\ast}\) 双射。<br>
+      拓扑不变性：由 (T2)，\(S\in J(c)\Rightarrow f^{\ast}S\in J(d)\)；由 (T2) 应用于 \(f^{-1}\) 得 \(f^{\ast}S\in J(d)\Rightarrow (f^{-1})^{\ast}f^{\ast}S=S\in J(c)\)。两向皆通，故 \(S\in J(c)\iff f^{\ast}S\in J(d)\)。∎<br>
+      <em>教益：</em>拓扑是“在等价意义下”的结构——同构的对象无法被拓扑区分。这也解释了为什么层范畴只依赖于 site 的“等价类”。</div>
+  </div>
+</section>
+<section class="sec" id="s14-3">
+  <div class="sec-h"><span class="sec-no">14.3</span><h2>层与流形、丛、étale 空间</h2><span class="src">M Ch.II §3–6</span></div>
+
+  <div class="box learn">
+    <h4>① 本节学习目标</h4>
+    <ol>
+      <li>掌握<strong>茎</strong>（stalk）\(F_x\)：它是余极限，也是“在 \(x\) 处的无穷小邻域”这一直觉的严格化；会算五个例子的茎；</li>
+      <li>理解<strong>芽</strong>与茎的区别（茎是集合，芽是元素），并知道为什么茎只依赖“任意小的邻域”；</li>
+      <li>掌握<strong>étale 空间</strong>（局部同胚）的定义，并能自己把层变成 étale 空间（étale 化 / \(\Lambda\) 构造）；</li>
+      <li>掌握<strong>主定理</strong>：\(\mathbf{Sh}(X)\simeq\mathbf{LH}/X\)（层范畴 ≃ 局部同胚的切片范畴），并理解两个方向的函子；</li>
+      <li>说清<strong>层 / 丛 / 向量丛 / 覆叠</strong>四者的层次关系，知道哪些层来自丛、哪些不是；</li>
+      <li>会用茎判断层态射是否同构（14.1.5 的推广），并算一个具体例子（\(S^1\) 上的常值层与 de Rham）。</li>
+    </ol>
+  </div>
+
+  <div class="xref"><strong>沿用前文（不再复述）.</strong> 余极限（colimit）、滤过余极限见<strong>（参见第 4 章 4.4、第 8 章 8.1）</strong>；切片范畴 \(\mathcal C/X\) 见<strong>（参见第 3 章 3.4）</strong>；范畴等价（等价 ⟺ 本质满 + 全忠实）见<strong>（参见第 3 章 3.5）</strong>；层的定义见<strong>（本节 14.1、14.2）</strong>。本节新增：茎、étale 化、\(\mathbf{LH}/X\)、层与丛的关系——这些是层论的“几何身体”，14.1–14.2 完全没有涉及。</div>
+
+  <div class="box prep">
+    <h4>极简回顾（七分钟）：从“局部”到“任意小”</h4>
+    <p><strong>1. 前两节停在哪儿。</strong>我们已经能判断一个预层是不是层，但层的<em>元素</em>还是“开集上的截面”这种整体对象。可几何里最想做的操作是<strong>取极限到一点</strong>：问“函数 \(f\) 在 \(x\) 附近长什么样”。层论必须能回答这个，否则它只是“开集上的簿记”。</p>
+    <p><strong>2. 障碍。</strong>在集合里“取极限”靠的是度量；在拓扑空间里靠的是邻域滤子。层论要的东西更弱也更准：<strong>把所有含 \(x\) 的开集上的截面收集起来，按“在更小的开集上相同”认同</strong>。这就是余极限——不需要度量，不需要极限，只需要“越来越小”。</p>
+    <p><strong>3. 为什么必须“认同”。</strong>因为同一个局部行为有无数种描述：\(f(x)=x\) 在 \((-1,1)\) 上、在 \((-0.1,0.1)\) 上、在 \((-\epsilon,\epsilon)\) 上，都是“同一个 \(x\)”。若不认同，茎会大得没法用；认同之后，茎恰好捕捉“\(x\) 处的无穷小信息”，而丢弃“这个信息定义在多大的开集上”。</p>
+    <p><strong>4. 一句话预告。</strong>茎 \(F_x=\varinjlim_{x\in U}F(U)\)；étale 空间 \(=\) 把所有茎无交并起来、再装上正确的拓扑；主定理 \(=\) “层”与“局部同胚”是同一件事的两种说法。这就是本节全部。</p>
+  </div>
+
+  <h3 class="sub">14.3.1 茎：把层收拢到一点</h3>
+  <div class="motiv">
+    <span class="lbl">这个构造解决什么问题？</span>
+    层给了你“每个开集上的截面”，但几何问题几乎总在问“<em>在这一点附近</em>如何”。更具体地：你要判断两个截面是否“在 \(x\) 处相等”、一个截面是否“在 \(x\) 处非零”、一个层态射是否“在 \(x\) 处可逆”——这些判断都只该依赖任意小的邻域。茎就是把“任意小”这个模糊量词变成<strong>一个集合</strong>，从而让这些判断变成集合论运算（相等、非空、双射）。<br>
+    技术上的关键：<em>“越来越小”不是极限，而是余极限</em>。因为信息是“限制”下去的（从大到小），方向与包含相反，所以要用余极限。这一点初学者十有八九会写反。
+  </div>
+
+  <div class="defn">
+    <span class="lbl">定义 14.3.1（茎与芽）</span>
+    <p>设 \(F\) 是 \(X\) 上的预层，\(x\in X\)。\(F\) 在 \(x\) 处的<strong>茎</strong>（stalk）定义为余极限
+      \[F_x\;=\;\varinjlim_{x\in U}F(U),\]
+      指标范畴是“含 \(x\) 的开集，箭头为反向包含 \(U\supseteq V\)”（即 \(V\to U\)，且 \(x\in V\)），转移映射为限制 \(\rho^{U}_{V}:F(U)\to F(V)\)。</p>
+    <p>具体地：\(F_x\) 的元素是等价类 \([U,s]\)，其中 \(x\in U\)、\(s\in F(U)\)，等价关系为
+      \[[U,s]=[V,t]\iff\exists\,W\subseteq U\cap V,\ x\in W,\ s|_{W}=t|_{W}.\]
+      </p>
+    <p>这样的等价类称为 \(s\) 在 \(x\) 处的<strong>芽</strong>（germ），记 \(s_x=[U,s]\)。有自然的映射 \(F(U)\to F_x\)，\(s\mapsto s_x\)（\(x\in U\)）。</p>
+  </div>
+
+  <div class="rmk"><strong>三个必须分清的点。</strong>（a）<strong>茎 vs 芽</strong>：茎 \(F_x\) 是集合，芽 \(s_x\) 是它的元素。（b）<strong>茎 vs 纤维</strong>：若 \(F\) 来自一个丛（14.3.5），茎同构于 \(x\) 处的纤维，但一般层不一定有“纤维”这个概念——茎总是有，纤维要有丛结构。（c）<strong>为什么等价关系里出现“存在 \(W\)”而不是“\(U=V\)”</strong>：因为同一个芽可以由不同大小的开集代表；必须允许“缩小到公共部分再比”。漏掉这个“\(\exists W\)”是初学最常见的错误，它会让茎大得无法计算（每个开集一个元素，互不认同）。</div>
+
+  <div class="cases">
+    <div class="ct">茎：四类例子</div>
+    <div class="case typ"><b>典型例</b>\(F=\mathcal C^0\)（连续函数层），\(X=\mathbb R\)，\(x=0\)。则 \(F_0\) 是所有“在 \(0\) 的某邻域上有定义的连续函数”的芽。两个函数给同一芽 ⟺ 它们在 \(0\) 的某个邻域上完全一致。注意：<strong>芽记录了“整个函数在 \(0\) 附近的全部行为”，而不只是 \(f(0)\)</strong>。所以 \(f(x)=x\) 与 \(g(x)=\sin x\) 的芽不同（它们的差在任意小邻域上非零），尽管 \(f(0)=g(0)=0\)。</div>
+    <div class="case deep"><b>本质例</b>\(F=\mathcal O_X\)（全纯函数层，\(X\) 为黎曼面），\(F_x\cong\mathbb C\{z\}\)（在 \(x\) 处收敛的幂级数环）。这个同构是<strong>全纯函数刚性</strong>的精确表达：一个全纯函数的芽 = 它的 Taylor 级数。于是“局部”在复分析里变成一个<em>代数对象</em>（收敛幂级数环），这是复几何能代数化的根源。对比 \(\mathcal C^\infty\)：光滑函数的芽不构成幂级数环（有 \(e^{-1/x^2}\) 这种“平坦但非零”的函数，其芽非零而所有阶导数在 \(0\) 处为 0），所以 \(\mathcal C^\infty_0\) 比形式幂级数环<strong>大得多</strong>——这是“光滑 ≠ 解析”的层论表述。</div>
+    <div class="case edge"><b>边界与误解</b>（a）<strong>常值层 \(\underline A\) 与常值预层 \(\underline A^{\mathrm{pre}}\) 的茎相同</strong>：都是 \(A\)。这很反直觉——两者作为层不同（14.1.5），但茎完全一样。原因：茎只看“任意小邻域”，而小邻域总是连通的，在连通开集上局部常值 = 常值，与常值预层一致。<em>教益：茎不比层强，两个不同的层可以有相同的茎（若它们的茎都相同且都分离，则它们同构——这正是 14.1.5 的判据；常值预层不分离，所以逃过了这条）。</em><br>
+      （b）<strong>茎不是“纤维”</strong>：取 \(F=\mathcal C^0\)，\(F_x\) 里有“\(f(0)=0\) 但 \(f\not\equiv0\)”的芽（如 \(f(t)=t\)），所以 \(F_x\ne\mathbb R\)。取“在 \(x\) 处取值”的映射 \(F_x\to\mathbb R,[f]\mapsto f(x)\)，它是满射但<strong>不是</strong>单射。这个满射就是后面 étale 空间的投影。<br>
+      （c）<strong>茎可以是空集</strong>：若层在某点附近没有截面（如 \(F\) 是“恰在 \(U_0\) 上有值的摩天大楼层”而 \(x\notin U_0\)），则 \(F_x=\{*\}\)（单点，不是空集！因为余极限对空指标范畴给单点）。真正的空集茎要求层在 \(x\) 的每个邻域上都空——对层来说这会导致 \(F\) 在该连通分支上恒空。</div>
+    <div class="case use"><b>结构中的应用</b>茎是<strong>局部性质的判定器</strong>：层态射 \(\varphi\) 是同构 ⟺ 每个茎上 \(\varphi_x\) 是双射（14.1.5，本节 14.3.6 重述）。这条把“层的同构”化归为“一族集合的双射”，是层论里最常用的技术。进一步：<em>层的正合性（exactness）在茎上逐点判定</em>——层范畴是 Grothendieck 范畴，其正合结构由茎给出。这就是为什么代数几何里证一个层映射是同构，标准动作是“取茎，逐点算”。</div>
+  </div>
+
+  <div class="rmk"><strong>茎的计算口诀。</strong>“在 \(x\) 处取茎”= 把开集缩到 \(x\) 的任意小邻域，问“最终稳定成什么”。对绝大多数自然的层，茎就是“\(x\) 处的局部模型”：\(\mathcal C^0_x\) = 连续函数芽环、\(\mathcal C^\infty_x\) = 光滑芽环、\(\mathcal O_{X,x}\) = 局部环、\(\underline A_x=A\)、\(\Omega^k_x=\Lambda^kT^\ast_xX\)（余切空间的外幂）。<strong>一旦茎算出来，几乎所有局部问题都变成线性代数。</strong></div>
+
+  <h3 class="sub">14.3.2 étale 空间：局部同胚</h3>
+  <p>现在给层造一个几何身体。核心直觉：<em>“\(x\) 处的芽”应该就是“\(x\) 上方的一点”</em>。把所有这样的点堆起来，就得到一个新空间。</p>
+
+  <div class="defn">
+    <span class="lbl">定义 14.3.2（étale 空间 / 局部同胚）</span>
+    <p>设 \(X\) 是拓扑空间。一个<strong>étale 空间</strong>（étale space，或“\(X\) 上的 étale 丛”）是一个拓扑空间 \(E\) 连同一个连续映射 \(p:E\to X\)，使得<strong>\(p\) 是局部同胚</strong>：对每个 \(e\in E\)，存在开邻域 \(V\ni e\) 使 \(p|_V:V\to p(V)\) 是同胚（\(p(V)\) 在 \(X\) 中开）。</p>
+    <p>记 \(\mathbf{LH}/X\) 为“对象 = \(X\) 上的 étale 空间，态射 = 与投影交换的连续映射”的范畴（LH = local homeomorphism）。</p>
+  </div>
+
+  <div class="rmk"><strong>为什么“局部同胚”恰好是对的推广。</strong>三个层次：<strong>覆叠映射</strong>（每点有邻域使原像是若干“整齐的”拷贝）太强，只给出局部常值层；<strong>纤维丛</strong>（局部平凡）也强，要求纤维都同构；<strong>局部同胚</strong>最弱，只要求“局部是开嵌入”，纤维可以逐点变化。<em>层论对应的正是最弱的那一档</em>——因为层不要求任何一致性（同一层的两个茎可以完全不像）。所以若不要求局部同胚而只要求连续，就会得到“任意丛” （sheaf 之外的怪东西）；若要求覆叠，就丢掉大量层。<strong>局部同胚是“恰好对应层”的那个条件</strong>，这不是巧合，而是主定理（14.3.4）的内容。</div>
+
+  <p>反向构造：给定层 \(F\)，怎么造 étale 空间？把茎无交并起来。</p>
+
+  <div class="defn">
+    <span class="lbl">定义 14.3.3（层的 étale 化）</span>
+    <p>设 \(F\) 是 \(X\) 上的层。定义
+      \[\Lambda(F)\;=\;\coprod_{x\in X}F_x\]
+      （茎的无交并），带投影 \(p:\Lambda(F)\to X\)，\(p(s)=x\) 若 \(s\in F_x\)。拓扑定义如下：对每个开集 \(U\subseteq X\) 与每个 \(s\in F(U)\)，令
+      \[\tilde s:U\to\Lambda(F),\qquad \tilde s(x)=s_x\ (x\in U),\]
+      并取所有 \(\tilde s(U)\)（\(U\) 开、\(s\in F(U)\)）作为<strong>拓扑基</strong>。</p>
+  </div>
+
+  <div class="prop">
+    <span class="lbl">命题 14.3.4（étale 化的性质）</span>
+    <p>（i）上述集族确实构成 \(\Lambda(F)\) 上的拓扑基；</p>
+    <p>（ii）每个 \(\tilde s:U\to\tilde s(U)\) 是同胚，故 \(p\) 是局部同胚，\(\Lambda(F)\in\mathbf{LH}/X\)；</p>
+    <p>（iii）截面函子给出自然双射
+      \[F(U)\;\cong\;\Gamma(U,\Lambda(F)):=\{\sigma:U\to\Lambda(F)\ \text{连续},\ p\circ\sigma=\mathrm{id}_U\},\qquad s\mapsto\tilde s;\]
+    </p>
+    <p>（iv）茎不变：\(\Lambda(F)_x\)（作为 étale 空间的茎，即纤维 \(p^{-1}(x)\)）\(\cong F_x\)。</p>
+    <div class="proof">
+      <p class="pl">证明.</p>
+      <p><strong>(i)(ii)</strong> 需验基的两条：覆盖与交。覆盖：任取 \(e\in F_x\)，\(e=s_x\) 某 \(s\in F(U)\)，故 \(e\in\tilde s(U)\)。交：若 \(e\in\tilde s(U)\cap\tilde t(V)\)，\(x=p(e)\in U\cap V\)，则 \(s_x=t_x\)，由茎的定义存在 \(W\subseteq U\cap V\) 含 \(x\) 使 \(s|_W=t|_W\)；于是 \(\tilde s(W)=\widetilde{s|_W}(W)=\widetilde{t|_W}(W)=\tilde t(W)\ni e\)，落在交里。故是基。\(\tilde s\) 是连续双射到其像；开映射：对开 \(W\subseteq U\)，\(\tilde s(W)=\widetilde{s|_W}(W)\) 是基元素，开。故同胚。\(p\circ\tilde s=\mathrm{id}_U\)，在 \(\tilde s(U)\) 上 \(p=(\tilde s)^{-1}\)，连续，故 \(p\) 局部同胚。∎</p>
+      <p><strong>(iii)</strong> 给定 \(s\in F(U)\)，\(\tilde s\) 连续且是截面。反之给连续截面 \(\sigma\)，对每 \(x\in U\)，\(\sigma(x)\in F_x\)；由基的定义存在开 \(W_x\ni x\) 与 \(t^{(x)}\in F(W_x)\) 使 \(\sigma|_{W_x}=\widetilde{t^{(x)}}\)。这些 \(t^{(x)}\) 在重叠处相容（因为 \(\sigma\) 单值），由层性拼成唯一 \(s\in F(U)\)，且 \(\tilde s=\sigma\)（逐点相等）。故 \(s\mapsto\tilde s\) 是双射。∎</p>
+      <p><strong>(iv)</strong> 纤维 \(p^{-1}(x)=F_x\) 按定义。∎</p>
+    </div>
+  </div>
+
+  <p>反方向：给定 étale 空间 \(p:E\to X\)，造层。</p>
+
+  <div class="defn">
+    <span class="lbl">定义 14.3.5（截面层）</span>
+    <p>对 \(p:E\to X\) 局部同胚，定义预层
+      \[\Gamma_p(U)=\{\sigma:U\to E\ \text{连续}:\ p\circ\sigma=\mathrm{id}_U\},\qquad \rho^{U}_{V}(\sigma)=\sigma|_V.\]
+      这是层（称为 \(E\) 的<strong>截面层</strong>）：相容族的拼接就是逐点定义（连续性由“\(p\) 局部同胚”把局部截面拉回成开集的条件保证）。</p>
+  </div>
+
+  <h3 class="sub">14.3.3 主定理：层 = 局部同胚</h3>
+
+  <div class="prop">
+    <span class="lbl">定理 14.3.6（\(\mathbf{Sh}(X)\simeq\mathbf{LH}/X\)）</span>
+    <p>上述两个构造给出范畴等价
+      \[\mathbf{Sh}(X)\;\simeq\;\mathbf{LH}/X,\qquad F\mapsto\bigl(\Lambda(F)\to X\bigr),\qquad (p:E\to X)\mapsto\Gamma_p.\]
+      即在层与“\(X\) 上的局部同胚”之间，对象与态射都一一对应。</p>
+    <div class="proof">
+      <p class="pl">证明（四个自然同构，逐一交代）.</p>
+      <p><strong>① \(\Gamma_{\Lambda(F)}\cong F\)。</strong>就是命题 14.3.4(iii)：\(F(U)\cong\Gamma(U,\Lambda F)\)，且与限制相容（\(\widetilde{s|_V}=\tilde s|_V\)）。这是自然同构。</p>
+      <p><strong>② \(\Lambda(\Gamma_p)\cong E\)（保持 \(X\) 上方的结构）。</strong>定义 \(\Phi:\Lambda(\Gamma_p)\to E\) 为 \(\Phi(\sigma_x)=\sigma(x)\)（\(\sigma\) 是 \(x\) 附近 \(p\) 的局部截面，\(\sigma_x\) 是它在茎中的芽）。良定义：若 \(\sigma_x=\tau_x\)，则 \(\sigma,\tau\) 在 \(x\) 的某邻域 \(W\) 上相等，故 \(\sigma(x)=\tau(x)\)。连续：局部上 \(\Phi\circ\tilde\sigma=\sigma\)，右端连续。双射：单射——若 \(\sigma(x)=\tau(x)=e\)，因 \(p\) 局部同胚，存在开邻域 \(V\ni e\) 使 \(p|_V\) 同胚，则 \(\sigma,\tau\) 在 \(p(V)\) 的一个含 \(x\) 的小邻域上都是 \((p|_V)^{-1}\)，故芽相同；满射——任取 \(e\in E\)，取 \(p\) 在其上的同胚邻域 \(V\)，则 \(\sigma=(p|_V)^{-1}\) 在 \(p(V)\ni p(e)\) 上是截面，其芽映到 \(e\)。开映射与“保持投影不变”：由构造与局部性。故是同构。∎</p>
+      <p><strong>③ 态射对应。</strong>层态射 \(\varphi:F\to G\) 给出 étale 映射 \(\Lambda\varphi:\Lambda F\to\Lambda G\)，\(\varphi_x(s_x)=(\varphi_U(s))_x\)（良定义由自然性）。反之 \(X\) 上方的 étale 映射 \(f:E\to E'\) 给出 \(\Gamma_p\to\Gamma_{p'}\)，\(\sigma\mapsto f\circ\sigma\)。两个方向互逆，由 ①② 的自然是。∎</p>
+      <p><strong>④ 全忠实与本质满。</strong>①②已给“对象上互逆”，③给“态射上互逆”，故是等价。∎</p>
+    </div>
+  </div>
+
+  <div class="rmk"><strong>这个定理为什么是本章的高点。</strong>它说：<em>“层”与“局部同胚”是同一个东西的两副面孔</em>。一副是代数的（函子 + 粘合条件，适合计算与推广到任意 site），一副是几何的（空间 + 投影，适合直观与构造）。有了这副几何面孔，很多层论构造立刻变得显然：<br>
+    · 层的<strong>像 / 子层</strong> = 对应的 étale 空间的开 / 闭子空间（14.3.4 用这个算 z 层）；<br>
+    · 层的<strong>无交并</strong> = étale 空间的无交并；<br>
+    · <strong>核</strong>（层态射的等化子）= 纤维积 \(E\times_{E'}E\)（因为“\(\varphi(s)=0\)”是闭条件）；<br>
+    · <strong>商</strong>层不总存在 = 局部同胚的商不一定局部同胚——这就是层范畴不是 abelian 的几何根源。<br>
+    所以：<em>遇到层论问题，先问“对应的 étale 空间长什么样”</em>，往往一步看穿。</div>
+
+  <div class="figdesc"><strong>图 14.2 读图说明（\(\mathbf{Sh}(X)\simeq\mathbf{LH}/X\)）.</strong>左边一排是“层”的世界：一个函子 \(F\)，每个开集给一个集合，带限制映射。右边一排是“空间”的世界：一个空间 \(E\) 铺在 \(X\) 上方，每根纤维是 \(x\) 处的茎。中间两个箭头互为逆。往下看：<strong>取茎</strong>（\(\coprod F_x\)）把左边变成右边；<strong>取截面</strong>（\(\Gamma\)）把右边变回左边。关键在这一列纤维：它们正是层算出的茎，而“每个芽是 \(E\) 上的一点”这件事，让“在 \(x\) 处的局部信息”终于有了位置。</div>
+
+  <svg class="cd" viewBox="0 0 660 250" role="img" aria-label="层范畴与局部同胚范畴的等价">
+    <rect class="node" x="30" y="40" width="150" height="46" rx="7"/>
+    <text x="105" y="60" text-anchor="middle" class="nt">层 F</text>
+    <text x="105" y="77" text-anchor="middle" class="lb" style="font-size:11px">函子 + 粘合</text>
+    <rect class="node2" x="480" y="40" width="150" height="46" rx="7"/>
+    <text x="555" y="60" text-anchor="middle" class="nt">étale 空间 E</text>
+    <text x="555" y="77" text-anchor="middle" class="lb" style="font-size:11px">p: E → X 局部同胚</text>
+    <path class="arb" d="M 184 55 C 280 30, 390 30, 476 55"/>
+    <text x="330" y="34" text-anchor="middle" class="hb">Λ：取茎的无交并</text>
+    <path class="arg" d="M 476 74 C 390 100, 280 100, 184 74"/>
+    <text x="330" y="112" text-anchor="middle" class="hg">Γ：取连续截面</text>
+    <rect class="nodeg" x="30" y="150" width="600" height="80" rx="7" opacity="0.55"/>
+    <text x="330" y="172" text-anchor="middle" class="lb" style="font-size:12.5px">F(U) ≅ { σ : U → E 连续 ｜ p∘σ = id }　　p⁻¹(x) = Fₓ</text>
+    <text x="330" y="196" text-anchor="middle" class="lb" style="font-size:12px">“层在 U 上的截面” ⟷ “E 在 U 上方的连续图像”</text>
+    <text x="330" y="218" text-anchor="middle" class="lb" style="font-size:12px;fill:#15803d">纤维 = 茎：这是全部等价的关键</text>
+  </svg>
+  <p class="figcap">图 14.2　层范畴 \(\mathbf{Sh}(X)\) 与局部同胚范畴 \(\mathbf{LH}/X\) 等价</p>
+
+  <h3 class="sub">14.3.4 层、丛、向量丛、覆叠：四层关系</h3>
+  <p>现在回答一个实际问题：教科书里说“向量丛”“覆叠空间”“纤维丛”，它们与层是什么关系？答案是：它们是 étale 空间加了不同程度的<strong>一致性条件</strong>。</p>
+
+  <div class="cases">
+    <div class="ct">层与丛：四类例子</div>
+    <div class="case typ"><b>典型例（覆叠空间）</b>\(p:E\to X\) 是覆叠（每点有邻域 \(U\) 使 \(p^{-1}(U)\cong U\times D\)，\(D\) 离散）。则对应的层是<strong>局部常值层</strong>：\(\Gamma_p(U)=\{\text{局部常值的 }D\text{-值函数}\}\)。在 \(X\) 连通、局部道路连通、半局部单连通时，有等价
+      \[\{\text{覆叠空间}\}\;\longleftrightarrow\;\{\pi_1(X)\text{ 在 }D\text{ 上的作用}\}\;\longleftrightarrow\;\{\text{局部常值层}\}.\]
+      这就是<strong>单值化</strong>（monodromy）：沿着环路走一圈，纤维被置换一次，恰好是 \(\pi_1(X)\) 的作用。覆叠是“最整齐”的 étale 空间。</div>
+    <div class="case deep"><b>本质例（向量丛 vs 层）</b>实向量丛 \(V\to X\)（纤维 \(\mathbb R^n\)）给出层 \(\Gamma_V(U)=\) 连续截面。层论上它记为 \(\mathcal C^0\otimes V\) 或更常见的“\(V\) 的截面层”，是 \(\mathcal C^0_X\)-模。<strong>关键区别：不同的向量丛给出不同的层，但一个层可能对应不到任何向量丛</strong>——因为它可以是无穷秩、或者秩逐点变化。精确地说：<strong>有限秩向量丛 ⟷ 局部自由的有限生成 \(\mathcal C^0_X\)-模（即可逆层的直和，Serre–Swan）</strong>。这条 Serre–Swan 定理是层论与拓扑的桥梁：<em>丛范畴 ≃ 投射模范畴</em>。</div>
+    <div class="case edge"><b>边界与误解</b>（a）<strong>层不是“纤维都同构”</strong>：\(\mathcal C^0\) 的茎 \(\mathcal C^0_x\) 随 \(x\) 变化（在无边流形内部各点抽象同构，但在边界点、在不同维数处都不同）。所以 \(\mathcal C^0\) 不是任何纤维丛的截面层（虽然它是 étale 空间的截面层）。（b）<strong>étale 空间 ≠ 覆叠</strong>：étale 允许纤维的基数跳变（例如 \(X=\mathbb R\)，\(E=\{(x,y):xy=1\}\cup\{(0,0)\}\) 配投影到 \(x\)，在 \(x=0\) 处纤维是单点 \(\{0\}\)，其他地方是两点——局部同胚但非覆叠（在 \(0\) 处）。（c）<strong>“层 = 丛”是错的</strong>：所有层都对应 étale 空间（定理 14.3.6），但只有很特殊的层才对应覆叠 / 纤维丛。层次是：<em>层 ≃ étale 空间 ⊃ 纤维丛 ⊃ 向量丛 ⊃ 平凡丛</em>——第一处是等价（定理 14.3.6），后面三处是真包含（条件一个比一个强）。</div>
+    <div class="case use"><b>结构中的应用</b>这个层次在几何里天天用：① 微分几何：切丛的截面层 = 向量场层 \(\Theta_X\)；联络是 \(\Theta_X\to\Omega^1\otimes\Theta_X\) 的层映射。② 代数几何：可逆层（line bundle 的层论版本）= \(\mathcal O_X\)-模且局部 \(\cong\mathcal O_X\)；\(\mathrm{Pic}(X)=H^1(X,\mathcal O_X^\ast)\)。③ 拓扑：\(K\)-理论 = 向量丛的 Grothendieck 群 = 投射模的 \(K_0\)，层论提供了“局部自由 ⟹ 有限生成投射”的翻译。<strong>一句话：丛是几何，层是代数；Serre–Swan 让两者对话。</strong></div>
+  </div>
+
+  <div class="prop">
+    <span class="lbl">例 14.3.7（\(S^1\) 上的两个层，算到底）</span>
+    <p>取 \(X=S^1\)。</p>
+    <p>（i）<strong>常值层 \(\underline{\mathbb Z}\)</strong>：\(\underline{\mathbb Z}(U)=\{\text{局部常值的 }U\to\mathbb Z\}\)。则 \(\underline{\mathbb Z}(S^1)=\mathbb Z\)，茎 \(\underline{\mathbb Z}_x=\mathbb Z\)。对应的 étale 空间是 \(S^1\times\mathbb Z\)（可数无穷个拷贝，覆叠）。</p>
+    <p>（ii）<strong>连续函数层 \(\mathcal C^0\)</strong>：\(\mathcal C^0(S^1)=\{S^1\to\mathbb R\text{ 连续}\}\)，茎 \(\mathcal C^0_x\)。对应的 étale 空间不能写成 \(S^1\times\)（某集合），因为茎随 \(x\) 变。</p>
+    <p>（iii）<strong>两者的关系</strong>：有单射层态射 \(\underline{\mathbb Z}\hookrightarrow\mathcal C^0\)（局部常值函数是连续的），<strong>不是</strong>满射；商层 \(\mathcal C^0/\underline{\mathbb Z}\) 对应的 étale 空间是“\(\mathbb R\) 模 \(\mathbb Z\)”的层，其整体截面是 \(C^0(S^1,\mathbb R/\mathbb Z)\)。这个商正是“相位”的层论表述——一个连续函数模去整数部分，剩下 \(S^1\)-值的信息。</p>
+    <p>（iv）<strong>上同调的入口</strong>：\(H^1(S^1,\underline{\mathbb Z})=\mathbb Z\) 测量“\(\underline{\mathbb Z}\to\mathcal C^0\) 不是满射的程度”（具体地，测量“\(1\) 在 \(S^1\) 上没有整体对数的障碍”），这是 de Rham / Čech 上同调的分类意义。</p>
+  </div>
+
+  <h3 class="sub">14.3.5 用茎检验同构</h3>
+
+  <div class="prop">
+    <span class="lbl">命题 14.3.8（茎判定同构）</span>
+    <p>层态射 \(\varphi:F\to G\) 是同构，当且仅当对每个 \(x\in X\)，\(\varphi_x:F_x\to G_x\) 是双射。更一般地：\(\varphi\) 是单射（在每个 \(F(U)\) 上单）\(\iff\) 每个 \(\varphi_x\) 单；\(\varphi\) 是“局部满”（每个 \(x\) 的某邻域上满）\(\iff\) 每个 \(\varphi_x\) 满。</p>
+    <div class="proof">
+      <p class="pl">证明（用 étale 空间最省力）.</p>
+      <p>过定理 14.3.6，\(\varphi\) 对应 étale 映射 \(f:\Lambda F\to\Lambda G\) （保持 \(X\) 上方投影不变）。\(\varphi_x\) 双射对所有 \(x\) \(\iff\) \(f\) 在每个纤维上是双射 \(\iff\) \(f\) 是双射（因为 \(f\) 保持纤维）。而 \(f\) 是 étale 映射且双射：\(f\) 连续双射且双方都局部同胚到 \(X\)，故 \(f\) 是同胚（局部上 \(f=(p_G|)^{-1}\circ(p_F|)\)，两个同胚的复合）。保持投影的同胚 \(\iff\) 层同构（定理 14.3.6 的态射对应）。∎</p>
+    </div>
+  </div>
+
+  <div class="rmk"><strong>这是全章最实用的工具。</strong>证明两个层同构，不要试图在开集层面构造逆映射（一般做不到，因为逆可能只在局部存在）。正确动作是：<strong>取茎，验证双射，然后引用定理</strong>。这在代数几何里是标准操作（所谓“在每个茎上验证”），因为茎是局部环，验证双射往往是交换代数的一行计算。<em>注意一个微妙处：</em>“每点满”只能推出“局部满”，不能推出“整体满”——因为局部截面不一定能拼（有上同调障碍）。这正是层上同调存在的原因，也是 14.3.4(iv) 里 \(\underline{\mathbb Z}\to\mathcal C^0\) 的处境。</div>
+
+  <h3 class="sub">14.3.6 边界情况：三个容易错的地方</h3>
+
+  <div class="rmk"><strong>（一）茎的“大小”不反映层的“大小”。</strong>常值层与常值预层茎相同（都是 \(A\)），但一个是层一个不是。原因：茎只看“任意小邻域”，而层条件涉及“所有覆盖的拼接”，后者是<em>整体</em>性质。所以茎判定同构需要“两边都是层”这个前提（14.1.5 与 14.3.8 都用了）。<em>推论：预层之间的态射不能用茎判同构。</em></div>
+
+  <div class="rmk"><strong>（二）\(\Lambda(F)\) 的拓扑不能随便选。</strong>若把 \(\coprod F_x\) 装成“每个纤维离散、总体取积拓扑”这种想当然的拓扑，\(\tilde s\) 未必连续，命题 14.3.4(iii) 就崩了。必须用“截面像”作基。这个细节决定了 \(\Lambda(F)\) 是否真的局部同胚：<strong>用错拓扑，\(p\) 连开映射都不是</strong>。</div>
+
+  <div class="rmk"><strong>（三）\(\mathbf{Sh}(X)\simeq\mathbf{LH}/X\) 不是“层 = 空间”。</strong>等价的是<strong>范畴</strong>，不是对象。同一个层对应唯一的 étale 空间（在同构意义下），但一个层可以被看作很多不同空间上的层（例如 \(\underline{\mathbb Z}\) 在 \(S^1\) 上、在 \(\mathbb R\) 上、在一点上）。等价是“在固定的 \(X\) 上方”的等价；换 \(X\) 就换了一切。这一点在第 19 章“几何态射”里会成为核心：<em>比较不同 \(X\) 上的层，需要额外的函子</em>（14.4 的逆像就是最简单的例子）。</div>
+
+  <div class="phil">
+    <h4>② 选读：为什么“局部同胚”是层论的几何本质</h4>
+    <p>你有没有想过，为什么层论里最自然的空间不是“纤维丛”而是“局部同胚”？这背后有一个认识论的选择。</p>
+    <p>纤维丛的直觉是<strong>均匀</strong>：每根纤维长得一样。这在物理里很好（规范场论的丛就是如此），但在数学里太强：它预设了“所有点平等”。而层论要处理的情形恰恰是<strong>点与点不等</strong>的：一个簇在光滑点与奇点处局部结构完全不同（\(\mathcal O_{X,x}\) 是正则局部环 vs 非正则）；一个函数层在边界与内部不同；一个模层在一般点与特殊点不同。<em>局部同胚恰好允许这种不平等</em>：它只说“每一处都像 \(X\) 的一小块”，不说“每一处都像同一小块”。</p>
+    <p>所以 \(\mathbf{Sh}(X)\simeq\mathbf{LH}/X\) 这个定理有一个哲学读法：<strong>层的本质是“逐点可变、但每点都局部平凡”</strong>。它是一个“变形的空间”——把“一族空间”装成一个空间，允许成员逐点变化。这正好是“模”的直觉（moduli）：一个模空间上的层就是“一族随参数变化的几何对象”。Grothendieck 的整个纲领（相对概形、形变理论、叠）都从这个直觉长出来。</p>
+    <p>一句话总结：<em>覆叠是“同一个东西在很多点上”，层是“很多不同的东西，每点一个”。</em>后者才是几何的常态。</p>
+  </div>
+
+  <div class="box walk">
+    <h4>③ 手把手：把“局部常值层”变成覆盖空间，再变回来</h4>
+    <p>取 \(X=S^1\)，\(A=\mathbb Z/2=\{0,1\}\)，层 \(F=\underline{\mathbb Z/2}\)（局部常值）。走一遍双向构造。</p>
+    <ol>
+      <li><strong>茎。</strong>\(F_x=\mathbb Z/2\) 对每个 \(x\)（14.3.1 边界例：常值层茎 = \(A\)）。</li>
+      <li><strong>étale 化。</strong>\(\Lambda(F)=\coprod_{x\in S^1}\mathbb Z/2=S^1\times\mathbb Z/2\)（两个拷贝的圆）。投影 \(p\) 是二重覆叠。</li>
+      <li><strong>验证局部同胚。</strong>取 \(x\in S^1\)，小邻域 \(U\cong(-1,1)\) 使 \(p^{-1}(U)=U\times\{0\}\sqcup U\times\{1\}\)。每个分量映同胚到 \(U\)。✓</li>
+      <li><strong>取回截面。</strong>\(\Gamma_p(S^1)=\{连续 \sigma:S^1\to S^1\times\mathbb Z/2:\ p\sigma=\mathrm{id}\}=\) “给每点选一个标签 \(0\) 或 \(1\)，且连续” = 局部常值的 \(\mathbb Z/2\)-值函数。因为 \(S^1\) 连通，这样的函数只有两个：常 \(0\) 与常 \(1\)。故 \(\Gamma_p(S^1)=\mathbb Z/2\)。✓这与 \(F(S^1)=\mathbb Z/2\) 一致。</li>
+      <li><strong>换个空间看差别。</strong>取 \(X=S^1\sqcup S^1\)（两个圆）。则 \(\Gamma_p(X)=(\mathbb Z/2)^2\)（每个分支独立选），而常值<em>预层</em>会给 \(\mathbb Z/2\)。这就是 14.1.5 的“常值预层不是层”在覆叠语言里的样子：<strong>覆叠在每个连通分支上独立选择标签</strong>。</li>
+      <li><strong>单值化。</strong>\(\pi_1(S^1)=\mathbb Z\) 在 \(\mathbb Z/2\) 上的作用是 \(n\mapsto(n\bmod 2)\) 的置换（偶 $=$ 恒等，奇 $=$ 交换）。这个作用完全决定了覆叠 \(S^1\times\mathbb Z/2\)：绕一圈要么保持标签要么交换。这就是“局部常值层 \(\leftrightarrow\) \(\pi_1\) 的表示”。</li>
+    </ol>
+    <p><strong>推广练习：</strong>把 \(A\) 换成 \(\mathbb Z\)，\(\Lambda(F)=S^1\times\mathbb Z\)（无穷覆叠）；换成 \(\mathbb R\)，\(\Lambda(F)=S^1\times\mathbb R\)（平凡覆叠，因为 \(\mathbb R\) 可缩）；换成“\(S^1\) 上 \(\mathbb Z\)-主丛”，得到的就是万有覆叠 \(\mathbb R\to S^1\)。三者在层论上都是局部常值层，差别只在纤维。</p>
+  </div>
+
+  <div class="box exer">
+    <h4>④ 习题（14.3）</h4>
+    <ol>
+      <li id="ex14-3-1">计算 \(\mathcal C^0\)（\(\mathbb R\) 上连续函数层）在 \(x=0\) 处的茎，并说明 \(f(x)=x\)、\(g(x)=|x|\)、\(h(x)=0\) 三者的芽哪些相同。</li>
+      <li id="ex14-3-2">证明：常值层 \(\underline A\) 的茎是 \(A\)；而“有界连续函数”预层的茎也是 \(\mathcal C^0_x\)。由此说明茎不能区分层与非层。</li>
+      <li id="ex14-3-3">设 \(p:E\to X\) 局部同胚，\(E\) 是 Hausdorff。证明：截面层 \(\Gamma_p\) 是层，并给出相容族拼接的显式公式。</li>
+      <li id="ex14-3-4">取 \(X=\mathbb R\)，\(F\) 为“多项式层”（\(F(U)=\mathbb R[x]\) 的限制）。求 \(F_x\)，并说明为什么它在不连通开集上不是层（14.1.2(b)）。</li>
+      <li id="ex14-3-5">证明：étale 空间不必是 Hausdorff。具体地，把 \(\mathbb R\times\{0,1\}\) 中所有 \((x,0)\sim(x,1)\)（\(x\ne0\)）认同，得“有两个原点的直线” \(E\)。证明 \(p:E\to\mathbb R\) 是局部同胚，但 \(E\) 非 Hausdorff。再由定理 14.3.6 得出：存在层 \(F\) 使 \(\Lambda(F)\) 非 Hausdorff。</li>
+      <li id="ex14-3-6">设 \(\varphi:\underline{\mathbb Z}\to\mathcal C^0\) 是包含（局部常值函数视为连续函数）。描述 \(\varphi_x\)，并说明为什么 \(\varphi\) 是单射而非满射（在 \(S^1\) 上）。</li>
+      <li id="ex14-3-7">设 \(\varphi:F\to G\) 是层态射。说明为什么<strong>核</strong>（预层等化子）自动是层，而<strong>像预层</strong>（\(U\mapsto\mathrm{im}\,\varphi_U\)）一般不是层。用 \(S^1\) 上的指数映射
+        \(\exp:\mathcal C^0\to\mathcal C^0(-,S^1)\)，\(\exp_U(f)=e^{2\pi i f}\) 举出像预层非层的例子。</li>
+      <li id="ex14-3-8">（稍难）设 \(X\) 连通且局部连通，\(F\) 是局部常值层，纤维 \(A\)。证明：\(F(U)=\{\text{局部常值 }U\to A\}\) 且 \(F(X)\cong A\)。再说明若 \(X\) 不连通则 \(F(X)\cong A^{\pi_0(X)}\)。</li>
+    </ol>
+  </div>
+
+  <div class="box ans">
+    <h4>⑤ 参考答案（14.3）</h4>
+    <div class="item"><b>14.3.1</b>\(\mathcal C^0_0=\varinjlim_{0\in U}\mathcal C^0(U)\)，即“在 \(0\) 附近有定义的连续函数的芽”。\(f(x)=x\) 的芽与 \(g(x)=|x|\) 的芽<strong>不同</strong>：若相同，则存在 \(\epsilon>0\) 使 \(x=|x|\) 在 \((-\epsilon,\epsilon)\) 上恒成立，但 \(x<0\) 时 \(x\ne|x|\)，矛盾。\(h\equiv0\) 的芽与二者都不同（同在 \(0\) 附近 \(x\ne0\)）。<em>注意</em>：三者在 \(0\) 处取值都是 \(0\)，所以“取值映射”\(F_0\to\mathbb R\) 不是单射——这正是“茎比点上的值信息多”的体现。</div>
+    <div class="item"><b>14.3.2</b>\(\underline A_x=\varinjlim\underline A(U)\)：每个 \(\underline A(U)=A\) 且限制是恒等，故余极限 \(=A\)。有界连续函数预层 \(B\)：\(B_x=\varinjlim B(U)\)。每个 \(B(U)\subseteq\mathcal C^0(U)\)，且任取连续函数芽 \([U,f]\)，取 \(x\) 的小邻域 \(W\subseteq U\) 使 \(f|_W\) 有界（连续性给局部有界），故 \([U,f]=[W,f|_W]\in B_x\) 的像。故 \(B_x\to\mathcal C^0_x\) 满；单射显然（包含）。故 \(B_x\cong\mathcal C^0_x\)。而 \(B\) 不是层（14.1.5），\(\mathcal C^0\) 是层，茎却同构。∎</div>
+    <div class="item"><b>14.3.3</b>给定覆盖 \(U=\bigcup U_i\) 与相容族 \(\sigma_i\in\Gamma_p(U_i)\)（\(\sigma_i|_{U_i\cap U_j}=\sigma_j|_{U_i\cap U_j}\)）。定义 \(\sigma(x)=\sigma_i(x)\)（\(x\in U_i\)）。良定义由相容性。连续：取 \(x\in U\)，\(x\in U_i\)，\(\sigma_i\) 在 \(x\) 连续，且 \(\sigma\) 在 \(U_i\) 上与 \(\sigma_i\) 一致，故连续。\(p\sigma=\mathrm{id}\) 逐点。唯一性：两条连续截面在覆盖每块上相等则处处相等（不需假设 \(E\) 是 Hausdorff：直接在每个点比较取值即可，因为每个点必落在某个 \(U_i\) 里）。∎<br>
+      <em>Hausdorff 其实不需要</em>；若 \(E\) 不 Hausdorff，是否会出现“两个不同截面在所有点取相同的值”？不会——取值处处相同就说明它们是同一个映射。所以本定理<strong>无需 Hausdorff 假设</strong>，题面里的 Hausdorff 是多余的（这类多余的假设在教材里很常见，值得留意）。</div>
+    <div class="item"><b>14.3.4</b>\(F_x=\varinjlim_{0\in U}\mathbb R[x]\)。限制 \(F(U)\to F(V)\) 是双射（非空开集上多项式由其在任一非空开子集的值决定），故余极限 \(=\mathbb R[x]\)。它<strong>不是</strong>层：取 \(X=(-1,0)\cup(0,1)\)（不连通），覆盖为两块，\(p_1=0\)、\(p_2=1\)，相容（交空），无拼接（拼接须同时在两块上等于不同多项式，但 \(F(X)\) 的元素是一个多项式，它在两块上限制相同）。<em>注意这正是 14.1.2(b) 的机制：限制映射是双射 ⟹ 无法处理不交的块。</em></div>
+    <div class="item"><b>14.3.5</b>构造：\(E=(\mathbb R\times\{0,1\})/\sim\)，其中 \((x,0)\sim(x,1)\iff x\ne0\)。等价类：每个 \(x\ne0\) 只有一个类（记 \(\bar x\)），而 \(x=0\) 有两个类 \(0_0,0_1\)。<br>
+      <strong>\(p\) 良定义且连续：</strong>\(p(\bar x)=x\)、\(p(0_i)=0\)，商拓扑下连续。<br>
+      <strong>局部同胚：</strong>在 \(\bar x\)（\(x\ne0\)）处，\(\{\bar y: |y-x|<\epsilon\}\) 同胚到 \((x-\epsilon,x+\epsilon)\)（取 \(\epsilon<|x|\)）。在 \(0_0\) 处，取 \(E\) 的开集 \(V_0=\{0_0\}\cup\{\bar x: |x|<\epsilon\}\)——需验证它是开集：其原像在 \(\mathbb R\times\{0,1\}\) 中是 \(((-\epsilon,\epsilon)\times\{0\})\cup((-\epsilon,\epsilon)\setminus\{0\}\times\{1\})\)，开。\(p|_{V_0}\) 双射到 \((-\epsilon,\epsilon)\) 且双向连续。同理 \(V_1\)。<strong>故 \(p\) 局部同胚。</strong><br>
+      <strong>非 Hausdorff：</strong>\(0_0\ne0_1\)。取任一含 \(0_0\) 的开邻域 \(V_0\)，它必含某个 \(\{\bar x:|x|<\epsilon\}\)（收缩后）；同理 \(0_1\) 的邻域含 \(\{\bar x:|x|<\delta\}\)。两者交于 \(\{\bar x:0<|x|<\min(\epsilon,\delta)\}\ne\varnothing\)（且含无穷多点）。故无法分离，非 Hausdorff。∎<br>
+      <strong>对应的层：</strong>由定理 14.3.6，\(F=\Gamma_p\) 是层（\(F(U)=U\) 上的连续截面），且 \(\Lambda(F)\cong E\) 非 Hausdorff。<em>教益：层的“空间”可以是病态的，这完全不影响层本身是好的——这正是把层与空间分开处理的价值。</em></div>
+    <div class="item"><b>14.3.6</b>\(\varphi_x:\mathbb Z\to\mathcal C^0_x\)，\(n\mapsto\) 常函数 \(n\) 的芽。单射：若常函数 \(m,n\) 在 \(0\) 的某邻域相等，则 \(m=n\)。非满：\([x\mapsto x]\in\mathcal C^0_0\) 不是任何常函数的芽（\(x\) 非常值）。故茎上非满，由 14.3.8 的“局部满”判据，\(\varphi\) 不是局部满，从而不是满射。<em>注意：茎上“单”推出 \(\varphi\) 是单射（每层 \(F(U)\) 上单），这与 14.3.8 一致。</em></div>
+    <div class="item"><b>14.3.7</b><strong>核自动是层：</strong>设 \(U=\bigcup U_i\)，\((s_i)\) 是 \(\ker\varphi\) 的相容族。因 \(F\) 是层，有唯一拼接 \(s\in F(U)\)。需证 \(\varphi(s)=0\)：在每块上 \(\varphi(s)|_{U_i}=\varphi(s|_{U_i})=\varphi(s_i)=0\)，由 \(G\) 的分离性得 \(\varphi(s)=0\)。故 \(s\in\ker\varphi(U)\)，唯一性由 \(F\) 的分离性。∎<br>
+      <strong>像预层一般不是层：</strong>取 \(X=S^1\)、\(F=\mathcal C^0_{S^1}\)（实值连续函数层）、\(G=\mathcal C^0_{S^1}(-,S^1)\)（\(S^1\)-值连续函数层，逐点定义，是层——注意 \(S^1\) 不是群但它是拓扑空间，\(G(U)=\mathrm{Hom}_{\mathbf{Top}}(U,S^1)\) 构成层）。令 \(\varphi_U(f)=e^{2\pi if}\)。像预层 \(I(U)=\{g:U\to S^1\text{ 连续}: g=e^{2\pi if}\text{ 某 }f\in\mathcal C^0(U)\}\)，即“有连续对数的 \(S^1\)-值函数”。<br>
+      <strong>\(I\) 不是层：</strong>取覆盖 \(U_1=S^1\setminus\{1\}\)、\(U_2=S^1\setminus\{-1\}\)（两个可缩开集，覆盖 \(S^1\)）。在 \(U_1\) 上取 \(g_1=\mathrm{id}\)（有对数），在 \(U_2\) 上取 \(g_2=\mathrm{id}\)（有对数）。两者相容（都是 id 的限制）。若 \(I\) 是层，则存在 \(g\in I(S^1)\) 使 \(g|_{U_1}=g_1\)、\(g|_{U_2}=g_2\)，即 \(g=\mathrm{id}_{S^1}\)。但 \(\mathrm{id}_{S^1}\) <strong>没有</strong>连续对数（否则 \(S^1\) 可缩，或等价地 \(\pi_1(S^1)=0\)，矛盾）。故相容族无拼接，\(I\) 非层，其层化是 \(G\) 本身。<br>
+      <em>这正是层上同调的诞生地：\(H^1(S^1,\underline{\mathbb Z})=\mathbb Z\) 测量“像预层与层化之间的差距”。</em></div>
+    <div class="item"><b>14.3.8</b>\(F\) 局部常值，\(U\) 开。\(F(U)=\{\text{局部常值 }U\to A\}\)：由定理 14.3.6，\(F(U)=\Gamma(U,\Lambda F)\)，而 \(\Lambda F\to X\) 是覆叠（纤维 \(A\) 离散），连续截面在 \(U\) 的每个连通分支上取常值，故是局部常值函数。\(X\) 连通：局部常值函数 \(X\to A\) 在连通空间上常值，故 \(F(X)=\{X\to A\text{ 常值}\}\cong A\)。\(X\) 不连通：在每个连通分支上独立选值，\(F(X)\cong A^{\pi_0(X)}\)。∎</div>
+  </div>
+</section>
+<section class="sec" id="s14-4">
+  <div class="sec-h"><span class="sec-no">14.4</span><h2>逆像层</h2><span class="src">M Ch.II §9</span></div>
+
+  <div class="box learn">
+    <h4>① 本节学习目标</h4>
+    <ol>
+      <li>理解“为什么层要沿映射搬运”：连续映射 \(f:X\to Y\) 应当把 \(Y\) 上的几何搬到 \(X\) 上，方向如何定；</li>
+      <li>掌握<strong>直接像</strong> \(f_*\) 的定义，并验证它<strong>自动</strong>是层（这是它好用的原因）；</li>
+      <li>掌握<strong>逆像</strong> \(f^{-1}\) 的两步构造（茎层面 + 层化），并理解<strong>为什么必须层化</strong>——这是本节的核心难点；</li>
+      <li>掌握伴随 \(f^{-1}\dashv f_*\)，并会用单位 / 余单位描述它；</li>
+      <li>掌握三个计算：\(f=\) 包含开集、\(f=\) 包含闭集、\(f:X\to *\)（整体截面）；</li>
+      <li>知道“逆像不保持单射”这一著名病态，理解它与“层范畴非 abelian”的关系；</li>
+      <li>初步认识几何态射 \((f^\ast\dashv f_*)\)，为第 19 章铺路。</li>
+    </ol>
+  </div>
+
+  <div class="xref"><strong>沿用前文（不再复述）.</strong> 伴随的定义与三角恒等式见<strong>（参见第 7 章 7.1–7.2）</strong>；茎与 étale 空间见<strong>（本节 14.3.1、14.3.3）</strong>；层化 \(a\dashv i\) 见<strong>（本节 14.1.7）</strong>；余极限与滤过余极限见<strong>（参见第 4 章 4.4、第 8 章 8.1）</strong>。本节新增：\(f_*\)、\(f^{-1}\)、\(f^{-1}\dashv f_*\) 的完整构造与三个计算、以及“逆像不保单射”的病态。</div>
+
+  <div class="box prep">
+    <h4>极简回顾（六分钟）：为什么方向是反的</h4>
+    <p><strong>1. 场景。</strong>有连续映射 \(f:X\to Y\)。你手上有 \(Y\) 上的层 \(G\)（想象 \(Y\) 上的连续函数）。想在 \(X\) 上得到一个层。有两种办法：</p>
+    <ul>
+      <li><strong>拉回来</strong>：\(Y\) 上的函数 \(g\) 复合 \(f\) 得 \(X\) 上的函数 \(g\circ f\)。这叫<strong>逆像</strong> \(f^{-1}G\)（也叫拉回）。</li>
+      <li><strong>推过去</strong>：\(X\) 上的函数 \(h\) 能否变成 \(Y\) 上的？一般不能（\(f\) 不必单射，值冲突）。能推的是“沿纤维取整体截面”这种操作，方向不同，叫<strong>直接像</strong> \(f_*\)（其实 \(f_*\) 是“把 \(X\) 上的层看成 \(Y\) 上的层”：在 \(V\subseteq Y\) 上取 \(f^{-1}(V)\subseteq X\) 上的截面）。</li>
+    </ul>
+    <p><strong>2. 方向的直觉。</strong>“拉回”是<strong>沿着 \(f\) 反向</strong>搬运，所以叫逆像却与 \(f\) 同向（\(Y\) 的层 \(\to\) \(X\) 的层）；“直接像”与 \(f\) 同向却把层推到同侧。<em>记住这个别扭之处：\(f_*\) 的“直接”指的是“顺着 \(f\) 的几何方向”，\(f^{-1}\) 的“逆”指的是“逆着 \(f\) 的几何方向”。</em>两者都从 \(Y\)-侧往 \(X\)-侧或反之，别混。</p>
+    <p><strong>3. 关键事实预告。</strong>\(f_*\) 自动是层（好消息），\(f^{-1}\) <em>不</em>自动是层（坏消息），必须层化（补救）。这个不对称是本节全部戏剧性的来源。</p>
+  </div>
+
+  <h3 class="sub">14.4.1 直接像：最省力的搬运</h3>
+  <div class="motiv">
+    <span class="lbl">这个构造解决什么问题？</span>
+    你要比较两个空间上的层。最朴素的办法是“把一个层看成另一个空间上的层”：给定 \(f:X\to Y\) 与 \(X\) 上的层 \(F\)，在 \(Y\) 的开集 \(V\) 上，唯一能拿到的数据是 \(F(f^{-1}V)\)。这个定义<strong>不需要任何新想法</strong>，唯一要做的是验证它仍是层——而这件事出奇地容易，因为覆盖在 \(f^{-1}\) 下仍是覆盖。<br>
+    技术上的价值：\(f_*\) 是<strong>右伴随</strong>，它把“\(X\) 上的层”与“\(Y\) 上的层”连起来，使得“在 \(Y\) 上做层论”可以借助“在 \(X\) 上做层论”来计算。所有“相对”几何（相对概形、相对拓扑斯）都用这个。
+  </div>
+
+  <div class="defn">
+    <span class="lbl">定义 14.4.1（直接像）</span>
+    <p>设 \(f:X\to Y\) 连续，\(F\) 是 \(X\) 上的预层。定义 \(Y\) 上的预层 \(f_*F\) 为
+      \[(f_*F)(V)=F\bigl(f^{-1}V\bigr),\qquad V\subseteq Y\text{ 开},\]
+      限制映射由 \(F\) 的限制给出（\(V'\subseteq V\Rightarrow f^{-1}V'\subseteq f^{-1}V\)）。若 \(\varphi:F\to F'\) 是层态射，则 \((f_*\varphi)_V=\varphi_{f^{-1}V}\)。这给出函子
+      \[f_*:\mathbf{PSh}(X)\to\mathbf{PSh}(Y).\]
+    </p>
+  </div>
+
+  <div class="prop">
+    <span class="lbl">命题 14.4.2（\(f_*\) 保持层）</span>
+    <p>若 \(F\) 是 \(X\) 上的层，则 \(f_*F\) 是 \(Y\) 上的层。故 \(f_*\) 限制为函子 \(\mathbf{Sh}(X)\to\mathbf{Sh}(Y)\)。</p>
+    <div class="proof">
+      <p class="pl">证明（一句话：覆盖拉回仍是覆盖）.</p>
+      <p>取 \(Y\) 中开集 \(V\) 与覆盖 \(V=\bigcup_iV_i\)。则 \(f^{-1}V=\bigcup_i f^{-1}V_i\) 是 \(X\) 中的覆盖（原像保持并）。给定相容族 \(s_i\in(f_*F)(V_i)=F(f^{-1}V_i)\)，其相容性（在 \(V_i\cap V_j\) 上相等）翻译为在 \(f^{-1}(V_i\cap V_j)=f^{-1}V_i\cap f^{-1}V_j\) 上相等，正是 \(F\) 在覆盖 \(\{f^{-1}V_i\}\) 上的相容族。由 \(F\) 是层，得唯一 \(s\in F(f^{-1}V)=(f_*F)(V)\) 拼接。唯一性同。∎</p>
+    </div>
+  </div>
+
+  <div class="rmk"><strong>为什么这么容易。</strong>因为层条件对“覆盖”是全称量化（“每个覆盖”），而 \(f^{-1}\) 把 \(Y\) 的覆盖变成 \(X\) 的覆盖——你只需要 \(F\) 在那个新覆盖上满足条件，而 \(F\) 是层，对所有覆盖都满足。<em>注意这个论证的脆弱处：它只用了“原像保并”。若换成 \(f_!\)（紧支撑直接像，用 \(f^{-1}\) 的闭包）就麻烦得多，因为“紧支撑”不保并。</em></div>
+
+  <div class="cases">
+    <div class="ct">直接像：四类例子</div>
+    <div class="case typ"><b>典型例</b>\(f:X\to *\)（到单点空间）。则 \((f_*F)(*)=F(X)=\Gamma(X,F)\)，即<strong>整体截面函子</strong>。这是最常用的 \(f_*\)，记 \(\Gamma\)。</div>
+    <div class="case deep"><b>本质例</b>\(j:U\hookrightarrow X\) 开包含。则 \((j_*F)(V)=F(U\cap V)\)。若 \(F\) 是 \(U\) 上的层，\(j_*F\) 是 \(X\) 上的层，它在 \(U\) 内与 \(F\) 相同，在 \(U\) 外“什么也没有”（在 \(x\notin U\) 处的茎：\((j_*F)_x=\varinjlim_{x\in V}F(U\cap V)\)，若 \(x\notin\overline U\) 则为单点）。技巧：这是“把层延拓出定义域”的最简单办法——不改变 \(U\) 上的信息，外面补零。</div>
+    <div class="case edge"><b>边界与误解</b>（a）\(f_*\) 不保持<strong>单射性</strong>的逆？注意：\(f_*\) 是右伴随，故保<strong>极限</strong>（核、纤维积），不保余极限（余核、余积）。所以“\(f_*\) 保持正合性的一半”。（b）一个常见错误：以为 \(f_*F\) 的茎是 \(F\) 的茎。错：\((f_*F)_y=\varinjlim_{y\in V}F(f^{-1}V)\)，这是“沿整个纤维 \(f^{-1}(y)\) 上的整体截面”的极限，一般远大于 \(F\) 在单点的茎。例如 \(f:\{0,1\}\to\{*\text{点}\}\)（常映射），\(F\) 在两点各给 \(A\)，则 \((f_*F)(*)=A\times A\)，而 \(F\) 的两茎都是 \(A\)。<strong>\(f_*\) 是“积分”，不是“逐点搬运”。</strong></div>
+    <div class="case use"><b>结构中的应用</b>① 代数几何：\(\pi:X\to\mathrm{Spec}\,k\) 给 \(\pi_*\mathcal O_X=\Gamma(X,\mathcal O_X)\)（整体函数环）；② 拓扑：覆叠 \(p:E\to X\) 的直接像 \(p_*\underline A\) 是“纤维上局部常值函数的层”，其整体截面 = \(\mathrm{Hom}(\pi_1,\ldots)\)；③ 第 19 章：几何态射 \(f^\ast\dashv f_*\) 中的 \(f_*\) 就是这个，只是要求在拓扑斯层面（用 site 而不是 \(X\) 的开集）。</div>
+  </div>
+
+  <h3 class="sub">14.4.2 逆像：为什么必须层化</h3>
+  <p>现在处理难的方向。最“天真”的做法是：对 \(X\) 的开集 \(U\)，令
+  \[U\mapsto\varinjlim_{f(U)\subseteq V}G(V)\]
+  （所有包含 \(f(U)\) 的 \(Y\) 的开集 \(V\) 上的截面，取余极限）。这确实是个预层，但<strong>它不是层</strong>。这是本节的核心难点，值得拆开看。</p>
+
+  <div class="prop">
+    <span class="lbl">命题 14.4.3（天真逆像不是层）</span>
+    <p>设 \(f:X\to Y\) 连续，\(G\) 是 \(Y\) 上的层。定义预层
+      \[f^{\mathrm{pre}}G(U)=\varinjlim_{f(U)\subseteq V}G(V).\]
+      则 \(f^{\mathrm{pre}}G\) 一般<strong>不是</strong> \(X\) 上的层。</p>
+    <div class="proof">
+      <p class="pl">反例（经典）.</p>
+      <p>取 \(X=\{0,1\}\)（离散两点），\(Y=\{*\}\)（单点），\(f\) 为唯一映射。\(G=\underline{\mathbb Z}\)（\(G(*)=\mathbb Z\)）。则对 \(U=\{0\}\)：\(f(U)=\{*\}\subseteq V\) 只有 \(V=\{*\}\)，故 \(f^{\mathrm{pre}}G(\{0\})=G(*)=\mathbb Z\)。同理 \(f^{\mathrm{pre}}G(\{1\})=\mathbb Z\)，\(f^{\mathrm{pre}}G(X)=\mathbb Z\)（因 \(f(X)=\{*\}\)）。<br>
+      取覆盖 \(X=\{0\}\cup\{1\}\)（不交），相容族 \(s_0=1\in\mathbb Z\)、\(s_1=2\in\mathbb Z\)（相容，因为交集为空）。若 \(f^{\mathrm{pre}}G\) 是层，须存在 \(s\in\mathbb Z\) 使 \(s|_{\{0\}}=1\) 且 \(s|_{\{1\}}=2\)。但限制映射 \(f^{\mathrm{pre}}G(X)=\mathbb Z\to f^{\mathrm{pre}}G(\{0\})=\mathbb Z\) 是<strong>恒等</strong>（两边都来自同一个 \(G(*)\)，余极限只含一项）——所以 \(s\) 必须同时等于 1 和 2，矛盾。<br>
+      <strong>故 \(f^{\mathrm{pre}}G\) 不是层</strong>，它的层化才是正确答案：\(\underline{\mathbb Z}^{2}\)（在两点上独立取 \(\mathbb Z\)，整体截面 \(\mathbb Z^2\)）。∎</p>
+    </div>
+  </div>
+
+  <div class="rmk"><strong>病根在哪。</strong>天真构造在 \(U\) 与 \(U'\) 不交时，两者的截面都来自“整个 \(G(*)\)”，于是限制映射把它们强行认同成一个——和 14.1.5 的常值预层是同一个病。<em>本质原因：余极限 \(f^{\mathrm{pre}}G(U)\) 只看 \(f(U)\) 的“包络”，不看 \(U\) 本身的连通分支结构</em>；当 \(U\) 有两个分离的部分而 \(f\) 把它们映到同一处时，信息就被压掉了。</div>
+
+  <p>正确的做法是<strong>从茎出发</strong>——因为茎是“逐点”的，天然不会犯上面的错。</p>
+
+  <div class="defn">
+    <span class="lbl">定义 14.4.4（逆像层）</span>
+    <p>设 \(f:X\to Y\) 连续，\(G\) 是 \(Y\) 上的层。定义 \(X\) 上的预层 \(f^{\sharp}G\) 为
+      \[(f^{\sharp}G)(U)=\Bigl\{\,\sigma:U\to\coprod_{x\in U}(G_{f(x)})\ :\ \begin{array}{l}\sigma(x)\in G_{f(x)}\ \forall x,\\ \sigma\ \text{“连续”}\end{array}\Bigr\},\]
+      其中“连续”指：对每 \(x\in U\)，存在 \(x\) 的开邻域 \(W\subseteq U\)、\(f(W)\subseteq V\) 开、以及 \(t\in G(V)\)，使 \(\sigma(w)=t_{f(w)}\) 对一切 \(w\in W\)（\(t_{f(w)}\) 表示 \(t\) 在 \(f(w)\) 处的芽）。</p>
+    <p>则 \(f^{\sharp}G\) 是层（验证见下），称为 <strong>\(G\) 沿 \(f\) 的逆像</strong>，记
+      \[f^{-1}G\;:=\;f^{\sharp}G\;=\;\bigl(f^{\mathrm{pre}}G\bigr)^{+}\ \text{（层化后的版本，两者一致）}.\]
+    </p>
+    <p>等价地（也是更常用的算法）：先在茎层面取 \(X\) 上的预层 \(\tilde G(U)=\prod_{x\in U}G_{f(x)}\)（“逐点取茎”），再取其中“局部来自 \(G\) 的截面”的子预层——恰好是 \(f^{-1}G\)。</p>
+  </div>
+
+  <div class="prop">
+    <span class="lbl">命题 14.4.5（\(f^{-1}G\) 是层，且茎正确）</span>
+    <p>（i）\(f^{-1}G\) 是 \(X\) 上的层；</p>
+    <p>（ii）\((f^{-1}G)_x\cong G_{f(x)}\) 对每个 \(x\in X\)；</p>
+    <p>（iii）在 étale 空间语言下：\(f^{-1}G\) 对应拉回空间
+      \[f^{\ast}(\Lambda G)=\{(x,e)\in X\times\Lambda G:\ f(x)=p(e)\}\;\longrightarrow\;X,\]
+      即纤维积 \(X\times_Y\Lambda G\to X\)。</p>
+    <div class="proof">
+      <p class="pl">证明.</p>
+      <p><strong>(ii) 先证。</strong>\((f^{-1}G)_x=\varinjlim_{x\in U}f^{-1}G(U)\)。有映射 \(f^{-1}G(U)\to G_{f(x)}\)，\(\sigma\mapsto\sigma(x)\)。它是满射：任取 \(e\in G_{f(x)}\)，\(e=t_{f(x)}\) 某 \(t\in G(V)\)（\(f(x)\in V\)），取 \(U=f^{-1}V\)，定义 \(\sigma(y)=t_{f(y)}\)，则 \(\sigma\in f^{-1}G(U)\)（取 \(W=U\) 即验证连续性）且 \(\sigma(x)=e\)。单射：若 \(\sigma(x)=\tau(x)=e\)，则在某邻域上二者都等于同一 \(t\) 的拉回（由连续性定义），故芽相同。∎</p>
+      <p><strong>(i)。</strong>给定 \(X\) 中覆盖 \(U=\bigcup U_i\) 与相容族 \(\sigma_i\)。定义 \(\sigma(x)=\sigma_i(x)\)（\(x\in U_i\)），良定义由相容性（重叠上两截面取值相同，因为它们是同一茎中的元素）。连续性：取 \(x\in U_i\)，由 \(\sigma_i\) 的连续性存在 \(W\subseteq U_i\) 与 \(t\in G(V)\) 使 \(\sigma_i(w)=t_{f(w)}\)；则 \(\sigma\) 在同一 \(W\) 上也是 \(t_{f(w)}\)。✓。唯一性：两条连续截面若在每块上相等则逐点相等。∎</p>
+      <p><strong>(iii)。</strong>纤维积 \(X\times_Y\Lambda G\) 的点是 \((x,e)\) 且 \(p(e)=f(x)\)，即 \(e\in G_{f(x)}\)。其拓扑由 \(X\) 与 \(\Lambda G\) 的拓扑拉回给出，正好使“\(\sigma\) 连续”等价于“\(x\mapsto(x,\sigma(x))\) 连续”。故截面层 = \(f^{-1}G\)。∎</p>
+    </div>
+  </div>
+
+  <div class="figdesc"><strong>图 14.3 读图说明（逆像的几何图像）.</strong>上面是 \(Y\) 与它的 étale 空间 \(\Lambda G\)（一根根竖线是纤维 = 茎）。下面是 \(X\)，通过 \(f\) 映到 \(Y\)。把 \(\Lambda G\) 沿 \(f\) “拉回”到 \(X\) 上方，得到纤维积——下面那条波浪线就是 \(f^{-1}G\) 的 étale 空间。<strong>关键读法：每一根纤维原封不动地被搬到 \(f(x)\) 上方的同一高度</strong>，所以茎不变（命题 14.4.5(ii)）。变的只是“底座”从 \(Y\) 换成了 \(X\)：原本在 \(Y\) 上能连成整体的截面，拉回 \(X\) 后可能在分支处断掉——这正是“逆像不保持整体截面”的几何图像（14.4.4 会算这个概念）。</div>
+
+  <svg class="cd" viewBox="0 0 660 260" role="img" aria-label="逆像层的纤维积构造">
+    <text x="470" y="26" text-anchor="middle" class="hb" style="font-size:13px">ΛG（Y 上的 étale 空间）</text>
+    <rect class="node2" x="380" y="36" width="180" height="16" rx="4"/>
+    <text x="470" y="48" text-anchor="middle" class="lb" style="font-size:11px">纤维 = 茎 G_y</text>
+    <g stroke="#7c3aed" stroke-width="1.6">
+      <line x1="400" y1="52" x2="400" y2="110"/><line x1="440" y1="52" x2="440" y2="110"/>
+      <line x1="480" y1="52" x2="480" y2="110"/><line x1="520" y1="52" x2="520" y2="110"/>
+      <line x1="560" y1="52" x2="560" y2="110"/>
+    </g>
+    <rect class="node" x="360" y="110" width="220" height="18" rx="4"/>
+    <text x="470" y="123" text-anchor="middle" class="nt">Y</text>
+    <text x="470" y="150" text-anchor="middle" class="lb" style="font-size:12px">↓ 沿 f 拉回（纤维积）</text>
+    <g stroke="#15803d" stroke-width="1.6">
+      <line x1="120" y1="170" x2="120" y2="222"/><line x1="200" y1="170" x2="200" y2="222"/>
+      <line x1="280" y1="170" x2="280" y2="222"/><line x1="360" y1="170" x2="360" y2="222"/>
+      <line x1="440" y1="170" x2="440" y2="222"/><line x1="520" y1="170" x2="520" y2="222"/>
+    </g>
+    <text x="320" y="166" text-anchor="middle" class="hg" style="font-size:12.5px">Λ(f⁻¹G) = X ×_Y ΛG</text>
+    <rect class="nodeg" x="100" y="222" width="440" height="18" rx="4"/>
+    <text x="320" y="235" text-anchor="middle" class="nt">X</text>
+    <path class="ar" d="M 320 240 C 320 255, 460 255, 468 132" opacity="0"/>
+    <text x="320" y="256" text-anchor="middle" class="lb" style="font-size:11.5px">纤维不变： (f⁻¹G)ₓ ≅ G_{f(x)}　——　变的只是底座</text>
+  </svg>
+  <p class="figcap">图 14.3　逆像 = 纤维积：把 \(\Lambda G\) 沿 \(f\) 拉回到 \(X\) 上方</p>
+
+  <h3 class="sub">14.4.3 伴随 \(f^{-1}\dashv f_*\)</h3>
+
+  <div class="prop">
+    <span class="lbl">定理 14.4.6（逆像 \(\dashv\) 直接像）</span>
+    <p>对连续 \(f:X\to Y\)，有自然同构
+      \[\operatorname{Hom}_{\mathbf{Sh}(X)}\bigl(f^{-1}G,\,F\bigr)\;\cong\;\operatorname{Hom}_{\mathbf{Sh}(Y)}\bigl(G,\,f_*F\bigr),\]
+      即 \(f^{-1}\dashv f_*\)。单位 \(\eta:G\to f_*f^{-1}G\) 与余单位 \(\varepsilon:f^{-1}f_*F\to F\) 由“茎上取恒等”与“截面复合 \(f\)”给出。</p>
+    <div class="proof">
+      <p class="pl">证明（用 étale 空间最直观）.</p>
+      <p>过 14.3.6，两边都翻译成 étale 映射：</p>
+      <p>· 左边 = \(X\) 上方的映射 \(X\times_Y\Lambda G\to\Lambda F\)；</p>
+      <p>· 右边 = \(Y\) 上方的映射 \(\Lambda G\to\Lambda(f_*F)\)。</p>
+      <p>而 \(\Lambda(f_*F)\) 就是“把 \(F\) 沿 \(f\) 推出”的空间，它与 \(\Lambda G\) 的 \(Y\) 上方映射，与 \(X\times_Y\Lambda G\to\Lambda F\) 的 \(X\) 上方映射，由纤维积的泛性质一一对应（\(\mathrm{Hom}_Y(\Lambda G,\cdot)\cong\mathrm{Hom}_X(X\times_Y\Lambda G,\cdot)\)）。这正是伴随。∎</p>
+      <p class="pl">另一证（直接构造，不用 étale）.</p>
+      <p>给定 \(\alpha:f^{-1}G\to F\)，定义 \(\beta:G\to f_*F\) 为 \(\beta_V:G(V)\to F(f^{-1}V)\)，\(\beta_V(t)=\alpha_{f^{-1}V}(t\circ f)\)，其中 \(t\circ f\in f^{-1}G(f^{-1}V)\) 是“\(t\) 沿 \(f\) 的拉回截面”（在 \(x\) 处取值 \(t_{f(x)}\)）。反方向：给定 \(\beta\)，定义 \(\alpha_U:f^{-1}G(U)\to F(U)\)。因 \(f^{-1}G\) 是层且其茎是 \(G_{f(x)}\)，可用“先在小邻域上用某个 \(t\in G(V)\) 表示 \(\sigma\)，再取 \(\beta_V(t)|_{U\cap f^{-1}V}\)”；层性保证良定义与拼接。两构造互逆（在每点茎上验证）。∎</p>
+    </div>
+  </div>
+
+  <div class="rmk"><strong>伴随的三个必背推论。</strong>（a）\(f^{-1}\) 作为左伴随，<strong>保余极限</strong>（余积、余核、推出）；\(f_*\) 作为右伴随，<strong>保极限</strong>（积、核、拉回）。这条在计算里天天用。（b）\(f^{-1}\) <strong>不</strong>保极限（一般不保积、不保核），\(f_*\) <strong>不</strong>保余极限。写成表：<br>
+    <span style="display:inline-block;margin:6px 0;padding:8px 14px;background:#f0f2f5;border-radius:8px;font-size:13px">\(f^{-1}\)：保 \(\coprod,\ \mathrm{coker},\ \mathrm{pushout}\)；不保 \(\prod,\ \ker,\ \times\)<br>\(f_*\)：保 \(\prod,\ \ker,\ \times\)；不保 \(\coprod,\ \mathrm{coker},\ \mathrm{pushout}\)</span><br>
+    （c）单位 \(\eta\) 与余单位 \(\varepsilon\) 满足三角恒等式 \(\varepsilon_{f^{-1}G}\circ f^{-1}\eta_G=\mathrm{id}\)、\(f_*\varepsilon_F\circ\eta_{f_*F}=\mathrm{id}\)——这是验证“真的是伴随”的标准动作。</div>
+
+  <div class="cases">
+    <div class="ct">\(f^{-1}\dashv f_*\)：四类例子</div>
+    <div class="case typ"><b>典型例（\(f:X\to *\)）</b>\(f^{-1}G\) = 常值层 \(\underline{G(*)}\)（因为 \(f^{-1}(*)=X\)，且 \(\Lambda G\) 拉回到 \(X\) 上就是 \(X\times G(*)\)）。\(f_*F=\Gamma(X,F)\)。伴随变为
+      \[\operatorname{Hom}_{\mathbf{Sh}(X)}(\underline{A},F)\cong\operatorname{Hom}_{\mathbf{Set}}(A,\Gamma(X,F)),\]
+      即“常值层到 \(F\) 的映射 ⟺ 整体截面”。这是“层的自由—遗忘”伴随，也是上同调 \(H^0\) 的伴随表述。</div>
+    <div class="case deep"><b>本质例（开包含 \(j:U\hookrightarrow X\)）</b>\(j^{-1}G=G|_U\)（限制层，\(j^{-1}G(V)=G(V)\) 对 \(V\subseteq U\)）。\(j_*F(V)=F(U\cap V)\)。伴随
+      \[\operatorname{Hom}_{\mathbf{Sh}(U)}(G|_U,F)\cong\operatorname{Hom}_{\mathbf{Sh}(X)}(G,j_*F)\]
+      说：“在 \(U\) 上给一个映射” ⟺ “在 \(X\) 上给一个映射到 \(j_*F\)”。这是<strong>延拓—限制</strong>的标准伴随，几何里用来“把 \(U\) 上的构造看成 \(X\) 上的”。<em>关键的不对称：</em>余单位 \(j^{-1}j_*F\to F\) 是同构（“\(U\) 上的层推出去再拉回来不变”），而单位 \(G\to j_*j^{-1}G\) 一般只是单射（“\(X\) 上的层限制到 \(U\) 再延拓会丢掉 \(U\) 外的信息”）。这个不对称在 14.4.2 里会算到底。</div>
+    <div class="case edge"><b>边界与误解</b>（a）<strong>\(f^{-1}\) 保单射、保有限极限</strong>（它是左正合）；不保的是无穷积。别记反。（b）<strong>\(f^{-1}f_*F\ne F\)</strong> 一般不等（14.4.4 有例子）。（c）<strong>\(f_*f^{-1}G\ne G\)</strong> 同理，且 \(f_*\) 不保满射（14.4.5 的核心）。余单位 \(\varepsilon\) 在茎上是同构（14.4.6 会证明这是它的特征），但整体上不必满；单位 \(\eta\) 通常单，不必满。这两个不等号是“相对几何”的全部内容。</div>
+    <div class="case use"><b>结构中的应用</b>① 代数几何：\(\mathcal O_X\)-模的拉回 \(f^\ast\mathcal M=f^{-1}\mathcal M\otimes_{f^{-1}\mathcal O_Y}\mathcal O_X\)——注意多了张量积，因为模层要换基环。这是 \(f^{-1}\) 最重要的应用。② 拓扑：覆叠 \(p:E\to X\) 的 \(p^{-1}\) 把 \(X\) 上的局部常值层拉成 \(E\) 上的，配合 \(p_*\) 给出“沿覆叠的下降”。③ 第 19 章：几何态射定义为 \(f^\ast\dashv f_*\)，其中 \(f^\ast\) 是 \(f^{-1}\) 的“拓扑斯版本”（还要保有限极限）。</div>
+  </div>
+
+  <h3 class="sub">14.4.4 三个必会的计算</h3>
+
+  <div class="prop">
+    <span class="lbl">计算 14.4.7（\(j:U\hookrightarrow X\) 开包含）</span>
+    <p>\(j^{-1}G=G|_U\)（限制），\(j_*F(V)=F(U\cap V)\)。</p>
+    <p>两种极限情形：① \(j_*F\) 在 \(x\in U\) 处的茎是 \(F_x\)；② 若 \(x\notin\overline U\)，则 \((j_*F)_x=\{*\}\)（因为 \(x\) 有小邻域 \(V\) 与 \(U\) 不交，\(F(U\cap V)=F(\varnothing)=\{*\}\)）。若 \(x\in\overline U\setminus U\)，茎可以非平凡（逆极限沿 \(x\) 的邻域与 \(U\) 的交）。</p>
+    <p>伴随的不对称：<strong>余单位 \(j^{-1}j_*F\to F\) 是同构</strong>（\(F\) 是 \(U\) 上的层时）；<strong>单位 \(G\to j_*j^{-1}G\) 一般只是单射</strong>（14.4.2）。</p>
+  </div>
+
+  <div class="prop">
+    <span class="lbl">计算 14.4.8（\(i:Z\hookrightarrow X\) 闭包含）</span>
+    <p>\(i^{-1}G\) 是 \(Z\) 上的层，其茎 \((i^{-1}G)_z=G_z\)（\(z\in Z\)）。但注意：<strong>\(i_*F\) 的茎在 \(Z\) 外可以非平凡</strong>，因为 \(i_*F(V)=F(Z\cap V)\) 而 \(Z\cap V\) 可能非空。</p>
+    <p>重要例子：<strong>摩天大楼层</strong> \(i_*A\)（\(i:\{p\}\hookrightarrow X\)）满足 \(i_*A(U)=A\) 若 \(p\in U\)，否则单点——正是 14.1.5 的摩天大楼层。</p>
+  </div>
+
+  <div class="prop">
+    <span class="lbl">计算 14.4.9（\(f:X\to *\)，整体截面）</span>
+    <p>\(f_*F=\Gamma(X,F)\)（作为 \(*\) 上的“层”，就是一个集合），\(f^{-1}A=\underline A\)（\(A\) 作为集合视为 \(*\) 上的层）。伴随即
+      \[\operatorname{Hom}_{\mathbf{Sh}(X)}(\underline A,F)\cong\operatorname{Hom}_{\mathbf{Set}}(A,\Gamma(X,F)).\]
+    </p>
+    <p>这条伴随的<strong>不可满性</strong>就是上同调：\(\underline A\to F\) 的映射不必“在整体上”给出 \(A\to\Gamma F\) 的满射，障碍在 \(H^1(X,\underline A)\)。</p>
+  </div>
+
+  <h3 class="sub">14.4.5 病态：\(f_*\) 不保满射——上同调的诞生地</h3>
+  <p>先清掉一个流行的误传：<strong>\(f^{-1}\) 是保单射的</strong>。因为它是左正合（保有限极限），而单射 = 核为 \(0\)。所以“逆像破坏单射”这句话是错的，不要记。真正的不对称在另一侧。</p>
+
+  <div class="prop">
+    <span class="lbl">命题 14.4.10（\(f_*\) 不保满射）</span>
+    <p>存在层态射 \(\varphi:G\to G'\) 是<strong>满</strong>的（每个茎上满，等价于层范畴中的满态射），但 \(f_*\varphi:f_*G\to f_*G'\) <strong>不</strong>是满的。取 \(f:X\to *\) 时，这就是“整体截面函子 \(\Gamma\) 不保满射”。</p>
+    <div class="proof">
+      <p class="pl">反例（指数映射，算到底）.</p>
+      <p>取 \(X=S^1\)，\(G=\mathcal C^0_{S^1}\)（实值连续函数层），\(G'=\mathcal C^0_{S^1}(-,S^1)\)（\(S^1\)-值连续函数层）。令
+        \[\varphi_U:\mathcal C^0(U)\to\mathcal C^0(U,S^1),\qquad \varphi_U(f)=e^{2\pi i f}.\]
+        </p>
+      <p><strong>\(\varphi\) 是满的：</strong>取 \(x\in S^1\) 与 \(g\in G'_x\)，即 \(g\) 在 \(x\) 的某邻域 \(U\) 上有定义。缩小 \(U\) 使 \(g(U)\ne S^1\)（去掉一个点），则 \(g|_U\) 落在 \(S^1\setminus\{\text{一点}\}\cong\mathbb R\) 内，可写 \(g=e^{2\pi if}\)（取连续对数branch），故 \(g_x\) 在 \(\varphi_x\) 的像中。故每茎上满，即 \(\varphi\) 是满态射。</p>
+      <p><strong>\(f_*\varphi\) 不满：</strong>\(f=\mathrm{id}\) 时 \(f_*\varphi=\varphi\)，取 \(U=S^1\)：\(\varphi_{S^1}:C^0(S^1)\to C^0(S^1,S^1)\)，\(f\mapsto e^{2\pi if}\)。<strong>恒等映射 \(\mathrm{id}_{S^1}\) 不在像中</strong>：若 \(\mathrm{id}=e^{2\pi if}\)，则 \(f\) 是 \(\mathrm{id}\) 的连续对数，但绕一圈后 \(f(0)\) 与 \(f(1)\) 相差整数，而 \(0\) 与 \(1\) 是同一点，矛盾（等价地：\(\pi_1(S^1)=\mathbb Z\ne0\)）。故 \(\varphi_{S^1}\) 非满。</p>
+      <p><strong>推广到任意 \(f:X\to *\)：</strong>\(f_*\varphi=\Gamma(\varphi):C^0(X)\to C^0(X,S^1)\)。当 \(X\) 有非平凡的一维上同调（如 \(X=S^1\)）时非满。<strong>\(\Gamma\) 不满的程度正是 \(H^1(X,\underline{\mathbb Z})\)</strong>。∎</p>
+    </div>
+  </div>
+
+  <div class="rmk"><strong>为什么这件事是层论的分水岭。</strong>在模范畴里，“满射”与“满态射”一致，所以“正合序列”很好用。在层范畴里，<strong>满态射 = 茎上满 = 局部可解</strong>，而“每个开集上满”是更强的东西。于是：
+    \[\underbrace{0\to F\to G\to H\to 0\ \text{正合}}_{\text{茎上逐点}}\ \not\!\!\Longrightarrow\ \underbrace{\Gamma G\to\Gamma H\ \text{满}}_{\text{整体可解}}.\]
+    这两者的差距<strong>就是上同调</strong>：\(H^1(X,F)\) 精确测量“局部可解但整体不可解”的程度。所以层上同调不是人为构造，它是“\(f_*\) 不保满射”这一事实的度量。这也解释了为什么层范畴只能用“正合”的弱版本讨论——它不是 abelian 范畴，而是 Grothendieck 范畴（只保证 AB5 与生成元）。</div>
+
+  <div class="rmk"><strong>顺带纠正另一个常见混淆：逆像保什么。</strong>把三个事实钉死：① \(f^{-1}\) 保<strong>所有余极限</strong>（左伴随）——余积、余核、推出；② \(f^{-1}\) 保<strong>有限极限</strong>（左正合，来自“几何态射”的要求）——终对象、拉回、核、有限积、单射；③ \(f^{-1}\) <strong>不保无穷积</strong>（14.4.7 的正确答案）。所以“\(f^{-1}\) 保有限极限但不保无穷极限”是它的精确画像。这个画像就是几何态射 \(f^\ast\) 的定义（14.4.6），一字不改。</div>
+
+  <h3 class="sub">14.4.6 迈向几何态射</h3>
+  <p>把 \(f^{-1}\dashv f_*\) 稍微加强，就得到第 19 章的主角。</p>
+
+  <div class="defn">
+    <span class="lbl">定义 14.4.11（几何态射，预览版）</span>
+    <p>设 \(\mathcal E,\mathcal F\) 是两个拓扑斯（例如 \(\mathbf{Sh}(X)\)、\(\mathbf{Sh}(Y)\)）。一个<strong>几何态射</strong> \(f:\mathcal E\to\mathcal F\) 是一对伴随函子
+      \[f^{\ast}:\mathcal F\rightleftarrows\mathcal E:f_*,\qquad f^{\ast}\dashv f_*,\]
+      使得 \(f^{\ast}\) <strong>保持有限极限</strong>（终对象、拉回）。</p>
+    <p>对 \(X\to Y\) 连续，取 \(f^{\ast}=f^{-1}\)、\(f_*=f_*\)：\(f^{-1}\) 保有限极限吗？保终对象 ✓（\(f^{-1}1=1\)）；保拉回？<strong>在层范畴里成立</strong>（这是 14.3.6 与拉回逐点性的推论，细节见第 19 章）。故 \((\mathbf{Sh}(X)\to\mathbf{Sh}(Y))\) 是几何态射。<em>注意：这个“保有限极限”正是 \(f^{-1}\) 与一般的左伴随的区别——它比“保余极限”更精细。</em></p>
+  </div>
+
+  <div class="rmk"><strong>方向的记忆法。</strong>几何态射 \(f:\mathcal E\to\mathcal F\) 的<strong>星号在下</strong>（\(f_*:\mathcal E\to\mathcal F\) 与 \(f\) 同向），<strong>星号在上</strong>（\(f^{\ast}:\mathcal F\to\mathcal E\) 反向）。这与拓扑里“直接像同向、逆像反向”完全一致。第 19 章会反复用到这个方向约定，现在先记牢。</div>
+
+  <div class="phil">
+    <h4>② 选读：搬运的伦理——为什么几何信息只能“拉回”，不能“推出”</h4>
+    <p>这一节有一个不对称，值得停下来想想：<strong>拉回（\(f^{-1}\)）总是存在且好用，推出（\(f_!\)）却要额外条件。</strong>为什么？</p>
+    <p>因为几何信息是“逐点”的。\(f\) 把 \(X\) 的点送到 \(Y\) 的点，于是“\(Y\) 上的逐点信息”可以自然地沿 \(f\) 拉回 \(X\)——每个 \(x\) 只需问 \(f(x)\) 处有什么。这就是逆像总是存在的原因：<em>它只依赖 \(f\) 在点上的作用</em>。</p>
+    <p>反过来，要把 \(X\) 上的信息推到 \(Y\)，你必须回答：“\(y\) 上的信息应该来自 \(f^{-1}(y)\) 的哪些部分？”若纤维很大（比如 \(f\) 是覆叠），你有很多选择：取整体截面？取某个代表？取积分？每个选择给出不同的 \(f_!\)（直接像、紧支撑直接像、上同调直接像……）。<strong>“推出”不是唯一的，因为“把许多点压成一点”这件事没有典范答案。</strong></p>
+    <p>这个不对称在哲学上对应一个熟悉的事实：<em>分析（把整体分解成局部）总是可能的，综合（把局部合并成整体）需要额外的相容性</em>。层论把这句话变成了定理：逆像总存在（分析总可能），直接像的右伴随性质要验证（综合要看条件）。你之前学的“局部—整体”在这里第二次出现，这次是以<strong>函子方向的不对称</strong>形式。第 15 章会看到，这个不对称正是“拓扑斯”概念能同时容纳几何与逻辑的原因。</p>
+  </div>
+
+  <div class="box walk">
+    <h4>③ 手把手：算一遍 \(S^1\) 上常值层的拉回</h4>
+    <p>取 \(f:\mathbb R\to S^1\)，\(f(t)=e^{2\pi it}\)；\(G=\underline{\mathbb Z}\)（\(S^1\) 上常值层）。算 \(f^{-1}G\) 与 \(f_*f^{-1}G\)，并对比 \(G\)。</p>
+    <ol>
+      <li><strong>茎。</strong>\((f^{-1}G)_t=G_{f(t)}=\mathbb Z\) 对每个 \(t\)。故 \(f^{-1}G=\underline{\mathbb Z}_{\mathbb R}\)（\(\mathbb R\) 上常值层）。</li>
+      <li><strong>整体截面。</strong>\((f^{-1}G)(\mathbb R)=\Gamma(\mathbb R,\underline{\mathbb Z})=\mathbb Z\)（\(\mathbb R\) 连通，局部常值 = 常值）。注意 \(G(S^1)=\mathbb Z\) 也是 \(\mathbb Z\)——这一步“看起来没变”。</li>
+      <li><strong>推回去。</strong>\(f_*(f^{-1}G)(V)=\Gamma(f^{-1}V,\underline{\mathbb Z})=\mathbb Z\) 若 \(f^{-1}V\ne\varnothing\)（\(\mathbb R\) 的连通开集），否则单点。而 \(f^{-1}V\ne\varnothing\iff V\ne\varnothing\)。故 \(f_*f^{-1}G=\underline{\mathbb Z}\)（\(S^1\) 上）\(=G\)。这个例子里 \(\eta:G\to f_*f^{-1}G\) <strong>是同构</strong>。</li>
+      <li><strong>换个层看差别。</strong>取 \(G'=\mathcal C^0_{S^1}\)。则 \(f^{-1}G'=\mathcal C^0_{\mathbb R}\)，而 \(f_*f^{-1}G'(V)=\Gamma(f^{-1}V,\mathcal C^0)=\{\text{在 }f^{-1}V\text{ 上连续}\}\)。对 \(V=S^1\)：\(\Gamma(\mathbb R,\mathcal C^0)=C^0(\mathbb R)\)，而 \(G'(S^1)=C^0(S^1)=\) “周期 1 的连续函数”。<strong>前者严格大于后者</strong>。故 \(\eta:G'\to f_*f^{-1}G'\) 是<strong>单射非满</strong>——这根“周期条件”在拉回—推出往返中丢失了。</li>
+      <li><strong>结论。</strong>\(\eta\) 在同构与严格单射之间摆动，取决于 \(G\) 是否“已经沿 \(f\) 的纤维不变”。<em>\(\eta\) 是同构 ⟺ \(G\) 在 \(f\) 的纤维上是常值的</em>（即 \(G\cong f^{-1}G'\) 某 \(G'\)）。这个判据在第 19 章会变成“几何态射的嵌入性”。</li>
+      <li><strong>余单位一侧。</strong>\(\varepsilon:f^{-1}f_*F\to F\)。取 \(F=\underline{\mathbb Z}_{\mathbb R}\)：\(f_*F=\underline{\mathbb Z}_{S^1}\)（每个非空 \(V\) 给 \(\mathbb Z\)），\(f^{-1}f_*F=\underline{\mathbb Z}_{\mathbb R}\)，\(\varepsilon\) 是同构。取 \(F=\mathcal C^0_{\mathbb R}\)：\(f_*F(V)=\Gamma(f^{-1}V,\mathcal C^0)\)，对 \(V=S^1\) 得 \(C^0(\mathbb R)\)；\(f^{-1}f_*F(U)=\varinjlim\) 沿 \(V\supseteq f(U)\)——在 \(U\) 很小时是 \(C^0\) 的芽，\(\varepsilon\) 在茎上是同构，但整体上不必满（同 4 的道理）。</li>
+    </ol>
+  </div>
+
+  <div class="box exer">
+    <h4>④ 习题（14.4）</h4>
+    <ol>
+      <li id="ex14-4-1">设 \(f:X\to Y\) 连续，\(G\) 是 \(Y\) 上的层。证明 \(f^{-1}G\) 的茎是 \(G_{f(x)}\)（不用命题 14.4.5，自己构造两个方向的映射）。</li>
+      <li id="ex14-4-2">设 \(j:U\hookrightarrow X\) 开包含。证明 \(j^{-1}\dashv j_*\) 的单位 \(\eta:G\to j_*j^{-1}G\) 是同构，并解释几何意义（“\(G\) 在 \(U\) 内不变，在 \(U\) 外被抹掉”）。</li>
+      <li id="ex14-4-3">计算：\(X=\mathbb R\)，\(Y=\{*\}\)，\(G=\underline{\mathbb Z}\)。求 \(f^{-1}G\) 与 \(f_*f^{-1}G\)，并说明为什么后者是“\(X\) 的连通分支数”个 \(\mathbb Z\)。</li>
+      <li id="ex14-4-4">证明：\(f^{-1}\) 保余积（\(\coprod\)），用伴随或茎两种方法。</li>
+      <li id="ex14-4-5">证明：\(f_*\) 保拉回（纤维积）。由此说明“\(f_*\) 保极限”不是空话。</li>
+      <li id="ex14-4-6">设 \(f:X\to Y\)，\(G\) 是 \(Y\) 上的层，\(F\) 是 \(X\) 上的层。写出伴随 \(\mathrm{Hom}(f^{-1}G,F)\cong\mathrm{Hom}(G,f_*F)\) 的单位与余单位，并验证三角恒等式中的一条。</li>
+      <li id="ex14-4-7">证明 \(f^{-1}\) 保有限积（用茎或伴随），并给出一个它<strong>不保无穷积</strong>的例子。</li>
+      <li id="ex14-4-8">设 \(p:X\to Y\) 连续，\(G\) 是 \(Y\) 上的层。用 étale 空间刻画 \(\Gamma(X,p^{-1}G)\)，并说明它与 \(\Gamma(Y,G)\) 的关系：何时相等，何时严格更大。<em>（提示：\(\Lambda(p^{-1}G)=X\times_Y\Lambda G\)。）</em></li>
+    </ol>
+  </div>
+
+  <div class="box ans">
+    <h4>⑤ 参考答案（14.4）</h4>
+    <div class="item"><b>14.4.1</b>定义 \(\Phi:(f^{-1}G)_x\to G_{f(x)}\)，\(\Phi([U,\sigma])=\sigma(x)\)（注意 \(\sigma(x)\in G_{f(x)}\) 按 \(f^{-1}G\) 的定义）。良定义：若 \([U,\sigma]=[W,\tau]\)，则存在 \(Z\subseteq U\cap W\) 含 \(x\) 使 \(\sigma|_Z=\tau|_Z\)，故 \(\sigma(x)=\tau(x)\)。<br>
+      满：任取 \(e\in G_{f(x)}\)，\(e=t_{f(x)}\) 某 \(t\in G(V)\)，\(f(x)\in V\)。取 \(U=f^{-1}V\ni x\)，令 \(\sigma(y)=t_{f(y)}\)。则 \(\sigma\in f^{-1}G(U)\)（连续性取 \(W=U\) 验证）且 \(\Phi([U,\sigma])=e\)。<br>
+      单：若 \(\sigma(x)=\tau(x)\)，由 \(f^{-1}G\) 中“连续”的定义，存在 \(x\) 的邻域 \(W\) 与 \(t\in G(V)\) 使 \(\sigma|_W=\tau|_W=t_{f(\cdot)}\)，故芽相同。∎</div>
+    <div class="item"><b>14.4.2</b>先弄清方向：\(\eta:G\to j_*j^{-1}G\) 是<strong>单位</strong>（\(j^{-1}\dashv j_*\) 的单位），\(\varepsilon:j^{-1}j_*F\to F\) 是<strong>余单位</strong>。<br>
+      <strong>\(\eta_V:G(V)\to(j_*j^{-1}G)(V)=G(U\cap V)\)</strong>，\(\eta_V(t)=t|_{U\cap V}\)。<br>
+      若 \(V\subseteq U\)：\(\eta_V=\mathrm{id}\)，同构。若 \(V\not\subseteq U\)：不一定。反例：\(X=\mathbb R\)、\(U=\mathbb R\setminus\{0\}\)、\(G=\mathcal C^0\)、\(V=\mathbb R\)。\(\eta_{\mathbb R}:C^0(\mathbb R)\to C^0(\mathbb R\setminus\{0\})\) 是单射但<strong>非满</strong>（\(1/x\) 延拓不到 \(\mathbb R\)）。<br>
+      <strong>正确的表述：</strong>\(\eta\) 是单射（限制不丢信息），且 \(\eta\) 是同构 \(\iff\) \(G\) 的每个截面都由其在 \(U\cap V\) 上的部分决定并且能延拓——即 \(G\) “在 \(U\) 外的部分是 \(U\) 的极限”。几何意义：\(j_*j^{-1}\) 是“\(G\) 的 \(U\)-部分”的延拓（外面补零），总含于 \(G\)，可能严格小于 \(G\)。<br>
+      <em>注意方向：\(\eta:G\to j_*j^{-1}G\) 是“把 \(G\) 忘掉 \(U\) 外信息后再嵌回”，故通常单非满。</em>反过来<strong>余单位</strong> \(\varepsilon:j^{-1}j_*F\to F\) 才是同构：\((j^{-1}j_*F)(V)=(j_*F)(V)=F(U\cap V)\)，对 \(V\subseteq U\) 得 \(F(V)\)，\(\varepsilon_V=\mathrm{id}\)。故 \(\varepsilon\) 同构（“先推出再拉回不丢 \(U\) 内的信息”）。∎<br>
+      <em>教益：伴随的两侧不对称——开包含的 \(j^{-1}j_*\cong\mathrm{id}\)（余单位同构）而 \(j_*j^{-1}\ne\mathrm{id}\)（单位不同构）。前者说“\(U\) 上的层可以无损地看成 \(X\) 上的”，后者说“\(X\) 上的层限制到 \(U\) 再延拓会丢信息”。</em></div>
+    <div class="item"><b>14.4.3</b>\(f^{-1}G=\underline{\mathbb Z}_{\mathbb R}\)（\(\mathbb R\) 连通，常值层整体截面 \(\mathbb Z\)）。\(f_*f^{-1}G(*)=\Gamma(\mathbb R,\underline{\mathbb Z})=\mathbb Z\)。若 \(X\) 换成不连通空间如 \(X=\mathbb R\sqcup\mathbb R\)，则 \(\Gamma(X,\underline{\mathbb Z})=\mathbb Z^2\)，即“连通分支数”个 \(\mathbb Z\)。原因：常值层的整体截面 = 每个连通分支独立选一个值（14.3.8）。∎</div>
+    <div class="item"><b>14.4.4</b><strong>用茎：</strong>\((f^{-1}(G_1\coprod G_2))_x\cong(G_1\coprod G_2)_{f(x)}\cong(G_1)_{f(x)}\coprod(G_2)_{f(x)}\cong(f^{-1}G_1)_x\coprod(f^{-1}G_2)_x\)。茎上同构且两边都是层（分离），故同构（14.3.8）。<strong>用伴随：</strong>\(f^{-1}\) 是左伴随，左伴随保余极限，\(\coprod\) 是余极限。∎</div>
+    <div class="item"><b>14.4.5</b>设 \(V=V_1\times_{V_0}V_2\)（\(Y\) 中的拉回）。则 \(f^{-1}V=f^{-1}V_1\times_{f^{-1}V_0}f^{-1}V_2\)（原像保拉回，因为在集合层面 \(f^{-1}(V_1)\cap f^{-1}(V_0)=f^{-1}(V_1\cap V_0)\) 且逐点验证）。于是
+      \((f_*F)(V)=F(f^{-1}V)=F(f^{-1}V_1\times_{f^{-1}V_0}f^{-1}V_2)\)。若再假设 \(F\) 保这个拉回（\(F\) 是层，层是“逐点”的，但 \(F\) 作为函子不保所有极限！只有 \(F\) 的<em>取截面</em>不保）——<br>
+      <strong>这里要小心：\(f_*\) 保拉回不是因为 \(F\) 保拉回，而是因为拉回的“截面”由各分量的截面 + 相容性给出</strong>：一个截面 \(s\in F(f^{-1}V)\) 等价于“\(s_1\in F(f^{-1}V_1)\), \(s_2\in F(f^{-1}V_2)\) 在 \(F(f^{-1}V_0)\) 中相等”——这正是 \(f_*F(V_1)\times_{f_*F(V_0)}f_*F(V_2)\)。所以 \((f_*F)(V)=(f_*F)(V_1)\times_{(f_*F)(V_0)}(f_*F)(V_2)\)。∎<br>
+      <em>本质：拉回在层范畴里是“逐点”的，而逐点操作与 \(F\mapsto F(\cdot)\) 交换。</em></div>
+    <div class="item"><b>14.4.6</b>单位：\(\eta_G:G\to f_*f^{-1}G\)，\(\eta_{G,V}(t)=t\circ f\)（视为 \(f^{-1}V\) 上的截面：\(x\mapsto t_{f(x)}\)）。余单位：\(\varepsilon_F:f^{-1}f_*F\to F\)，\(\varepsilon_{F,U}(\sigma)=\sigma\) 在 \(U\) 上的“由 \(f_*F\) 的截面给出”的值——具体地，\(\sigma\) 局部来自 \(t\in(f_*F)(V)=F(f^{-1}V)\)，令 \(\varepsilon(\sigma)=t|_U\)（层性保证良定义）。<br>
+      三角恒等式之一：\(\varepsilon_{f^{-1}G}\circ f^{-1}\eta_G=\mathrm{id}_{f^{-1}G}\)。在茎上验证：\((f^{-1}\eta_G)_x\) 把 \(e\in G_{f(x)}\) 送到 \(\eta\) 的芽，\((\varepsilon)_x\) 把它送回 \(e\)。复合为恒等。∎</div>
+    <div class="item"><b>14.4.7</b><strong>保有限积：</strong>用茎，\((f^{-1}(G_1\times G_2))_x\cong(G_1\times G_2)_{f(x)}\cong(G_1)_{f(x)}\times(G_2)_{f(x)}\cong(f^{-1}G_1)_x\times(f^{-1}G_2)_x\)。两边都是层，茎上同构，由 14.3.8 得同构。（等价地：有限积是有限极限，\(f^{-1}\) 左正合。）<br>
+      <strong>不保无穷积：</strong>取 \(X=\mathbb N\) 离散、\(Y=*\)、\(f\) 唯一映射、\(G_i=\underline{\mathbb Z}\)（\(i\in\mathbb N\)，都是 \(*\) 上的层）。则 \(\prod_i G_i\) 在 \(*\) 上取值 \(\mathbb Z^{\mathbb N}\)。\(f^{-1}(\prod_i G_i)=\underline{\mathbb Z^{\mathbb N}}\)（\(X\) 上常值层），整体截面 \(=(\mathbb Z^{\mathbb N})^{\mathbb N}\)（每个点独立选一个序列，\(X\) 离散故无连续性约束）。而 \(\prod_i f^{-1}G_i=\prod_i\underline{\mathbb Z}\)，整体截面 \(=(\mathbb Z)^{\mathbb N}=\mathbb Z^{\mathbb N}\)（每个 \(i\) 给一个“整数值函数”，即一个序列）。两者基数不同：\((\mathbb Z^{\mathbb N})^{\mathbb N}\) 严格大于 \(\mathbb Z^{\mathbb N}\)。故不同构。∎<br>
+      <em>本质：无穷积不能“逐点”算，而 \(f^{-1}\) 的构造是逐点的——它与“提升到函数空间”不交换。</em></div>
+    <div class="item"><b>14.4.8</b>由命题 14.4.5(iii)，\(\Lambda(p^{-1}G)=X\times_Y\Lambda G\)，投影到 \(X\)。故
+      \[\Gamma(X,p^{-1}G)\;\cong\;\bigl\{\,\tau:X\to\Lambda G\ \text{连续}\ :\ p_{\Lambda}\circ\tau=p\,\bigr\},\]
+      即“\(p\) 到 \(\Lambda G\) 的连续提升”之全体（\(p_{\Lambda}:\Lambda G\to Y\) 是投影）。<br>
+      <strong>与 \(\Gamma(Y,G)\) 的关系：</strong>给定截面 \(\sigma\in\Gamma(Y,G)\)，令 \(\tau=\sigma\circ p\)，则 \(p_{\Lambda}\tau=p_{\Lambda}\sigma p=p\)，故得单射
+      \[\Gamma(Y,G)\;\hookrightarrow\;\Gamma(X,p^{-1}G),\qquad \sigma\mapsto\sigma\circ p.\]
+      它是同构 \(\iff\) 每个提升都形如 \(\sigma\circ p\)，即 \(p\) 的纤维把 \(X\) 的每个连通分支整体压在 \(Y\) 的一点上时（例如 \(p\) 是同构，或 \(X\) 的纤维连通且 \(p\) 有连续截面）。<br>
+      <strong>严格更大的例子：</strong>\(X=S^1\sqcup S^1\)、\(Y=*\)、\(G=\underline{\mathbb Z}\)。则 \(\Gamma(X,p^{-1}G)=\mathbb Z^2\)（两个分支各自选一个整数），而 \(\Gamma(Y,G)=\mathbb Z\)。多出来的自由度正是“在两个分支上取不同的值”。<br>
+      <em>教益：</em>“拉回不改变整体截面”是一个<strong>常见但错误</strong>的印象。正确的是“拉回的截面 = 原层截面沿着 \(p\) 的复合，外加在纤维上独立选择的自由”。只有当纤维不提供自由（同构、或有截面钉住）时，两者才相等。∎</div>
+  </div>
+</section>
+
+<footer>
+  <p><a href="范畴论-逻辑-拓扑斯_教材总目录.html">← 返回总目录</a> ｜ 上一章：<a href="范畴论-逻辑-拓扑斯_教材第13章.html">第 13 章 函子范畴</a> ｜ 下一章：<a href="范畴论-逻辑-拓扑斯_教材第15章.html">第 15 章 Grothendieck 拓扑与 site</a></p>
+  <p>本章对应 Mac Lane &amp; Moerdijk, <em>Sheaves in Geometry and Logic</em>, Chapter II §1–§9。公式由 MathJax 渲染。每节核心概念配“典型例 / 本质例 / 边界与误解 / 结构应用”四类例子。层概念从零建立：先具体（连续函数的局部—整体），再抽象（筛与 site），再几何（étale 空间），最后函子化（逆像）。</p>
+</footer>
+
+</div>
+</body>
+</html>

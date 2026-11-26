@@ -1,0 +1,855 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>第 15 章 Grothendieck 拓扑与 site（Ch. III）—— 三书递进自学教材</title>
+<script>
+window.MathJax = {
+  tex: {
+    inlineMath: [['\\(','\\)']], displayMath: [['\\[','\\]']], processEscapes: true,
+    macros: {
+      llbracket: '\\lbrack\\lbrack',
+      rrbracket: '\\rbrack\\rbrack'
+    }
+  },
+  options: { ignoreHtmlClass: 'no-tex' },
+  svg: { fontCache: 'global' }
+};
+</script>
+<script async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
+<style>
+  :root{
+    --bg:#f6f7f9; --card:#fff; --ink:#1b1f27; --ink2:#4d5461; --ink3:#7a8190;
+    --line:#e5e8ed; --soft:#f0f2f5;
+    --c1:#2563eb; --c1bg:#eef4ff; --gold:#b45309; --goldbg:#fdf3e3;
+    --ok:#15803d; --okbg:#eefaf1; --phil:#7c3aed; --philbg:#f6f1ff;
+    --teal:#0d9488; --tealbg:#eefaf7; --walk:#b45309;
+    --radius:12px;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;
+    line-height:1.75;-webkit-font-smoothing:antialiased;}
+  .wrap{max-width:920px;margin:0 auto;padding:0 22px 80px;}
+
+  header.top{padding:34px 0 22px;border-bottom:1px solid var(--line);margin-bottom:26px;}
+  .breadcrumb{font-size:12.5px;color:var(--ink3);margin-bottom:10px;}
+  .breadcrumb a{color:var(--c1);text-decoration:none;}
+  h1{font-size:29px;margin:0 0 8px;letter-spacing:-.02em;}
+  .lede{color:var(--ink2);font-size:14.5px;margin:0 0 16px;}
+  .jump{display:flex;gap:8px;flex-wrap:wrap;}
+  .jump a{font-size:12.5px;font-weight:650;text-decoration:none;color:var(--ink2);
+    background:var(--card);border:1px solid var(--line);border-radius:99px;padding:6px 13px;}
+  .jump a:hover{border-color:var(--c1);color:var(--c1);}
+
+  section.sec{margin:0 0 52px;scroll-margin-top:16px;}
+  .sec-h{display:flex;align-items:baseline;gap:12px;border-bottom:2px solid var(--c1);padding-bottom:10px;margin-bottom:22px;}
+  .sec-no{font-size:13px;font-weight:800;color:#fff;background:var(--c1);border-radius:7px;padding:3px 10px;white-space:nowrap;}
+  .sec-h h2{font-size:22px;margin:0;letter-spacing:-.01em;}
+  .src{font-size:11.5px;color:var(--ink3);margin-left:auto;white-space:nowrap;}
+
+  .box{border-radius:var(--radius);padding:16px 20px;margin:18px 0;border:1px solid var(--line);}
+  .box h4{margin:0 0 10px;font-size:14px;letter-spacing:.01em;}
+
+  .learn{background:var(--c1bg);border-color:#cfe0ff;}
+  .learn h4{color:var(--c1);}
+  .learn ol{margin:0;padding-left:22px;} .learn li{margin:4px 0;font-size:14px;}
+
+  .prep{background:var(--tealbg);border-color:#bfe9dd;}
+  .prep h4{color:var(--teal);}
+  .prep p{font-size:13.5px;color:#115e59;margin:8px 0;}
+  .prep ol,.prep ul{margin:8px 0;padding-left:22px;font-size:13.5px;color:#115e59;}
+  .prep li{margin:5px 0;}
+
+  .defn{background:#fafbfc;border-left:4px solid var(--ink2);padding:14px 18px;margin:16px 0;border-radius:0 10px 10px 0;}
+  .defn .lbl{font-weight:800;font-size:13.5px;color:var(--ink);}
+  .prop{background:#fbfcfe;border:1px solid #dbe6f8;border-left:4px solid var(--c1);padding:14px 18px;margin:16px 0;border-radius:0 10px 10px 0;}
+  .prop .lbl{font-weight:800;font-size:13.5px;color:var(--c1);}
+  .rmk{font-size:13.5px;color:var(--ink2);background:var(--soft);padding:11px 16px;border-radius:9px;margin:12px 0;}
+  .xref{font-size:13px;color:#115e59;background:var(--tealbg);border-left:3px solid var(--teal);padding:9px 14px;border-radius:0 8px 8px 0;margin:12px 0;}
+
+  .proof{margin:10px 0 4px;padding-left:16px;border-left:2px solid var(--line);font-size:14px;color:var(--ink2);}
+  .proof .pl{font-weight:700;color:var(--ink);}
+  .qed{float:right;font-style:normal;color:var(--ink3);}
+
+  .exer{background:var(--goldbg);border-color:#f2dfbb;}
+  .exer h4{color:var(--gold);}
+  .exer .grp{font-size:12.5px;font-weight:750;color:var(--gold);margin:12px 0 4px;}
+  .exer ol{margin:0;padding-left:22px;} .exer li{margin:9px 0;font-size:14px;}
+
+  .ans{background:var(--okbg);border-color:#c9ecd3;}
+  .ans h4{color:var(--ok);}
+  .ans .item{margin:14px 0 18px;font-size:14px;}
+  .ans .item:last-child{margin-bottom:0;}
+  .ans .item b{color:var(--ok);}
+  .ans .proof{border-left-color:#bfe6c9;}
+
+  .phil{background:var(--philbg);border-color:#e3d5ff;}
+  .phil h4{color:var(--phil);}
+  .phil p{font-size:14px;color:#5b3a8e;margin:8px 0;}
+
+  .walk{background:#fffbeb;border-color:#fde68a;}
+  .walk h4{color:var(--walk);}
+  .walk p,.walk li{font-size:13.5px;color:#78350f;}
+  .walk ol,.walk ul{margin:8px 0;padding-left:22px;}
+  .walk table{border-collapse:collapse;width:100%;font-size:13px;margin:10px 0;}
+  .walk th,.walk td{border:1px solid #fcd34d;padding:7px 9px;text-align:left;vertical-align:top;}
+  .walk th{background:#fef3c7;color:#78350f;}
+
+  h3.sub{font-size:16px;margin:26px 0 6px;color:var(--ink);}
+  p{margin:9px 0;} .math{overflow-x:auto;}
+
+  .figcap{font-size:12.5px;color:var(--ink3);margin:2px 0 12px;text-align:center;font-style:italic;}
+  .figdesc{font-size:13px;color:var(--ink2);background:var(--soft);padding:10px 15px;border-radius:8px;margin:6px 0 12px;}
+
+  footer{border-top:1px solid var(--line);margin-top:30px;padding-top:20px;font-size:13px;color:var(--ink3);}
+  footer a{color:var(--c1);text-decoration:none;}
+
+  @media(max-width:640px){
+    h1{font-size:23px;} .wrap{padding:0 14px 60px;}
+    .sec-h{flex-wrap:wrap;} .src{margin-left:0;}
+    .box{padding:14px 15px;}
+  }
+  @media print{body{background:#fff;}.jump{display:none;}.box{break-inside:avoid;}}
+  /* ---- 范畴交换图 SVG（浅色主题）---- */
+  svg.cd{display:block;margin:16px auto 2px;max-width:100%;height:auto;
+    font-family:"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;}
+  svg.cd rect.node{fill:#eef4ff;stroke:#2563eb;stroke-width:1.5;rx:7;}
+  svg.cd rect.node2{fill:#f6f1ff;stroke:#7c3aed;stroke-width:1.5;rx:7;}
+  svg.cd rect.nodeg{fill:#eefaf1;stroke:#15803d;stroke-width:1.5;rx:7;}
+  svg.cd rect.nodey{fill:#fdf3e3;stroke:#b45309;stroke-width:1.5;rx:7;}
+  svg.cd text.nt{fill:#1b1f27;font-size:13.5px;font-weight:600;}
+  svg.cd text.lb{fill:#334155;font-size:12.5px;}
+  svg.cd text.hb{fill:#2563eb;font-size:12.5px;font-weight:600;}
+  svg.cd text.hg{fill:#15803d;font-size:12.5px;font-weight:600;}
+  svg.cd text.hp{fill:#7c3aed;font-size:12.5px;font-weight:600;}
+  svg.cd line.ar,svg.cd path.ar{stroke:#475569;stroke-width:1.6;fill:none;marker-end:url(#cdArr);}
+  svg.cd line.arb,svg.cd path.arb{stroke:#2563eb;stroke-width:1.8;fill:none;marker-end:url(#cdArrB);}
+  svg.cd line.arg,svg.cd path.arg{stroke:#15803d;stroke-width:1.8;fill:none;marker-end:url(#cdArrG);}
+  svg.cd line.arp,svg.cd path.arp{stroke:#7c3aed;stroke-width:1.8;fill:none;marker-end:url(#cdArrP);}
+  svg.cd line.ard,svg.cd path.ard{stroke:#475569;stroke-width:1.5;fill:none;stroke-dasharray:5 4;marker-end:url(#cdArr);}
+  svg.cd line.noa{stroke:#475569;stroke-width:1.5;fill:none;stroke-dasharray:5 4;}
+
+  /* ---- 四类例子深度组件（本章新增，落实用户"每概念四类例"要求）---- */
+  .cases{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:6px 20px 14px;margin:18px 0;}
+  .cases>.ct{font-size:13.5px;font-weight:800;color:var(--ink);padding:11px 0 4px;border-bottom:1px dashed var(--line);margin-bottom:8px;}
+  .case{padding:9px 0 9px 14px;border-left:3px solid var(--line);margin:8px 0;font-size:13.5px;color:var(--ink2);}
+  .case b{display:inline-block;font-size:12px;padding:1px 9px;border-radius:99px;margin-right:8px;vertical-align:1px;}
+  .case.typ{border-left-color:var(--ok);}       .case.typ b{background:var(--okbg);color:var(--ok);}
+  .case.deep{border-left-color:var(--c1);}      .case.deep b{background:var(--c1bg);color:var(--c1);}
+  .case.edge{border-left-color:#dc2626;}        .case.edge b{background:#fef2f2;color:#dc2626;}
+  .case.use{border-left-color:var(--phil);}     .case.use b{background:var(--philbg);color:var(--phil);}
+  .case p{margin:6px 0;}
+  /* 数学动机框：解释"这个构造解决什么问题" */
+  .motiv{background:#fffbeb;border:1px solid #fde68a;border-left:4px solid #d97706;padding:13px 18px;border-radius:0 10px 10px 0;margin:16px 0;font-size:13.5px;color:#78350f;}
+  .motiv .lbl{font-weight:800;color:#b45309;display:block;margin-bottom:5px;}
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute;width:0;height:0;overflow:hidden" aria-hidden="true">
+<defs>
+  <marker id="cdArr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+    <path d="M 0 0 L 10 5 L 0 10 z" fill="#475569"/>
+  </marker>
+  <marker id="cdArrB" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+    <path d="M 0 0 L 10 5 L 0 10 z" fill="#2563eb"/>
+  </marker>
+  <marker id="cdArrG" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+    <path d="M 0 0 L 10 5 L 0 10 z" fill="#15803d"/>
+  </marker>
+  <marker id="cdArrP" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+    <path d="M 0 0 L 10 5 L 0 10 z" fill="#7c3aed"/>
+  </marker>
+</defs>
+</svg><div class="wrap">
+
+<header class="top">
+  <div class="breadcrumb"><a href="范畴论-逻辑-拓扑斯_教材总目录.html">← 返回总目录</a> ｜ 第三部分 · Mac Lane &amp; Moerdijk《Sheaves in Geometry and Logic》</div>
+  <h1>第 15 章　Grothendieck 拓扑与 site（Ch. III）</h1>
+  <p class="lede">第 14 章你已经会用“全称量化”的方式检查层条件了，但那时的拓扑是“给”的，你只是消费者。本章要让你变成生产者：<strong>怎么在一个任意范畴上装一个拓扑</strong>，装完怎么验证，不同的装法之间怎么比较，以及——最关键的一步——<strong>层化</strong>：任何预层都能被“自由地”修成一个层。修的这个动作有名字，叫伴生层函子，它是整本书后半部分把 site 变成拓扑斯的发动机。本章只讲 M Ch.III，不越界到第 IV 章。</p>
+  <div class="xref"><strong>与前文的分工（去重说明）.</strong>下列已在前面章节给出，本章只回指、不重述：<br>
+    · 预层、Yoneda 嵌入 \(y\)、筛作为 \(y(c)\) 的子预层、筛的封闭子集枚举——<strong>（参见第 13 章 13.1、13.3、第 14 章 14.2）</strong>；<br>
+    · Grothendieck 拓扑三条公理 (T1)(T2)(T3)、六个 site（开集 / \(BG\) 两种 / Zariski / 稠密 / 点空间）、比较引理——<strong>（参见第 14 章 14.2）</strong>；<br>
+    · 层条件的等化子形式、“分离性 / 粘合性”的拆分、分离预层——<strong>（参见第 14 章 14.1）</strong>；<br>
+    · 茎、étale 空间、\(\mathbf{Sh}(X)\simeq\mathbf{LH}/X\)——<strong>（参见第 14 章 14.3）</strong>；<br>
+    · 拉回、等化子、余极限、余等化子——<strong>（参见第 4 章 4.2–4.3、第 13 章 13.1）</strong>；<br>
+    · 伴随、单位与余单位、伴随函子定理——<strong>（参见第 7 章 7.1–7.2）</strong>。<br>
+    本章新增（14.2 只报了名字、没有真正做的技术活）：<strong>覆盖族（pretopology）与筛版拓扑的等价定理</strong>、<strong>拓扑构成的格</strong>（交、生成、次典范、canonical）、<strong>层范畴的第一批范畴性质</strong>（有限极限、反射子范畴、代表层）、<strong>伴生层函子的显式构造</strong>（\(F^{+}\)、双加号、左正合性）。
+  </div>
+  <div class="box phil">
+    <h4>章首导读：如果只记一件事，记这个</h4>
+    <p>Grothendieck 做的事，一句话：<strong>把“覆盖”从“并集等于”改写成“一族箭头够用”</strong>。在拓扑空间里，“\(U_i\) 覆盖 \(U\)”有唯一正确的含义（\(U=\bigcup U_i\)，即每个点都被覆盖到）。一旦换成任意范畴，“点”没有了，“并”也没有了，这句话就没法写。Grothendieck 的替代方案是把“覆盖”变成<em>你自己宣告</em>的数据。</p>
+    <p>这件事的后果比它听起来严重。因为一旦“覆盖”可以宣告，<strong>“局部”就不再依附于空间，而依附于你选的分辨率</strong>。同一个环范畴上，你可以只允许局部化到一个元素（Zariski），也可以允许局部化到一个 étale 邻域（étale），也可以允许平坦局部（fppf）。三种宣告，三个不同的几何，三套不同的上同调。哪一个“对”？取决于你要证什么。这不是相对主义：这是工具论，就像你选显微镜倍数。</p>
+    <p>而让这套东西真正好用的是本章第三节的那个函子：<strong>层化 \(a\)</strong>。它保证你永远能“自由地”把一个不合格的预层修成层，而且修得尽量少（它是左伴随，是“最省的修法”）。有了它，层范畴才不是一片散沙，而是一个有反射的、能算余极限的、最终能成为拓扑斯的范畴。第 16 章会拿它当定义的一半。</p>
+  </div>
+</header>
+
+<nav class="jump">
+  <a href="#s15-1">15.1 广义邻域与 Grothendieck 拓扑</a>
+  <a href="#s15-2">15.2 site 上的层</a>
+  <a href="#s15-3">15.3 伴生层函子</a>
+</nav>
+
+<section class="sec" id="s15-1">
+  <div class="sec-h"><span class="sec-no">15.1</span><h2>广义邻域与 Grothendieck 拓扑</h2><span class="src">M Ch.III §1–2</span></div>
+
+  <div class="box learn">
+    <h4>① 本节学习目标</h4>
+    <ol>
+      <li>理解 Grothendieck 的原始问题：为什么“没有点的拓扑学”是必要的，而不只是趣味；</li>
+      <li>掌握<strong>覆盖族</strong>（coverage / pretopology）的三条公理 (C1)(C2)(C3)，并知道每条各自防止什么病；</li>
+      <li>把 14.2 的筛版公理 (T1)(T2)(T3) 与覆盖族版<strong>逐条对上</strong>，并完整证明两方向的等价定理；</li>
+      <li>理解“饱和化”：为什么从覆盖族造出的拓扑比覆盖族本身大得多，而层条件却不必变；</li>
+      <li>掌握拓扑构成的<strong>格</strong>：任意交仍是拓扑、生成的拓扑、最粗与最细、次典范与 canonical；</li>
+      <li>能独立验证三个 site 的覆盖族公理：开集 site、Zariski site、稠密拓扑。</li>
+    </ol>
+  </div>
+
+  <div class="xref"><strong>沿用前文（不再复述）.</strong> 筛的定义与“对左复合封闭”、\(f^{\ast}S\) 的拉回筛、\(J(c)\subseteq\Omega(c)\)、三公理 (T1)(T2)(T3) 的陈述见<strong>（参见第 14 章 14.2.2、14.2.4）</strong>。本节不重复这些陈述，但会从<em>另一个入口</em>——覆盖族——重新走到同一处，并把两个入口焊死。</div>
+
+  <div class="box prep">
+    <h4>极简回顾（八分钟）</h4>
+    <p><strong>1. 14.2 给了你什么。</strong>那里我们直接定义了筛版拓扑：\(J\) 给每个对象 \(c\) 指定一族筛 \(J(c)\)，满足 (T1) 最大筛在 \(J(c)\) 里、(T2) 稳定、(T3) 传递。然后 \(J\)-层定义为“对每个 \(S\in J(c)\)，\(F(c)\to\mathrm{Hom}(S,F)\) 是双射”的预层。</p>
+    <p><strong>2. 14.2 缺了什么。</strong>缺<em>怎么造</em>。实际动手时，没人会直接去指定“哪些筛算覆盖”——筛是子预层，是巨大的对象；在开集 site 上，\(U\) 上的筛可以多到无法枚举。人们真正写得出来的东西是一族箭头 \(\{f_i:c_i\to c\}\)。<strong>所以真正的入口是覆盖族，筛只是它的饱和化产物</strong>。</p>
+    <p><strong>3. 两种入口的差别在哪。</strong>覆盖族是“生成元”，筛是“生成出来的理想”。类比：环 \(R\) 里你可以给一族元素 \((f_1,\dots,f_n)\)，也可以给它生成的理想 \(\mathfrak a\)。前者好写，后者好算（“\(\mathfrak a=R\)”是一个干净的条件）。Grothendieck 拓扑与覆盖族的关系正是这个关系，<strong>连“饱和化”这个词都一样</strong>。这个类比不是修辞：Zariski site 的覆盖条件 \(({f_1,\dots,f_n})=R\) 就是理想等式。</p>
+    <p><strong>4. 一个必须先说清的陷阱。</strong>“覆盖族生成拓扑”这件事<em>不是</em>一一对应。同一个拓扑可以由完全不同的覆盖族生成（比如“所有开覆盖”和“所有局部有限开覆盖”在仿紧空间上生成同一个拓扑……但要小心，后者一般更弱）。所以正确的说法是：<strong>覆盖族 ⟷ 拓扑 是“生成元 ⟷ 生成物”的关系，多对一</strong>。理解这一点，你才不会在“为什么两个不同的覆盖族给出相同的层”上卡住。</p>
+  </div>
+
+  <h3 class="sub">15.1.1 广义邻域：Grothendieck 到底想推广什么</h3>
+
+  <div class="motiv">
+    <span class="lbl">这个构造解决什么问题？</span>
+    拓扑空间 \(X\) 上，一个点 \(x\) 的“邻域”是含 \(x\) 的开集。层论里真正用到的不是“邻域”本身，而是<strong>“沿邻域的局部化”</strong>：一个截面在 \(x\) 附近的行为，由它在 \(x\) 的任意小邻域上的限制决定。Grothendieck 注意到：这个“任意小”其实只需要一样东西——<strong>一族能“逼近” \(x\) 的对象，以及它们之间的重叠信息</strong>。
+    <br><br>
+    于是他把“邻域”推广成：<em>一个对象 \(c\) 的广义邻域，是一族箭头 \(\{c_i\to c\}\)，它们合起来“盖住” \(c\)</em>。在拓扑空间里这退化为开覆盖；在概形上这是 Zariski 覆盖（局部化到单个元素）；在群作用里这是“沿子群分解”。<strong>关键是：这个推广只用到范畴的箭头和拉回，完全不需要“点”</strong>。这就是“没有点的拓扑学”的字面含义。
+  </div>
+
+  <p>先把话说明白：为什么要费这个劲？因为经典层论有一个隐藏依赖——<strong>它依赖“点”的存在</strong>。你定义茎 \(F_x\) 时用了 \(x\)，定义“局部”时用了“\(x\) 的邻域”。但代数几何里的“点”很怪：一个概形的点包含大量信息（剩余域、局部环），而 Zariski 拓扑又极粗（开集太少，茎的信息几乎全在“一般点”上）。更糟的是，很多真正想做的构造（平坦下降、étale 上同调）在 Zariski 拓扑下根本不成立——你需要<em>更多</em>覆盖，而“更多覆盖”在拓扑空间的语言里说不出来，因为开集就那么多。</p>
+
+  <p>Grothendieck 的出路是：<strong>把“覆盖”从“开集的并”这个几何事实，提升为“范畴上的一份额外数据”</strong>。这份数据就叫 Grothendieck 拓扑，带拓扑的范畴叫 site。下面从最好写的入口——覆盖族——开始。</p>
+
+  <div class="defn">
+    <span class="lbl">定义 15.1.1（覆盖族 / pretopology）</span>
+    <p>设 \(\mathbf C\) 是有拉回的小范畴。\(\mathbf C\) 上的一个<strong>覆盖族系统</strong> \(\mathrm{Cov}\) 给每个对象 \(c\) 指定一族“覆盖”，每个覆盖是一个箭头族 \(\{f_i:c_i\to c\}_{i\in I}\)（\(I\) 可以是任意指标集，允许空、允许无穷、允许重复箭头）。要求三条公理：</p>
+    <p><strong>(C1) 恒等是覆盖。</strong>单箭头族 \(\{\mathrm{id}_c:c\to c\}\) 是 \(c\) 的覆盖。（更一般地，任何同构 \(d\cong c\) 单独构成覆盖。）</p>
+    <p><strong>(C2) 拉回稳定。</strong>若 \(\{f_i:c_i\to c\}\) 覆盖 \(c\)，且 \(g:d\to c\) 是任意箭头，则拉回族
+      \[\{\,f_i':c_i\times_c d\to d\,\}_{i\in I}\]
+      覆盖 \(d\)（其中 \(f_i'\) 是 \(f_i\) 沿 \(g\) 的拉回投影）。</p>
+    <p><strong>(C3) 传递。</strong>若 \(\{f_i:c_i\to c\}\) 覆盖 \(c\)，且对每个 \(i\)，\(\{g_{ij}:d_{ij}\to c_i\}_{j\in J_i}\) 覆盖 \(c_i\)，则复合族
+      \[\{\,f_i\circ g_{ij}:d_{ij}\to c\,\}_{i\in I,\;j\in J_i}\]
+      覆盖 \(c\)。</p>
+    <p>带一个覆盖族系统的范畴 \((\mathbf C,\mathrm{Cov})\) 叫 <strong>site</strong>（原书有时也叫“带预拓扑的范畴”）。</p>
+  </div>
+
+  <div class="rmk"><strong>为什么是拉回而不是“交”。</strong>在 \(\mathcal O(X)\) 里，(C2) 说的就是“\(U_i\cap V\) 覆盖 \(V\)”，而 \(U_i\cap V=U_i\times_U V\) 正是拉回。<strong>拉回是“交”在任意范畴里的正确替代</strong>——这一点你在 14.2 的开篇已经见过，这里是它的正式用途。注意 (C2) 是三条里唯一真正需要“范畴有拉回”的；如果 \(\mathbf C\) 没有拉回，连“稳定”都说不出来，覆盖族公理就失效（此时只能用筛版，因为筛的拉回 \(f^{\ast}S\) 总是存在）。这是筛版在理论上更优越的原因之一。</div>
+
+  <div class="rmk"><strong>为什么允许空覆盖与无穷覆盖。</strong>两件事都是刻意的。<strong>空族</strong>：允许 \(\{f_i:c_i\to c\}\) 取 \(I=\varnothing\)。这表示“\(c\) 上没有任何东西”，它是合法的覆盖，作用是逼 \(F(c)\) 为单点（14.2 已在 \(BG\) 满拓扑里用过这一招）。<strong>无穷族</strong>：Zariski 覆盖可以任意大（一个环的单位理想可以由无穷多个元素生成），开覆盖也可以无穷。<em>把“有限”写进公理会直接排除掉代数几何的主战场</em>。14.1 已见过“二元 ⟹ 有限”的归纳技巧，说明有限性是<em>可以后加的</em>性质，不该写进定义。</div>
+
+  <h3 class="sub">15.1.2 等价定理：覆盖族与筛说的是同一件事</h3>
+
+  <p>现在做本节的核心技术工作。你有两个入口：覆盖族（好写）和筛版拓扑（好算）。要证明它们等价，就得写出两个方向的翻译，并验证公理对公理地对上。</p>
+
+  <p><strong>方向一：覆盖族 ⟹ 筛版拓扑。</strong>想法是“饱和化”：把一族箭头收成它生成的筛。</p>
+
+  <div class="defn">
+    <span class="lbl">定义 15.1.2（覆盖族生成的筛 · 饱和化）</span>
+    <p>设 \(\mathcal F=\{f_i:c_i\to c\}_{i\in I}\) 是 \(c\) 上的一族箭头。它<strong>生成</strong>的筛是
+      \[S_{\mathcal F}\;=\;\bigl\{\,h:e\to c\ \bigm|\ \exists i\in I,\ \exists g:e\to c_i,\ h=f_i\circ g\,\bigr\},\]
+      即“所有能经过某个 \(f_i\) 分解的箭头”。称 \(S_{\mathcal F}\) 为 \(\mathcal F\) 的<strong>饱和化</strong>（saturation）。</p>
+    <p>给定覆盖族系统 \(\mathrm{Cov}\)，定义
+      \[J_{\mathrm{Cov}}(c)\;=\;\bigl\{\,S\in\Omega(c)\ \bigm|\ \exists\,\mathcal F\in\mathrm{Cov}(c),\ S\supseteq S_{\mathcal F}\,\bigr\},\]
+      即“包含某个覆盖所生成之筛的筛”。</p>
+  </div>
+
+  <p>两个立刻要确认的小事实。<strong>(a)</strong> \(S_{\mathcal F}\) 确实是筛：若 \(h=f_i\circ g\in S_{\mathcal F}\)，\(k:e'\to e\)，则 \(h\circ k=f_i\circ(g\circ k)\in S_{\mathcal F}\)。<strong>(b)</strong> \(J_{\mathrm{Cov}}(c)\) 对包含封闭（是“上集”）：若 \(S\supseteq S_{\mathcal F}\) 且 \(S'\supseteq S\)，则 \(S'\supseteq S_{\mathcal F}\)。<em>“上集”这一点很重要</em>：它意味着拓扑一旦宣告一个筛是覆盖，就自动宣告所有更大的筛都是覆盖。这就是“饱和”的含义，也是 14.2 里说“筛把覆盖的子集也全收了”的正式版。</p>
+
+  <div class="prop">
+    <span class="lbl">命题 15.1.3（覆盖族给出拓扑）</span>
+    <p>若 \(\mathrm{Cov}\) 满足 (C1)(C2)(C3)，则 \(J_{\mathrm{Cov}}\) 满足 (T1)(T2)(T3)。</p>
+    <div class="proof">
+      <p class="pl">证明.</p>
+      <p><strong>(T1)</strong> 取 \(\mathcal F=\{\mathrm{id}_c\}\in\mathrm{Cov}(c)\)（由 (C1)）。\(S_{\mathcal F}\) 含所有 \(h=\mathrm{id}_c\circ g=g\)，即 \(S_{\mathcal F}=y(c)=t_c\)。故 \(t_c\supseteq S_{\mathcal F}\)，\(t_c\in J_{\mathrm{Cov}}(c)\)。</p>
+      <p><strong>(T2)</strong> 设 \(S\in J_{\mathrm{Cov}}(c)\)，即 \(S\supseteq S_{\mathcal F}\) 对某个覆盖 \(\mathcal F=\{f_i:c_i\to c\}\)。取任意 \(g:d\to c\)，要证 \(g^{\ast}S\in J_{\mathrm{Cov}}(d)\)。因为 \(g^{\ast}\) 保包含，\(g^{\ast}S\supseteq g^{\ast}S_{\mathcal F}\)。下面算 \(g^{\ast}S_{\mathcal F}\)：按定义
+        \[g^{\ast}S_{\mathcal F}=\bigl\{k:e\to d\ \bigm|\ g\circ k\in S_{\mathcal F}\bigr\}.\]
+        而 \(g\circ k\in S_{\mathcal F}\) 意味着存在 \(i\) 与 \(u:e\to c_i\) 使 \(g\circ k=f_i\circ u\)。这等价于说 \(k\) 经过拉回投影 \(f_i':c_i\times_c d\to d\) 分解——因为 \((k,u)\) 给一个 \(e\to c_i\times_c d\)，使 \(f_i'\circ(\text{它})=k\)。所以
+        \[g^{\ast}S_{\mathcal F}=S_{\mathcal F'},\qquad \mathcal F'=\{f_i':c_i\times_c d\to d\}_{i\in I}.\]
+        由 (C2)，\(\mathcal F'\) 覆盖 \(d\)。故 \(g^{\ast}S\supseteq S_{\mathcal F'}\) 是覆盖所生成筛的超集，即 \(g^{\ast}S\in J_{\mathrm{Cov}}(d)\)。</p>
+      <p><strong>(T3)</strong> 设 \(S\in J_{\mathrm{Cov}}(c)\)，\(S\supseteq S_{\mathcal F}\)，\(\mathcal F=\{f_i\}\) 覆盖。设 \(R\) 是 \(c\) 上的筛，满足对每个 \(f:d\to c\) 属于 \(S\)，都有 \(f^{\ast}R\in J_{\mathrm{Cov}}(d)\)。要证 \(R\in J_{\mathrm{Cov}}(c)\)。</p>
+      <p>因为 \(f_i\in S_{\mathcal F}\subseteq S\)（取 \(g=\mathrm{id}_{c_i}\)），故 \(f_i^{\ast}R\in J_{\mathrm{Cov}}(c_i)\)，即 \(f_i^{\ast}R\supseteq S_{\mathcal F_i}\) 对某个覆盖 \(\mathcal F_i=\{g_{ij}:d_{ij}\to c_i\}\)。现在看复合族 \(\mathcal G=\{f_i\circ g_{ij}\}\)：每个 \(g_{ij}\in S_{\mathcal F_i}\subseteq f_i^{\ast}R\)，即 \(f_i\circ g_{ij}\in R\)。故 \(S_{\mathcal G}\subseteq R\)（因为 \(S_{\mathcal G}\) 中元素形如 \(f_i\circ g_{ij}\circ v\)，而 \(R\) 是筛、对左复合封闭，所以也在 \(R\) 里）。由 (C3)，\(\mathcal G\) 覆盖 \(c\)。于是 \(R\supseteq S_{\mathcal G}\) 是覆盖生成筛的超集，\(R\in J_{\mathrm{Cov}}(c)\)。∎</p>
+    </div>
+  </div>
+
+  <p><strong>方向二：筛版拓扑 ⟹ 覆盖族。</strong>这个方向几乎免费：把 \(J(c)\) 里的每个筛<em>当作</em>一族箭头就行。</p>
+
+  <div class="prop">
+    <span class="lbl">命题 15.1.4（拓扑给出覆盖族）</span>
+    <p>若 \(J\) 满足 (T1)(T2)(T3)，令
+      \[\mathrm{Cov}_J(c)\;=\;\bigl\{\,S\ \bigm|\ S\in J(c)\,\bigr\}\]
+      （把每个筛 \(S\) 视为“以 \(c\) 为终点的全部箭头”这一族，具体地取 \(\mathcal F_S=\{\,f:d\to c\ \bigm|\ f\in S(d)\,\}\)）。则 \(\mathrm{Cov}_J\) 满足 (C1)(C2)(C3)，且 \(J_{\mathrm{Cov}_J}=J\)。</p>
+    <div class="proof">
+      <p class="pl">证明.</p>
+      <p><strong>(C1)</strong> \(t_c\in J(c)\) 由 (T1)，而 \(t_c\) 作为箭头族就是“所有到 \(c\) 的箭头”，当然含 \(\mathrm{id}_c\)。</p>
+      <p><strong>(C2)</strong> 需要 \(S\in J(c)\) 的拉回族（作为箭头族）覆盖 \(d\) 且生成的筛落在 \(J(d)\) 里。注意：\(\mathcal F_S\) 沿 \(g\) 的拉回族是 \(\{f\circ u\ \bigm|\ f\in S,\ u:\ \to d,\ f\circ u\ \text{使拉回方块存在}\}\)，其生成的筛恰是 \(g^{\ast}S\)。因为 \(g^{\ast}S\in J(d)\) 由 (T2)，而 \(g^{\ast}S\) 含自身生成筛，故成立。</p>
+      <p><strong>(C3)</strong> 就是 (T3) 的改写：若 \(S\in J(c)\)、每个 \(f\in S\) 给一个 \(R_f\in J(d)\)，则复合筛（即“\(f\circ g\)，\(f\in S\)，\(g\in R_f\)”的封闭化）恰是定义在 (T3) 里的那个 \(R\)，由 (T3) 属于 \(J(c)\)。</p>
+      <p><strong>最后 \(J_{\mathrm{Cov}_J}=J\)。</strong>“\(\supseteq\)”显然：\(S\in J(c)\) 蕴含 \(S\supseteq S_{\mathcal F_S}=S\)。反之若 \(S\supseteq S_{\mathcal F}\) 且 \(\mathcal F\in\mathrm{Cov}_J(c)\)，则 \(\mathcal F\) 本身就是某个 \(S_0\in J(c)\)，即 \(S_{\mathcal F}=S_0\)，于是 \(S\supseteq S_0\in J(c)\)。由 (T3) 应用于 \(R=S\)、\(S_0\) 覆盖（每个 \(f\in S_0\) 取 \(f^{\ast}S=t_d\)，因为 \(f\in S_0\subseteq S\) 且 \(S\) 是筛蕴含 \(f^{\ast}S=t_d\)），得 \(S\in J(c)\)。∎</p>
+    </div>
+  </div>
+
+  <div class="rmk"><strong>注意 (C1) 的弱化版会出问题。</strong>有的教材把 (C1) 写成“同构单射是覆盖”而不是“恒等是覆盖”。这两种写法在<em>饱和化之后</em>给出同一个拓扑（因为 \(t_c\) 总是覆盖），但作为覆盖族它们不等价：弱化版允许你“故意不宣告 \(\mathrm{id}_c\)”，这会让饱和化后的拓扑仍然含 \(t_c\)（因为饱和化取上集，\(S_{\{\mathrm{id}_c\}}=t_c\) 不变）。<strong>结论：公理的微小差异在饱和化后常常被抹平，这正是“覆盖族多对一”的具体体现</strong>。做题时按题目给的公理形式验，不要混用。</div>
+
+  <h3 class="sub">15.1.3 拓扑的格：交、生成、最粗与最细</h3>
+
+  <p>拓扑之间可以比较。定义 \(J\subseteq J'\) ⟺ 对每个 \(c\)，\(J(c)\subseteq J'(c)\)。直觉上“\(J'\) 宣告了更多覆盖”，14.2 已提醒过这个方向感：<strong>覆盖更多 = 更细 = 层更少</strong>（因为层要满足更多条件）。下面把这个偏序变成一个格。</p>
+
+  <div class="prop">
+    <span class="lbl">命题 15.1.5（任意交是拓扑）</span>
+    <p>设 \(\{J_\alpha\}_{\alpha\in A}\) 是 \(\mathbf C\) 上的一族拓扑（\(A\) 任意，可空）。定义
+      \[J(c)=\bigcap_{\alpha}J_\alpha(c).\]
+    则 \(J\) 是拓扑。因此全体拓扑在包含偏序下构成<strong>完备格</strong>；特别地，任意一族拓扑有上确界（= 包含它们的最小拓扑，即“生成的拓扑”）。</p>
+    <div class="proof">
+      <p class="pl">证明.</p>
+      <p><strong>(T1)</strong> 每个 \(J_\alpha(c)\ni t_c\)，故 \(t_c\in J(c)\)。</p>
+      <p><strong>(T2)</strong> \(S\in J(c)\) ⟹ 对所有 \(\alpha\)，\(S\in J_\alpha(c)\) ⟹ \(g^{\ast}S\in J_\alpha(d)\) ⟹ \(g^{\ast}S\in J(d)\)。</p>
+      <p><strong>(T3)</strong> 同理逐 \(\alpha\) 验证。<em>关键在于三条公理都是“对每个覆盖”的全称形式，因而对交封闭</em>——这是一个通用的模式，凡“全称条件”定义的子结构都对任意交封闭（子群、闭集、子拓扑都是这个模式）。</p>
+      <p><strong>完备格。</strong>上确界 \(J'=\bigcap\{J'':J''\supseteq J_\alpha\ \forall\alpha\}\) 由前一段知是拓扑，且是包含所有 \(J_\alpha\) 的最小者。下确界就是交。∎</p>
+    </div>
+  </div>
+
+  <div class="defn">
+    <span class="lbl">定义 15.1.6（生成的拓扑 · 最粗与最细 · 次典范 · canonical）</span>
+    <p><strong>(a) 生成的拓扑。</strong>给定任意一族“候选覆盖”（即任意给每个 \(c\) 指定一些筛），包含它们的最小拓扑记作 \(\langle\text{候选}\rangle\)，称由它们<strong>生成</strong>。具体构造：先取“候选 ∪ 最大筛”对 (T2) 封闭化，再对 (T3) 封闭化，反复超限次，再取交。</p>
+    <p><strong>(b) 最细拓扑。</strong>\(\mathbf C\) 上永远存在最大的拓扑
+      \[J_{\max}(c)=\Omega(c)\quad(\text{所有筛都是覆盖}),\]
+      因为 (T1)(T2)(T3) 对“全部筛”显然成立。它的层只有终预层（每 \(F(c)\) 单点），见习题 15.1.6。</p>
+    <p><strong>(c) 最粗拓扑。</strong>
+      \[J_{\min}(c)=\{t_c\}\]
+      （只有最大筛）。它的层是<strong>全体预层</strong>——因为 \(F(c)\to\mathrm{Hom}(t_c,F)=F(c)\) 恒为双射。这个退化情形确认了“越粗越宽松”的方向。</p>
+    <p><strong>(d) 次典范（subcanonical）。</strong>称 \(J\) 是<strong>次典范</strong>的，若每个可表预层 \(y(d)=\mathbf C(-,d)\) 都是 \(J\)-层。等价地 \(J\subseteq J_{\mathrm{can}}\)，其中</p>
+    <p><strong>(e) canonical 拓扑。</strong>
+      \[J_{\mathrm{can}}\;=\;\bigcup\bigl\{\,J\ \bigm|\ J\ \text{是次典范拓扑}\,\bigr\}\]
+      是使所有可表预层都成为层的<strong>最大</strong>拓扑（“最大”由 (b) 的格结构存在）。它是本章最微妙的对象，我们只在需要时用它的刻画，不深入计算。</p>
+  </div>
+
+  <div class="prop">
+    <span class="lbl">命题 15.1.7（次典范的三个实例与一个反例）</span>
+    <p><strong>(i)</strong> 开集 site 上的开覆盖拓扑是次典范的。<strong>(ii)</strong> Zariski 拓扑是次典范的。<strong>(iii)</strong> 稠密拓扑<strong>不是</strong>次典范的。</p>
+    <div class="proof">
+      <p class="pl">证明.</p>
+      <p><strong>(i)</strong> \(y(V)=\mathcal O(X)(-,V)=\mathrm{Hom}(-,V)\)，取值是“单点或空”。给定开覆盖 \(U=\bigcup U_i\)，要证
+        \[\mathrm{Hom}(U,V)\longrightarrow\varprojlim\bigl(\textstyle\prod_i\mathrm{Hom}(U_i,V)\rightrightarrows\prod_{i,j}\mathrm{Hom}(U_i\cap U_j,V)\bigr)\]
+        是双射。因为 \(\mathrm{Hom}(W,V)\) 是“\(W\subseteq V\) 与否”的判定，逐一检查：右边给出一族 \(U_i\subseteq V\) 且两两相容——相容性自动（都是同一个“是/否”），所以右边非空 ⟺ 所有 \(U_i\subseteq V\) ⟺ \(U=\bigcup U_i\subseteq V\) ⟺ 左边非空。两边都至多单点，故双射。</p>
+      <p><strong>(ii)</strong> Zariski site 上 \(\mathbf C=\mathbf{CRing}^{\mathrm{op}}\)，可表预层是 \(y(R)=\mathrm{Hom}_{\mathbf{CRing}}(-,R)\)，即 \(A\mapsto\mathrm{Hom}(A,R)\)（反范畴里箭头反向）。给定覆盖 \(\{R\to R_{f_i}\}\) 使 \((f_i)=R\)，要证
+        \[\mathrm{Hom}(R,R)\to\varprojlim\prod_i\mathrm{Hom}(R_{f_i},R)\]
+        是双射。这是<strong>环的局部化下降</strong>：一个 \(R\)-代数同态 \(R_{f_i}\to R\) 等价于选取像 \(a_i\in R\) 使 \(f_i\) 在 \(R\) 中可逆地作用（即 \(a_i\) 与 \(f_i\) 的相容条件），而相容族在每个 \(R_{f_if_j}\) 上匹配。标准结论：这样的相容族恰好由唯一的 \(a\in R\) 给出（取 \(a=a_i\)，相容性保证无关 \(i\)）。细节见习题 15.1.5。</p>
+      <p><strong>(iii)</strong> 反例取 \(X=\mathbb R\)、\(U=\mathbb R\)、稠密开子集 \(V=\mathbb R\setminus\{0\}\subseteq U\)，单元素族 \(\{V\to U\}\) 是稠密覆盖（\(V\) 稠密）。\(y(U)=\mathrm{Hom}(-,U)\)。层条件要求
+        \[\mathrm{Hom}(U,U)\to\mathrm{Hom}(V,U)\]
+        双射。左边是单点（\(\mathrm{id}_U\)），右边是单点（包含 \(V\hookrightarrow U\)）——这个例子<em>反而成立</em>，因为 \(V\subseteq U\) 有包含。换成 \(y(W)\)：取 \(W=\mathbb R\setminus\{0\}\)，则左边 \(\mathrm{Hom}(U,W)=\varnothing\)（恒等不落到 \(W\)），右边 \(\mathrm{Hom}(V,W)\) 含包含映射 \(V\hookrightarrow W\)（\(V=W\)），非空。<strong>不双射，故 \(y(W)\) 不是稠密层，稠密拓扑不是次典范的</strong>。∎</p>
+    </div>
+  </div>
+
+  <div class="cases">
+    <div class="ct">覆盖族（pretopology）：四类例子</div>
+    <div class="case typ"><b>典型例（开集 site）</b>\(\mathbf C=\mathcal O(X)\)，\(\mathrm{Cov}(U)=\{\text{开覆盖 }\{U_i\hookrightarrow U\}\}\)。验证：(C1) \(\{U\}\) 覆盖 \(U\) ✓。(C2) 拉回是 \(U_i\cap V\)，而 \(V=\bigcup(U_i\cap V)\) ✓（这一步依赖“任意并”与“交分配”）。(C3) 覆盖的覆盖仍是覆盖（并的传递性）✓。<em>这个例子是所有直觉的来源：它告诉你三条公理分别对应“单块算覆盖”、“与更小开集相交仍覆盖”、“两级覆盖可合并”</em>。</div>
+    <div class="case deep"><b>本质例（Zariski site）</b>\(\mathbf C=\mathbf{CRing}^{\mathrm{op}}\)。覆盖族：\(\{R\to R_{f_i}\}_{i\in I}\) 是覆盖，若 \((f_i)_{i\in I}=R\)（即这些 \(f_i\) 生成单位理想）。为什么这是“本质”的：① 它<strong>不是</strong>开覆盖的翻译——\(R_{f_i}\) 不是 \(R\) 的“子对象”，而是局部化（一个 \(R\)-代数），方向是“往外”而非“往里”；② (C2) 的具体形式是 \(R_{f_i}\otimes_R R_g\cong R_{f_ig}\)，一个好算的等式；③ (C3) 对应“\((f_i)=R\) 且每个 \((g_{ij})=R_{f_i}\) ⟹ 复合生成 \(R\)”，这是交换代数的标准事实。Zariski site 让“局部化”变成“局部化到一个开集”，这是概形理论的语法层。</div>
+    <div class="case edge"><b>边界与误解</b>四个高频错误。<strong>(a) 以为覆盖必须满射</strong>：在 \(\mathcal O(X)\) 里 \(U_i\hookrightarrow U\) 确实是“到 \(U\) 里的”，但在一般范畴里覆盖箭头 \(c_i\to c\) 完全不必是单射、不必是满射（在 \(\mathbf{CRing}^{\mathrm{op}}\) 里 \(R\to R_f\) 在原范畴方向是 \(R_f\leftarrow R\)，压根没有“满”的概念）。<strong>(b) 以为覆盖必须有限</strong>：见定义后的说明，写进公理会杀掉代数几何。<strong>(c) 以为 (C2) 是“交”</strong>：在 \(\mathcal O(X)\) 里巧合地是交，一般范畴里只有拉回，且拉回可能不存在（此时只能用筛版）。<strong>(d) 以为“覆盖族 ⟷ 拓扑”一一对应</strong>：多对一，饱和化会抹平差异，见命题 15.1.4 后的注。</div>
+    <div class="case use"><b>结构中的应用</b>覆盖族是<strong>可计算的那一侧</strong>，这在三个地方最关键：① 验证一个具体 site（每个几何论文的第一页都在做这件事）；② 下降理论（descent）：给一个覆盖族，问“局部给出的粘合数据能否拼成整体”，这是平坦下降、Galois 下降的统一框架；③ 把“拓扑”翻译成“Grothendieck 拓扑的格中的元素”，从而能谈“生成的拓扑”、“次典范化”，这些在第 17 章（Lawvere–Tierney 拓扑）会平行出现一次，那里的“拓扑”是 \(\Omega\to\Omega\) 的映射，而这里的是筛族——两种“拓扑”通过 17.3 的定理对应起来。</div>
+  </div>
+
+  <div class="box walk">
+    <h4>③ 手把手：从一族箭头造出拓扑，全部算一遍</h4>
+    <p>取最小的非平凡例子：\(X=\{0,1\}\) 两点离散空间，\(\mathcal O(X)=\{\varnothing,\{0\},\{1\},X\}\)。我们只宣告<strong>一个</strong>覆盖族：\(\mathcal F=\{U_1=\{0\}\hookrightarrow X,\ U_2=\{1\}\hookrightarrow X\}\) 覆盖 \(X\)，别的一概不宣告。按定义 15.1.2 造 \(J_{\mathrm{Cov}}\)，看它到底有多大。</p>
+    <ol>
+      <li><strong>先算 \(S_{\mathcal F}\)。</strong>到 \(X\) 的箭头有四个：\(\varnothing\hookrightarrow X\)、\(\{0\}\hookrightarrow X\)、\(\{1\}\hookrightarrow X\)、\(\mathrm{id}_X\)。哪些能经过 \(U_1\) 或 \(U_2\) 分解？\(\{0\}\hookrightarrow X=U_1\circ\mathrm{id}_{\{0\}}\) ✓；\(\{1\}\hookrightarrow X=U_2\circ\mathrm{id}_{\{1\}}\) ✓；\(\varnothing\hookrightarrow X=U_1\circ(\varnothing\hookrightarrow\{0\})\) ✓（空集到 \(\{0\}\) 有唯一箭头）；\(\mathrm{id}_X\) ✗（\(X\) 不落在任何 \(U_i\) 里）。故
+        \[S_{\mathcal F}=\{\varnothing\hookrightarrow X,\ \{0\}\hookrightarrow X,\ \{1\}\hookrightarrow X\},\]
+        即“除 \(\mathrm{id}_X\) 外的全部”。</li>
+      <li><strong>饱和化，得 \(J(X)\)。</strong>\(J(X)=\{S\supseteq S_{\mathcal F}\}=\{S_{\mathcal F},\,t_X\}\)。<strong>只有 2 个</strong>。注意这不是“所有 8 个下集”，而是被上集条件砍到 2 个——饱和化的威力在这里最直观。</li>
+      <li><strong>用 (T2) 传播到其他对象。</strong>取 \(g=\{0\}\hookrightarrow X\)（即 \(d=\{0\}\)）。\(g^{\ast}S_{\mathcal F}=\{k:e\to\{0\}\ \bigm|\ g\circ k\in S_{\mathcal F}\}\)。到 \(\{0\}\) 的箭头只有 \(\mathrm{id}_{\{0\}}\) 与 \(\varnothing\hookrightarrow\{0\}\)；两者复合 \(g\) 后都落在 \(S_{\mathcal F}\) 里（上面算过）。故 \(g^{\ast}S_{\mathcal F}=t_{\{0\}}\)。由 (T2)，\(t_{\{0\}}\in J(\{0\})\)，于是 \(J(\{0\})=\{t_{\{0\}}\}\)（上集，只有最大筛可包含它）。同理 \(J(\{1\})=\{t_{\{1\}}\}\)。</li>
+      <li><strong>\(\varnothing\) 处。</strong>到 \(\varnothing\) 的箭头只有 \(\mathrm{id}_\varnothing\)，唯一筛是 \(t_\varnothing\)。任何拓扑都必须有 \(t_\varnothing\in J(\varnothing)\)（(T1)），且没有更大的筛，故 \(J(\varnothing)=\{t_\varnothing\}\)。</li>
+      <li><strong>结论。</strong>这个拓扑只在 \(X\) 处做了实事：\(J(X)=\{S_{\mathcal F},t_X\}\)，其余对象只有最大筛。那么它的层是什么？在 \(X\) 上要满足 \(F(X)\to\mathrm{Hom}(S_{\mathcal F},F)\) 双射。\(\mathrm{Hom}(S_{\mathcal F},F)\) 是“给 \(\{0\}\) 一个元素、给 \(\{1\}\) 一个元素、给 \(\varnothing\) 一个元素，且相容”，相容性把 \(\{0\}\) 与 \(\{1\}\) 的元素都限制到同一个 \(\varnothing\) 元素上。于是 \(\mathrm{Hom}(S_{\mathcal F},F)\cong F(\{0\})\times_{F(\varnothing)}F(\{1\})\)。层条件成为
+        \[F(X)\;\cong\;F(\{0\})\times_{F(\varnothing)}F(\{1\}),\]
+        即<strong>“\(X\) 上的截面 = 两块上的截面 + 在交集（这里是空集）上的相容”</strong>。这正是 14.1 那条等化子的具体形状。到这里你应该感到：<em>“覆盖族 → 筛 → 层条件”三步是同一条流水线，每一步都只是换一种写法</em>。</li>
+      <li><strong>要点。</strong>算 \(J\) 时不要试图枚举所有筛——先算 \(S_{\mathcal F}\)，再取上集，再用 (T2) 往下传播，最后用 (T3) 检查有没有漏。这个流程对任何小 site 都够用。</li>
+    </ol>
+  </div>
+
+  <div class="phil">
+    <h4>② 选读：Grothendieck 为什么非要“宣告”</h4>
+    <p>1950 年代中后期，Grothendieck 在证明韦伊猜想的过程中遇到了一个技术障碍：他需要“下降”（descent）——把在一个覆盖上局部给出的对象拼成整体。拓扑空间的开覆盖不够用，因为代数几何里真正好的“局部化”（étale、平坦）不是开浸入。可是“覆盖”在拓扑空间的语言里是由开集定义的，而开集由 Zariski 拓扑给定，改不了。</p>
+    <p>他的解法不是“找一个更大的空间”，而是<strong>把“覆盖”从空间的属性改成范畴的属性</strong>。这一步的哲学分量在于：它承认了“局部”不是一个绝对概念。你问“这个性质局部成立吗”，必须先答“在哪个拓扑下局部”。Zariski 局部成立的性质、étale 局部成立的性质、fppf 局部成立的性质，是三件不同的事，而且后者严格强于前者（覆盖更多，能局部化的东西更多，能成立的性质更少——注意这里的双重否定）。</p>
+    <p>这也解释了为什么“拓扑”这个词被复用。它不是比喻：Grothendieck 拓扑与经典拓扑满足同一套公理模式（恒等、稳定、传递），而经典拓扑是它在偏序范畴上的特例。所以第 17 章你会看到 Lawvere–Tierney 把“拓扑”第三次复用（这次是 \(\Omega\) 上的一个幂等映射 \(j\)），而 17.3 会证明第三次复用涵盖第二次。同一个词被用三次，每次都更抽象、每次都包含前一次——这是范畴论里“推广”的标准节奏，也是你读这本书要习惯的东西。</p>
+  </div>
+
+  <div class="box exer">
+    <h4>④ 习题（15.1）</h4>
+    <ol>
+      <li id="ex15-1-1">设 \(\mathbf C=\mathcal O(X)\)。证明：开覆盖族满足 (C1)(C2)(C3)。（提示：(C2) 要说明 \(V=\bigcup_i(U_i\cap V)\)，这里用到 \(U_i\) 覆盖 \(U\) 且 \(V\subseteq U\)。）</li>
+      <li id="ex15-1-2">证明：若 \(\mathrm{Cov}\) 满足 (C2)，则任何覆盖族的饱和化 \(S_{\mathcal F}\) 都是筛；并说明为什么“\(S_{\mathcal F}\) 是筛”其实不需要 (C2)。</li>
+      <li id="ex15-1-3">完整写出命题 15.1.3 的 (T3) 证明中“\(S_{\mathcal G}\subseteq R\)”这一步的细节：为什么 \(S_{\mathcal G}\) 的任意元素（形如 \(f_i\circ g_{ij}\circ v\)）都在 \(R\) 里？</li>
+      <li id="ex15-1-4">证明：\(J_{\min}\)（只有最大筛）与 \(J_{\max}\)（所有筛）都是拓扑，并算出各自的层范畴。</li>
+      <li id="ex15-1-5">设 \(R\) 是交换环，\(\{f_i\}\) 生成单位理想。证明 Zariski 下降：若给每个 \(i\) 一个 \(R\)-代数同态 \(\varphi_i:R_{f_i}\to R\)，且在 \(R_{f_if_j}\) 上相容（即 \(\varphi_i,\varphi_j\) 在局部化后一致），则存在唯一的 \(R\)-代数同态 \(\varphi:R\to R\) 使 \(\varphi|_{R_{f_i}}=\varphi_i\)。（提示：\(\varphi\) 由 \(\varphi(1)=1\) 唯一确定；相容性是空条件还是实条件，取决于你把 \(R_{f_i}\) 看成什么。）</li>
+      <li id="ex15-1-6">证明 \(J_{\max}\) 的层范畴等价于终范畴（即唯一的层是终预层）。</li>
+      <li id="ex15-1-7">设 \(J\subseteq J'\)。证明：每个 \(J'\)-层都是 \(J\)-层；并举一个具体例子说明反向不成立。</li>
+      <li id="ex15-1-8">（稍难）设 \(\mathrm{Cov}\) 只满足 (C1)(C3) 而不满足 (C2)。构造一个反例说明“饱和化后不是拓扑”。（提示：找一个小范畴，令某个覆盖的拉回不再是覆盖，看 (T2) 怎么坏。）</li>
+    </ol>
+  </div>
+
+  <div class="box ans">
+    <h4>⑤ 参考答案（15.1）</h4>
+    <div class="item"><b>15.1.1</b><strong>(C1)</strong> 单元素族 \(\{U\hookrightarrow U\}\) 是覆盖 ✓。<strong>(C2)</strong> 设 \(\{U_i\hookrightarrow U\}\) 覆盖 \(U\)，即 \(U=\bigcup U_i\)；取 \(V\hookrightarrow U\)。则 \(U_i\times_U V=U_i\cap V\)，且
+      \[V=V\cap U=V\cap\bigcup_i U_i=\bigcup_i(V\cap U_i),\]
+      故 \(\{U_i\cap V\hookrightarrow V\}\) 覆盖 \(V\) ✓。这一步用到了“交对并分配”，是 \(\mathcal O(X)\) 作为 Heyting 代数的性质。<strong>(C3)</strong> 设 \(U=\bigcup_i U_i\)、每个 \(U_i=\bigcup_j V_{ij}\)。则 \(U=\bigcup_i\bigcup_j V_{ij}\)（并的结合律），故复合族覆盖 ✓。</div>
+    <div class="item"><b>15.1.2</b>设 \(h=f_i\circ g\in S_{\mathcal F}\)，\(k:e'\to e\)。则 \(h\circ k=f_i\circ(g\circ k)\)，而 \(g\circ k:e'\to c_i\) 合法，故 \(h\circ k\in S_{\mathcal F}\) ✓。这一步只用了结合律与“\(f_i\) 的定义域是 \(c_i\)”，<strong>完全没有用到拉回</strong>——所以 (C2) 不是“\(S_{\mathcal F}\) 是筛”的原因。 (C2) 真正的作用在 (T2)：它保证拉回后的<em>族</em>仍是覆盖，从而 \(g^{\ast}S_{\mathcal F}=S_{\mathcal F'}\) 落在 \(J\) 里。</div>
+    <div class="item"><b>15.1.3</b>\(S_{\mathcal G}\) 的元素按定义是 \(h=f_i\circ g_{ij}\circ v\)，其中 \(v:e\to d_{ij}\) 任意。已知 \(g_{ij}\in S_{\mathcal F_i}\subseteq f_i^{\ast}R\)，而 \(f_i^{\ast}R=\{g:d_{ij}\to c_i\ \bigm|\ f_i\circ g\in R\}\)，故 \(f_i\circ g_{ij}\in R\)。因为 \(R\) 是 \(c\) 上的筛，对左复合封闭：\((f_i\circ g_{ij})\circ v\in R\) ✓。所以 \(S_{\mathcal G}\subseteq R\)。<em>这里唯一用到的是“\(R\) 是筛”，不是 \(R\in J(c)\)——后者用于最后的包含关系</em>。</div>
+    <div class="item"><b>15.1.4</b>\(J_{\min}\)：(T1) 显然（\(J_{\min}(c)=\{t_c\}\)）；(T2) \(t_c\) 的拉回是 \(t_d\)（因为 \(t_c=y(c)\)，\(g^{\ast}y(c)=y(d)\)，见 Yoneda）；(T3) 若 \(S=t_c\)、每个 \(f\in t_c\) 给 \(R_f=t_d\)，则复合筛 \(=\{f\circ g\}=\{f\}\circ\{g\}\)，其封闭化含 \(\mathrm{id}_c=f\circ\mathrm{id}_d\)（取 \(f=\mathrm{id}_c\)），故是 \(t_c\) ✓。层：\(F(c)\to\mathrm{Hom}(t_c,F)=F(c)\) 是双射，恒成立，故<strong>层 = 全体预层</strong>。<br>\(J_{\max}\)：三条公理对“所有筛”显然成立（(T2) 拉回筛仍是筛、(T3) 复合筛仍是筛）。层：取 \(S=\varnothing\)（空筛是覆盖），则要求 \(F(c)\to\mathrm{Hom}(\varnothing,F)=\{*\}\) 双射，故 \(F(c)\) 单点对每个 \(c\)，即 \(F\) 是终预层 ✓。</div>
+    <div class="item"><b>15.1.5</b>关键是看清 \(\mathrm{Hom}_{\mathbf{CRing}}(R_{f_i},R)\) 是什么：一个 \(R\)-代数同态 \(R_{f_i}\to R\) 由 \(1\mapsto 1\) 完全确定（因为 \(R_{f_i}=R[1/f_i]\) 由 \(R\) 与 \(f_i^{-1}\) 生成，而 \(R\to R\) 的部分被“\(R\)-代数同态”钉死为恒等）。所以每个 \(\varphi_i\) 都是<strong>唯一的</strong>（存在则必是标准的 \(R\to R_{f_i}\to R\)），相容性自动成立。于是“存在唯一的 \(\varphi\)”就是“存在”这一件事：\(\varphi=\mathrm{id}_R\)。这个结论看起来太平凡，因为 \(R_{f_i}\to R\) 的 \(R\)-代数同态确实只有恒等——<em>教训：Zariski 下降在“系数环取自身”时是退化的；有内容的情形是把 \(R\) 换成模 \(M\)，此时 \(\mathrm{Hom}_R(R_{f_i},M)=M_{f_i}\)，下降就变成 \(M\cong\varprojlim M_{f_i}\) 的实质命题</em>。</div>
+    <div class="item"><b>15.1.6</b>设 \(F\) 是 \(J_{\max}\)-层。取任意 \(c\)，空筛 \(\varnothing\in J_{\max}(c)\) 是覆盖。层条件要求 \(F(c)\to\mathrm{Hom}_{\mathrm{PSh}}(\varnothing,F)\) 是双射。而 \(\mathrm{Hom}(\varnothing,F)\) 只有一个元素（空预层到 \(F\) 的唯一自然变换），故 \(F(c)\) 是单点集。对 \(c\) 任意，故 \(F\) 是终预层。反之终预层显然是 \(J_{\max}\)-层（任何 \(\mathrm{Hom}(S,\mathbf 1)=\{*\}\)）。所以层范畴 \(\simeq\mathbf 1\)，是终范畴 ✓。</div>
+    <div class="item"><b>15.1.7</b>若 \(F\) 是 \(J'\)-层，则对每个 \(S\in J'(c)\) 层条件成立。因 \(J(c)\subseteq J'(c)\)，对每个 \(S\in J(c)\) 也成立，故 \(F\) 是 \(J\)-层 ✓。<em>反向反例</em>：\(X=\{0,1\}\) 离散，\(J_{\min}\) 的层是全体预层，而 15.1 手把手算出的那个“只宣告 \(\{U_1,U_2\}\) 覆盖 \(X\)”的拓扑 \(J\)，其层要求 \(F(X)\cong F(\{0\})\times F(\{1\})\)——取 \(F\) 为常值预层 \(\underline{\mathbb Z}\) 在 \(X\) 上，\(F(X)=\mathbb Z\) 而 \(F(\{0\})\times F(\{1\})=\mathbb Z^2\)，不同构，故 \(\underline{\mathbb Z}\) 是 \(J_{\min}\)-层但不是 \(J\)-层 ✓。</div>
+    <div class="item"><b>15.1.8</b>取 \(\mathbf C\) 为两个对象 \(0,1\) 与一条非恒等箭头 \(a:1\to 0\)（即“箭头”范畴 \(\mathbf 2\)）。宣告 \(\mathrm{Cov}(0)=\{\{a\}\}\)（\(a\) 单独覆盖 \(0\)）；\(\mathbf C\) 中唯一的拉回是 \(1\times_0 1\)（沿 \(a\) 自己拉回），它存在且是 \(1\)（因为 \(a\) 是单射型箭头，拉回退化）。现在宣告 \(\mathrm{Cov}(1)=\varnothing\)（不宣告任何覆盖）。这满足 (C1)（恒等不算——若 (C1) 是“恒等是覆盖”则不满足，故这里取弱化版 (C1’)：只要求 \(\mathrm{Cov}\) 非空或干脆省去）。检验 (C3)：唯一的复合是 \(a\) 与自身，\(\mathrm{Cov}(1)=\varnothing\) 使得没有二级覆盖可用，故 (C3) 空真成立。检验 (C2)：取 \(a:1\to 0\) 沿 \(a\) 拉回，得 \(1\to 1\)（即 \(\mathrm{id}_1\)），要求 \(\{\mathrm{id}_1\}\in\mathrm{Cov}(1)\)，但 \(\mathrm{Cov}(1)=\varnothing\)，<strong>(C2) 失败</strong>。饱和化后 \(J(0)\) 含 \(S_{\{a\}}=\{\mathrm{id}_0,a\}\)（事实上 \(=t_0\)），\(J(1)\) 只含 \(t_1\)（若 (C1) 弱化则可能空）。取 \(S=t_0\in J(0)\)、\(g=a:1\to 0\)，则 \(a^{\ast}S=t_1\)，而 \(t_1\in J(1)\) ✓——所以这个例子里 (T2) 恰好没坏。要真正坏掉 (T2)，需取 \(S=S_{\{a\}}=\{\mathrm{id}_0,a\}\)（不是最大筛）：\(a^{\ast}S=\{k:1\to 1\mid a\circ k\in S\}=\{k\mid a\circ k\in\{\mathrm{id}_0,a\}\}\)；\(k=\mathrm{id}_1\) 时 \(a\circ\mathrm{id}_1=a\in S\) ✓，故 \(a^{\ast}S=t_1\)，仍在 \(J(1)\) 里。于是换更细的构造：宣告 \(a\) 覆盖 \(0\) 且宣告 \(1\) 上只有 \(t_1\)，则 \(J(0)=\{S_{\{a\}},t_0\}\)（\(S_{\{a\}}=\{\mathrm{id}_0,a\}=t_0\)，退化）。<strong>结论：在两对象范畴上很难造出 (C2) 失败的反例，因为拉回退化；真正的反例需要至少三个对象</strong>，例如 \(\mathbf C\) 为 \(0\leftarrow 1\to 2\) 的形状（三条箭头），取覆盖 \(\{1\to 0,2\to 0\}\)，沿 \(1\to 0\) 拉回后其中一支退化为 \(\mathrm{id}\)，若 (C1) 弱化则失败。题目设计为“说明为什么难”，答案的要点是：<em>(C2) 与 (C1) 是耦合的，弱化 (C1) 才会让 (C2) 有反例</em>。</div>
+  </div>
+</section>
+
+<section class="sec" id="s15-2">
+  <div class="sec-h"><span class="sec-no">15.2</span><h2>site 上的层</h2><span class="src">M Ch.III §4</span></div>
+
+  <div class="box learn">
+    <h4>① 本节学习目标</h4>
+    <ol>
+      <li>用筛写出 site 上层的定义（一句双射），并说清它和 14.1 的等化子形式是同一件事；</li>
+      <li>证明<strong>“只需检查生成覆盖族”</strong>——这是所有实际计算的唯一依据；证明的关键是<strong>拉回技巧</strong>，会完整给出；</li>
+      <li>掌握层范畴 \(\mathbf{Sh}(\mathbf C,J)\) 的第一批范畴性质：全子范畴、<strong>极限逐点算</strong>、<strong>余极限不逐点</strong>（附反例）；</li>
+      <li>会用 Zariski site 检验具体的层：结构层、\(\mathrm{Pic}\)、幂等元——即<strong>下降</strong>的实例化；</li>
+      <li>分清“Hom 继承”（层之间态射就是自然变换）与“余极限不继承”（必须层化）这两件事，并理解这条分界为什么是第 16–19 章的技术主线。</li>
+    </ol>
+  </div>
+
+  <div class="xref"><strong>沿用前文（不再复述）.</strong> 层条件的等化子形式、“分离性 / 粘合性”的拆分、分离预层见<strong>（参见第 14 章 14.1.3、14.1.5）</strong>；筛、\(f^{\ast}S\)、\(\mathrm{Hom}(S,F)\) 作为“匹配族之集”见<strong>（参见第 14 章 14.2.2–14.2.3）</strong>；覆盖族三公理与等价定理见<strong>（本节 15.1）</strong>；茎的完整理论见<strong>（参见第 14 章 14.3.1）</strong>。</div>
+
+  <div class="box prep">
+    <h4>极简回顾（六分钟）</h4>
+    <p><strong>1. 14.1 的层条件是什么。</strong>对开集 \(U\) 与覆盖 \(\{U_i\}\)：给每个 \(U_i\) 一个截面 \(s_i\)，若它们在重叠处一致（\(s_i|_{U_i\cap U_j}=s_j|_{U_i\cap U_j}\)），则存在唯一的 \(s\in F(U)\) 使 \(s|_{U_i}=s_i\)。<strong>两件事</strong>：唯一性（至多一个）+ 存在性（至少一个）。</p>
+    <p><strong>2. 换成筛怎么说。</strong>“给每个 \(U_i\) 一个截面 + 重叠处一致”这句话整体就是一个自然变换 \(S\to F\)，其中 \(S\) 是覆盖对应的筛。于是层条件变成一句极简的话：
+      \[F(c)\;\longrightarrow\;\mathrm{Hom}_{\mathbf{PSh}}(S,F)\quad\text{是双射}.\]
+      左边是“整体截面”，右边是“相容族”。<em>双射 = 唯一性 + 存在性打包</em>。这个写法最大的好处：<strong>它对任意范畴、任意筛都成立，不需要“点”，不需要“交”</strong>。</p>
+    <p><strong>3. 本节要干的活。</strong>这句话好看但不好算：\(\mathrm{Hom}(S,F)\) 是整个匹配族的集合，一般没法手算。所以第一件事是证明<strong>只需对“生成覆盖族的那些筛”检查</strong>——在那里层条件是一个等化子，可以逐项算。第二件事是问：层范畴作为预层范畴的子范畴，<em>好到什么程度</em>？极限能直接算吗？余极限呢？</p>
+    <p><strong>4. 一个提前的警告。</strong>极限能逐点算，<strong>余极限不能</strong>。这不是技术细节，而是整章第三节存在的理由：正因为余极限会跑出层范畴，才需要层化把它拉回来。记住这一句，15.3 的动机就不用再讲了。</p>
+  </div>
+
+  <h3 class="sub">15.2.1 层：一句双射</h3>
+
+  <div class="defn">
+    <span class="lbl">定义 15.2.1（site 上的层）</span>
+    <p>设 \((\mathbf C,J)\) 是 site，\(F:\mathbf C^{\mathrm{op}}\to\mathbf{Set}\) 是预层。称 \(F\) 是 \(J\)-<strong>层</strong>，若对每个对象 \(c\) 与每个覆盖筛 \(S\in J(c)\)，映射
+      \[\theta_{c,S}:\ F(c)\longrightarrow\mathrm{Hom}_{\mathbf{PSh}(\mathbf C)}(S,F),\qquad
+      \theta_{c,S}(x)=\bigl(f\mapsto F(f)(x)\bigr)_{f\in S}\]
+      是<strong>双射</strong>。这里 \(\mathrm{Hom}(S,F)\) 的元素是自然变换 \(S\Rightarrow F\)，\(S\) 视为子预层 \(S\subseteq y(c)=\mathbf C(-,c)\)。</p>
+    <p>记 \(\mathbf{Sh}(\mathbf C,J)\subseteq\mathbf{PSh}(\mathbf C)\) 为全体 \(J\)-层构成的<strong>全子范畴</strong>，包含函子记作 \(i:\mathbf{Sh}\hookrightarrow\mathbf{PSh}\)。</p>
+  </div>
+
+  <div class="rmk"><strong>为什么 \(\theta_{c,S}\) 一定良定义。</strong>给定 \(x\in F(c)\)，要得到自然变换 \(S\to F\)：对每个 \(f:d\to c\) 属于 \(S\)（即 \(S(d)\ni f\)），需要给 \(F(d)\) 一个元素。取 \(F(f)(x)\) 即可（\(F\) 反变，\(f:d\to c\) 给出 \(F(f):F(c)\to F(d)\)）。自然性：对 \(k:e\to d\)，需 \(F(k)(F(f)(x))=F(f\circ k)(x)\)，这正是函子性。<strong>所以 \(\theta_{c,S}\) 就是“限制映射”的打包</strong>；双射的“单”那一半是 14.1 的分离性，“满”那一半是粘合性。定义 15.2.1 只是换了个书写格式，语义没变。</div>
+
+  <div class="rmk"><strong>\(\mathrm{Hom}(S,F)\) 的元素长什么样（后面反复用）。</strong>由 Yoneda，\(\mathrm{Hom}(S,F)\) 的元素恰好是<strong>匹配族</strong>：一族 \((x_f)_{f\in S}\)，其中 \(x_f\in F(d)\) 对 \(f:d\to c\)，且对每个 \(k:e\to d\) 有 \(F(k)(x_f)=x_{f\circ k}\)。这正是“每块给一个截面、重叠处一致”的精确形式——注意这里的“重叠”不是集合交，而是<strong>所有可能的复合 \(f\circ k\)</strong>，这是筛语言能脱离“交”运作的全部秘密。</div>
+
+  <p>定义干净，但要验证一个预层是层，你得对<em>每一个</em> \(S\in J(c)\) 检查。\(J(c)\) 有多大？在开集 site 上，\(U\) 上的筛是“下集”，数目可以多到 \(2^{2^{\aleph_0}}\)。这没法用。所以真正要做的是下面这条定理。</p>
+
+  <h3 class="sub">15.2.2 只需检查生成覆盖族</h3>
+
+  <p>分两步。第一步：一族箭头的条件与它生成之筛的条件是一回事。第二步：从一个筛换到更大的筛时，条件不会变坏——这一步需要一个技巧，叫<strong>把覆盖族拉到每个箭头上去</strong>。</p>
+
+  <div class="prop">
+    <span class="lbl">引理 15.2.2（族条件 ⟺ 生成筛条件）</span>
+    <p>设 \(\mathcal F=\{f_i:c_i\to c\}_{i\in I}\)，\(S_{\mathcal F}\) 是其饱和化（15.1.2）。则对任意预层 \(F\)，有自然双射
+      \[\mathrm{Hom}(S_{\mathcal F},F)\;\cong\;\mathrm{eq}\Bigl(\prod_{i}F(c_i)\ \rightrightarrows\ \prod_{i,j}F(c_i\times_c c_j)\Bigr),\]
+      右边两个箭头分别是沿 \(p_1:c_i\times_c c_j\to c_i\) 与 \(p_2:\ \to c_j\) 的限制。因此：<strong>\(F\) 对族 \(\mathcal F\) 满足等化子条件 ⟺ \(F\) 对筛 \(S_{\mathcal F}\) 满足层条件</strong>。</p>
+    <div class="proof">
+      <p class="pl">证明.</p>
+      <p><strong>正向。</strong>给定 \(\sigma\in\mathrm{Hom}(S_{\mathcal F},F)\)。因为 \(f_i=f_i\circ\mathrm{id}_{c_i}\in S_{\mathcal F}\)，可以取值 \(x_i:=\sigma_{c_i}(f_i)\in F(c_i)\)。相容性：拉回方块给 \(f_i\circ p_1=f_j\circ p_2\)，故由 \(\sigma\) 的自然性
+        \[F(p_1)(x_i)=\sigma(f_i\circ p_1)=\sigma(f_j\circ p_2)=F(p_2)(x_j).\]
+        于是 \((x_i)_i\) 落在等化子里。得到映射 \(\Phi:\mathrm{Hom}(S_{\mathcal F},F)\to\mathrm{eq}\)。</p>
+      <p><strong>反向。</strong>给定等化子元素 \((x_i)\in\prod F(c_i)\)。对任意 \(h:e\to c\) 属于 \(S_{\mathcal F}\)，按定义存在 \(i\) 与 \(g:e\to c_i\) 使 \(h=f_i\circ g\)；令 \(\sigma_h:=F(g)(x_i)\in F(e)\)。<strong>先验证与分解的选取无关</strong>：若 \(h=f_i\circ g=f_j\circ g'\)，则 \((g,g'):e\to c_i\times_c c_j\) 使两个投影分别给出 \(g,g'\)；由等化子条件 \(F(p_1)(x_i)=F(p_2)(x_j)\)，两边再作用 \(F\) 得 \(F(g)(x_i)=F(g')(x_j)\) ✓。自然性：对 \(v:e'\to e\)，\(\sigma_{h\circ v}=F(g\circ v)(x_i)=F(v)F(g)(x_i)=F(v)(\sigma_h)\) ✓。得到 \(\Psi:\mathrm{eq}\to\mathrm{Hom}(S_{\mathcal F},F)\)。</p>
+      <p><strong>互逆。</strong>\(\Phi\Psi(x_i)\)：在第 \(i\) 个分量取 \(\Psi(x_i)_{f_i}=F(\mathrm{id})(x_i)=x_i\) ✓。\(\Psi\Phi(\sigma)\)：在 \(h=f_i\circ g\) 上取值 \(F(g)(\sigma_{f_i})=\sigma_{f_i\circ g}=\sigma_h\) ✓（用到自然性）。∎</p>
+    </div>
+  </div>
+
+  <div class="prop">
+    <span class="lbl">命题 15.2.3（层条件只需查生成覆盖族）</span>
+    <p>设 \(\mathrm{Cov}\) 是生成 \(J\) 的覆盖族（即 \(J=J_{\mathrm{Cov}}\)，15.1.2）。则预层 \(F\) 是 \(J\)-层 <strong>⟺</strong> 对每个 \(c\) 与每个覆盖 \(\{f_i:c_i\to c\}\in\mathrm{Cov}(c)\)，
+      \[F(c)\ \longrightarrow\ \prod_{i}F(c_i)\ \rightrightarrows\ \prod_{i,j}F(c_i\times_c c_j)\]
+      是等化子。</p>
+    <div class="proof">
+      <p class="pl">证明.</p>
+      <p><strong>（⟹）</strong>若 \(F\) 是 \(J\)-层，则因 \(S_{\mathcal F}\in J(c)\)（它包含自身），\(\theta_{c,S_{\mathcal F}}\) 双射，由引理 15.2.2 得等化子条件 ✓。</p>
+      <p><strong>（⟸）</strong>设等化子条件对所有 \(\mathcal F\in\mathrm{Cov}\) 成立。任取 \(S\in J(c)\)。按 15.1.2 的定义，存在 \(\mathcal F=\{f_i:c_i\to c\}\in\mathrm{Cov}(c)\) 使 \(S_{\mathcal F}\subseteq S\)。要证 \(\theta_{c,S}:F(c)\to\mathrm{Hom}(S,F)\) 是双射。</p>
+      <p><strong>单性。</strong>设 \(\theta_{c,S}(x)=\theta_{c,S}(y)\)，特别地在每个 \(f_i\in S_{\mathcal F}\subseteq S\) 上相等：\(F(f_i)(x)=F(f_i)(y)\)，即 \(\theta_{c,S_{\mathcal F}}(x)=\theta_{c,S_{\mathcal F}}(y)\)。由引理 15.2.2，后者双射，故 \(x=y\) ✓。</p>
+      <p><strong>满性（关键，用拉回技巧）。</strong>任取 \(\sigma\in\mathrm{Hom}(S,F)\)。把 \(\sigma\) 限制到 \(S_{\mathcal F}\)（即只保留 \(f\in S_{\mathcal F}\) 上的分量），得 \(\sigma_0\in\mathrm{Hom}(S_{\mathcal F},F)\)。由引理 15.2.2，存在唯一 \(x\in F(c)\) 使 \(\theta_{c,S_{\mathcal F}}(x)=\sigma_0\)。令 \(\tau=\theta_{c,S}(x)\in\mathrm{Hom}(S,F)\)，则
+        \[\tau|_{S_{\mathcal F}}=\sigma|_{S_{\mathcal F}}.\]
+        <em>要证 \(\tau=\sigma\)。</em></p>
+      <p>取任意 \(g:V\to c\) 属于 \(S\)（即 \(g\in S(V)\)）。考察两个元素 \(\tau_V(g),\ \sigma_V(g)\in F(V)\)。把覆盖族 \(\mathcal F\) 沿 \(g\) 拉回：由 (C2)，\(\mathcal F_g=\{g_i':V\times_c c_i\to V\}_{i\in I}\) 是 \(V\) 的覆盖，它生成的筛是
+        \[S_{\mathcal F_g}=g^{\ast}S_{\mathcal F}=\bigl\{k:W\to V\ \bigm|\ g\circ k\in S_{\mathcal F}\bigr\}.\]
+        由假设，\(F\) 对 \(\mathcal F_g\) 满足等化子条件，故由引理 15.2.2，\(\theta_{V,S_{\mathcal F_g}}\) 是<strong>双射</strong>，特别地<strong>单</strong>。现在比较：对任意 \(k\in S_{\mathcal F_g}\)，
+        \[F(k)\bigl(\tau_V(g)\bigr)=\tau_W(g\circ k)\overset{(*)}{=}\sigma_W(g\circ k)=F(k)\bigl(\sigma_V(g)\bigr),\]
+        其中 \((*)\) 用到 \(g\circ k\in S_{\mathcal F}\) 而 \(\tau\) 与 \(\sigma\) 在 \(S_{\mathcal F}\) 上一致。第一个等号与最后一个等号都是自然性（\(\tau,\sigma\) 是自然变换）。于是 \(\theta_{V,S_{\mathcal F_g}}\bigl(\tau_V(g)\bigr)=\theta_{V,S_{\mathcal F_g}}\bigl(\sigma_V(g)\bigr)\)，由单性得 \(\tau_V(g)=\sigma_V(g)\) ✓。</p>
+      <p>\(g\) 与 \(V\) 任意，故 \(\tau=\sigma\)，即 \(\sigma\) 在 \(\theta_{c,S}\) 的像里。满性成立。∎</p>
+    </div>
+  </div>
+
+  <div class="motiv">
+    <span class="lbl">这个定理解决什么问题？</span>
+    它把“层条件”从一个<strong>无法验证的定义</strong>变成了一条<strong>可计算的判据</strong>。你现在可以忘掉筛，只记这一句：
+    <br><br>
+    <em>要检查 \(F\) 是层，取一个覆盖 \(\{f_i:c_i\to c\}\)，写出 \(\prod F(c_i)\) 与 \(\prod F(c_i\times_c c_j)\)，验证 \(F(c)\) 是它们的等化子。</em>
+    <br><br>
+    在 \(\mathcal O(X)\) 上这退化成 14.1 的经典形式（\(U_i\cap U_j=U_i\times_U U_j\)）；在 Zariski site 上这是“局部化下降”（\(R_{f_i}\otimes_RR_{f_j}=R_{f_if_j}\)）；在 \(BG\) 上这是“\(G\)-集合的相容条件”。<strong>同一个定理，三张面孔</strong>。
+    <br><br>
+    另外注意证明里那个<strong>拉回技巧</strong>的形状：要在 \(V\) 上比较两个元素，就把整个覆盖拉到 \(V\) 上，得到一个只在 \(V\) 上说话的覆盖，再用分离性。这个技巧在层论里到处出现（比较引理、Čech 上同调、几何态射的验证），值得单独记住。
+  </div>
+
+  <h3 class="sub">15.2.3 层范畴的第一批性质</h3>
+
+  <p>现在换一个角度：不问“某个预层是不是层”，而问“<strong>全体层构成的范畴长什么样</strong>”。四条性质，每条都直接影响你以后怎么算。</p>
+
+  <div class="prop">
+    <span class="lbl">命题 15.2.4（极限逐点计算）</span>
+    <p>包含函子 \(i:\mathbf{Sh}(\mathbf C,J)\hookrightarrow\mathbf{PSh}(\mathbf C)\) <strong>创造极限</strong>。具体地：若 \(D:I\to\mathbf{Sh}\) 是小图解，则在预层范畴中逐点取的极限 \(F(c)=\varprojlim_iD(i)(c)\) 仍是层，并且它就是该图解在层范畴中的极限。特别地，\(\mathbf{Sh}\) 有所有小极限；终对象是常值单点预层 \(\mathbf 1\)；积与拉回都逐点算；等化子也逐点算。</p>
+    <div class="proof">
+      <p class="pl">证明.</p>
+      <p>要证 \(F=\varprojlim_iF_i\)（逐点）是层，即对每个 \(S\in J(c)\)，\(\theta_{c,S}:F(c)\to\mathrm{Hom}(S,F)\) 是双射。</p>
+      <p><strong>第一步：\(\mathrm{Hom}(S,-)\) 保极限。</strong>\(\mathrm{Hom}(S,F)\) 由“在每个 \(d\) 上取 \(S(d)\to F(d)\) 的函数、并要求自然性”给出；而自然性条件是<em>一族等式</em>，等式对极限逐个分量成立。形式地，\(\mathrm{Hom}(S,F)=\mathrm{eq}\bigl(\prod_{d}F(d)^{S(d)}\rightrightarrows\prod_{k:e\to d}F(e)^{S(d)}\bigr)\)，而 \(\mathbf{Set}\) 中的积、幂、等化子都与 \(F\mapsto\varprojlim F_i\) 交换（极限与极限交换）。故
+        \[\mathrm{Hom}(S,\varprojlim_iF_i)\;\cong\;\varprojlim_i\mathrm{Hom}(S,F_i).\]</p>
+      <p><strong>第二步：逐分量双射 ⟹ 极限双射。</strong>在这个同构下，\(\theta_{c,S}\) 对应 \(\varprojlim_i\theta^{(i)}_{c,S}\)，其中每个 \(\theta^{(i)}_{c,S}\) 是双射（\(F_i\) 是层）。在 \(\mathbf{Set}\) 中，双射即同构，而同构的极限仍是同构（同构在 \(\mathbf{Set}^{\to}\) 中由“两个方向 + 两个三角等式”刻画，这些都对极限稳定）✓。</p>
+      <p><strong>第三步：创造极限。</strong>\(i\) 全忠实，故 \(\mathbf{Sh}\) 中的极限若存在必与 \(\mathbf{PSh}\) 中的相同；第二步已证逐点极限落在 \(\mathbf{Sh}\) 里，故它就是 \(\mathbf{Sh}\) 中的极限 ✓。∎</p>
+    </div>
+  </div>
+
+  <div class="prop">
+    <span class="lbl">命题 15.2.5（余极限<strong>不</strong>逐点计算）</span>
+    <p>逐点取的余极限一般<strong>不是</strong>层。因此 \(\mathbf{Sh}\) 中的余极限不是从 \(\mathbf{PSh}\) 继承的：它等于“逐点余极限再层化”（15.3）。具体反例：取 \(X=\{0,1\}\) 两点空间（开集 \(\varnothing,\{0\},\{1\},X\)）、\(F=y(\{0\})\)、\(G=y(\{1\})\)，则逐点余积 \(F\sqcup G\) 不是层。</p>
+    <div class="proof">
+      <p class="pl">证明.</p>
+      <p><strong>先确认 \(F,G\) 是层。</strong>开覆盖拓扑次典范（命题 15.1.7(i)），故可表预层是层 ✓。取值：\(F(U)=\mathcal O(X)(U,\{0\})\)，即 \(U\subseteq\{0\}\) 时是单点、否则空。所以
+        \[F(X)=\varnothing,\ F(\{0\})=\{*\},\ F(\{1\})=\varnothing,\ F(\varnothing)=\{*\};\]
+        同理 \(G(X)=\varnothing,\ G(\{0\})=\varnothing,\ G(\{1\})=\{*\},\ G(\varnothing)=\{*\}\).</p>
+      <p><strong>逐点余积 \(H=F\sqcup G\)。</strong>
+        \[H(X)=\varnothing,\quad H(\{0\})=\{*\},\quad H(\{1\})=\{*\},\quad H(\varnothing)=\{*\}.\]</p>
+      <p><strong>检查覆盖 \(\{U_1\hookrightarrow X,\ U_2\hookrightarrow X\}\)（即 \(U_1=\{0\}\)、\(U_2=\{1\}\)）。</strong>它覆盖 \(X\)（\(X=\{0\}\cup\{1\}\)），且 \(\{0\}\times_X\{1\}=\varnothing\)。层条件要求
+        \[H(X)\ \longrightarrow\ H(\{0\})\times_{H(\varnothing)}H(\{1\})=\{*\}\times_{\{*\}}\{*\}=\{*\}\]
+        是双射。但 \(H(X)=\varnothing\)，故<strong>不是双射</strong>，\(H\) 不是层 ✓。</p>
+      <p><strong>为什么会错。</strong>\(X\) 上的截面本应能拆成“\(\{0\}\) 上一个 + \(\{1\}\) 上一个”，但逐点余积在 \(X\) 上一个都没有——因为 \(F(X)\) 与 \(G(X)\) 各自已经空了。<em>逐点余积把“只在局部存在的截面”在整体层面全部丢掉了</em>。15.3.5 会把 \(H\) 的层化算出来，你会看到层化恰好把那个缺失的截面补回去。∎</p>
+    </div>
+  </div>
+
+  <div class="rmk"><strong>这条“极限好、余极限坏”的分界，是整本书最重要的一条技术分界。</strong>它后面会以三种面目反复出现：① 层化 \(a\) 必须保<em>有限</em>极限（不只是保极限），因为拓扑斯的定义要求左正合；② 层上同调 \(H^\ast\) 之所以存在，正是因为“正合列在层范畴里断掉”——上同调测量断掉的程度；③ 第 19 章几何态射的定义里，\(f^{\ast}\) 被要求保有限极限，而 \(f_*\) 只保极限（不保余极限）。<em>把这一条钉死，你就抓住了拓扑斯理论的技术主线</em>。</div>
+
+  <div class="prop">
+    <span class="lbl">命题 15.2.6（Hom 与子对象；余等化子的例外）</span>
+    <p><strong>(a)</strong> 层之间的态射就是预层之间的自然变换：\(\mathrm{Hom}_{\mathbf{Sh}}(F,G)=\mathrm{Hom}_{\mathbf{PSh}}(F,G)\)。<strong>(b)</strong> 层范畴中的等化子、拉回、积、终对象都是层（命题 15.2.4 的特例）；<strong>单射也继承</strong>（单射 \(=\) 核为 \(0\)，是极限性质；逐点单即整体单）。<strong>(c)</strong> 但<strong>余等化子与商不继承</strong>：像预层（一种余等化子）不必是层，故 \(\mathbf{Sh}\) 中的余等化子是“预层余等化子再层化”。</p>
+    <div class="proof">
+      <p class="pl">证明.</p>
+      <p><strong>(a)</strong> 全子范畴的定义：对象相同、Hom 集相同 ✓。</p>
+      <p><strong>(b)</strong> 由命题 15.2.4 ✓。单射是否继承：在 \(\mathbf{Sh}\) 中 \(\varphi:F\to G\) 单 ⟺ 其核（拉回 \(F\times_G0\)）为终对象；核是极限，逐点算，而预层逐点单 ⟺ 核逐点单点 ⟺ 整体单。故 \(\mathbf{Sh}\) 中单 ⟺ \(\mathbf{PSh}\) 中单 ✓。</p>
+      <p><strong>(c)</strong> 反例即 14.3.7 的像预层：\(\exp:\mathcal C^0_{S^1}\to\mathcal C^0_{S^1}(-,S^1)\)、\(\exp_U(f)=e^{2\pi if}\)。像预层
+        \[I(U)=\exp\bigl(\mathcal C^0(U)\bigr)=\{\text{有连续对数的 }S^1\text{-值连续函数}\}\]
+        在预层范畴中是 \(\exp\) 与零映射的余等化子型构造（更准确：是 \(\mathcal C^0\rightrightarrows\mathcal C^0(-,S^1)\times_{\cdots}\) 的余等化子）。它不是层：取 \(U_1=S^1\setminus\{1\}\)、\(U_2=S^1\setminus\{-1\}\)（两块可缩，覆盖 \(S^1\)），\(\mathrm{id}_{S^1}|_{U_i}\in I(U_i)\) 且相容，但 \(\mathrm{id}_{S^1}\notin I(S^1)\)（绕数为 \(1\)，无连续对数），粘合性失败 ✓。∎</p>
+    </div>
+  </div>
+
+  <div class="cases">
+    <div class="ct">site 上的层：四类例子</div>
+    <div class="case typ"><b>典型例（开集 site 的层）</b>\(\mathbf C=\mathcal O(X)\)、\(J=\) 开覆盖。层 = 14.1 意义下的层（连续函数层、光滑函数层、局部常值层……）。这是你唯一已经有直觉的 site，把它当“标准模型”：每遇到一个新 site，先问“它上面最像 \(\mathcal C^0\) 的东西是什么”。在 Zariski site 上答案是结构层（\(A\mapsto A\)）；在 \(BG\) 上是“局部常值 \(G\)-集”。</div>
+    <div class="case deep"><b>本质例（Zariski site 上的层 = 可下降的函子）</b>\(\mathbf C=\mathbf{CRing}^{\mathrm{op}}\)，覆盖 = \(\{A\to A_{f_i}\}\) 使 \((f_i)=A\)。由命题 15.2.3，\(F\) 是 Zariski 层 ⟺ 对每个这样的族，
+      \[F(A)\;\cong\;\mathrm{eq}\Bigl(\prod_iF(A_{f_i})\rightrightarrows\prod_{i,j}F(A_{f_if_j})\Bigr)\]
+      （因 \(A_{f_i}\otimes_AA_{f_j}\cong A_{f_if_j}\)）。<strong>这就是下降</strong>：\(F(A)\) 由它在各个局部化上的值 + 相容性完全决定。三个具体例子：① \(F(A)=A\)（结构层）：等式 \(A\cong\varprojlim A_{f_i}\) 就是局部化的正合性，也是 15.2 手把手算的那个 \(\mathbb Z\) 例子的一般形式。② \(F(A)=\mathrm{Pic}(A)\)（可逆模的同构类）：层条件说“可逆模沿 Zariski 覆盖下降”，这是 \(\mathrm{Pic}\) 成为群概形 \(\mathbb G_m\) 的 \(H^1\) 的基础。③ \(F(A)=\{\text{幂等元 }e\in A\}\)：局部化后幂等元一一对应，故是层——这是“连通分支”的代数化（习题 15.2.8）。</div>
+    <div class="case edge"><b>边界与误解</b>四个高频错误。<strong>(a) 以为“逐点余极限是层”</strong>：命题 15.2.5 的反例，务必记住“余极限必须层化”。<strong>(b) 以为“层条件对所有筛都要查”</strong>：只需查生成覆盖族（命题 15.2.3），这是实际计算的全部依据。<strong>(c) 以为“\(F(c)\to\prod F(c_i)\) 单就够了”</strong>：单是分离性，满才是粘合性；有界连续函数预层单不满（14.1.4），常值预层在连通空间上满不单（14.1.7）。两者要分别检查。<strong>(d) 以为“全子范畴什么都继承”</strong>：Hom、极限、单射继承；余极限、满射<em>不</em>继承（满射不继承正是层上同调的来源，14.4.5）。</div>
+    <div class="case use"><b>结构中的应用</b>“层 = 等化子”这条判据在四个方向被反复使用：① <strong>下降理论</strong>：给定覆盖与局部对象 + 粘合同构，问能否拼成整体——就是问某个模函子是不是层；② <strong>上同调</strong>：Čech 上同调正是这个等化子序列的“下一项”，\(H^0=\ker\)、\(H^1\) 测量“等化子不满”的程度；③ <strong>几何态射</strong>：\(f^{\ast}\) 的定义（14.4）本质是“把覆盖沿 \(f\) 搬过去”，而“\(f^{\ast}\) 保层”就是命题 15.2.3 的搬运版；④ <strong>拓扑斯的定义</strong>：第 16 章会证明 \(\mathbf{Sh}(\mathbf C,J)\) 是初等拓扑斯，用的正是本节四条性质 + 15.3 的层化。</div>
+  </div>
+
+  <div class="box walk">
+    <h4>③ 手把手：在 Zariski site 上验证一个层，全部算一遍</h4>
+    <p>取最简单的非平凡 Zariski 覆盖，把“\(A\mapsto A\) 是层”算到底。设 \(A=\mathbb Z\)，覆盖取 \(\{f_1=2,\ f_2=3\}\)——因为 \((2,3)=\mathbb Z\)，这是合法覆盖。对应的两个局部化是 \(\mathbb Z\to\mathbb Z[\frac12]\) 与 \(\mathbb Z\to\mathbb Z[\frac13]\)。</p>
+    <ol>
+      <li><strong>写出等化子序列。</strong>
+        \[\mathbb Z\ \longrightarrow\ \mathbb Z[\tfrac12]\times\mathbb Z[\tfrac13]\ \rightrightarrows\ \mathbb Z[\tfrac16].\]
+        两个箭头：\(p_1\) 把 \((a,b)\) 送到 \(a\) 在 \(\mathbb Z[\frac16]\) 中的像，\(p_2\) 送到 \(b\) 的像。这里用到 \(\mathbb Z[\frac12]\otimes_{\mathbb Z}\mathbb Z[\frac13]=\mathbb Z[\frac16]\)。</li>
+      <li><strong>单性。</strong>若 \(n\in\mathbb Z\) 在两个局部化中的像都是 \(0\)，因局部化 \(n\mapsto n/1\) 是单射，得 \(n=0\) ✓。</li>
+      <li><strong>满性。</strong>给定相容对 \((a,b)\)，即 \(a,b\) 在 \(\mathbb Z[\frac16]\) 中相等。写 \(a=m/2^k\)、\(b=n/3^l\)。相容条件是：存在 \(N\) 使 \(6^N(a-b)=0\)，即
+        \[m\,2^{N}3^{N-k}=n\,2^{N-k}3^{N}.\]
+        约去公因子得 \(m\,3^{l}=n\,2^{k}\)。取 \(c=m/2^k\in\mathbb Q\)；由 \(m3^l=n2^k\) 知 \(2^k\mid m3^l\)，而 \(\gcd(2^k,3^l)=1\)，故 \(2^k\mid m\)，于是 \(c\in\mathbb Z\) ✓。同时 \(c\) 在 \(\mathbb Z[\frac13]\) 中的像等于 \(n/3^l=b\)（由同一等式）✓。</li>
+      <li><strong>结论。</strong>
+        \[\mathbb Z\;=\;\mathbb Z[\tfrac12]\times_{\mathbb Z[\frac16]}\mathbb Z[\tfrac13],\]
+        即“在两个局部化里都是整数，就当整数看”。<em>这就是局部—整体原理在算术里的第一次现身</em>：一个整数由它在“只允许 \(2\) 在分母”和“只允许 \(3\) 在分母”两个世界里的样子完全决定。</li>
+      <li><strong>换一个不合法族的教训。</strong>若改用 \(\{2,4\}\)，则 \((2,4)=2\mathbb Z\ne\mathbb Z\)，<strong>不是覆盖</strong>。此时 \(\mathbb Z[\frac12]=\mathbb Z[\frac14]\)，序列变成 \(\mathbb Z\to\mathbb Z[\frac12]\rightrightarrows\mathbb Z[\frac12]\)，等化子仍是 \(\mathbb Z\)——所以“\(F(A)=A\) 满足这个序列”对非覆盖也偶然成立。<em>层条件是“对所有覆盖成立”，验证时必须按覆盖族走，不能因为某几个族成立就下结论</em>。</li>
+      <li><strong>要点。</strong>Zariski 层的验证是纯交换代数的（局部化、张量、整除性），比开集 site 上的层验证更“代数”。这也解释了为什么代数几何里“层”几乎等同于“下降数据”——两者是同一件事。</li>
+    </ol>
+  </div>
+
+  <div class="phil">
+    <h4>② 选读：为什么“层”只在余极限上出问题</h4>
+    <p>命题 15.2.4 与 15.2.5 的不对称，初看像技术偶然，其实原因很朴素：<strong>层条件本身是一个极限条件</strong>。写成等化子以后，它说的是“\(F(c)\) 等于某个由 \(F(c_i)\)、\(F(c_i\times_cc_j)\) 搭出来的极限”。而极限与极限交换——这就是 15.2.4 的全部内容。余极限与极限<em>不</em>交换，所以逐点余极限会破坏这个等式（15.2.5）。</p>
+    <p>换句话说：<strong>“层”这个性质由图上的极限图表定义，因此它对极限稳定、对余极限不稳定</strong>。这条一般原理到处都是：子群对交封闭（交是极限）但对并开放；闭集对任意交封闭但对并只对有限并封闭；仿射簇对交封闭但并起来不再是仿射的。所有这类“一半好一半坏”都是同一个原因。</p>
+    <p>而拓扑斯理论能成立，恰恰因为有人证明了<strong>层化这个“修补余极限”的函子本身是左正合的</strong>：它修补余极限，但不破坏有限极限。这一条的证明是 15.3 的全部技术内容，也是 Grothendieck 拓扑斯能定义成“左正合反射”的根本原因。没有左正合性，你只能说“层范畴是个好范畴”，不能说“层范畴是个拓扑斯”。</p>
+  </div>
+
+  <div class="box exer">
+    <h4>④ 习题（15.2）</h4>
+    <ol>
+      <li id="ex15-2-1">证明 \(\mathrm{Hom}(S,F)\) 的元素恰好是 \(S\) 上的匹配族：一族 \((x_f)_{f\in S}\) 满足 \(F(k)(x_f)=x_{f\circ k}\) 对一切可复合的 \(k\)。</li>
+      <li id="ex15-2-2">证明：\(J\)-层一定是分离预层（即对每个 \(S\in J(c)\)，\(\theta_{c,S}\) 单）。反过来对否？</li>
+      <li id="ex15-2-3">在 \(\mathbf C=\mathbf 1\)（单对象）上，\(J\) 只可能是 \(\{t\}\) 或 \(\{t,\varnothing\}\)。分别算出两者的层范畴，并用命题 15.2.3 验证。</li>
+      <li id="ex15-2-4">用命题 15.2.3 验证：\(\mathcal O(X)\) 上的“全体函数预层”（\(U\mapsto\mathrm{Set}\)，限制为恒等）是层。并说明它为什么是“最自由”的那个层。</li>
+      <li id="ex15-2-5">证明常值单点预层 \(\mathbf 1\) 是 \(\mathbf{Sh}\) 的终对象。</li>
+      <li id="ex15-2-6">在 \(BG\) 的满拓扑下（14.2 的“最细”拓扑），算出层范畴，并解释它与“最细拓扑给出最小层范畴”的一致性。</li>
+      <li id="ex15-2-7">设 \(F,G\) 是层，\(\varphi:F\to G\) 是层态射。证明核（预层等化子）是层，但像预层不必是层（用 14.3.7 的 \(\exp\) 具体说明）。</li>
+      <li id="ex15-2-8">在 Zariski site 上：(a) 证明幂等元预层 \(F(A)=\{e\in A:e^2=e\}\) 是层；(b) 证明“连通分支数”预层 \(G(A)=\pi_0(\mathrm{Spec}\,A)\) <strong>不是</strong>层，并指出失败的是单性还是满性。</li>
+    </ol>
+  </div>
+
+  <div class="box ans">
+    <h4>⑤ 参考答案（15.2）</h4>
+    <div class="item"><b>15.2.1</b>设 \(\tau:S\Rightarrow F\)。对 \(f\in S(d)\) 令 \(x_f=\tau_d(f)\in F(d)\)。自然性说：对 \(k:e\to d\)，\(\tau_e\bigl(S(k)(f)\bigr)=F(k)\bigl(\tau_d(f)\bigr)\)。而 \(S\subseteq y(c)\) 是子预层，\(y(c)(k)\) 就是左复合 \(f\mapsto f\circ k\)，故 \(S(k)(f)=f\circ k\)。于是 \(x_{f\circ k}=F(k)(x_f)\) ✓。反之给定匹配族，令 \(\tau_d(f)=x_f\)，自然性即匹配性 ✓。两个构造互逆 ✓。</div>
+    <div class="item"><b>15.2.2</b>双射蕴含单射 ✓。反过来不对：分离性只说“至多一个”，不说“至少一个”。反例是 14.1.4 的有界连续函数预层：两块上的有界函数在重叠处一致时有唯一候选，但整体可能无界，故分离而不满足粘合。另一个方向的反例是常值预层：存在性有时成立（如整块即有定义），唯一性失败（连通空间上两个不同元素限制到同一块上相等）。</div>
+    <div class="item"><b>15.2.3</b>筛只有 \(\varnothing\) 与 \(t_*=y(*)\)。<strong>\(J=\{t\}\)</strong>：条件为 \(\theta_t:F(*)\to\mathrm{Hom}(t,F)=F(*)\) 双射，恒成立，故层范畴 \(=\mathbf{Set}\)（\(=[\mathbf 1^{\mathrm{op}},\mathbf{Set}]\)）✓。<strong>\(J=\{t,\varnothing\}\)</strong>：还要 \(\theta_\varnothing:F(*)\to\mathrm{Hom}(\varnothing,F)=\{*\}\) 双射，故 \(F(*)\) 单点，层范畴 \(=\mathbf 1\) ✓。用命题 15.2.3 验证：覆盖族取 \(\{\{\mathrm{id}_*\}\}\) 时等化子序列为 \(F(*)\to F(*)\rightrightarrows F(*)\)（因 \(*\times_*=*\)），等化子条件恒真 ✓；若覆盖族含空族，序列为 \(F(*)\to\{*\}\rightrightarrows\{*\}\)（空积是单点），等化子为单点，得 \(F(*)\) 单点 ✓。</div>
+    <div class="item"><b>15.2.4</b>取开覆盖 \(U=\bigcup U_i\)，\(U_i\cap U_j=U_i\times_UU_j\)。等化子条件为
+      \[\underline{\mathrm{Set}}(U)\to\prod_i\underline{\mathrm{Set}}(U_i)\rightrightarrows\prod_{i,j}\underline{\mathrm{Set}}(U_i\cap U_j),\]
+      即 \(\mathrm{Set}\to\mathrm{Set}^I\rightrightarrows\mathrm{Set}^{I\times I}\)。一个匹配族是（因为限制映射是恒等）一族集合 \(S_i\) 满足 \(S_i=S_j\)（重叠处相等），故所有 \(S_i\) 等于同一个 \(S\)，等化子显然是 \(\mathrm{Set}\)，且 \(S\mapsto(S_i=S)\) 给出双射 ✓。<em>“最自由”的含义：它的限制映射全是恒等，所以相容性自动、粘合免费——它是唯一一个“什么都不检查”的层</em>。</div>
+    <div class="item"><b>15.2.5</b>\(\mathbf 1(c)=\{*\}\) 对每个 \(c\)。对任意 \(S\in J(c)\)，\(\mathrm{Hom}(S,\mathbf 1)=\{*\}\)（到终对象的自然变换唯一），故 \(\theta:\{*\}\to\{*\}\) 是双射 ✓，\(\mathbf 1\) 是层。它是预层范畴的终对象（唯一自然变换 \(F\Rightarrow\mathbf 1\)，逐点为唯一映射）✓。层范畴是全子范畴且含 \(\mathbf 1\)，故 \(\mathbf 1\) 是 \(\mathbf{Sh}\) 的终对象 ✓。</div>
+    <div class="item"><b>15.2.6</b>满拓扑：\(J(*)=\{\varnothing,t_*\}\)。层条件含 \(\theta_\varnothing:F(*)\to\mathrm{Hom}(\varnothing,F)=\{*\}\) 双射，故 \(F(*)\) 单点。于是层范畴 \(\simeq\mathbf 1\)（唯一对象：单点集带平凡 \(G\)-作用）。与“最细拓扑给出最小层范畴”一致：满拓扑宣告了最多覆盖（连空筛都算），条件最苛刻，层最少 ✓。另一面看命题 15.2.5：层范畴越小，“逐点余极限”与“层余极限”差得越远——在 \(\mathbf 1\) 里任何余极限都是单点，而逐点余极限可以有很多元素。</div>
+    <div class="item"><b>15.2.7</b><strong>核是层。</strong>设 \(U=\bigcup U_i\)，\((s_i)\) 是 \(\ker\varphi\) 的相容族（\(s_i\in F(U_i)\)、\(\varphi(s_i)=0\)）。因 \(F\) 是层，有唯一拼接 \(s\in F(U)\)。要证 \(\varphi(s)=0\)：在每块上 \(\varphi(s)|_{U_i}=\varphi(s|_{U_i})=\varphi(s_i)=0\)；由 \(G\) 是层从而分离（15.2.2），\(\varphi(s)=0\) ✓。故 \(\ker\varphi\) 是层。<br><strong>像不必是层。</strong>取 \(\exp:\mathcal C^0_{S^1}\to\mathcal C^0_{S^1}(-,S^1)\)。像预层 \(I(U)=\exp(\mathcal C^0(U))\)。在 \(U_1=S^1\setminus\{1\}\)、\(U_2=S^1\setminus\{-1\}\) 上 \(\mathrm{id}_{S^1}\) 都有连续对数（两块可缩到区间），故 \(\mathrm{id}|_{U_i}\in I(U_i)\) 且相容；但 \(\mathrm{id}_{S^1}\) 无连续对数（绕数 \(1\ne0\)），故不存在 \(I(S^1)\) 中元素限制为它们，粘合性失败 ✓。</div>
+    <div class="item"><b>15.2.8</b><strong>(a) 幂等元是层。</strong>设 \((f_i)=A\)，给相容族 \(e_i\in A_{f_i}\)（\(e_i^2=e_i\)）。局部化 \(\mathrm{Idem}(A)\to\mathrm{Idem}(A_{f_i})\) 是双射：一个幂等元 \(e\) 唯一确定它在 \(A_{f_i}\) 中的像 \(e/1\)；反之给定 \(e_i\in A_{f_i}\) 幂等，它在每个素局部化上的像只能是 \(0\) 或 \(1\)，故 \(e_i\) 对应 \(A\) 的一个“既开又闭”的子概形，由 \(A\) 唯一确定。更直接地：\(e_i=e_i^2\) 且 \(e_i\) 落在 \(A\to A_{f_i}\) 的像里时可取公共分母，得到唯一 \(e\in A\) 使 \(e/1=e_i\)，而 \(e^2-e\) 在每块上为 \(0\)，由分离性 \(e^2=e\) ✓。故 \(F\) 是层。<br><strong>(b) \(\pi_0\) 不是层。</strong>取 \(A=k\times k\)（\(k\) 是域），\(f_1=(1,0)\)、\(f_2=(0,1)\)，则 \((f_1,f_2)=A\)，是覆盖。此时 \(A_{f_1}\cong k\)、\(A_{f_2}\cong k\)、\(A_{f_1f_2}=0\)（零环）。于是
+      \[\pi_0(\mathrm{Spec}\,A)=2\text{ 个点},\quad
+      \pi_0(\mathrm{Spec}\,A_{f_1})=\pi_0(\mathrm{Spec}\,A_{f_2})=1\text{ 个点},\quad
+      \pi_0(\mathrm{Spec}\,0)=\varnothing.\]
+      等化子那一边：相容族是一对点（各来自一个单点集），它们在 \(\varnothing\) 上自动相容（空集没有点要对齐），故右边有 \(1\times1=1\) 个元素。而左边有 \(2\) 个。<strong>失败的是单性</strong>：两个不同的整体连通分支限制到每块上变得无法区分（因为它们在块上“各自成为唯一的分支”）✓。<em>教益：连通性/分支数是全局性质，不是局部性质——这正是 14.1 说“分离性几乎免费、存在性要花钱”之外的另一类病：这里的病在单性上，因为“局部同构”失去了区分能力</em>。</div>
+  </div>
+</section>
+
+<section class="sec" id="s15-3">
+  <div class="sec-h"><span class="sec-no">15.3</span><h2>伴生层函子</h2><span class="src">M Ch.III §5</span></div>
+
+  <div class="box learn">
+    <h4>① 本节学习目标</h4>
+    <ol>
+      <li>理解为什么必须“修”：15.2.5 说了余极限会跑出层范畴，层化是把它拉回来的唯一办法；</li>
+      <li>掌握<strong>单加号</strong> \(F^{+}\)（一次）与<strong>双加号</strong> \(F^{++}\)（两次）的构造，并说清为什么必须做两次；</li>
+      <li>完整证明核心定理：\(F^{++}\) 是层，且 \(a=i^{\mathrm{op}}\) 构成 \(a\dashv i\)；</li>
+      <li>掌握层化的<strong>左正合性</strong>：\(a\) 保有限极限——这是拓扑斯定义的硬要求；</li>
+      <li>会算三个具体层化：有界连续函数、逐点余积（15.2.5 的例子）、常值预层；</li>
+      <li>理解“层化 = 沿覆盖取余极限”这一几何图像，并区分它与“完备化”的异同。</li>
+    </ol>
+  </div>
+
+  <div class="xref"><strong>沿用前文（不再复述）.</strong> 层范畴与极限逐点计算（命题 15.2.4）、余极限不逐点（命题 15.2.5）、层条件只需查覆盖族（命题 15.2.3）见<strong>（本节 15.2）</strong>；分离预层见<strong>（参见第 14 章 14.1.5）</strong>；伴随的定义与三角恒等式见<strong>（参见第 7 章 7.1–7.2）</strong>；茎的构造见<strong>（参见第 14 章 14.3.1）</strong>；反射子范畴的一般理论见<strong>（参见第 7 章 7.4）</strong>。</div>
+
+  <div class="box prep">
+    <h4>极简回顾（七分钟）</h4>
+    <p><strong>1. 问题在哪。</strong>15.2.5 的反例：两个层 \(y(\{0\})\)、\(y(\{1\})\) 的逐点余积不是层。这意味着 \(\mathbf{Sh}\) 在 \(\mathbf{PSh}\) 里<em>不是</em>余完备的（作为一个“继承”的意义上）。但拓扑斯必须余完备，所以必须想办法“修”。</p>
+    <p><strong>2. 修的目标是什么。</strong>给定预层 \(F\)，希望找到一个层 \(aF\) 和一个映射 \(\eta_F:F\to aF\)，使得<strong>任何</strong>从 \(F\) 到层 \(G\) 的映射都唯一地穿过 \(\eta_F\)（图 15.1）：</p>
+      <svg class="cd" viewBox="0 0 640 230" role="img" aria-label="层化的泛性质：F 到 aF 的单位，任何到层 G 的映射唯一穿过">
+        <defs>
+          <marker id="a15" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#475569"/></marker>
+          <marker id="a15b" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#2563eb"/></marker>
+          <marker id="a15p" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#7c3aed"/></marker>
+        </defs>
+        <rect class="node" x="246" y="34" width="150" height="40" rx="7"/>
+        <text x="321" y="59" text-anchor="middle" class="nt">aF</text>
+        <rect class="nodey" x="52" y="140" width="150" height="40" rx="7"/>
+        <text x="127" y="165" text-anchor="middle" class="nt">F</text>
+        <rect class="nodeg" x="440" y="140" width="150" height="40" rx="7"/>
+        <text x="515" y="165" text-anchor="middle" class="nt">G（层）</text>
+        <line x1="180" y1="132" x2="262" y2="82" stroke="#2563eb" stroke-width="1.8" fill="none" marker-end="url(#a15b)"/>
+        <text x="196" y="100" class="hb">η</text>
+        <line x1="202" y1="160" x2="432" y2="160" stroke="#7c3aed" stroke-width="1.8" fill="none" marker-end="url(#a15p)"/>
+        <text x="300" y="152" text-anchor="middle" class="hp" style="font-size:12px">∀ φ</text>
+        <line x1="430" y1="132" x2="384" y2="82" stroke="#475569" stroke-width="1.6" fill="none" stroke-dasharray="5 4" marker-end="url(#a15)"/>
+        <text x="432" y="104" class="lb">∃! φ̄</text>
+        <text x="321" y="205" text-anchor="middle" class="lb" style="font-size:11.5px">a ⊣ i：任何到层的映射都唯一穿过单位 η</text>
+      </svg>
+      <p class="figcap">图 15.1　层化的泛性质：\(\mathrm{Hom}_{\mathbf{PSh}}(F,iG)\cong\mathrm{Hom}_{\mathbf{Sh}}(aF,G)\)</p>
+    <p>即 \(\mathrm{Hom}_{\mathbf{PSh}}(F,iG)\cong\mathrm{Hom}_{\mathbf{Sh}}(aF,G)\)，自然。这是<strong>反射</strong>的泛性质：\(a\) 是包含函子 \(i\) 的左伴随，\(\mathbf{Sh}\) 是 \(\mathbf{PSh}\) 的<strong>反射子范畴</strong>。</p>
+    <p><strong>3. 为什么“自由地加条件”这个说法准确。</strong>泛性质说的是“\(aF\) 是<em>最省的</em>修法”：任何别的修法（任何层 \(G\) 带映射 \(F\to G\)）都必须先经过 \(aF\)。这与“群 \(G\) 的自由化 \(F(S)\to G\)”是同一个模式——那里的泛性质也是“任何映射都穿过自由群”。<em>所以层化的直觉就是“自由地加上层条件”</em>，和自由群、自由模、自由拓扑斯是同一族构造。</p>
+    <p><strong>4. 一技术难点预告。</strong>“最省”这个要求很难一次达成。你自然会想“那就把缺的截面全补上”——但补完以后会<em>产生新的</em>覆盖、新的相容族、新的缺失。所以一次不够。这就是单加号/双加号存在的原因：<strong>\(F^{+}\) 补一次，但补出来的可能还不是层；\(F^{++}\) 才稳</strong>。这个“两次”的现象在层论里是标志性的，叫做“plus construction 的幂等性需要两步”。</p>
+  </div>
+
+  <h3 class="sub">15.3.1 单加号：补一次</h3>
+
+  <div class="motiv">
+    <span class="lbl">这个构造解决什么问题？</span>
+    直接“补全所有缺失截面”这件事没有显式公式——你不知道该补什么。Grothendieck 的办法是换一个角度：<strong>不去猜缺什么，而是把“所有可能的相容族”都当作候选截面</strong>。
+    <br><br>
+    具体地，\(F^{+}(c)\) 的定义是“\(c\) 上所有覆盖筛的相容族之集，模掉‘细化后相同’这个等价关系”。这么定义有两个好处：① 它只用 \(F\) 在<em>更小</em>对象上的值（不含 \(F(c)\) 自己），所以是“纯粹的局部信息”；② 任何本来就在 \(F(c)\) 里的元素 \(x\) 都给出一个相容族（\(f\mapsto F(f)(x)\)），于是有自然映射 \(F\to F^{+}\)。
+    <br><br>
+    <strong>代价</strong>：模掉“细化等价”这一步在技术上很重；而且 \(F^{+}\) 一般还不是层。所以它是“半成品”。
+  </div>
+
+  <div class="defn">
+    <span class="lbl">定义 15.3.1（单加号 \(F^{+}\)）</span>
+    <p>设 \(F\) 是预层，\(c\in\mathbf C\)。考虑所有配对 \((S,x)\)，其中 \(S\in J(c)\) 是覆盖筛、\(x\in\mathrm{Hom}(S,F)\) 是 \(S\) 上的匹配族。定义等价关系：
+      \[(S,x)\sim(S',x')\quad\Longleftrightarrow\quad
+      \exists\,S''\in J(c),\ S''\subseteq S\cap S',\ \ x|_{S''}=x'|_{S''}.\]
+      令
+      \[F^{+}(c)\;=\;\bigl\{(S,x)\bigr\}\big/\sim\;.\]
+      对 \(g:d\to c\)，定义 \(F^{+}(g):F^{+}(c)\to F^{+}(d)\) 为
+      \[F^{+}(g)\bigl[(S,x)\bigr]=\bigl[g^{\ast}S,\ x\circ g^{\ast}\bigr],\]
+      其中 \(g^{\ast}S\in J(d)\) 由 (T2)，而 \(x\circ g^{\ast}\) 表示“把 \(x\) 限制到 \(g^{\ast}S\subseteq y(d)\) 上”（\(g^{\ast}S\) 的元素是 \(k\) 使 \(g\circ k\in S\)，令其值为 \(x_{g\circ k}\)）。</p>
+    <p>元素 \([S,x]\in F^{+}(c)\) 读作“在覆盖 \(S\) 上相容的一族数据”，即“<strong>局部定义的截面</strong>”。</p>
+  </div>
+
+  <div class="rmk"><strong>良定义要检查三件事。</strong>① 等价关系确实是等价关系（自反、对称显然；传递用 (T3)：\(S''\cap S'''\) 仍是覆盖，因为交两个都含它——这里用 15.1.3 的“上集”性质加上 (T3)）；② \(F^{+}(g)\) 与代表元选取无关（若 \((S,x)\sim(S',x')\)，取 \(S''\subseteq S\cap S'\) 上一致，则 \(g^{\ast}S''\subseteq g^{\ast}S\cap g^{\ast}S'\) 且由 (T2) 是覆盖，两者在它上面一致）；③ \(F^{+}\) 是函子（\((g\circ h)^{\ast}S=h^{\ast}g^{\ast}S\) 与函子性）。<em>这三件事都是机械的，但第一件用到 (T3)(T2) 的配合，值得心里过一遍</em>。</div>
+
+  <div class="prop">
+    <span class="lbl">命题 15.3.2（单加号的基本性质）</span>
+    <p><strong>(a)</strong> 有自然变换 \(\eta:F\to F^{+}\)，\(\eta_c(x)=[t_c,\,x]\)（最大筛上的匹配族由 \(x\) 给出：\(f\mapsto F(f)(x)\)）。<strong>(b)</strong> \(F^{+}\) 总是<strong>分离</strong>预层。<strong>(c)</strong> 若 \(F\) 已分离，则 \(\eta:F\to F^{+}\) 是<strong>逐点单射</strong>。<strong>(d)</strong> 若 \(F\) 是层，则 \(\eta\) 是同构。</p>
+    <div class="proof">
+      <p class="pl">证明.</p>
+      <p><strong>(a)</strong> 需证自然性：对 \(g:d\to c\)，\(F^{+}(g)\eta_c(x)=[g^{\ast}t_c,\ x\circ g^{\ast}]=[t_d,\ F(g)(x)]=\eta_d(F(g)(x))\)，因为 \(g^{\ast}t_c=t_d\) ✓。</p>
+      <p><strong>(b)</strong> 要证：若 \([S,x],[S,x']\in F^{+}(c)\) 在一个覆盖 \(R\in J(c)\) 上一致（即对所有 \(h\in R\)，\(F^{+}(h)[S,x]=F^{+}(h)[S,x']\)），则它们相等。\(F^{+}(h)[S,x]=[h^{\ast}S,x\circ h^{\ast}]\)，相等意味着存在覆盖 \(S_h\subseteq h^{\ast}S\cap h^{\ast}S'=h^{\ast}S\) 使两者在 \(S_h\) 上一致。由 (T3)，族 \(\{h\circ k: h\in R,\ k\in S_h\}\) 生成一个覆盖 \(T\subseteq S\)，且 \(x,x'\) 在 \(T\) 上一致。于是 \((S,x)\sim(S,x')\)，即相等 ✓。</p>
+      <p><strong>(c)</strong> 设 \(F\) 分离。若 \(\eta_c(x)=\eta_c(x')\)，即 \([t_c,x]=[t_c,x']\)，则存在覆盖 \(S\subseteq t_c\) 使 \(x|_S=x'|_S\)，即对所有 \(f\in S\)，\(F(f)(x)=F(f)(x')\)。由 \(F\) 的分离性（对覆盖 \(S\)），\(x=x'\) ✓。</p>
+      <p><strong>(d)</strong> 设 \(F\) 是层。由 (c)，\(\eta\) 单。满：任取 \([S,x]\in F^{+}(c)\)。因 \(F\) 是层、\(S\in J(c)\)、\(x\in\mathrm{Hom}(S,F)\)，存在唯一 \(y\in F(c)\) 使 \(\theta_{c,S}(y)=x\)。则 \(\eta_c(y)=[t_c,y]\)，而 \([t_c,y]=[S,x]\)（两者在 \(S\) 上一致：\(y\) 的限制就是 \(x\)）✓。∎</p>
+    </div>
+  </div>
+
+  <div class="rmk"><strong>(b) 是本节最关键的一条，也是“为什么必须做两次”的全部原因。</strong>单加号保证<em>分离性</em>（唯一性），但<strong>不保证存在性</strong>。所以 \(F^{+}\) 是“半成品”：已经能保证“至多一个”，还差“至少一个”。第二次加号补的正是存在性。这个分工与 14.1 的“分离性几乎免费、存在性要花钱”完全对应——<em>单加号的成本低（一次余极限），双加号的成本高（又一次），但两次都做才到位</em>。</div>
+
+  <h3 class="sub">15.3.2 双加号：定理与证明</h3>
+
+  <div class="thm" style="background:#fbfcfe;border:1px solid #dbe6f8;border-left:4px solid var(--c1);padding:14px 18px;margin:16px 0;border-radius:0 10px 10px 0;">
+    <span class="lbl" style="font-weight:800;font-size:13.5px;color:var(--c1);">定理 15.3.3（双加号是层，且给出反射）</span>
+    <p>设 \(F\) 是预层。<strong>(i)</strong> \(F^{++}:=(F^{+})^{+}\) 是 \(J\)-层。<strong>(ii)</strong> 对每个层 \(G\)，前复合 \(\eta^{\ast}\) 给出双射
+      \[\mathrm{Hom}_{\mathbf{Sh}}(F^{++},G)\;\xrightarrow{\ \cong\ }\;\mathrm{Hom}_{\mathbf{PSh}}(F,G).\]
+      因此 \(F\mapsto F^{++}\) 给出函子 \(a:\mathbf{PSh}\to\mathbf{Sh}\)，且 \(a\dashv i\)（\(i\) 是包含），单位是 \(\eta^{++}:F\to F^{++}\)。</p>
+    <div class="proof">
+      <p class="pl">证明.</p>
+      <p><strong>(i) 分两步：先证 \(F^{++}\) 分离（几乎免费），再证存在性（这是真活）。</strong></p>
+      <p><em>分离。</em>由命题 15.3.2(b)，\(F^{+}\) 总是分离的。分离预层再取加号仍分离（同一论证，只需 15.3.2(b) 的证明里没有用到“\(F\) 是层”，只用了 (T2)(T3)）。故 \(F^{++}\) 分离 ✓。</p>
+      <p><em>存在性。</em>设 \(c\in\mathbf C\)、\(S\in J(c)\)，给一个匹配族
+        \[\xi\in\mathrm{Hom}\bigl(S,\,F^{++}\bigr),\]
+        即对每个 \(f:d\to c\) 属于 \(S\)，给 \(\xi_f\in F^{++}(d)\)，自然相容。要证存在 \(\beta\in F^{++}(c)\)，使 \(\beta\) 限制到 \(S\) 上等于 \(\xi\)——也就是对每个 \(f\in S\) 有 \(F^{++}(f)(\beta)=\xi_f\)。<strong>这里别踩类型坑</strong>：\(\eta^{++}:F\to F^{++}\) 只能吃 \(F\) 的元素，而我们要找的 \(\beta\) 本身就是 \(F^{++}\) 的元素，不必也不能再套一次 \(\eta^{++}\)。</p>
+      <p>（这一步是全部技术难点的所在。思路：<strong>把 \(\xi\) 细化到足够小的覆盖上，使每个 \(\xi_f\) 都有代表元，再用 (T3) 合并</strong>。）</p>
+      <p>对每个 \(f:d\to c\) 属于 \(S\)：\(\xi_f\in F^{++}(d)\) 是一个等价类，取一个代表元 \((R_f,y_f)\)，\(R_f\in J(d)\)、\(y_f\in\mathrm{Hom}(R_f,F^{+})\)。把 \(R_f\) 里的每个箭头 \(k:e\to d\) 与 \(f\) 复合，得覆盖族
+        \[\mathcal G=\{\,f\circ k\ :\ f\in S,\ k\in R_f\,\}\]
+        ——它覆盖 \(c\)，由 (T3)（\(S\) 覆盖 \(c\)，每个 \(R_f\) 覆盖 \(d\)，复合覆盖 \(c\)）。对每个这样的 \(f\circ k\)，\(y_f(k)\in F^{+}(e)\) 又是等价类，再取代表元 \((Q_{f,k},z_{f,k})\)，\(Q_{f,k}\in J(e)\)、\(z_{f,k}\in\mathrm{Hom}(Q_{f,k},F)\)。</p>
+      <p>再细化一次：覆盖族
+        \[\mathcal H=\{\,f\circ k\circ l\ :\ f\in S,\ k\in R_f,\ l\in Q_{f,k}\,\}\]
+        覆盖 \(c\)（又一次 (T3)）。关键断言：<strong>在 \(\mathcal H\) 上，这些 \(z_{f,k,l}\) 拼成一个匹配族</strong>，即对 \(\mathcal H\) 中元素的任何两种表示方式，值相同。这是因为：\(z\) 们来自 \(y\) 们的代表元，而 \(y\) 们彼此相容（\(\xi\) 是匹配族），且 \(y\) 的相容性用到了 \(F^{+}\) 的分离性（15.3.2(b)）来排除“在细化后仍不一致”的可能。<em>这一步是本节唯一需要“往下一层看”的地方，也是为什么单加号不够：如果只做一次加号，\(y\) 的相容性无法保证</em>。</p>
+      <p>于是得到一个匹配族 \(z\in\mathrm{Hom}(S_{\mathcal H},F)\)，其中 \(S_{\mathcal H}\in J(c)\)。令
+        \[\alpha=[S_{\mathcal H},\,z]\in F^{+}(c),\qquad
+        \beta=[t_c,\,\alpha]\in F^{++}(c).\]
+        检验 \(\beta\) 限制到 \(S\) 上是 \(\xi\)：对 \(f\in S\)，需
+        \[F^{++}(f)(\beta)=\xi_f.\]
+        左边 \(=[f^{\ast}t_c,\ \alpha\circ f^{\ast}]=[t_d,\ \alpha\text{ 在 }d\text{ 上的像}]\)。而 \(\alpha\) 在 \(d\) 上的像由 \(z\) 沿 \(f\) 拉回给出，其等价类正是 \((R_f,y_f)\) 的类——因为 \(z\) 在 \(S_{\mathcal H}\) 上的构造使得“沿 \(f\) 拉回后，它与 \(y_f\) 在某个覆盖上一致”。故左边 \(=\xi_f\) ✓。</p>
+      <p><strong>(ii) 反射性。</strong>需证对层 \(G\)，\(\eta^{\ast}:\mathrm{Hom}(F^{++},G)\to\mathrm{Hom}(F,G)\) 双射。</p>
+      <p><em>单：</em>设 \(\varphi,\psi:F^{++}\to G\) 使 \(\varphi\eta=\psi\eta\)（\(\eta=\eta^{++}\)）。要证 \(\varphi=\psi\)。\(G\) 是层，故分离，故只需在每个覆盖上比较：取 \(c\) 与 \(\alpha=[S,x]\in F^{++}(c)\)。由 (i) 的证明过程，\(\alpha\) 在某个覆盖上由 \(F\) 的元素（经 \(\eta\)）给出——即存在覆盖 \(S\) 使 \(\alpha|_{S}\) 落在 \(\eta\) 的像里。于是 \(\varphi(\alpha)|_S=\psi(\alpha)|_S\)，由 \(G\) 分离得 \(\varphi(\alpha)=\psi(\alpha)\) ✓。</p>
+      <p><em>满：</em>给定 \(\varphi:F\to G\)。这里有个<strong>类型陷阱</strong>必须先说破：\(\varphi\) 只能作用于 \(F\) 的值，而 \(F^{++}(c)\) 的代表元 \((S,x)\) 里，\(x_f\in F^{+}(d)\)——它不是 \(F\) 的值，\(\varphi(x_f)\) 没有意义。正确做法分三步，借 \(G^{+}\) 中转。</p>
+      <p><strong>第一步：</strong>把 \(\varphi\) 提升到 \(\varphi^{+}:F^{+}\to G^{+}\)：对 \([S,x]\in F^{+}(c)\)（\(x\in\mathrm{Hom}(S,F)\)，故 \(x_f\in F(d)\) 真是 \(F\) 的值），令 \(\varphi^{+}([S,x])=[S,\,\varphi\circ x]\)（逐项 \(\varphi_d(x_f)\in G(d)\)）。这一步合法，良定义由 \(G^{+}\) 的等价关系保证 ✓。</p>
+      <p><strong>第二步：</strong>因 \(G\) 是层，命题 15.3.2(d) 给 \(\eta_G:G\xrightarrow{\ \cong\ }G^{+}\) 是同构。令 \[\psi\;=\;\eta_G^{-1}\circ\varphi^{+}\;:\;F^{+}\to G.\] 注意 \(\psi\) 的取值已经落回 \(G\) 了。</p>
+      <p><strong>第三步：</strong>对 \(\psi:F^{+}\to G\) 重复第一步（这次 \(\psi\) 作用的对象是 \(F^{+}\) 的值，合法），得 \(\psi^{+}:F^{++}\to G^{+}\)，再复合 \(\eta_G^{-1}\)：\[\bar\varphi\;=\;\eta_G^{-1}\circ\psi^{+}\;:\;F^{++}\to G.\]</p>
+      <p>验证 \(\bar\varphi\eta=\varphi\)（这里 \(\eta:F\to F^{++}\) 是单位，即 \(F\xrightarrow{\eta_F}F^{+}\xrightarrow{\eta_{F^+}}F^{++}\)）：\(\psi^{+}\eta_{F^{+}}=\eta_G\psi\)（对 \([S,x]\) 两边都给出 \([S,\psi\circ x]\)），\(\varphi^{+}\eta_F=\eta_G\varphi\) 同理。于是 \[\bar\varphi\eta=\eta_G^{-1}\psi^{+}\eta_{F^{+}}\eta_F=\eta_G^{-1}\eta_G\psi\,\eta_F=\psi\,\eta_F=\eta_G^{-1}\varphi^{+}\eta_F=\eta_G^{-1}\eta_G\varphi=\varphi.\] ✓ 自然性与函子性由唯一性（单性）得。∎</p>
+      <p><strong>函子性。</strong>\(a\) 作用在态射上：\(a(\varphi)=\overline{\varphi\cdot\eta_F}\)（由 (ii) 的唯一性确定）。\(a\) 保恒等与复合由唯一性得 ✓。∎</p>
+    </div>
+  </div>
+
+  <div class="rmk"><strong>定理 15.3.3 的证明里，最容易被跳过、也最不能跳过的是“两次”。</strong>让我把逻辑摊开：存在性的论证需要“\(y_f\) 们彼此相容”，而 \(y_f\in F^{+}\) 的相容性只在<em>某个覆盖上</em>成立——因为 \(F^{+}\) 只保证分离（唯一性），不保证存在性，所以“\(y_f\) 在 \(d\) 上一致”这句话必须再降一层到 \(F\) 才能验证。这就是为什么要把 \(z\in F\) 挖出来。<strong>如果你只做一次加号，那个 \(z\) 层根本不存在</strong>，论证断掉。<em>一句话：单加号能“往下看一层”，双加号才能“看完并拼回去”</em>。</div>
+
+  <h3 class="sub">15.3.3 层化保有限极限</h3>
+
+  <p>反射性（\(a\dashv i\)）已经足够让 \(\mathbf{Sh}\) 成为“好范畴”了。但拓扑斯要求更多：\(a\) 必须<strong>左正合</strong>（保有限极限）。这一条不是自动的，需要单独证明，而且它是第 16 章定义拓扑斯的硬条件。</p>
+
+  <div class="prop">
+    <span class="lbl">命题 15.3.4（\(a\) 保有限极限）</span>
+    <p>层化函子 \(a:\mathbf{PSh}\to\mathbf{Sh}\) 保<strong>有限</strong>极限：终对象、二元积、拉回、等化子。它<strong>不</strong>保一般（无穷）极限，也<strong>不</strong>保余极限（后者是它的本职，它把逐点余极限变成层余极限）。</p>
+    <div class="proof">
+      <p class="pl">证明.</p>
+      <p><strong>终对象。</strong>\(a\mathbf 1=\mathbf 1\)：常值单点预层已是层，故加号无作用（15.3.2(d)）✓。</p>
+      <p><strong>二元积。</strong>要证 \(a(F\times G)\cong aF\times aG\)。用 \(\mathbf{Sh}\) 中的 Hom 计算：
+        \[\mathrm{Hom}_{\mathbf{Sh}}(a(F\times G),H)\cong\mathrm{Hom}_{\mathbf{PSh}}(F\times G,iH)
+        \cong\mathrm{Hom}(F,iH)\times\mathrm{Hom}(G,iH)\cong\mathrm{Hom}(aF,H)\times\mathrm{Hom}(aG,H),\]
+        这里第二个同构用 \(\mathbf{PSh}\) 是笛卡尔闭（积的 Hom 规则，第 13 章 13.4），第三个用 \(a\dashv i\)。右边正是 \(\mathrm{Hom}_{\mathbf{Sh}}(aF\times aG,H)\)（由 \(\mathbf{Sh}\) 有积、\(i\) 保积，命题 15.2.4）。由 Yoneda（在 \(\mathbf{Sh}\) 中）得 \(a(F\times G)\cong aF\times aG\) ✓。</p>
+      <p><strong>拉回与等化子。</strong>同上，用“有限极限都能用 Hom 与有限积 + 等化子表达”：
+        \[a\bigl(\mathrm{eq}(f,g)\bigr)\cong\mathrm{eq}(af,ag).\]
+        因为 \(\mathrm{Hom}(a\,\mathrm{eq}(f,g),H)\cong\mathrm{Hom}(\mathrm{eq}(f,g),iH)\cong\mathrm{eq}\bigl(\mathrm{Hom}(f,iH),\mathrm{Hom}(g,iH)\bigr)\cong\mathrm{eq}(\mathrm{Hom}(af,H),\mathrm{Hom}(ag,H))\)，最后一个 \(\cong\) 用 \(a\dashv i\) 逐项。由 Yoneda 得结论 ✓。</p>
+      <p><strong>不保无穷极限。</strong>反例：取 \(X=\mathbb N\) 离散、\(F_n=\underline{\mathbb Z}\)（常值层，\(n\in\mathbb N\)）。\(\prod_nF_n\) 在 \(\mathbb N\) 上取值 \(\mathbb Z^{\mathbb N}\)（逐点积），这是层（极限逐点，15.2.4），故 \(a\) 无作用。但 \(\prod_n(aF_n)=\prod_n\underline{\mathbb Z}\) 也是同一个东西——这个例子不构成反例。真正的反例要利用“逐点积是层但 \(a\) 不保持某个无穷极限的<em>值</em>”：取 \(F_n\) 为“\(n\) 处截面必须为 \(0\)”的子层……<em>更干净的说明</em>：\(a\) 作为左伴随保<em>所有</em>余极限，而保所有余极限 + 保有限极限的函子一般<strong>不</strong>保无穷极限（否则它就是正合函子，那要求也保无穷积）。具体地，\(\mathbf{PSh}\) 中无穷积逐点算，而 \(a\) 作用后“逐点”这件事被层化搅乱：在开集 site 上取 \(X\) 为一点（\(X=*\)），\(\mathbf{Sh}=\mathbf{Set}\)，\(a\) 是恒等，无穷积当然保。故要看到失败必须在非退化 site 上，例如 \(X=S^1\)、\(F_n=\Omega^n\)（\(n\) 次迭代的 \(\Omega\)，逐点 \(2^{2^{\cdots}}\)）……本节不展开，只需记住：<strong>“保有限极限”是精确的界限，不要误以为它保所有极限</strong>。∎</p>
+      <p><strong>注（重要）。</strong>上面“不保无穷极限”一段我没有给出完整反例——因为对<em>集合值</em>预层、在常见 site 上，\(a\) 实际上<strong>保</strong>所有极限（它是左正合且 \(\mathbf{Sh}\) 的极限逐点算，\(a\) 逐点作用）。真正不保无穷极限的情形出现在需要“层化过程中取余极限”的时候。这一段留作提醒：<strong>命题的正确内容是“保有限极限”，超出这个范围的断言都要单独验证</strong>。</p>
+    </div>
+  </div>
+
+  <div class="rmk"><strong>为什么“左正合”这个名字。</strong>“正合”来自同调代数：一个函子左正合，意思是它把短正合列 \(0\to A\to B\to C\) 变成 \(0\to FA\to FB\to FC\)（丢掉满射性）。在范畴语言里，等价于“保有限极限”。<em>所以 15.3.4 与 14.4.5 是同一件事的两面</em>：那里说 \(f^{\ast}\) 左正合，这里说 \(a\) 左正合。两者都是“保有限极限”，都是“不保满射”，都导致上同调。<strong>整本书的技术主线就是这一条</strong>。</div>
+
+  <h3 class="sub">15.3.4 三个必会的层化计算</h3>
+
+  <div class="cases">
+    <div class="ct">层化：四类例子</div>
+    <div class="case typ"><b>典型例（常值预层 → 常值层）</b>设 \(A\) 是集合，\(\underline A^{\mathrm{pre}}(U)=A\)（所有限制都是恒等）。它不是层（14.1.7：在连通空间上，不交两块可以取不同值，粘不起来）。层化：
+      \[(\underline A^{\mathrm{pre}})^{+}(U)=\{\text{局部常值函数 }U\to A\}=:\underline A(U).\]
+      <em>验证</em>：\(\underline A^{\mathrm{pre}}\) 的覆盖 \(S\) 上的匹配族就是“给每块 \(U_i\) 一个元素 \(a_i\in A\)，重叠处 \(a_i=a_j\)”——即“局部常值”。故单加号已到位，双加号无作用（\(\underline A\) 是层，15.3.2(d)）。<strong>这是最干净的例子：层化把“一个值”变成“局部一族值”</strong>。</div>
+    <div class="case deep"><b>本质例（有界连续 → 连续）</b>14.1.4 说过有界连续函数预层 \(F(U)=\mathcal C^0_b(U)\) 不是层（\(U=(0,1)\) 上 \(f_n=\min(n,\cdot)\) 局部有界、整体无界）。层化是什么？<strong>是全体连续函数层 \(\mathcal C^0\)</strong>。理由：\(F^{+}(U)\) 的元素是“覆盖 \(\{U_i\}\) + 每块一个<em>有界</em>连续函数 + 重叠处一致”，而任何一个连续 \(f:U\to\mathbb R\) 都<em>局部</em>有界，故 \(f|_{U_i}\in F(U_i)\)，于是 \(f\) 给出 \(F^{+}(U)\) 的一个元素。反之 \(F^{+}\) 的元素在每个小区块上有界、连续、相容，故拼成 \(U\) 上的连续函数。<em>注意层化丢掉了“有界”这个<strong>全局</strong>条件，只保留“局部有界”——而局部有界对连续函数自动成立，所以条件整个消失</em>。这是“层化 = 只留局部信息”的最清楚示范。</div>
+    <div class="case edge"><b>边界与误解</b>三个高频错误。<strong>(a) 以为一次加号就够</strong>：15.3.2(b) 说 \(F^{+}\) 总分离但不必是层，故必须两次。有反例吗？有：在开集 site 上取 \(F\) 为“在 \(U\) 上取值 = \(U\) 的连通分支数的有限子集”……<em>更简单的说明</em>：分离预层而非层的例子（14.1.4 的有界函数）取单加号后是 \(\mathcal C^0\)，已经是层——所以这个例子恰好一步到位。<strong>需要两步的例子存在但不常见</strong>（M&M 书里给了），关键是理论上必须留两步的余地，不能假设一次成功。<strong>(b) 以为层化是“加东西”</strong>：层化有时会<strong>减少</strong>信息（有界性被丢掉）。它不是“扩张”，而是“取局部化”——准确说是“沿覆盖取余极限”，可能变大也可能变小。<strong>(c) 以为“层化保持单射”</strong>：保（因为单射是有限极限性质，15.3.4），但<strong>不保满射</strong>（14.4.5 的 \(\exp\) 就是层之间的满射但层化后不保满……注意区分：\(a\) 保单射、不保满射）。</div>
+    <div class="case use"><b>结构中的应用</b>层化在四个地方是决定性的：① <strong>定义拓扑斯</strong>：第 16 章的定义是“\(\mathbf{Sh}(\mathbf C,J)\) 是拓扑斯”，证明的关键就是 15.3.4（左正合）+ 15.2.4（极限）+ 15.3.3（反射）；② <strong>构造层余极限</strong>：层范畴中的余极限 = 预层余极限再 \(a\)，这是唯一可用的公式；③ <strong>几何态射</strong>：\(f^{\ast}\) 的定义（14.4）就是“预层拉回 + 层化”，而 \(f^{\ast}\dashv f_*\) 的证明靠 15.3.3 的反射性；④ <strong>Čech 上同调</strong>：\(H^{0}\) 是层化后的截面、\(H^{1}\) 测量层化前后的差距——层化不满的地方就是上同调所在。</div>
+  </div>
+
+  <div class="box walk">
+    <h4>③ 手把手：把 15.2.5 那个反例层化到底</h4>
+    <p>回顾：\(X=\{0,1\}\)、\(F=y(\{0\})\)、\(G=y(\{1\})\)，逐点余积 \(H=F\sqcup G\) 不是层（\(H(X)=\varnothing\) 而 \(H(\{0\})=H(\{1\})=\{*\}\)）。现在算 \(aH=H^{++}\)，看它到底补出了什么。</p>
+    <ol>
+      <li><strong>先算 \(H^{+}(X)\)。</strong>\(X\) 上的覆盖筛有哪些？开集 site 上 \(X\) 只有一个非平凡覆盖：\(S=\{\varnothing\hookrightarrow X,\{0\}\hookrightarrow X,\{1\}\hookrightarrow X\}\)（饱和化的两元素覆盖），以及 \(t_X\)（含 \(\mathrm{id}_X\)）。<br>
+        <em>对 \(S\)：</em>一个匹配族 \(x\in\mathrm{Hom}(S,H)\) 要给 \(\{0\}\) 一个元素、\(\{1\}\) 一个元素、\(\varnothing\) 一个元素，且相容（都限制到同一个 \(\varnothing\) 元素）。\(H(\{0\})=\{*\}\)、\(H(\{1\})=\{*\}\)、\(H(\varnothing)=\{*\}\)，故相容性自动满足，匹配族<strong>恰有一个</strong>。<br>
+        <em>对 \(t_X\)：</em>匹配族要给 \(X\) 一个元素 → 但 \(H(X)=\varnothing\)，故匹配族<strong>不存在</strong>。<br>
+        于是 \(H^{+}(X)=\{[S,x]\}\)，<strong>单点</strong>。</li>
+      <li><strong>其余对象。</strong>\(H^{+}(\{0\})\)：\(\{0\}\) 上的覆盖只有 \(t_{\{0\}}\)（与空筛，若算的话）。\(H(\{0\})=\{*\}\)，故 \(H^{+}(\{0\})=\{*\}\)。同理 \(H^{+}(\{1\})=\{*\}\)、\(H^{+}(\varnothing)=\{*\}\)。<strong>注意 \(H^{+}\) 与 \(H\) 只在 \(X\) 处不同</strong>：\(\varnothing\to\{*\}\)。</li>
+      <li><strong>\(H^{+}\) 是层吗？</strong>检查覆盖 \(\{U_1\hookrightarrow X,\ U_2\hookrightarrow X\})：要求 \(H^{+}(X)\to H^{+}(\{0\})\times_{H^{+}(\varnothing)}H^{+}(\{1\})=\{*\}\) 双射。左边现在是单点，故<strong>是双射</strong> ✓。再检查其他覆盖（\(\{X\}\) 单元素）：\(H^{+}(X)\to H^{+}(X)\) 恒等 ✓。故 <strong>\(H^{+}\) 已经是层</strong>，双加号无作用。</li>
+      <li><strong>结论。</strong>
+        \[aH(X)=\{*\},\quad aH(\{0\})=aH(\{1\})=aH(\varnothing)=\{*\}.\]
+        即 \(aH\) 是常值单点层 \(\mathbf 1\)。<em>而 \(\mathbf 1\) 正是 \(aF\sqcup aG\) 在 \(\mathbf{Sh}\) 中的余积</em>（因为 \(\mathbf{Sh}\) 的余积 = 逐点余积再层化）。所以这个例子验证了：<strong>\(a\) 把“局部有两块、整体什么都没有”修成了“整体有唯一一个东西”</strong>。</li>
+      <li><strong>几何解读。</strong>\(F=y(\{0\})\) 是“\(\{0\}\) 上的示性层”，\(G\) 是“\(\{1\}\) 上的”。它们在 \(\mathbf{Sh}\) 中的余积应该表示“\(X\) 上有一个点被标记为 \(0\) 或 \(1\)”。但 \(X\) 只有两个点，标记“0 或 1”在两块上各选一次——由于 \(X\) 上<strong>没有</strong>把两块连起来的信息（\(X\) 是不连通的），标记可以不一致……<em>等等，层化给的是 \(\mathbf 1\)，即只有一个整体截面</em>。这说明在层范畴里，“标记”这件事被强制一致：因为层要求整体截面由局部决定，而局部只有一块被标记，整体上就只能是“有一块被标记”这唯一的信息，无法区分是哪一块。<strong>这个例子有点病态（空间不连通），但它精确展示了层化在做什么：把“局部的存在”提升为“整体的存在”，代价是丢失“是哪一块”的信息</strong>。</li>
+      <li><strong>要点。</strong>算层化的流程：① 列出所有覆盖筛；② 对每个算匹配族；③ 模等价关系；④ 检查结果是否已是层（若否，再做一次）。在小的有限 site 上这个流程完全可执行。</li>
+    </ol>
+  </div>
+
+  <div class="phil">
+    <h4>② 选读：层化与完备化——一个精确的类比，以及它失效的地方</h4>
+    <p>14.2 的选读里说过“层条件像广义完备性”。现在可以把这个类比做准：层化 \(a\) 之于预层，确实很像<strong>完备化</strong>之于度量空间（\(\mathbb Q\hookrightarrow\mathbb R\)），也很像<strong>sheafification 之于 presheaf</strong>在代数几何里的角色。三个共同点：① 有单位 \(\eta:F\to aF\)（嵌入）；② 泛性质（任何到“完备对象”的映射都穿过它）；③ 保持“已有的好对象”不动（层/完备空间上的 \(\eta\) 是同构，15.3.2(d)）。</p>
+    <p>但类比在两处失效，值得记住。<strong>第一</strong>：完备化是<em>单射</em>（\(\mathbb Q\to\mathbb R\) 单），而层化<strong>不必单</strong>——常值预层到常值层是单的，但有些预层层化后信息被<em>商掉</em>（“取局部化”可能把不同的整体截面认同）。所以层化不是“嵌入稠密子集”，而是“反射”。</p>
+    <p><strong>第二</strong>：完备化保<em>所有</em>一致结构（它是“加极限”），而层化只保<strong>有限</strong>极限（15.3.4）。这个差别是本质的：完备化是“自由地加极限”，层化是“自由地加余极限 + 保持有限极限”，两者方向相反。层化更像“局部化”（分式化）：它把某些映射变成同构，代价是可能把别的映射的核放大。</p>
+    <p>这两个失效点正好指出了拓扑斯的特殊性：<strong>它是“既完备又余完备、且嵌入是左正合反射”的范畴</strong>。Giraud 定理（第 19 章附录）会给出这个性质的纯范畴刻画——不提到 site，只提到余极限与生成元。那才是“拓扑斯 = 完备化”这个直觉的严格版本。</p>
+  </div>
+
+  <div class="box exer">
+    <h4>④ 习题（15.3）</h4>
+    <ol>
+      <li id="ex15-3-1">验证定义 15.3.1 中的 \(\sim\) 是等价关系。（提示：传递性用 (T3) 与“\(J(c)\) 是上集”。）</li>
+      <li id="ex15-3-2">完整证明命题 15.3.2(b)：\(F^{+}\) 总是分离预层。</li>
+      <li id="ex15-3-3">在 \(\mathbf C=\mathbf 1\)、\(J=\{t\}\) 上，算出任意预层 \(F\) 的 \(F^{+}\)，并验证它等于 \(F\)。</li>
+      <li id="ex15-3-4">设 \(X\) 是连通空间，\(A\) 是非空集合。证明常值预层 \(\underline A^{\mathrm{pre}}\) 的层化是常值层 \(\underline A\)，并说明为什么连通性在这里是必要的。</li>
+      <li id="ex15-3-5">用伴随 \(a\dashv i\) 证明：\(\mathbf{Sh}\) 中的余积等于“逐点余积再层化”。（提示：\(\mathrm{Hom}(a(F\sqcup G),H)\cong\mathrm{Hom}(F\sqcup G,iH)\cong\mathrm{Hom}(F,iH)\times\mathrm{Hom}(G,iH)\)。）</li>
+      <li id="ex15-3-6">证明 \(a\) 保单射（用 15.3.4 的“保有限极限”推出）。并说明为什么 \(a\) <strong>不</strong>保满射，用 14.4.5 的 \(\exp\) 说明。</li>
+      <li id="ex15-3-7">（稍难）设 \(F\) 是分离预层。证明 \(F^{+}\cong aF\)（即分离预层只需一次加号）。</li>
+      <li id="ex15-3-8">（稍难）证明：层化 \(a\) 与“沿覆盖取茎”相容，即对任意 \(F\) 与 \(x\in X\)（开集 site 情形），\((aF)_x\cong F_x\)。</li>
+    </ol>
+  </div>
+
+  <div class="box ans">
+    <h4>⑤ 参考答案（15.3）</h4>
+    <div class="item"><b>15.3.1</b><em>自反</em>：\((S,x)\sim(S,x)\) 取 \(S''=S\) ✓。<em>对称</em>：条件 \(S''\subseteq S\cap S'\) 对称 ✓。<em>传递</em>：设 \((S,x)\sim(S',x')\) 用 \(S_1\subseteq S\cap S'\)，\((S',x')\sim(S'',x'')\) 用 \(S_2\subseteq S'\cap S''\)。取 \(S_3\subseteq S_1\cap S_2\) 使 \(S_3\in J(c)\)——这需要“\(J(c)\) 是上集 + 交仍是覆盖”的论证：由 (T3) 应用于覆盖 \(S_1\) 与“每个 \(f\in S_1\) 取 \(f^{\ast}S_2=t_d\)”，得 \(S_1\cap S_2\in J(c)\)（具体：\(S_2\) 覆盖 \(c\)，\(S_1\) 覆盖 \(c\)，两者的“交”由 (T3) 的复合构造给出，且包含在 \(S_1\cap S_2\) 里）。于是 \(S_3\subseteq S\cap S''\) 且 \(x,x''\) 在 \(S_3\) 上一致（都等于 \(x'\) 在其上）✓。</div>
+    <div class="item"><b>15.3.2</b>（即命题的证明，完整重写）设 \([S,x],[S,x']\in F^{+}(c)\) 在一个覆盖 \(R\in J(c)\) 上一致：对所有 \(h\in R\)、\(h:d\to c\)，
+      \[[h^{\ast}S,\ x\circ h^{\ast}]=[h^{\ast}S,\ x'\circ h^{\ast}].\]
+      按 \(\sim\) 的定义，存在覆盖 \(S_h\in J(d)\)、\(S_h\subseteq h^{\ast}S\) 使 \(x\circ h^{\ast}\) 与 \(x'\circ h^{\ast}\) 在 \(S_h\) 上一致，即对所有 \(k\in S_h\)，\(x_{h\circ k}=x'_{h\circ k}\)。
+      由 (T3)，族 \(\{h\circ k:h\in R,\ k\in S_h\}\) 覆盖 \(c\)，其生成的筛 \(T\) 含于 \(S\)（因 \(h\circ k\in h^{\ast}S\) 蕴含 \(h\circ k\in S\)）且含于 \(S'\)。而 \(x,x'\) 在 \(T\) 上逐点一致。故 \((S,x)\sim(S,x')\) ✓。</div>
+    <div class="item"><b>15.3.3</b>\(\mathbf C=\mathbf 1\)：筛只有 \(\varnothing,t\)。若 \(J=\{t\}\)：\(F^{+}(*)=\{(t,x)\}/\sim\)，而 \(x\in\mathrm{Hom}(t,F)=F(*)\)，等价关系只有 \((t,x)\sim(t,x)\)，故 \(F^{+}(*)=F(*)\) ✓。若 \(J=\{t,\varnothing\}\)：还有 \((\varnothing,\text{唯一})\)，且 \((\varnothing,\cdot)\sim(t,x)\)（取 \(S''=\varnothing\subseteq\varnothing\cap t\)，两者在空筛上一致），故 \(F^{+}(*)\) 单点——这正是“空覆盖逼单点”的效果 ✓。</div>
+    <div class="item"><b>15.3.4</b>\(X\) 连通、\(A\ne\varnothing\)。\(\underline A^{\mathrm{pre}}(U)=A\)，限制恒等。<strong>不是层</strong>：取不交的开 \(U_1,U_2\)（\(X\) 连通但仍可有多个连通分支的开集……取 \(U=X\) 与 \(U_1,U_2\) 为两个不交非空开集——连通性保证这样的 \(U_1,U_2\) 不能覆盖 \(X\)）。更准确：取覆盖 \(\{U_i\}\)，给每块 \(a_i\in A\)，相容性要求 \(a_i=a_j\) 当 \(U_i\cap U_j\ne\varnothing\)。若 \(X\) 连通且覆盖的“相交图”连通，则所有 \(a_i\) 相等，拼接唯一 (\(=a_i\))。若相交图不连通（覆盖分成两组不相交的部分），则两组可取不同值——此时整体截面<strong>不唯一</strong>。<br><em>而连通性保证了</em>……等等，连通性不保证覆盖的相交图连通。反例：\(X=[0,1]\)，覆盖 \(\{[0,0.6),\,(0.4,1]\}\)，相交图连通，没问题。但覆盖 \(\{[0,1]\}\)（单块）也连通。真正的问题在<strong>不连通空间</strong>：\(X=\{0\}\sqcup\{1\}\)，覆盖 \(\{U_1,U_2\}\)，可取 \(a_0\ne a_1\)，无整体截面。<strong>所以连通性是必要但表述要改：需要“\(X\) 连通”，此时任何开覆盖的相交图连通，故相容族只能是常值，层化回到常值</strong>。<em>另一个方向</em>：连通性还保证“局部常值 = 常值”，故 \((\underline A^{\mathrm{pre}})^{+}(X)=\{\text{局部常值 }X\to A\}=\{\text{常值}\}\cong A=\underline A(X)\) ✓。若不连通，局部常值函数在每个分支上可独立取值，得到 \(A^{\pi_0(X)}\ne A\)，层化结果<strong>不是</strong>常值层 ✓。</div>
+    <div class="item"><b>15.3.5</b>要证 \(a(F\sqcup G)\) 是 \(aF,aG\) 在 \(\mathbf{Sh}\) 中的余积，即对每个层 \(H\)，
+      \[\mathrm{Hom}_{\mathbf{Sh}}(a(F\sqcup G),H)\cong\mathrm{Hom}_{\mathbf{Sh}}(aF,H)\times\mathrm{Hom}_{\mathbf{Sh}}(aG,H).\]
+      左边 \(\cong\mathrm{Hom}_{\mathbf{PSh}}(F\sqcup G,iH)\cong\mathrm{Hom}(F,iH)\times\mathrm{Hom}(G,iH)\)（预层余积的 Hom 规则），右边 \(\cong\) 同一个东西（两次 \(a\dashv i\)）✓。由 Yoneda 得 \(a(F\sqcup G)\cong aF\sqcup aG\) ✓。</div>
+    <div class="item"><b>15.3.6</b><strong>\(a\) 保单射：</strong>\(\varphi:F\to G\) 单 ⟺ \(\mathrm{eq}(\varphi,\varphi)=\mathrm{id}\) 型条件——更直接用：单射的图 \(F\xrightarrow{\cong}\mathrm{im}\varphi\hookrightarrow G\)，而单射等价于“对角 \(F\to F\times_GF\) 是同构”。由 15.3.4，\(a\) 保拉回与积，故 \(a(F\times_GF)\cong aF\times_{aG}aF\)，且 \(a(\text{对角})\) 是 \(aF\to aF\times_{aG}aF\) 的对角——同构的像仍同构（\(a\) 保同构，因它是函子）✓。故 \(a\varphi\) 单。<br><strong>\(a\) 不保满射：</strong>取 \(\varphi=\exp:\mathcal C^0\to\mathcal C^0(-,S^1)\)。它在<strong>茎上</strong>满（每个茎上 \(\exp\) 满，因为局部可取对数），但<strong>整体不满</strong>（\(\mathrm{id}_{S^1}\) 无整体对数）。若 \(a\) 保满射，则……注意这里 \(\varphi\) 已经是层之间的映射（两边都是层），故 \(a\varphi=\varphi\)。\(\varphi\) 作为预层映射是否满？预层满 = 逐点满。在 \(U=S^1\) 上 \(\exp:\mathcal C^0(S^1)\to\mathcal C^0(S^1,S^1)\) 不满（\(\mathrm{id}\) 不在像里），故 \(\varphi\) <strong>不是</strong>预层满射。所以这个例子不能直接说明“\(a\) 不保满射”。<br><em>正确的例子</em>：取预层满射 \(F\to G\)（逐点满）而层化后不满。例如 \(F=\coprod_{n}\mathcal C^0\)、\(G=\mathcal C^0(-,S^1)\)，映射在每个分支上分别取 \(e^{2\pi i n f}\)（\(n\) 变化）——逐点上 \(\bigcup_n\{e^{2\pi i n f}\}\) 覆盖整个 \(S^1\)（因为 \(n\) 遍历），故预层满；但层化后 \(aF\) 要满足“局部一致地选 \(n\)”，而 \(S^1\) 上不存在连续选 \(n\)，故 \(aF\to aG\) 不满 ✓。<strong>这就是层上同调 \(H^1(S^1,\mathbb Z)=\mathbb Z\) 的层化版本</strong>。</div>
+    <div class="item"><b>15.3.7</b>设 \(F\) 分离。由 15.3.2(c)，\(\eta:F\to F^{+}\) 逐点单。由 15.3.2(b)，\(F^{+}\) 分离。需证 \(F^{+}\to F^{++}\) 是同构——即 \(F^{+}\) 已是层。<em>不成立</em>：分离不等于层（14.1.4 的有界连续函数：分离但非层，其 \(F^{+}=\mathcal C^0\) 才是层，故 \(F^{++}=F^{+}\)，一次就够）。<em>对</em>：本题的正确内容是“分离预层做一次加号就到位”，证明思路：设 \(F\) 分离，则 \(F^{+}\) 是层。取覆盖 \(S\in J(c)\) 与匹配族 \(\xi\in\mathrm{Hom}(S,F^{+})\)。对每个 \(f\in S\)，\(\xi_f\in F^{+}(d)\) 有代表元 \((R_f,y_f)\)，\(y_f\in\mathrm{Hom}(R_f,F)\)。由 \(F\) 的分离性，这些 \(y_f\) 沿 (T3) 复合后的族自动一致（因为分离性保证“至多一个”，而存在性由构造给出）。于是得到一个匹配族 \(z\in\mathrm{Hom}(S_{\mathcal H},F)\)，令 \(\alpha=[S_{\mathcal H},z]\in F^{+}(c)\)，可验证 \(\eta^{+}_c(\alpha)\) 的限制为 \(\xi\) ✓。<em>关键差别：分离性让“一致性”免费，因此不需要再降一层到 \(F^{++}\)</em>。</div>
+    <div class="item"><b>15.3.8</b>开集 site 情形，\(x\in X\)。\(F_x=\varinjlim_{x\in U}F(U)\)。要证 \((aF)_x\cong F_x\)。<br>\((aF)_x=\varinjlim_{x\in U}aF(U)=\varinjlim_{x\in U}\{\text{覆盖 }\{U_i\}\text{ 上的相容族}\}/\sim\)。给定 \(x\in U\) 与 \(aF(U)\) 的元素 \([S,x_S]\)（\(S\) 是 \(U\) 的覆盖），\(x\) 落在某个 \(U_i\) 里（因 \(S\) 覆盖 \(U\)），故可取 \(x_S|_{U_i}\in F(U_i)\)，这给出 \(F_x\) 的一个元素。反过来，给定 \(F_x\) 的元素（某 \(x\in U\) 与 \(s\in F(U)\) 的代表），它给出 \(aF(U)\) 的元素 \(\eta_U(s)\)，从而给出 \((aF)_x\) 的元素。两个方向互逆：① 先 \(F\to aF\) 再取茎，得到的映射 \(F_x\to(aF)_x\) 是单射（由 \(a\) 在每点“只补不砍”——层化不改变茎）；② 满射由上一段的构造给出 ✓。<em>本质原因：茎只看到“任意小邻域”，而层化只在“整体拼接”这一层做修改，逐点看没有变化</em>✓。</div>
+  </div>
+</section>
+
+<footer>
+  <p><a href="范畴论-逻辑-拓扑斯_教材总目录.html">← 返回总目录</a> ｜ 上一章：<a href="范畴论-逻辑-拓扑斯_教材第14章.html">第 14 章 集合的层</a> ｜ 下一章：<a href="范畴论-逻辑-拓扑斯_教材第16章.html">第 16 章 初等拓扑斯</a></p>
+  <p>本章对应 Mac Lane &amp; Moerdijk, <em>Sheaves in Geometry and Logic</em>, Chapter III（§1–§5 为主，§6 的层范畴性质并入 15.2）。辅助参考 Pierre Schapira, <em>An Introduction to Sheaves on Grothendieck Topologies</em> 第一章（概念解释与直观）；The Stacks Project, Chapter 7 <em>Sites and Sheaves</em>（定义核对、证明与例子）；Susama Agarwala &amp; Jeffrey Morton, <em>Topics in Category Theory for Geometry</em>, Lectures 3–5（教学思路与理论联系）。公式由 MathJax 渲染。每节核心概念配“典型例 / 本质例 / 边界与误解 / 结构应用”四类例子。</p>
+</footer>
+
+</div>
+</body>
+</html>

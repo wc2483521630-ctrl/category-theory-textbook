@@ -1,0 +1,1047 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-page-node-id="KrQfFGO7RHS9q686UbxEPn">
+<head data-page-node-id="2n4a8fu9r5jIzER6R4YDkq">
+<meta charset="UTF-8" data-page-node-id="hrJsGXNlnds3jxNX79XapZ">
+<meta name="viewport" content="width=device-width, initial-scale=1.0" data-page-node-id="1mgsicvWHHh2iHMrKrwY2Z">
+<title>第 11 章 类型论与拓扑斯（Part II）—— 三书递进自学教材</title>
+<script>
+window.MathJax = {
+  tex: {
+    inlineMath: [['\\(','\\)']], displayMath: [['\\[','\\]']], processEscapes: true,
+    macros: {
+      llbracket: '\\lbrack\\lbrack',
+      rrbracket: '\\rbrack\\rbrack'
+    }
+  },
+  options: { ignoreHtmlClass: 'no-tex' },
+  svg: { fontCache: 'global' }
+};
+</script>
+<script async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
+<style>
+  :root{
+    --bg:#f6f7f9; --card:#fff; --ink:#1b1f27; --ink2:#4d5461; --ink3:#7a8190;
+    --line:#e5e8ed; --soft:#f0f2f5;
+    --c1:#2563eb; --c1bg:#eef4ff; --gold:#b45309; --goldbg:#fdf3e3;
+    --ok:#15803d; --okbg:#eefaf1; --phil:#7c3aed; --philbg:#f6f1ff;
+    --teal:#0d9488; --tealbg:#eefaf7; --walk:#b45309;
+    --radius:12px;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;
+    line-height:1.75;-webkit-font-smoothing:antialiased;}
+  .wrap{max-width:920px;margin:0 auto;padding:0 22px 80px;}
+
+  header.top{padding:34px 0 22px;border-bottom:1px solid var(--line);margin-bottom:26px;}
+  .breadcrumb{font-size:12.5px;color:var(--ink3);margin-bottom:10px;}
+  .breadcrumb a{color:var(--c1);text-decoration:none;}
+  h1{font-size:29px;margin:0 0 8px;letter-spacing:-.02em;}
+  .lede{color:var(--ink2);font-size:14.5px;margin:0 0 16px;}
+  .jump{display:flex;gap:8px;flex-wrap:wrap;}
+  .jump a{font-size:12.5px;font-weight:650;text-decoration:none;color:var(--ink2);
+    background:var(--card);border:1px solid var(--line);border-radius:99px;padding:6px 13px;}
+  .jump a:hover{border-color:var(--c1);color:var(--c1);}
+
+  section.sec{margin:0 0 52px;scroll-margin-top:16px;}
+  .sec-h{display:flex;align-items:baseline;gap:12px;border-bottom:2px solid var(--c1);padding-bottom:10px;margin-bottom:22px;}
+  .sec-no{font-size:13px;font-weight:800;color:#fff;background:var(--c1);border-radius:7px;padding:3px 10px;white-space:nowrap;}
+  .sec-h h2{font-size:22px;margin:0;letter-spacing:-.01em;}
+  .src{font-size:11.5px;color:var(--ink3);margin-left:auto;white-space:nowrap;}
+
+  .box{border-radius:var(--radius);padding:16px 20px;margin:18px 0;border:1px solid var(--line);}
+  .box h4{margin:0 0 10px;font-size:14px;letter-spacing:.01em;}
+
+  .learn{background:var(--c1bg);border-color:#cfe0ff;}
+  .learn h4{color:var(--c1);}
+  .learn ol{margin:0;padding-left:22px;} .learn li{margin:4px 0;font-size:14px;}
+
+  .prep{background:var(--tealbg);border-color:#bfe9dd;}
+  .prep h4{color:var(--teal);}
+  .prep p{font-size:13.5px;color:#115e59;margin:8px 0;}
+  .prep ol,.prep ul{margin:8px 0;padding-left:22px;font-size:13.5px;color:#115e59;}
+  .prep li{margin:5px 0;}
+
+  .defn{background:#fafbfc;border-left:4px solid var(--ink2);padding:14px 18px;margin:16px 0;border-radius:0 10px 10px 0;}
+  .defn .lbl{font-weight:800;font-size:13.5px;color:var(--ink);}
+  .prop{background:#fbfcfe;border:1px solid #dbe6f8;border-left:4px solid var(--c1);padding:14px 18px;margin:16px 0;border-radius:0 10px 10px 0;}
+  .prop .lbl{font-weight:800;font-size:13.5px;color:var(--c1);}
+  .rmk{font-size:13.5px;color:var(--ink2);background:var(--soft);padding:11px 16px;border-radius:9px;margin:12px 0;}
+  .xref{font-size:13px;color:#115e59;background:var(--tealbg);border-left:3px solid var(--teal);padding:9px 14px;border-radius:0 8px 8px 0;margin:12px 0;}
+
+  .proof{margin:10px 0 4px;padding-left:16px;border-left:2px solid var(--line);font-size:14px;color:var(--ink2);}
+  .proof .pl{font-weight:700;color:var(--ink);}
+  .qed{float:right;font-style:normal;color:var(--ink3);}
+
+  .exer{background:var(--goldbg);border-color:#f2dfbb;}
+  .exer h4{color:var(--gold);}
+  .exer .grp{font-size:12.5px;font-weight:750;color:var(--gold);margin:12px 0 4px;}
+  .exer ol{margin:0;padding-left:22px;} .exer li{margin:9px 0;font-size:14px;}
+
+  .ans{background:var(--okbg);border-color:#c9ecd3;}
+  .ans h4{color:var(--ok);}
+  .ans .item{margin:14px 0 18px;font-size:14px;}
+  .ans .item:last-child{margin-bottom:0;}
+  .ans .item b{color:var(--ok);}
+  .ans .proof{border-left-color:#bfe6c9;}
+
+  .phil{background:var(--philbg);border-color:#e3d5ff;}
+  .phil h4{color:var(--phil);}
+  .phil p{font-size:14px;color:#5b3a8e;margin:8px 0;}
+
+  .walk{background:#fffbeb;border-color:#fde68a;}
+  .walk h4{color:var(--walk);}
+  .walk p,.walk li{font-size:13.5px;color:#78350f;}
+  .walk ol,.walk ul{margin:8px 0;padding-left:22px;}
+  .walk table{border-collapse:collapse;width:100%;font-size:13px;margin:10px 0;}
+  .walk th,.walk td{border:1px solid #fcd34d;padding:7px 9px;text-align:left;vertical-align:top;}
+  .walk th{background:#fef3c7;color:#78350f;}
+
+  h3.sub{font-size:16px;margin:26px 0 6px;color:var(--ink);}
+  p{margin:9px 0;} .math{overflow-x:auto;}
+
+  .figcap{font-size:12.5px;color:var(--ink3);margin:2px 0 12px;text-align:center;font-style:italic;}
+  .figdesc{font-size:13px;color:var(--ink2);background:var(--soft);padding:10px 15px;border-radius:8px;margin:6px 0 12px;}
+
+  footer{border-top:1px solid var(--line);margin-top:30px;padding-top:20px;font-size:13px;color:var(--ink3);}
+  footer a{color:var(--c1);text-decoration:none;}
+
+  @media(max-width:640px){
+    h1{font-size:23px;} .wrap{padding:0 14px 60px;}
+    .sec-h{flex-wrap:wrap;} .src{margin-left:0;}
+    .box{padding:14px 15px;}
+  }
+  @media print{body{background:#fff;}.jump{display:none;}.box{break-inside:avoid;}}
+  /* ---- 范畴交换图 SVG（浅色主题）---- */
+  svg.cd{display:block;margin:16px auto 2px;max-width:100%;height:auto;
+    font-family:"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;}
+  svg.cd rect.node{fill:#eef4ff;stroke:#2563eb;stroke-width:1.5;rx:7;}
+  svg.cd rect.node2{fill:#f6f1ff;stroke:#7c3aed;stroke-width:1.5;rx:7;}
+  svg.cd rect.nodeg{fill:#eefaf1;stroke:#15803d;stroke-width:1.5;rx:7;}
+  svg.cd rect.nodey{fill:#fdf3e3;stroke:#b45309;stroke-width:1.5;rx:7;}
+  svg.cd text.nt{fill:#1b1f27;font-size:13.5px;font-weight:600;}
+  svg.cd text.lb{fill:#334155;font-size:12.5px;}
+  svg.cd text.hb{fill:#2563eb;font-size:12.5px;font-weight:600;}
+  svg.cd text.hg{fill:#15803d;font-size:12.5px;font-weight:600;}
+  svg.cd text.hp{fill:#7c3aed;font-size:12.5px;font-weight:600;}
+  svg.cd line.ar,svg.cd path.ar{stroke:#475569;stroke-width:1.6;fill:none;marker-end:url(#cdArr);}
+  svg.cd line.arb,svg.cd path.arb{stroke:#2563eb;stroke-width:1.8;fill:none;marker-end:url(#cdArrB);}
+  svg.cd line.arg,svg.cd path.arg{stroke:#15803d;stroke-width:1.8;fill:none;marker-end:url(#cdArrG);}
+  svg.cd line.arp,svg.cd path.arp{stroke:#7c3aed;stroke-width:1.8;fill:none;marker-end:url(#cdArrP);}
+  svg.cd line.ard,svg.cd path.ard{stroke:#475569;stroke-width:1.5;fill:none;stroke-dasharray:5 4;marker-end:url(#cdArr);}
+  svg.cd line.noa{stroke:#475569;stroke-width:1.5;fill:none;stroke-dasharray:5 4;}
+</style>
+</head>
+<body data-page-node-id="e5ZXbYVQe22vv4QZOOmWJP">
+
+<svg width="0" height="0" style="position:absolute;width:0;height:0;overflow:hidden" aria-hidden="true" data-page-node-id="6pNTP5VG5oFXyxMJ5wCPYo">
+<defs data-page-node-id="EDohiTzlAoQ2OKwytFOaIr">
+  <marker id="cdArr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse" data-page-node-id="gcVjxUDziFvks7Wb3fYXIl">
+    <path d="M 0 0 L 10 5 L 0 10 z" fill="#475569" data-page-node-id="pEYDdZKZjK3EExmFvtG0In"/>
+  </marker>
+  <marker id="cdArrB" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse" data-page-node-id="3elwrejwIU7ZlenpoP5VxL">
+    <path d="M 0 0 L 10 5 L 0 10 z" fill="#2563eb" data-page-node-id="agirxOnKSHgutrRBev14Hw"/>
+  </marker>
+  <marker id="cdArrG" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse" data-page-node-id="v1WSIws05hXMkbKpmZXYFn">
+    <path d="M 0 0 L 10 5 L 0 10 z" fill="#15803d" data-page-node-id="zRHier2PitlCxOGexvi7In"/>
+  </marker>
+  <marker id="cdArrP" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse" data-page-node-id="baPLaGb0SOAAWIg8V8W7kA">
+    <path d="M 0 0 L 10 5 L 0 10 z" fill="#7c3aed" data-page-node-id="P2KHrvRjdlLGN7YRQnFH9S"/>
+  </marker>
+</defs>
+</svg>
+<div class="wrap" data-page-node-id="Ai4XTtqFDhmdlfL7dfhdeD">
+
+<header class="top" data-page-node-id="iixGlxEOPmAZxN3h2Ed0e7">
+  <div class="breadcrumb" data-page-node-id="BN17A12r0KGKyokduFbHlM"><a href="范畴论-逻辑-拓扑斯_教材总目录.html" data-page-node-id="pqkyGKvIeY4YcAoRHzo9LH">← 返回总目录</a> ｜ 第二部分 · Lambek &amp; Scott《Introduction to Higher Order Categorical Logic》</div>
+  <h1 data-page-node-id="Y4TekhbY5TlwwsthTRcCrK">第 11 章　类型论与拓扑斯（Part II）</h1>
+  <p class="lede" data-page-node-id="vQghAADM9k6CiJEKDh7xeq">第 10 章结束了 Part I：类型 λ-演算、CCC 与证明同一性被证明是同一件事的三种说法。本章跨入一个<strong data-page-node-id="HYudZDaCUo0JSXwCDyBCE9">全新的世界</strong>——L&amp;S 原著 Part II。这里的核心问题变了：不再是"一个 CCC"，而是"一个自带语言的数学世界（拓扑斯）"如何把直觉主义类型论在内部说出来，以及类型论与拓扑斯之间如何形成伴随。因为这套概念（拓扑斯、内部语言、子对象分类子、层）对自读者往往是第一次接触，本章放慢节奏：每个新概念先给最通俗的动机，再给极简预备，最后才上严格定义与完整证明。按原著 §1–§16 展开六节。</p>
+  <div class="xref" data-page-node-id="khFDOZg29MUmjNS71WV6w5"><strong data-page-node-id="qVrIpRRLwx7sLldXmdFpyc">与前文的分工（去重说明）。</strong>下列内容已在前面章节完整给出，本章只交叉引用、沿用记号与结论，不再复述证明：<br data-page-node-id="Dt5HerFHfd8HUISQLKMekL">
+    · 笛卡尔闭范畴的定义、指数对象、β/η 方程与泛性质——<strong data-page-node-id="paIOFZxlR5qeCIYo0OsvSr">（参见第 9 章 3 节）</strong>，以及第 8 章 8.3；<br data-page-node-id="C0MMTTKXgDuuByspWQT1iR">
+    · 简单类型 λ-演算的语法、定型规则、βη-相等、项模型 \(C_L\)、Church–Rosser 与 C-monoid——<strong data-page-node-id="B8EH9DDTsAFszqgffjIenK">（参见第 5 章 4 节、第 10 章 1–5 节）</strong>；<br data-page-node-id="OemPIfDGZglxXSwXl3Bulr">
+    · 函数完备性、多项式范畴、自由 CCC——<strong data-page-node-id="ecAHt7x63Dyt4sFWwLy2f1">（参见第 9 章 4、5 节）</strong>；<br data-page-node-id="3bMaFRnOa0x4kHQjiMiMTX">
+    · Heyting 代数（含开集格例子、布尔代数特例）——<strong data-page-node-id="fwuw2kagom5b8dCzSMZQA9">（参见第 5 章 3 节）</strong>；<br data-page-node-id="Efpm0YXLvt3vLfFcrSDl8L">
+    · 子对象、拉回、拉回函子 \(f^ast\)——<strong data-page-node-id="cMnWIRvDgWvm5NBGjPBl2S">（参见第 4 章 4.1–4.2 节）</strong>；<br data-page-node-id="6BsG3edGlNi9MfFqFbHxyq">
+    · 量词作为 \(f^ast\) 的左右伴随 \(\exists_f\dashv f^ast\dashv\forall_f\)、伴随与 Kleisli——<strong data-page-node-id="OcHy5L9Wr7eBiric2Bzc9G">（参见第 7 章；第 8 章 8.2）</strong>。<br data-page-node-id="4OuPAgEgg4OEfy4stEM15y">
+    本章拓扑斯的完整定义、子对象分类子 \(\Omega\)、内部语言、布尔/选择条件、层范畴语义、类型论—拓扑斯伴随与完备性均为首次系统给出，逐条展开、不做概括。凡回指上述结论处，只用一两句重述关键语句与记号。</div>
+  <div class="rmk" style="margin-top:14px;" data-page-node-id="aR3ajJcv6LZgvil3Vkzuln"><strong data-page-node-id="xQZZIpU4pBh2KhfwuM2Obx">全章地图。</strong>
+    11.1 <strong data-page-node-id="KEjdPXJ15IT82GU12CD6JD">直觉主义类型论</strong>：从 λ-演算升级到带 \(\Pi,\Sigma,\mathrm{Id}\) 的类型论 ↔ 把"逻辑"直接写进类型；
+    11.2 <strong data-page-node-id="0sy2IDksRLlslzzahBYG7v">拓扑斯的内部语言</strong>：拓扑斯 = 有限完备 CCC + 子对象分类子 \(\Omega\) ↔ 世界自带母语；
+    11.3 <strong data-page-node-id="7iQJN3pJQVyfdsy9qxD73f">内部语言的运作</strong>：Mitchell–Bénabou 语言、Peano 规则、可靠性 ↔ 范畴如何"说"直觉主义逻辑；
+    11.4 <strong data-page-node-id="avPzSqZAppV4Ac1uQaZZ15">选择与布尔公理</strong>：\(\mathrm{Sub}(1)\) 布尔、满射有截面 ↔ 古典逻辑在拓扑斯里成了结构条件；
+    11.5 <strong data-page-node-id="Q0FyWbcvd4MMqBLOi3tpwQ">拓扑斯语义与层范畴语义</strong>：函子范畴与 \(\mathbf{Sh}(\mathbf C,J)\) 中的 \(\Omega\) ↔ 真值随"阶段/覆盖"变化；
+    11.6 <strong data-page-node-id="naoXBzCIWEsk1lFYuE1Pzq">类型论与拓扑斯之间的伴随</strong>：由理论生拓扑斯、由拓扑斯读语言、二者互逆到等价 ↔ Part II 主定理群与完备性。</div>
+  <nav class="jump" data-page-node-id="ZAN4jx7z8tvt8sDGthOfVJ">
+    <a href="#s11-1" data-page-node-id="hHUBBSj5shw4jZrJQdIzSc">11.1 直觉主义类型论</a>
+    <a href="#s11-2" data-page-node-id="XR4VjsU69IAtU3XzfgbMUq">11.2 拓扑斯的内部语言</a>
+    <a href="#s11-3" data-page-node-id="v6gChVRGyxHiXd6HbQ9zSc">11.3 内部语言的运作</a>
+    <a href="#s11-4" data-page-node-id="f5qTWnS4hQuo0irzja1LF5">11.4 选择与布尔公理</a>
+    <a href="#s11-5" data-page-node-id="LDZ9l8RDmAFeDtLPjHwjfn">11.5 拓扑斯语义与层范畴语义</a>
+    <a href="#s11-6" data-page-node-id="viALvjlIbbSNPuzwUh43sq">11.6 类型论与拓扑斯之间的伴随</a>
+  </nav>
+</header>
+
+<section class="sec" id="s11-1" data-page-node-id="ahu77LDVpA89RY8wEpvxXn">
+  <div class="sec-h" data-page-node-id="AD61Fod2SRxma5q6CpFmCQ"><span class="sec-no" data-page-node-id="WOjGbGdRp68Gp4Ucfrq057">11.1</span><h2 data-page-node-id="NyQ8sOVYPZz8R8lVvHEgsG">直觉主义类型论</h2><span class="src" data-page-node-id="mPD4VZtgBOpJ9vpUxMU9a8">L Part II §1–2</span></div>
+
+  <div class="box learn" data-page-node-id="FGbgzKrAA5ibTX3rgnpGYB">
+    <h4 data-page-node-id="T3IqkWFa5l9x9Qa7knEbtu">① 本节学习目标</h4>
+    <ol data-page-node-id="SocVKpqAzq4kHd9HPKFjJ9">
+      <li data-page-node-id="oaOIBDibVwcHCUcW9tKSA2">理解类型论与第 10 章 λ-演算的关系：λ-演算把"函数"形式化，类型论把"命题与证明"也一并形式化；</li>
+      <li data-page-node-id="QxryEhc1tgLEa4lK3ETAZC">掌握四类判断（judgment）与语境 \(\Gamma\) 的作用，能读懂 \(\Gamma\vdash a:A\) 这类记号；</li>
+      <li data-page-node-id="Cs18zBpkpysuDxsR1uqKwc">逐个认识类型构造子 \(1,\times,+,\Pi,\Sigma,\mathrm{Id},\mathbb N\)，并会用 Curry–Howard 对照把逻辑公式翻译成类型；</li>
+      <li data-page-node-id="DkQqd1rpH1EPmuHTTWqSnu">严格写出 \(\Pi,\Sigma,\mathrm{Id}\) 的引入/消去规则与对应的 \(\beta\) 规则，特别是 \(\mathrm{Id}\) 的消去子 \(J\)；</li>
+      <li data-page-node-id="j75C4RA0WVmaKb2vXqCQov">区分"定义相等"与"命题相等"，理解 L&amp;S §2"基于相等的类型论"的动机。</li>
+    </ol>
+  </div>
+
+  <div class="xref" data-page-node-id="u1zyHoeIp0SoQ6FufB0Px8">
+    <strong data-page-node-id="pyi776GPP40DGDUC6mpLlB">沿用前文（不再复述）.</strong> 简单类型 λ-演算的语法、定型判断 \(\Gamma\vdash M:\sigma\)、βη-相等与项模型，均见<strong data-page-node-id="NNwA9PSCO9SUZEyhoFNzL1">（参见第 5 章 4 节、第 10 章 1 节）</strong>。本节沿用记号：\(\Gamma\) 为语境，\(x:A\) 表示变元 \(x\) 属类型 \(A\)，\(a[x:=N]\) 为代入。自然数对象与 Peano 规则在 Part I §9 出现过（本教材未展开），此处按类型论方式重新给出，不依赖那里。
+  </div>
+
+  <h3 class="sub" data-page-node-id="0XnxYW91MS9LAGzPflwpV0">11.1.1 极简回顾：为什么要从 λ-演算升级到类型论</h3>
+  <div class="box prep" data-page-node-id="dmDlCaGK2jVFPcZBrY9KBG">
+    <h4 data-page-node-id="jlrZCScKsNOwVwAKjLRFR0">极简回顾（五分钟，够用即可）</h4>
+    <p data-page-node-id="iGGdZl0lSoVVvVSf2NGUri">第 10 章的 λ-演算里，类型是"固定的背景"：给定 \(A,B\)，就有函数类型 \(A\to B\)。它回答的是"什么是函数、两个函数何时相等"。但逻辑还想要更多东西：命题之间的"且/或/对所有/存在"，以及"两个东西相等"这件事本身，能不能也变成类型？</p>
+    <p data-page-node-id="ldMy5ErbXmLTMPuAhoarEc">类型论的关键一步叫<strong data-page-node-id="LJleX6zjtl8jTXl6f1dsw2">依赖类型</strong>（dependent type）：类型可以依赖项。例如"长度为 \(n\) 的实数向量"是一个随自然数 \(n\) 变化的类型 \(\mathrm{Vec}(n)\)——\(n=0\) 时是零维向量，\(n=3\) 时是三维向量。写出这种类型，需要让 \(n\) 出现在类型表达式里。只需记住一句话：<strong data-page-node-id="VTud8RTfp6CCi4HJYVsHvm">类型论 = λ-演算 + 允许类型依赖项 + 把这些依赖类型读作逻辑命题</strong>。下面把它变成一个精确的演算。</p>
+    <p data-page-node-id="wZucC21Fkkzbq4kbzjlMkr"><em data-page-node-id="g5KkWKOAsz8ZDuF7Refzhs">预备提示：</em>例子 \(\mathrm{Vec}(n)\) 用到了"自然数归纳"（第 10 章 10.4 已接触归纳法）。第一遍若觉得绕，可直接看 11.1.2 的形式规则，回头再对照这个例子。</p>
+  </div>
+
+  <h3 class="sub" data-page-node-id="mUx9SEhBYnfPaySbcDlgKQ">11.1.2 判断、语境与四类基本判断</h3>
+  <p data-page-node-id="5fUGoDyvmFcy5XU8zAFfdu">类型论的原始概念不是"公式"，而是<strong data-page-node-id="bON05PTOub0dEJexYYyuFE">判断</strong>（judgment）——一个可以被"知道/断言"的东西。最基础的四类判断是：</p>
+  <div class="defn" data-page-node-id="6Z6mXGSMBibwP7UT5RAcox">
+    <span class="lbl" data-page-node-id="gldoWuRB2BSyEFddxikTv9">定义 11.1.1（四类判断）</span>
+    <p data-page-node-id="wIcYg1iKsaxEzR09eXXtyO">固定一个语境 \(\Gamma=x_1:A_1,\dots,x_n:A_n\)（各 \(x_i\) 互异）。四类基本判断为：</p>
+    <ul data-page-node-id="NUIam32zDW9tEoKzchGMZo">
+      <li data-page-node-id="NFXEHRS7DM1oYsiawnFSPb">\(\Gamma\ \mathrm{ctx}\)：\(\Gamma\) 是一个良构语境；</li>
+      <li data-page-node-id="K17HY15wUkACI3Fzj3rTM0">\(\Gamma\vdash A\ \mathrm{type}\)：在 \(\Gamma\) 下 \(A\) 是一个类型；</li>
+      <li data-page-node-id="GsfdzQUxwLe8UGDQDuYosl">\(\Gamma\vdash a:A\)：在 \(\Gamma\) 下 \(a\) 是类型 \(A\) 的项；</li>
+      <li data-page-node-id="tvhK4bQWxNaOCwzCUCceI6">\(\Gamma\vdash a=a':A\)：在 \(\Gamma\) 下 \(a\) 与 \(a'\) 是类型 \(A\) 的相等项。</li>
+    </ul>
+    <p data-page-node-id="WAzoADIHSOfuB4yMRnQfqK">第四类里的相等是最初等的、由计算规则给出的相等，称为<strong data-page-node-id="AYGMYbDEOceXiniHYoHZpA">定义相等</strong>（definitional equality），也记作 \(a\equiv a'\)。它与 11.1.5 的"命题相等"是两回事，这个区别是全章的枢纽之一。</p>
+  </div>
+  <div class="rmk" data-page-node-id="KQz54J9qrYIfDf8lFWXqHF">
+    <strong data-page-node-id="bVVJvWehVynNAx2PfFot8H">判断 vs 命题。</strong>初学者常把 \(\Gamma\vdash a:A\) 当成"公式"。它其实不是公式，而是"外部断言"（我们能证明 \(a\) 属于 \(A\)）。命题是类型 \(A\) 本身；\(\Gamma\vdash a:A\) 说的是"\(a\) 是 \(A\) 的一个证明"。这一区分正是 Curry–Howard 对应的核心，务必先立住。
+  </div>
+
+  <h3 class="sub" data-page-node-id="R1EVnJ436DVSnbD3ZFEHDC">11.1.3 类型构造子与 Curry–Howard 对照</h3>
+  <p data-page-node-id="rQSpYthWOXd9jwE2R6EslL">现在列出类型论的类型构造子，并同时给出它们的逻辑读法。下表是全节的总纲，后面逐条严格化。</p>
+  <div class="box walk" data-page-node-id="uVT3e9QmkDjWQq3QF2gfDd">
+    <h4 data-page-node-id="LykTKKO8EQ9cvy9m1DeA8S">图 11.1　Curry–Howard 对照（读图文字说明）</h4>
+    <p data-page-node-id="wrKdvZpMzucO81IvDYG4Jw">这是一张"两栏对照"图，左栏是<strong data-page-node-id="dsdfHARdkC8qA2jfHXwEDT">逻辑一侧</strong>，右栏是<strong data-page-node-id="WQ83lHMEauYQoUOi7eTjmi">类型论一侧</strong>，中间用双向箭头连接，表示"同一种结构的两种读法"：</p>
+    <table data-page-node-id="mQnLEmAb2NBBmanlBfL9ft">
+      <tr data-page-node-id="dBaShzm8rCDdluyRBwmDfc"><th data-page-node-id="PagI7iUOWu2VJZ9bstw0zy">逻辑（命题一侧）</th><th data-page-node-id="4YZfiryDrCKZotD9BqUEha">类型论（类型一侧）</th></tr>
+      <tr data-page-node-id="CQbd3SLY2G0g8FFrdGcEmH"><td data-page-node-id="dY7khjiDwzf6e5SGSn2Feo">真 \(\top\)</td><td data-page-node-id="BHxRPkTxXVvGTTlhmbkHFe">单位类型 \(1\)，唯一项 \(\ast:1\)</td></tr>
+      <tr data-page-node-id="wyITlL6nl1EENqcqq8M3wI"><td data-page-node-id="uRkDpxPRY6iT71wNAfBaZY">假 \(\bot\)</td><td data-page-node-id="S5wOERuqaoFH2xwqAClit2">空类型 \(0\)，无项</td></tr>
+      <tr data-page-node-id="h4hVqC6vlqLwlF0XwOtwn2"><td data-page-node-id="mZB8XsGmHwpMOT8KATcy18">合取 \(A\wedge B\)</td><td data-page-node-id="uXCsXM3nz0BBCmHafSJfoC">积类型 \(A\times B\)，项 \(\langle a,b\rangle\)</td></tr>
+      <tr data-page-node-id="t0iEaVqrPbsJ9zEZGmAcB5"><td data-page-node-id="Q8RcEqtep57GCB3fr0TZqh">析取 \(A\vee B\)</td><td data-page-node-id="y9hWCysad4K5QG5MZAe3js">和类型 \(A+B\)，项 \(\mathrm{inl}(a)\) 或 \(\mathrm{inr}(b)\)</td></tr>
+      <tr data-page-node-id="8cCwp3BFwOlo7Q7Qus9S9p"><td data-page-node-id="NM7dGCcxLxxB8VU1dKZ2BR">蕴涵 \(A\Rightarrow B\)</td><td data-page-node-id="QqlJpRtv8OKu9202uSKHN3">函数类型 \(A\to B\)，项 \(\lambda x.b\)</td></tr>
+      <tr data-page-node-id="Fe6syMZ6VTveD28vTJ2P5i"><td data-page-node-id="TsVrADnNXMAWhEtvTiQFVA">全称 \(\forall x:A.\,\varphi(x)\)</td><td data-page-node-id="N4r6CGw6ZjIpSjsiunG0Xe">依赖积 \(\Pi x:A.\,\Phi(x)\)，项 \(\lambda x.b\)</td></tr>
+      <tr data-page-node-id="21MJ5cSbjDkjZwG58o6mjt"><td data-page-node-id="Obrnujeapsd8Jf1recP7wE">存在 \(\exists x:A.\,\varphi(x)\)</td><td data-page-node-id="CPHDIV8rYjWFyllc4Y3knW">依赖和 \(\Sigma x:A.\,\Phi(x)\)，项 \(\langle a,b\rangle\)</td></tr>
+      <tr data-page-node-id="HqAynHetizzGmN9nIetvDM"><td data-page-node-id="2D2GjHRPQSG6ok9tAcf0PF">相等 \(a=b\)</td><td data-page-node-id="Lj6QwauP93b3Ihw46gpyym">相等类型 \(\mathrm{Id}_A(a,b)\)，项 \(\mathrm{refl}(a)\)</td></tr>
+    </table>
+    <p data-page-node-id="dAR5bH4s7xHL2c3sdE9Y2K"><strong data-page-node-id="G9zmz1C9EPbEare486vtCr">怎么读这张图：</strong>纵向每一行是一条"翻译规则"：把命题换成类型、把证明换成项。横向箭头不是"等式",而是"同一对象的两种语言"。例如"蕴涵 \(A\Rightarrow B\)"与"函数类型 \(A\to B\)"是同一件事：证明蕴涵就是给出一个把 \(A\) 的证明变成 \(B\) 的证明的函数。这张图就是 Part II 全章的语法底座。</p>
+  </div>
+
+  <p data-page-node-id="A02nuY5ohZN2al8dNFyAlo">下面把三个最关键（也最容易出错）的构造子——\(\Pi,\Sigma,\mathrm{Id}\)——的推理规则逐条写清。先用共同的"代换"记号：若 \(\Gamma,x:A\vdash B\ \mathrm{type}\) 且 \(\Gamma\vdash a:A\)，则把 \(B\) 中 \(x\) 换成 \(a\) 得到的类型记作 \(B[a/x]\)。</p>
+
+  <div class="defn" data-page-node-id="trMcmuz3gu43pVpz1Cqayf">
+    <span class="lbl" data-page-node-id="XP0BdEEOQe0isIfMKB3FqQ">定义 11.1.2（依赖积 \(\Pi\)）</span>
+    <p data-page-node-id="AQ8ZQSzkNUYDSeDYJJZXDt">若 \(\Gamma\vdash A\ \mathrm{type}\) 且 \(\Gamma,x:A\vdash B\ \mathrm{type}\)，则 \(\Gamma\vdash \Pi x:A.\,B\ \mathrm{type}\)。它的项与规则为：</p>
+    <ul data-page-node-id="264o00421TD0b6f1uQhdRg">
+      <li data-page-node-id="0yHvv31TDgCKN8jGy4nuLf"><strong data-page-node-id="XrD7e4UHVtnGeinNB2mYIE">引入：</strong>若 \(\Gamma,x:A\vdash b:B\)，则 \(\Gamma\vdash \lambda x.\,b:\Pi x:A.\,B\)。这里 \(x\) 在 \(\lambda\) 下被绑定，\(b\) 可以真正依赖 \(x\)——这正是它与简单类型 \(A\to B\) 的分别。</li>
+      <li data-page-node-id="uBgChMvQOxb0isCBcOAW2X"><strong data-page-node-id="gmTsl9c7AG2680RPlKhAWL">消去（应用）：</strong>若 \(\Gamma\vdash f:\Pi x:A.\,B\) 且 \(\Gamma\vdash a:A\)，则 \(\Gamma\vdash f(a):B[a/x]\)。注意结果类型是 \(B[a/x]\)，随 \(a\) 变化。</li>
+      <li data-page-node-id="PSzmXvZ0tmgidHtAtNIfjW"><strong data-page-node-id="tL0EMrTsyY2Fy4l8UVfNdn">\(\beta\) 规则：</strong>\((\lambda x.\,b)(a)\equiv b[a/x]\)。</li>
+      <li data-page-node-id="3HGjKALMRGzrD8qJoB7MKi"><strong data-page-node-id="4RnoANRrFheoSrMJQmFXHE">\(\eta\) 规则：</strong>若 \(f:\Pi x:A.\,B\) 且 \(x\) 不在 \(\Gamma\) 中自由出现，则 \(\lambda x.\,f(x)\equiv f\)。</li>
+    </ul>
+    <p data-page-node-id="hsA8HcejzCgHHggfMaFFkF">当 \(B\) 不依赖 \(x\) 时，\(\Pi x:A.\,B\) 退化为普通函数类型 \(A\to B\)，上述规则退化为第 10 章的 βη 规则。所以 \(\Pi\) 是函数类型的真正推广。</p>
+  </div>
+
+  <div class="defn" data-page-node-id="4vQVmFtXtundLwE4QHB8ye">
+    <span class="lbl" data-page-node-id="GbWG9PxHAM5rGW4IGs7GQD">定义 11.1.3（依赖和 \(\Sigma\)）</span>
+    <p data-page-node-id="vxc7wSjAqM3iHQImLL6aPA">若 \(\Gamma\vdash A\ \mathrm{type}\) 且 \(\Gamma,x:A\vdash B\ \mathrm{type}\)，则 \(\Gamma\vdash \Sigma x:A.\,B\ \mathrm{type}\)。它的项与规则为：</p>
+    <ul data-page-node-id="HZhESgDI0EqM6Wqt7V2dFy">
+      <li data-page-node-id="1BYYb7TUv46CpSRdbaPIXY"><strong data-page-node-id="kGZnyULJKBNYE997tAyqqa">引入：</strong>若 \(\Gamma\vdash a:A\) 且 \(\Gamma\vdash b:B[a/x]\)，则 \(\Gamma\vdash \langle a,b\rangle:\Sigma x:A.\,B\)。第一分量是"见证" \(a\)，第二分量 \(b\) 的类型依赖这个见证。</li>
+      <li data-page-node-id="YPTlYElgbUb1GrKmkbvAEo"><strong data-page-node-id="yeLWShZW3NCWtADfpCWu9j">消去：</strong>若 \(\Gamma\vdash p:\Sigma x:A.\,B\)，则 \(\pi_1(p):A\)，且 \(\pi_2(p):B[\pi_1(p)/x]\)。</li>
+      <li data-page-node-id="DU3ohJBvge8xPt1hyxwivl"><strong data-page-node-id="79UvPIfaFdlcjHfrj6qSyp">\(\beta\) 规则：</strong>\(\pi_1(\langle a,b\rangle)\equiv a\)，\(\pi_2(\langle a,b\rangle)\equiv b\)。</li>
+    </ul>
+    <p data-page-node-id="O0HZ0uETrBkajCuBmWgOm5">当 \(B\) 不依赖 \(x\) 时，\(\Sigma x:A.\,B\) 退化为积 \(A\times B\)。逻辑上，\(\Sigma\) 就是存在量化：给出 \(\exists x.\,\varphi(x)\) 的证明，就是给出一个见证 \(x=a\) 和一份证明 \(b:\varphi(a)\)。</p>
+  </div>
+
+  <div class="rmk" data-page-node-id="jMotQBgeXDgfWaNJFvDVf8">
+    <strong data-page-node-id="zJqhdEiHdtNmchk339Vefz">低门槛例子（对比着看）。</strong>不依赖的版本最直观：\(\Sigma n:\mathbb N.\,\mathrm{Vec}(n)\) 是"某个长度的向量"的类型——一个项 \(\langle 3,v\rangle\) 里，\(v\) 的类型必须是 \(\mathrm{Vec}(3)\)，所以"长度"和"数据"被绑在一起，不可能撒谎。这个"类型携带数据"的能力，是简单类型 \(A\times B\) 做不到的，也是类型论比 λ-演算表达力强的直接体现。
+  </div>
+
+  <h3 class="sub" data-page-node-id="8Cd4nyifgLeqDue3Gzv9LO">11.1.4 相等类型 \(\mathrm{Id}\) 与消去子 \(J\)</h3>
+  <p data-page-node-id="z5kTUw1CqKJzAkApkszzYJ">相等是逻辑里最微妙的连接词。类型论不把 \(a=b\) 当成一个外部关系，而是当成一个类型。</p>
+  <div class="defn" data-page-node-id="bIIjA0JvCRS7p86F2ShVhr">
+    <span class="lbl" data-page-node-id="Gb8TbU85ni3RcFxbQSkkWm">定义 11.1.4（相等类型）</span>
+    <p data-page-node-id="bPmDbOQJzY7O0f1vvlekvO">对 \(A\) 和两个项 \(a,a':A\)，有类型 \(\mathrm{Id}_A(a,a')\)，读作"\(a\) 等于 \(a'\) 的证明类型"。规则为：</p>
+    <ul data-page-node-id="8urMVpOpeB7joYGc2YGt2M">
+      <li data-page-node-id="iT4pmiooSFdEpwWSUDYHwD"><strong data-page-node-id="4EGfkZHNRbV1Zl1FKoljhL">引入：</strong>对每个 \(a:A\)，有 \(\mathrm{refl}(a):\mathrm{Id}_A(a,a)\)。这是唯一的"直接"证明——只有相等的东西才自反地相等。</li>
+      <li data-page-node-id="7Pc30p0n8Te4Eac0wBJ1bu"><strong data-page-node-id="UqNIulJk68GvtCeJKWnfsw">消去（同一性消去／路径归纳）：</strong>设 \(C\) 是一个依赖 \(x,y:A\) 与 \(p:\mathrm{Id}_A(x,y)\) 的类型族，若给出了对角线上的情形
+        \[
+          c:\ C(a,a,\mathrm{refl}(a)),
+        \]
+        则存在
+        \[
+          J(c):\ C(a,a',p)\qquad p:\mathrm{Id}_A(a,a').
+        \]
+      </li>
+      <li data-page-node-id="neUrFodQWZY41nGAtUQgEi"><strong data-page-node-id="M8PPVjT4dMembhJ0MFHW4m">\(\beta\) 规则：</strong>\(J(c)\) 在 \(p\equiv \mathrm{refl}(a)\) 时化简为 \(c\)。</li>
+    </ul>
+    <p data-page-node-id="IbLCe2L3v5irwGodABgvJG">其中第二行对任意相等证明 \(p:\mathrm{Id}_A(a,a')\) 成立，即对每一条 \(p\) 都能把对角线上的 \(c\) 搬过去。</p>
+    <p data-page-node-id="SVQnADKFZj5xk5lfdy7TvD"><strong data-page-node-id="6PhLKYBDcZhIYdcrI1slKh">\(J\) 的直观：</strong>若一个性质在对角线（\(p\) 是 \(\mathrm{refl}\)）上成立，那么它在任意相等证明 \(p\) 上也成立。这正是"相等的东西可以互相替换"（Leibniz 律）的类型论版本：\(J\) 让我们把关于 \(a\) 的结论搬到关于 \(a'\) 的结论。</p>
+  </div>
+  <div class="rmk" data-page-node-id="c46iZ2t9dDRkvIG8o7HW5d">
+    <strong data-page-node-id="LDtHFGF8Uuv2XUC4jJPyUV">为什么 \(J\) 值得单独讲？</strong>它是整个同伦类型论与"证明同一性"讨论的技术源头。第 10 章的 \(\beta\eta\)-相等是<strong data-page-node-id="uHWl4nBSxVu7gB5MFznVfz">计算</strong>出来的（定义相等）；而这里的 \(\mathrm{Id}\) 是把"相等"当作<strong data-page-node-id="6RxfNFGfNf4CHQv6GSgiUG">可以被证明、可以被当作数据传递</strong>的对象。L&amp;S 在 §2 特别区分这两种相等，见 11.1.5。
+  </div>
+
+  <svg class="cd" viewBox="0 0 660 210" width="660" height="210" role="img" aria-label="相等类型的消去子 J" data-page-node-id="9aBZsYbu66ybQwWD6M2Qco">
+    <rect class="node" x="30" y="34" width="180" height="42" rx="7" data-page-node-id="sVYUs5SEaQVMzP9XfeBLuz"/>
+    <text class="nt" x="120" y="61" text-anchor="middle" data-page-node-id="FtV8VCNICF5nAHz1bbpvrq">c : C(a, a, refl(a))</text>
+    <rect class="nodeg" x="450" y="34" width="190" height="42" rx="7" data-page-node-id="7OHlH6DiCZDeuLyLo3K8Jj"/>
+    <text class="nt" x="545" y="61" text-anchor="middle" data-page-node-id="DamgbBiKC9rfcABgrwrqZu">J(c) : C(a, a′, p)</text>
+    <rect class="nodey" x="30" y="132" width="180" height="42" rx="7" data-page-node-id="U1HDXL9MHNTpCcaD7CZgQe"/>
+    <text class="nt" x="120" y="159" text-anchor="middle" data-page-node-id="LnRtgHnxo2DH4xLucyFT7a">p : Id_A(a, a′)</text>
+    <rect class="node2" x="450" y="132" width="190" height="42" rx="7" data-page-node-id="kHSBwXZAW91RxHbjOSmNdI"/>
+    <text class="nt" x="545" y="159" text-anchor="middle" data-page-node-id="FcolvSuyxA2VJi6h40YLF2">对角线情形 c 给出任意 p 的情形</text>
+    <line class="arb" x1="210" y1="55" x2="450" y2="55" data-page-node-id="uuMF0LmCZ7DEYl7PBTB1HR"/>
+    <text class="hb" x="330" y="47" text-anchor="middle" data-page-node-id="PiukJitXcLFkwmwpKYIg8L">J（同一性消去）</text>
+    <line class="ard" x1="210" y1="153" x2="450" y2="153" data-page-node-id="OHAlmk8EtdqcnIQlI0mJaX"/>
+    <text class="lb" x="330" y="145" text-anchor="middle" data-page-node-id="dhA2l2oSVVu1zCAQE54SZc">p 作为前提参与</text>
+    <text class="lb" x="330" y="200" text-anchor="middle" data-page-node-id="KnncvinylPHmKvVp4I08ZF">β 规则：p ≡ refl(a) 时 J(c) ≡ c</text>
+  </svg>
+  <p class="figcap" data-page-node-id="Ef8B2wTrVH36ZNHUHBkfME">图 11.2　相等类型的消去子 \(J\)：对角线上的证明沿任意相等证明 \(p\) 传播</p>
+
+  <h3 class="sub" data-page-node-id="U4pLmNF7NJXyeOBxwLMi5p">11.1.5 定义相等 vs 命题相等（L&amp;S §2 的动机）</h3>
+  <p data-page-node-id="fqBMVJAbIxHiXuAi7jk6nK">现在可以讲清 §2"基于相等的类型论"到底在解决什么。系统里其实有<strong data-page-node-id="1HMFDBmP1lKkZUDOds0n0S">两种相等</strong>，混淆它们是初学者的头号错误：</p>
+  <div class="prop" data-page-node-id="sXVajBAPjST3FScX8kO6Xb">
+    <span class="lbl" data-page-node-id="vOBWFCtVXCpzxAd0yIy3wC">命题 11.1.5（两种相等的分工）</span>
+    <p data-page-node-id="Zt0146Bc84DQe8jbYoQ9wh">(1) <strong data-page-node-id="CyhSZs0prxzjVOj3XuKBS3">定义相等</strong> \(a\equiv a'\)：由计算规则（如 \((\lambda x.b)(a)\equiv b[a/x]\)）直接给出，是"同一个东西的两种写法"，判断它不需证明、只需归约。它对应 11.1.2 的第四类判断 \(\Gamma\vdash a=a':A\)。<br data-page-node-id="FsA7NrBEiz7C4rbYoKqvmB">
+    (2) <strong data-page-node-id="ZxbLOXGCHdysQB2OLbwFzH">命题相等</strong> \(\mathrm{Id}_A(a,a')\)：是一个类型，需要项 \(\mathrm{refl}(a)\) 或 \(J\) 来证明，可以出现在假设里、被量化、被传递。<br data-page-node-id="ZM7SZuQpG2axXCW3LfAOGm">
+    两者的关系是：若 \(a\equiv a'\)，则 \(\mathrm{refl}(a)\) 可经类型转换充当 \(\mathrm{Id}_A(a,a')\) 的项；但反过来一般不成立——两个东西"可被证明相等"不等于"定义上就是同一个"。</p>
+  </div>
+  <div class="rmk" data-page-node-id="xe3Sgwfh1iSO4boIHVO7Xz">
+    <strong data-page-node-id="MXXS2v3B0GMem2o5sLQUVE">L&amp;S §2 的处理。</strong>有些类型论把整个理论建立在"相等关系"之上（先给相等的公理，再谈类型），有些则建立在"归约/计算"之上（先给 β 规则，相等由归约导出）。L&amp;S §2 讨论这两条路的等价与差异。我们采用后一种（计算优先），因为它与第 10 章的 βη-相等一脉相承；§2 的结论是：两种呈现给出同样的可证相等关系。本章后续只用到这个"可证相等关系"，不依赖呈现方式。
+  </div>
+
+  <div class="box exer" data-page-node-id="ZaZW57CNYYSV1O6xg4Rdkb">
+    <h4 data-page-node-id="rmHKa2ukzBAfW8c0UniLz4">② 习题</h4>
+    <div class="grp" data-page-node-id="wQ8HFjXdsRCKS6ilQEUFs8">基础</div>
+    <ol data-page-node-id="e3Mm3m8G0k1jxVoZG6ITZ5">
+      <li id="ex11-1-1" data-page-node-id="Ix46GnK1PQryT7ETiCp4Vs">用对照表（图 11.1）把逻辑公式 \((\forall x:A.\,P(x))\wedge(\exists y:B.\,Q(y))\) 翻译成类型，并写出它的一个项的一般形状。</li>
+      <li id="ex11-1-2" data-page-node-id="ABLsiImlaUFj1MB5fGmGoF">写出 \(\Pi\) 类型的 \(\beta\) 规则与 \(\eta\) 规则，并说明当 \(B\) 不依赖 \(x\) 时它们如何退化为第 10 章的普通 βη 规则。</li>
+      <li id="ex11-1-3" data-page-node-id="ctRlukFHDZGtPdHrqPtR16">对 \(\Sigma x:A.\,B\)，验证 \(\pi_1(\langle a,b\rangle)\equiv a\) 与 \(\pi_2(\langle a,b\rangle)\equiv b\)，并说明为何第二个式子里 \(b\) 的类型必须是 \(B[a/x]\)。</li>
+      <div class="grp" data-page-node-id="hL0MRAKDDWA1fZAxkoUeWj">进阶</div>
+      <li id="ex11-1-4" data-page-node-id="0Xxnk18DUOrQcpndCGNBQr">设 \(a:A\)，说明 \(\mathrm{refl}(a):\mathrm{Id}_A(a,a)\)。再用 \(J\) 表述"若 \(a=b\) 且性质 \(P\) 对 \(a\) 成立，则 \(P\) 对 \(b\) 成立"这一替换原则。</li>
+      <li id="ex11-1-5" data-page-node-id="EmQ9dOqFzxqrAJ3COEfgAG">举一个你熟悉的程序语言例子，说明"定义相等"与"命题相等"的区别（提示：\(1+1\) 归约到 \(2\) 属于哪一种？"两个不同算法算出同一结果"属于哪一种？）。</li>
+      <li id="ex11-1-6" data-page-node-id="BgL479QRIb5ht83wRzxkFv">说明为什么 \(\Pi x:A.\,B\) 当 \(B\) 依赖 \(x\) 时不能写成普通函数类型 \(A\to B\)——指出"结果类型随输入变化"这一关键点。</li>
+    </ol>
+  </div>
+
+  <div class="box ans" data-page-node-id="5dSsk2853ncyDbVYEcj8Lc">
+    <h4 data-page-node-id="eN3OBoAVasUmJMLAyetNwL">③ 参考答案</h4>
+    <div class="item" data-page-node-id="AdCMj4AAz9sl0ES12okF4L"><b data-page-node-id="TCbuJwq1c0otqFaJpRaAoB">11.1.1</b>　\((\forall x:A.\,P(x))\) 译为 \(\Pi x:A.\,P(x)\)（这里 \(P(x)\) 视为类型族），\((\exists y:B.\,Q(y))\) 译为 \(\Sigma y:B.\,Q(y)\)，合取译为积。故整体类型是 \(\big(\Pi x:A.\,P(x)\big)\times\big(\Sigma y:B.\,Q(y)\big)\)。一个项的一般形状是 \(\langle f,\langle b,q\rangle\rangle\)，其中 \(f:\Pi x:A.\,P(x)\)，\(b:B\)，\(q:Q(b)\)。<span class="qed" data-page-node-id="eeMnNrWE6Gm3at7lNzgxEo">∎</span></div>
+    <div class="item" data-page-node-id="DOcBPY7bY1MJHfQe1c3z5n"><b data-page-node-id="Wi0oLFdFIKDuWnCAWi2kFN">11.1.2</b>　\(\beta\)：\((\lambda x.\,b)(a)\equiv b[a/x]\)；\(\eta\)：\(\lambda x.\,f(x)\equiv f\)（\(x\) 不在 \(\Gamma\) 中自由出现）。当 \(B\) 不依赖 \(x\) 时，\(B[a/x]=B\)，于是应用规则给出 \(f(a):B\)，\(\beta\) 变成第 10 章的 \((\lambda x.b)a\equiv b[a/x]\)，\(\eta\) 逐字相同——依赖积退化为普通 \(A\to B\)。<span class="qed" data-page-node-id="w5a1EXG0G6DlgjcGmGqiiP">∎</span></div>
+    <div class="item" data-page-node-id="8UiaAZDtLgodAhNfaUmyQ2"><b data-page-node-id="09R51QqAcU0qxnVChfd7aP">11.1.3</b>　按 \(\Sigma\) 的引入规则，\(\langle a,b\rangle\) 的构造要求先给 \(a:A\)，再给一个类型属于 \(B[a/x]\) 的项 \(b\)。消去规则中 \(\pi_2(\langle a,b\rangle)\) 的类型是 \(B[\pi_1(\langle a,b\rangle)/x]=B[a/x]\)，恰好与 \(b\) 的类型一致；若 \(b\) 的类型不是 \(B[a/x]\)（例如写成 \(B[a'/x]\)），\(\langle a,b\rangle\) 根本无法构造。这正是"见证与证明绑定"的体现。<span class="qed" data-page-node-id="Y2DxRvrrFnSjYDuRwcJin0">∎</span></div>
+    <div class="item" data-page-node-id="IFrc2oKB8OoGIfnm3Fx3BO"><b data-page-node-id="8P6uD1C7NpizG1c4CMCZ2B">11.1.4</b>　\(\mathrm{Id}\) 的引入规则直接给出 \(\mathrm{refl}(a):\mathrm{Id}_A(a,a)\)。替换原则这样得到：令 \(C(x,y,p)\) 表示固定的命题 \(P(y)\)（忽略 \(x,p\)），把" \(P\) 对 \(a\) 成立"作为对角线输入 \(c:C(a,a,\mathrm{refl}(a))\)，则由 \(J\) 得 \(J(c):C(a,b,p)=P(b)\)，其中 \(p:a=b\)。故 \(P\) 从 \(a\) 搬到了 \(b\)，Leibniz 律成立。<span class="qed" data-page-node-id="IOMXfAVDqicEtHCL2Dyvyx">∎</span></div>
+    <div class="item" data-page-node-id="XpCpEo7fa03lzbUAoRWZUT"><b data-page-node-id="AbJJFtW3ABxVGX657Ur9hb">11.1.5</b>　\(1+1\) 归约到 \(2\) 是定义相等（计算规则直接给出，写作 \(1+1\equiv 2\)）。"用快排和冒泡排序两个程序对同一输入算出同一输出"是命题相等：两个项不定义相等，但可以证明 \(\mathrm{Id}(result_1,result_2)\)，通常需要一段证明（比如都等于排序后的序列）。这个例子说明命题相等携带信息（那段证明），而定义相等不携带。<span class="qed" data-page-node-id="d7i9X0WlGq6HmU9ltPNNq5">∎</span></div>
+    <div class="item" data-page-node-id="qywkQ9QEN9oIhmJ7sRi2Ky"><b data-page-node-id="ppO9JrJecKBkuL4XlERA3i">11.1.6</b>　普通函数类型 \(A\to B\) 的输出类型 \(B\) 是固定的，与输入值无关。而 \(\Pi x:A.\,B\) 的输出类型是 \(B[a/x]\)，随输入 \(a\) 改变。例如 \(\mathrm{Vec}\) 的例子：函数 \(f\) 输入自然数 \(n\)，输出长度恰为 \(n\) 的向量，其类型随 \(n\) 变——无法用单一的 \(B\) 表示。因此必须用依赖积。<span class="qed" data-page-node-id="IbCALSfeBmxxlshxEY7tzF">∎</span></div>
+  </div>
+
+  <div class="box phil" data-page-node-id="C6LfAGXIWAXiHLSX3N6BRF">
+    <h4 data-page-node-id="qoVRhseM8mVBKy8KPvw8YO">④ 选读：命题即类型——一场哲学视角的翻转</h4>
+    <p data-page-node-id="KE3gIcNKxJ86X0LrgAPbGE"> Curry–Howard 对应把"证明一个命题"变成"构造一个项"。这在哲学上意味深长：真理不再需要到某个外在的"真值赋予"那里去对表，而是看你能不能<strong data-page-node-id="mAn6c8e78vSzlWOOCj28va">造出</strong>一个证明项。直觉主义传统本来就说"真 = 可证"，类型论把这句话做成了可计算的系统——证明是数据，可以像值一样传递、检查、比较。</p>
+    <p data-page-node-id="ObojNiNn26jGA37coNNIkx">但要克制：这并不等于"真理是主观构造"。类型论里的项要满足严格的定型规则，正确性是可被机器检验的客观标准。对你关心的语义问题，这里提供的只是一个坐标：如果采用"命题即类型"的立场，那么"从模型内部如何表述一个断言"就变成一个精确的类型论问题——这正是下一节拓扑斯内部语言的出发点。这里先埋下伏笔，不展开。</p>
+  </div>
+</section>
+<section class="sec" id="s11-2" data-page-node-id="PlFOjlS1sjr6vb1hPXBFNr">
+  <div class="sec-h" data-page-node-id="BGRHDcvPKkaA7qTJOuvGJ9"><span class="sec-no" data-page-node-id="jJNWWE2hgJbKI7CA9jSMqG">11.2</span><h2 data-page-node-id="LSyMj4spygBSJuzKUAQVxr">拓扑斯的内部语言</h2><span class="src" data-page-node-id="BCAGks0HUGYZ6vLQX7wFB3">L Part II §3</span></div>
+
+  <div class="box learn" data-page-node-id="woRCErCyAJxkkNC8RgUMUu">
+    <h4 data-page-node-id="muq41XCcZyQxgDLiDLvKD4">① 本节学习目标</h4>
+    <ol data-page-node-id="WhYtrCPB2ecCaZmxreN9xo">
+      <li data-page-node-id="lN1YMhH8iR7NOuPrZROI0I">从集合的"特征函数"出发，理解子对象分类子 \(\Omega\) 的泛性质，并会画、会读特征方块的拉回图；</li>
+      <li data-page-node-id="HQPjwUYJYbzQsKdwfFPgmW">给出初等拓扑斯的严格定义（有限极限 + CCC + 子对象分类子），知道它为何"自带逻辑"；</li>
+      <li data-page-node-id="um9twflE3AkLDOf6F2sDzA">证明关键同构 \(\operatorname{Sub}(A)\cong\mathcal E(A,\Omega)\)，并说明 \(\operatorname{Sub}(A)\) 为何是 Heyting 代数；</li>
+      <li data-page-node-id="XGuEGNdfIgPL7oPhBX5i1r">构造拓扑斯的内部语言 \(L(\mathcal E)\)：类型、项、公式的翻译规则，理解"内部真 \(\mathcal E\models\varphi\)"的精确含义；</li>
+      <li data-page-node-id="EN2tI29vjRSxnwjYXaNYPY">知道量词为什么是拉回函子的左右伴随，从而把 11.1 的 \(\Pi,\Sigma\) 接上拓扑斯结构。</li>
+    </ol>
+  </div>
+
+  <div class="xref" data-page-node-id="Jx2KfPt4KOutlbCimkl3xa">
+    <strong data-page-node-id="M36jzCA9PoWyZsUfqiqxtD">沿用前文（不再复述）.</strong> 拉回、子对象与拉回函子 \(f^\ast\) 见<strong data-page-node-id="JYzhAoV2zbQkxQHV5WxzWM">（参见第 4 章 4.1–4.2 节）</strong>；Heyting 代数的定义、开集格与布尔代数例子见<strong data-page-node-id="7DxSCW3gk7YYThOxkvIdrV">（参见第 5 章 3 节）</strong>；量词作为 \(\exists_f\dashv f^\ast\dashv\forall_f\) 的伴随分析见<strong data-page-node-id="0vCn5OAvXPrCcMJtW5MKL5">（参见第 7 章）</strong>；笛卡尔闭范畴（终端、积、指数）见<strong data-page-node-id="U2psyHwPKiZPCs75ptex7N">（参见第 9 章 3 节、第 8 章 8.3）</strong>。本节的<strong data-page-node-id="6DES3awfCwl84WyRw1qW9p">拓扑斯定义与子对象分类子是首次系统给出</strong>；上面这些结论只被调用，不重证。
+  </div>
+
+  <h3 class="sub" data-page-node-id="gAjdxw21BYwfXviWTfSpFF">11.2.1 极简回顾：集合里的"特征函数"</h3>
+  <div class="box prep" data-page-node-id="H2hbCugYtS5heL5CKDonRE">
+    <h4 data-page-node-id="qqWVDuOUJmGSH9CVG9lJAZ">极简回顾（五分钟，够用即可）</h4>
+    <p data-page-node-id="HSxA39lU66z51yb5IgUzTV">在集合 \(\mathbf{Set}\) 里，一个子集 \(S\subseteq A\) 完全由它的<strong data-page-node-id="88VVsval7CVFPG1TaIzl55">特征函数</strong> \(\chi_S:A\to\{0,1\}\) 决定：\(a\in S\) 时 \(\chi_S(a)=1\)，否则 \(0\)。而且 \(S\) 可以看成 \(\{1\}\) 在 \(\chi_S\) 下的原像——画成图就是一个拉回方块：</p>
+    \[
+      \begin{array}{ccc}
+        S &\longrightarrow& \{1\}\\
+        \downarrow && \downarrow\\
+        A &\xrightarrow{\chi_S}& \{0,1\}
+      \end{array}
+    \]
+    <p data-page-node-id="Xf00fqvr1xWP6wS1et9VaT">拓扑斯的概念就是把这套"子集 ↔ 特征函数"的对应，从 \(\mathbf{Set}\) 搬到一个抽象范畴里。只需替换三样东西：子集换成<strong data-page-node-id="JObbwNBublqgH1mWXYpAIc">子对象</strong>（等价类的单态），\(\{0,1\}\) 换成一个叫作 \(\Omega\) 的<strong data-page-node-id="6cEggJ2HOKrF3IeyUfh9zX">真值对象</strong>，\(1\) 换成箭头 \(\mathrm{true}:1\to\Omega\)。其余——"每个子对象由唯一特征箭头拉回得到"——原封不动。这就是全部动机。</p>
+  </div>
+
+  <h3 class="sub" data-page-node-id="pJEtNfr5CSybcCq147cAW0">11.2.2 子对象分类子：定义与拉回方块</h3>
+  <div class="defn" data-page-node-id="rIFVvyrcUyPkyglENllSVF">
+    <span class="lbl" data-page-node-id="GsfMrmt1zKhPLLWyC8zwT1">定义 11.2.1（子对象分类子）</span>
+    <p data-page-node-id="JxNQ8kHJOf9W5pXvKjMIC3">范畴 \(\mathcal E\) 中的<strong data-page-node-id="JntjIoLVfEdJL5CcUKE4O7">子对象分类子</strong>（subobject classifier）是一个对象 \(\Omega\)，配一个箭头 \(\mathrm{true}:1\to\Omega\)（\(1\) 为终端对象），满足如下泛性质：对任意单态 \(m:S\to A\)，存在<strong data-page-node-id="Bb2xFGS2F0Wm7pnIoyBRvP">唯一</strong>箭头 \(\chi_m:A\to\Omega\)，使得下面的方块是拉回：</p>
+    <svg class="cd" viewBox="0 0 560 250" width="560" height="250" role="img" aria-label="子对象分类子的拉回方块" data-page-node-id="bicAeL36sy52nzioQEtBXE">
+      <rect class="node" x="40" y="36" width="120" height="44" rx="7" data-page-node-id="AzUA2qeHpHSH5uak8CAxXj"/>
+      <text class="nt" x="100" y="64" text-anchor="middle" data-page-node-id="D8J6Ww1saX8qtSXBRGwAOV">S</text>
+      <rect class="nodey" x="380" y="36" width="140" height="44" rx="7" data-page-node-id="7hyawnQBDji8vhjdpU92h5"/>
+      <text class="nt" x="450" y="64" text-anchor="middle" data-page-node-id="bhxCEpFsFcMioxwZGaAea7">1</text>
+      <rect class="node" x="40" y="176" width="120" height="44" rx="7" data-page-node-id="zpFaT55JWscG7c6DdMKCgd"/>
+      <text class="nt" x="100" y="204" text-anchor="middle" data-page-node-id="5uErR30MAutqtqV3NMalc5">A</text>
+      <rect class="nodey" x="380" y="176" width="140" height="44" rx="7" data-page-node-id="ZF9825UZYS8e4YU8AkDtDb"/>
+      <text class="nt" x="450" y="204" text-anchor="middle" data-page-node-id="9bM4UffZUP2GBAEDBgqVv4">Ω</text>
+      <line class="ar" x1="160" y1="58" x2="380" y2="58" data-page-node-id="0Bke8FDDyBtUyqtVHF5nQP"/>
+      <text class="lb" x="270" y="50" text-anchor="middle" data-page-node-id="Y7NyMuMoFYkU25M4XCaeM0">!（唯一到 1）</text>
+      <line class="arg" x1="160" y1="198" x2="380" y2="198" data-page-node-id="ToLSotcAvuooEiwOkjzdcM"/>
+      <text class="hg" x="270" y="190" text-anchor="middle" data-page-node-id="nKk5WMhnEi7kASIzr3vKwN">χ_m（特征箭头，唯一）</text>
+      <line class="arb" x1="100" y1="80" x2="100" y2="176" data-page-node-id="faMa0ocBSL25Un4iJxqPPY"/>
+      <text class="hb" x="88" y="132" text-anchor="end" data-page-node-id="kYgAW2aClMWXhBLwKL3Q9F">m（单态）</text>
+      <line class="arb" x1="450" y1="80" x2="450" y2="176" data-page-node-id="pKdRQ6vLBQlHJnjH4l49Rm"/>
+      <text class="hb" x="462" y="132" text-anchor="start" data-page-node-id="xa3MThF3nnBanYHktEo7Ux">true</text>
+    </svg>
+    <p class="figcap" data-page-node-id="M8puhmL1BmvF8gz4dRVAQC">图 11.3　子对象分类子：每个子对象 \(m\) 是 \(\mathrm{true}\) 沿其特征箭头 \(\chi_m\) 的拉回</p>
+    <p data-page-node-id="OjHPx83oRfpRZoapY71rYI">箭头 \(\chi_m\) 叫作 \(m\) 的<strong data-page-node-id="LEiuq4PAgUFDWIj03vwF0A">特征箭头</strong>（characteristic morphism）。"拉回"意味着：一个元素 \(a\)（一般范畴里是箭头）落在子对象 \(S\) 里，当且仅当 \(\chi_m\circ a\) 分解穿过 \(\mathrm{true}\)。</p>
+  </div>
+  <div class="rmk" data-page-node-id="tKBd4JPL3fv3LJUynrhojQ">
+    <strong data-page-node-id="qdwmQyEKITvuE5WILanc3M">为什么要求唯一？</strong>唯一性保证"子对象 ↔ 特征箭头"是一一对应，而不是多对一。这正是把它做成"分类子"（classifier）的关键：\(\Omega\) 不只是"一个真值对象"，而是能精确编码全部子对象的对象。下面的命题把这个一一对应写成同构。
+  </div>
+
+  <h3 class="sub" data-page-node-id="xWObnjDDvQRSvxTlY7eIC2">11.2.3 关键同构 Sub(A) ≅ Hom(A, Ω)</h3>
+  <div class="prop" data-page-node-id="CFypL2sQO2AZA2B4J5q51n">
+    <span class="lbl" data-page-node-id="LTyTBi6jCXVG6PO0qKBXal">命题 11.2.2（子对象与特征箭头同构）</span>
+    <p data-page-node-id="LfFyz5hisXtVYrcxla1oNJ">设 \(\mathcal E\) 有子对象分类子。对任意对象 \(A\)，有自然同构
+      \[
+        \operatorname{Sub}(A)\ \cong\ \mathcal E(A,\Omega),
+      \]
+      由 \(m\mapsto\chi_m\) 给出（这里 \(\operatorname{Sub}(A)\) 是 \(A\) 的子对象等价类之集）。</p>
+    <div class="proof" data-page-node-id="EJpvAcuoEtgnOKf8BtV4AF">
+      <p class="pl" data-page-node-id="AY67gyQ8NOXqQOQbrR84j2">证明.</p>
+      <p data-page-node-id="UfKmbczYypuCWPNUF9pJEF"><strong data-page-node-id="i1A95lXlMhQxctGcHvXZIh">良定义与单射.</strong>由定义 11.2.1，每个子对象 \(m\) 给出唯一 \(\chi_m\)。若 \(m,m'\) 给出同一特征箭头 \(\chi\)，则 \(S,S'\) 都是 \(\mathrm{true}\) 沿 \(\chi\) 的拉回；拉回唯一到唯一同构，故 \(S\cong S'\) 作为子对象相等。故 \(m\mapsto\chi_m\) 是单射。</p>
+      <p data-page-node-id="Z8uS8FzHO1jL0HtHoEjXEn"><strong data-page-node-id="80BFuZVmTcHhbZnVq8yEol">满射.</strong>给定任意箭头 \(\chi:A\to\Omega\)，令 \(S\) 为 \(\mathrm{true}\) 沿 \(\chi\) 的拉回，得单态 \(m:S\to A\)。由构造，\(\chi\) 使该方块成为拉回；而定义 11.2.1 说这样的箭头唯一，故 \(\chi_m=\chi\)。故满射。</p>
+      <p data-page-node-id="1EpHqXsfBIDWRMjdgOxMZE"><strong data-page-node-id="6OYh78K0gFb7599EBLpd6R">自然性.</strong>对 \(f:A'\to A\)，拉回函子 \(f^\ast:\operatorname{Sub}(A)\to\operatorname{Sub}(A')\) 对应到预复合 \(\chi\mapsto\chi\circ f\)：因为 \(f^\ast(m)\) 是 \(\mathrm{true}\) 沿 \(\chi_m\circ f\) 的拉回。故方块交换，同构关于 \(A\) 自然。<span class="qed" data-page-node-id="yDYyQzkbGq2pVmtT9qO9kl">∎</span></p>
+    </div>
+  </div>
+
+  <h3 class="sub" data-page-node-id="pdp5Fbqb7FwILpWQGA0KUg">11.2.4 拓扑斯的定义与 Sub(A) 的 Heyting 代数结构</h3>
+  <div class="defn" data-page-node-id="Yo3l19QNb9Vg857dbSgG57">
+    <span class="lbl" data-page-node-id="s4ScGP9ctzyBfUWF90Pw3C">定义 11.2.3（初等拓扑斯）</span>
+    <p data-page-node-id="W3j1PtqLz9au4PE5CXNo5w">范畴 \(\mathcal E\) 称为<strong data-page-node-id="RuxLlXSK0siWmkDZ49wPGN">初等拓扑斯</strong>（elementary topos），若它满足：</p>
+    <ul data-page-node-id="jGyQHTKTQCMcnDW7zXFpF0">
+      <li data-page-node-id="zZBkBUl072KMGCM5PPdLLR">有有限极限（终端对象与拉回，因而有有限积与等化子）；</li>
+      <li data-page-node-id="YVg1J6gUG5aYkL44A0tXOU">是笛卡尔闭的（有指数对象 \(B^A\)）——见（参见第 9 章 3 节）；</li>
+      <li data-page-node-id="iDKoXkArYVcdmbGQw9YRJS">有子对象分类子 \(\Omega\)。</li>
+    </ul>
+    <p data-page-node-id="1P8RZ8SPciGgdGkSBzcoHA">换言之：拓扑斯 = 有限完备 + 笛卡尔闭 + 子对象分类子。有限极限与 CCC 已在前面章节备好（参见第 4、9 章），本节新增的只是第三条。不要小看这一条：它把逻辑塞进了范畴内部。</p>
+  </div>
+  <div class="prop" data-page-node-id="5WhKCJa8OsYJtnsAdtRksa">
+    <span class="lbl" data-page-node-id="uzTBb5DAGkfhUd22jQ9LHx">命题 11.2.4（子对象格是 Heyting 代数）</span>
+    <p data-page-node-id="TgjvOKlmXNn81lIEigAWps">若 \(\mathcal E\) 是拓扑斯，则对每个 \(A\)，\(\operatorname{Sub}(A)\) 是 Heyting 代数；特别地 \(\operatorname{Sub}(1)\) 是 Heyting 代数，其元素叫<strong data-page-node-id="41M7YiZyYRWUJHNEyFt5MY">真值</strong>。</p>
+    <div class="proof" data-page-node-id="G2wXB9xtRMBGzgGCAkuVCf">
+      <p class="pl" data-page-node-id="xvDyyMGlDEXEgWyFZVO1lZ">证明（给出构造，细节回指前文）.</p>
+      <p data-page-node-id="a08TI5q5lxlSXrwGZ0BoZs">由（参见第 4 章 4.1–4.2 节），\(\operatorname{Sub}(A)\) 有偏序：\(S\le T\) 当 \(S\) 分解穿过 \(T\)；交 \(\wedge\) 由拉回给出，并/并 \(\vee\) 由并的像给出。这里新的一点是指数：因为 \(\mathcal E\) 笛卡尔闭，有指数 \(B^A\)，而 Heyting 蕴涵 \(U\Rightarrow V\) 由 11.2.3 的伴随 \(\exists_f\dashv f^\ast\dashv\forall_f\) 中 \(\forall\) 在子对象格上的限制给出（等价地，\(\operatorname{Sub}(A)\cong\mathcal E(A,\Omega)\) 而 \(\Omega\) 是内部 Heyting 代数对象）。这些联结词的伴随刻画见（参见第 5 章 3 节、第 7 章）。故 \(\operatorname{Sub}(A)\) 满足 Heyting 公理。<span class="qed" data-page-node-id="KCIc7BmLp7H5OMCfxCu0dt">∎</span></p>
+    </div>
+  </div>
+  <div class="rmk" data-page-node-id="bdutHXZPet4j3eSD42H6nq">
+    <strong data-page-node-id="hGRpnZpp5DowsXpmjguMfm">与 11.1 的接口.</strong>\(\operatorname{Sub}(A)\) 是 Heyting 代数，意味着它本身是一个"笛卡尔闭的偏序范畴"（参见第 5 章 3 节命题 5.3.2）——也就是一个退化的 CCC。于是 11.1 的 \(\Pi,\Sigma,\Rightarrow\) 在子对象格上都有对应物。这不是巧合：拓扑斯正是让"逻辑能在范畴内部运作"的最小结构。
+  </div>
+
+  <svg class="cd" viewBox="0 0 640 190" width="640" height="190" role="img" aria-label="量词伴随三元组" data-page-node-id="I5SC5PIncbIwP6ViYhbuxS">
+    <rect class="node" x="30" y="66" width="150" height="44" rx="7" data-page-node-id="ucZPrWJ4BKnr0xhNstxaox"/>
+    <text class="nt" x="105" y="94" text-anchor="middle" data-page-node-id="4fTxADmCjIVFv6PltHcKIH">Sub(B)</text>
+    <rect class="nodeg" x="245" y="66" width="150" height="44" rx="7" data-page-node-id="YRYIOTI2tcd2yclHn2ZPhY"/>
+    <text class="nt" x="320" y="94" text-anchor="middle" data-page-node-id="tYe8ur6Te4AQVkfvgMHgYd">Sub(A)</text>
+    <rect class="node2" x="460" y="66" width="150" height="44" rx="7" data-page-node-id="2iSnEX13R2UkKCzpB0zVcE"/>
+    <text class="nt" x="535" y="94" text-anchor="middle" data-page-node-id="IrRbbyBDgiVrKSB9WxEBSK">Sub(B)</text>
+    <line class="arg" x1="180" y1="78" x2="245" y2="78" data-page-node-id="fb5wNoQ1JITcu7tpq4ct80"/>
+    <text class="hg" x="212" y="70" text-anchor="middle" data-page-node-id="wvSGt9XBFoCYoWQB19dBK6">∃_f</text>
+    <line class="arb" x1="245" y1="106" x2="180" y2="106" data-page-node-id="yFTICc0upB84p0JjRVZDDp"/>
+    <text class="hb" x="212" y="126" text-anchor="middle" data-page-node-id="O4kXEc5yPcW7lJ7xCRgQV4">f*</text>
+    <line class="arp" x1="395" y1="78" x2="460" y2="78" data-page-node-id="m4zNCunpWPJFUr0Z9aHkwO"/>
+    <text class="hp" x="427" y="70" text-anchor="middle" data-page-node-id="FMRrZp4uK1dfzLIJwUInaG">∀_f</text>
+    <line class="arb" x1="460" y1="106" x2="395" y2="106" data-page-node-id="XdKfZdZAB5mtoecoVER3RI"/>
+    <text class="hb" x="427" y="126" text-anchor="middle" data-page-node-id="AOJfRwfRI0omIAWdra32xg">f*</text>
+    <text class="lb" x="320" y="168" text-anchor="middle" data-page-node-id="jtyKdCcRWynJ0mnt1IHnHX">f : A → B 的拉回函子 f* 两侧都有伴随：∃_f ⊣ f* ⊣ ∀_f</text>
+  </svg>
+  <p class="figcap" data-page-node-id="rJ4FjUeAgO3EHZdWQebVvj">图 11.4　量词是伴随：左伴随 \(\exists_f\) 读出"存在"，右伴随 \(\forall_f\) 读出"对所有"（回指第 7 章）</p>
+
+  <h3 class="sub" data-page-node-id="0f0aBxcubVtP18Yl484hJa">11.2.5 内部语言 L(E)：把范畴读成语言</h3>
+  <p data-page-node-id="OBnn0VWoGdRUEeDtuFUrBR">有了拓扑斯，就能定义它"内部说的语言"。这是 Mitchell–Bénabou 语言，记作 \(L(\mathcal E)\)。翻译规则如下，与 11.1 的类型论严丝合缝。</p>
+  <div class="defn" data-page-node-id="osbAhDG0db2eFqKx0YgaF1">
+    <span class="lbl" data-page-node-id="k88vwEsiLEb0kLu9qOZaDA">定义 11.2.5（内部语言 \(L(\mathcal E)\)）</span>
+    <p data-page-node-id="CWGdM5ymKbVDJEqRFqSGLZ">给定拓扑斯 \(\mathcal E\)，构造带类型语言 \(L(\mathcal E)\)：</p>
+    <ul data-page-node-id="afkzEkzAI3CquyOMzCp3GX">
+      <li data-page-node-id="JnF8SWCGFcAMyE9MMuAkqk"><strong data-page-node-id="RoyUI93voCYD5LC4kv4k5v">类型 ↔ 对象：</strong>\(L(\mathcal E)\) 的类型就是 \(\mathcal E\) 的对象。特别地 \(1\) 对应真命题，\(\Omega\) 对应"命题"类型。</li>
+      <li data-page-node-id="SMubADDB4AJzwDUDemhU2C"><strong data-page-node-id="kyyVgdr06MBMrSPKePvv9A">项 ↔ 箭头：</strong>判断 \(x:A\vdash t:B\) 对应箭头 \(A\to B\)；闭项 \(t:B\) 对应箭头 \(1\to B\)。</li>
+      <li data-page-node-id="q64jNEIWHe67TAfsz1HUwg"><strong data-page-node-id="iE29LLkyx5MHqJXz1TmAr6">公式 ↔ 到 \(\Omega\) 的箭头：</strong>在语境 \(A\) 下的公式 \(\varphi\) 对应箭头 \(A\to\Omega\)，也就是 \(\operatorname{Sub}(A)\) 的一个元素（由命题 11.2.2）。逻辑联结词由 Heyting 代数的运算解释：\(\wedge,\vee,\Rightarrow,\neg\) 对应 \(\operatorname{Sub}(A)\) 中的相应运算。</li>
+      <li data-page-node-id="28Fn6ikAAO7c5rdmJDpCVT"><strong data-page-node-id="0CG0GD63EH14gn7MkIvcuO">量词 ↔ 伴随：</strong>沿 \(f:A\to B\) 的全称/存在量化分别对应 \(\forall_f,\exists_f\)（图 11.4）。</li>
+      <li data-page-node-id="uAKswfDzqyB0lh3kZP4tXR"><strong data-page-node-id="1vLf6HB056s7EDK1z9u8lN">相等 ↔ 对角线的特征箭头：</strong>公式 \(x=y\)（\(x,y:A\)）对应对角线 \(\Delta:A\to A\times A\) 的特征箭头 \(A\times A\to\Omega\)。</li>
+    </ul>
+  </div>
+  <div class="defn" data-page-node-id="vv3RzleLa9ijjIrZkzYVea">
+    <span class="lbl" data-page-node-id="9Sr5535JXwBPGGkSbCpGSA">定义 11.2.6（内部真）</span>
+    <p data-page-node-id="bIJE4OaHQY1WgbVp1f5yf8">称句子 \(\varphi\)（即闭公式，对应箭头 \(1\to\Omega\)）在 \(\mathcal E\) 中<strong data-page-node-id="fmyOk2mVBvTezAR12ypVeI">内部真</strong>，记作 \(\mathcal E\models\varphi\)，若它对应的箭头 \(1\to\Omega\) 恰是 \(\mathrm{true}:1\to\Omega\)。一般地，带语境 \(A\) 的公式 \(\varphi\) 在 \(A\) 上成立，若对应箭头等于 \(\top_A:A\to\Omega\)（\(A\) 的顶元）。</p>
+  </div>
+  <div class="rmk" data-page-node-id="7zcMWVXrtHy5laFqKEFGYG">
+    <strong data-page-node-id="O0FF9mGvcGaJ8Lf50DgDhA">这是全章的转折点。</strong>"\(\varphi\) 为真"不再是外部赋予一个 0/1，而是"某个箭头等于顶元"这样一个范畴内的、可检验的事实。不同拓扑斯给同一句子不同的箭头，于是"真"随世界而变——这正是第 13 章（第三本书）Kripke–Joyal 语义的雏形。注意：本节的 \(\mathcal E\models\varphi\) 与后面的强制关系 \(1\Vdash\varphi\) 相关但不同，届时再区分。
+  </div>
+
+  <h3 class="sub" data-page-node-id="eQIqysgJH4sW5zaLjK8jha">11.2.6 可靠性：可证必真</h3>
+  <div class="prop" data-page-node-id="7tIKXOtgPfiaDFvpiXAtcW">
+    <span class="lbl" data-page-node-id="1GwqaofaOX2NZ1axMnPWJe">命题 11.2.7（内部语言的可靠性）</span>
+    <p data-page-node-id="q153KzxeN0tY6IE2d7pMQu">若句子 \(\varphi\) 在 11.1 的类型论中可证（\(\vdash\varphi\)），则 \(\mathcal E\models\varphi\)。即：语法可证蕴含内部真。</p>
+    <div class="proof" data-page-node-id="uYBGHX1Bj4UUwGFuYfz3zq">
+      <p class="pl" data-page-node-id="8fMtc2cAUM2bc6CYMyIqHc">证明（对证明树结构归纳，规则对应泛性质）.</p>
+      <p data-page-node-id="m8oooAHEACp4byXU89OxgC">对 \(\varphi\) 的证明树归纳。基础情形：假设与公理由语境假设或顶元给出。归纳步逐条检查每个类型论规则在 \(L(\mathcal E)\) 中都成立：\(\wedge\) 的引入/消去对应积的泛性质（积在 \(\mathcal E\) 中存在，因拓扑斯有有限极限）；\(\Rightarrow\) 对应 Heyting 蕴涵的伴随 \(-\wedge U\dashv(U\Rightarrow-)\)；\(\forall,\exists\) 对应 \(\exists_f\dashv f^\ast\dashv\forall_f\)（图 11.4）；\(\mathrm{Id}\) 的消去 \(J\) 对应对角线特征箭头的替换性质。由于每条规则都由某个伴随/泛性质保证，而这些泛性质在拓扑斯中成立，归纳成立。<span class="qed" data-page-node-id="9IJPNQBLbvloc6HwzUxH7y">∎</span></p>
+    </div>
+  </div>
+  <div class="rmk" data-page-node-id="dYVhWV9Q1jAtFlaKbhjUwJ">
+    <strong data-page-node-id="SG4ge3E1sCIBEUXxgbgscG">反向（完备性）呢？</strong>"内部真 \(\Rightarrow\) 可证"是 Part II 的高潮（§17、§19），需要"由理论生成拓扑斯"的技术，放到 11.6 讲。可靠性只是容易的一半；但即使只有这一半，也已说明：类型论的每条推理规则，在任意拓扑斯里都有一个可靠的语义实现。
+  </div>
+
+  <div class="box exer" data-page-node-id="WRcs2RQPRxkIE82p1vU4On">
+    <h4 data-page-node-id="Bd5LWAIEMPkpdFhpYAaG2B">② 习题</h4>
+    <div class="grp" data-page-node-id="BOfYiYt1tDOVz4SFoDcKD4">基础</div>
+    <ol data-page-node-id="mWWjTm9tE9kg9elR4RVTA6">
+      <li id="ex11-2-1" data-page-node-id="2HWsxm4X1fS5692dqMkLPf">在 \(\mathbf{Set}\) 中写出子集 \(S=\{0,2\}\subseteq A=\{0,1,2,3\}\) 的特征函数 \(\chi_S\)，并说明 \(\mathrm{true}:1\to\{0,1\}\) 应选哪个元素。</li>
+      <li id="ex11-2-2" data-page-node-id="46KVxGUfUrKg3AQe2I6xQp">叙述子对象分类子的泛性质：对每个单态 \(m:S\to A\)，要存在唯一的什么、使什么方块为拉回？</li>
+      <li id="ex11-2-3" data-page-node-id="qsonTNvArDkoRa4tNBJCSg">写出拓扑斯的三条定义。并说明：为何有限极限 + CCC 两条仍不够，必须加子对象分类子？</li>
+      <div class="grp" data-page-node-id="w3Yl3thCEnm4LKiYQoRNgZ">进阶</div>
+      <li id="ex11-2-4" data-page-node-id="8GYWkYScDY5eIOZRL7kPEh">证明命题 11.2.2 中"满射"部分：给定 \(\chi:A\to\Omega\)，如何构造子对象 \(m:S\to A\) 使 \(\chi_m=\chi\)？</li>
+      <li id="ex11-2-5" data-page-node-id="lLCqSFHtSWr7748aOVGc0V">在内部语言 \(L(\mathcal E)\) 中，公式 \(x=y\)（\(x,y:A\)）对应哪个箭头？为什么用对角线 \(\Delta:A\to A\times A\)？</li>
+      <li id="ex11-2-6" data-page-node-id="YzHDFCwaHcjGo3iyGM9DNA">说明可靠性命题的证明思路：为何"对证明树归纳 + 每条规则对应一个泛性质"就够了？举 \(\exists\) 对应哪条伴随为例。</li>
+    </ol>
+  </div>
+
+  <div class="box ans" data-page-node-id="JWhFBD3VM1ouziXuO0zBab">
+    <h4 data-page-node-id="gS6usSzuED7EWxOsBWE2i3">③ 参考答案</h4>
+    <div class="item" data-page-node-id="NFHFQ8m96CeIfNb2LdmKNB"><b data-page-node-id="QBT78pmsSp0AXwyxwUmTdj">11.2.1</b>　\(\chi_S:A\to\{0,1\}\) 满足 \(\chi_S(0)=1,\chi_S(1)=0,\chi_S(2)=1,\chi_S(3)=0\)。\(\mathrm{true}:1\to\{0,1\}\) 应选元素 \(1\)（把 \(1\) 这个单点集映到 \(\{0,1\}\) 中的元素 \(1\)）。于是 \(\{1\}\) 在 \(\chi_S\) 下的原像正是 \(\{0,2\}=S\)，拉回方块成立。<span class="qed" data-page-node-id="IZPxKi17hGZ09Ee3O4HMkx">∎</span></div>
+    <div class="item" data-page-node-id="n4EogKAhlG0GCF9PaxWple"><b data-page-node-id="gwG49zqDFyB0DvpF1QELiI">11.2.2</b>　对任意单态 \(m:S\to A\)，要存在唯一箭头 \(\chi_m:A\to\Omega\)，使得方块 \(S\to 1\)、\(A\xrightarrow{\chi_m}\Omega\)、\(m:S\to A\)、\(\mathrm{true}:1\to\Omega\) 成为拉回（即 \(S\) 是 \(\mathrm{true}\) 沿 \(\chi_m\) 的拉回）。<span class="qed" data-page-node-id="WaiBkXCFJ1qRbM14cZyowE">∎</span></div>
+    <div class="item" data-page-node-id="JjekPINj5Jr8SjfSwXFkaK"><b data-page-node-id="Nxh15gHv4isPsLBeLjIvjW">11.2.3</b>　三条：(1) 有有限极限；(2) 笛卡尔闭（有指数）；(3) 有子对象分类子 \(\Omega\)。有限极限 + CCC 只保证能做积与函数空间，仍不含"真值对象"，无法把公式解释为到 \(\Omega\) 的箭头，也就没有内部逻辑；第三条正是把逻辑装进范畴的那一步。例如任意 CCC（如无 \(\Omega\) 的偏序）未必有子对象分类子。<span class="qed" data-page-node-id="qF4BBqQoPjzq6bjoKDhH90">∎</span></div>
+    <div class="item" data-page-node-id="o8vRxdbPDFfHmUg3q6rbL2"><b data-page-node-id="ZW7piO6P9lbVwB4jKTxtgk">11.2.4</b>　取 \(S\) 为 \(\mathrm{true}:1\to\Omega\) 沿 \(\chi:A\to\Omega\) 的拉回，得交换方块与单态 \(m:S\to A\)。由定义 11.2.1，使该方块为拉回的特征箭头存在且唯一；而 \(\chi\) 本身已经使它成为拉回，故唯一的特征箭头 \(\chi_m\) 必等于 \(\chi\)。<span class="qed" data-page-node-id="N0A9tOcZYxcXsezU30LkS0">∎</span></div>
+    <div class="item" data-page-node-id="wY1uuiq8XqOFCACYjcrNoP"><b data-page-node-id="b3kwa3BrOTbGg8gWSlMLPO">11.2.5</b>　对应对角线 \(\Delta:A\to A\times A\) 的特征箭头 \(\chi_\Delta:A\times A\to\Omega\)。用对角线是因为：\(x=y\) 恰指有序对 \((x,y)\) 落在 \(A\times A\) 的对角线上；而特征箭头把"落在子对象上"编码为"经 \(\chi_\Delta\) 后等于 \(\mathrm{true}\)"，于是 \((x,y)\) 满足 \(x=y\) 当且仅当对应箭头分解穿过 \(\mathrm{true}\)。<span class="qed" data-page-node-id="KwFkI7K1vJ5aFCho96nZgt">∎</span></div>
+    <div class="item" data-page-node-id="xjrFlGKZ7kPYf4vABzfr9x"><b data-page-node-id="ZlsAzAaRt7eIm5HCjcueIU">11.2.6</b>　可靠性是对证明树的结构归纳：每个证明由规则一步步搭成，只要每条规则在语义中都"保真"（前提真则结论真），整棵树就保真。而每条规则保真由拓扑斯里的某个泛性质保证。例如 \(\exists\) 的引入对应左伴随 \(\exists_f\)：由 \(f^\ast\) 与 \(\exists_f\) 的伴随同构，"在某阶段存在 witness" 与 "像的某元素满足性质" 等价，从而存在量化规则在 \(\mathcal E\) 中成立。<span class="qed" data-page-node-id="ykLDYMEWRtmvizyGtKouw8">∎</span></div>
+  </div>
+
+  <div class="box phil" data-page-node-id="zkzCn4LuKkgqMWDvMGcXaB">
+    <h4 data-page-node-id="O25v4GlumxIwwWPSK3QLSb">④ 选读：一个世界如何自带母语</h4>
+    <p data-page-node-id="kEjL0gBBYlEFA3UUQoS2wS">把拓扑斯想成一个有自己的母语的社区：对象是它的话题，箭头是它承认的推演，\(\Omega\) 是它判定真假的器官。内部语言就是这门母语，而我们——站在外面的研究者——用元语言描述它。命题 11.2.2 说，这个社区里"哪些东西成立"（子对象）与"它能说出哪些真值判断"（到 \(\Omega\) 的箭头）是同一份信息的两种写法。</p>
+    <p data-page-node-id="HzlsRpEXtwsxYcQQOSOh2y">这与你关心的语义问题的连接点在于：如果"一个理论/一个世界"真的自带语言，那么"从模型内部能否表述某个干预/某个可能性"就变成可判定的技术问题——看相应的箭头是否存在、是否等于顶元。要克制的是：这里没有任何心理学含义，"社区有母语"只是"结构自带表达资源"的形象说法；而且不同拓扑斯给同一句子不同的真值，所以不存在脱离模型的"绝对真"。</p>
+  </div>
+</section>
+<section class="sec" id="s11-3" data-page-node-id="XBQH6u15J6YwtXofPmd8Nz">
+  <div class="sec-h" data-page-node-id="nDraQbjYLVGA2GiAoKyKL5"><span class="sec-no" data-page-node-id="wMBw40cIt6pIsQ6b9D5VPN">11.3</span><h2 data-page-node-id="a1s1Tto82REUZX5EEqRAgC">内部语言的运作</h2><span class="src" data-page-node-id="9bv2Qiiu2AvU1eTITOuRDi">L Part II §4–6</span></div>
+
+  <div class="box learn" data-page-node-id="IcPWhsVRKwwH9DV05CFXU3">
+    <h4 data-page-node-id="KgXlzdpXZ4xJSWs7W4P7HI">① 本节学习目标</h4>
+    <ol data-page-node-id="h4pfyKtY0nwBeGNbKX89eO">
+      <li data-page-node-id="YZzBzVXDEyj6KIfNj9cllY">理解自然数对象（NNO）的泛性质，能在拓扑斯里"做 Peano 算术"；</li>
+      <li data-page-node-id="t5oBYrflfb6DZC322CFpQY">掌握用内部语言证明范畴事实的标准流程：把范畴命题翻译成内部语句，在类型论里证明，再用可靠性搬回；</li>
+      <li data-page-node-id="8HM4uQtJAwaVKLDDPmTZDF">通过具体例子（单态、满态、函数相等）亲手操作这套流程；</li>
+      <li data-page-node-id="LFb37i99cYmtLfFJKilmpP">理解内部逻辑默认是直觉主义的：排中律 \(\varphi\vee\neg\varphi\) 并非普遍成立，并知道它在何时成立（预告 11.4）；</li>
+      <li data-page-node-id="wBGjlUBOa5PnKPDkHxY4mE">明确内部语言的表达方式与"元语言描述"的分工，避免把两者混为一谈。</li>
+    </ol>
+  </div>
+
+  <div class="xref" data-page-node-id="PISSfjgg2vwztF3hNl8LjD">
+    <strong data-page-node-id="QXXaqIK739Dzi72L1lt6Dh">沿用前文（不再复述）.</strong> 结构归纳法与项模型见<strong data-page-node-id="cfZMY1WUxy7qDdMpOGQpO0">（参见第 10 章 10.4、10.2 节）</strong>；内部语言的翻译规则与可靠性见<strong data-page-node-id="AD8NG6bNITwqOySAnBFn48">（本教材 11.2 节）</strong>；\(\mathrm{Id}\) 类型与 \(J\) 消去见<strong data-page-node-id="kpvLnn8OYl2YJnmdhYZQf6">（本节 11.1.4）</strong>。本节全部新内容是"把内部语言当工具实际使用"，不重复 11.2 的定义。
+  </div>
+
+  <h3 class="sub" data-page-node-id="sLybk2Gekaii4KnFANSFHi">11.3.1 极简回顾：在范畴里"数数"要什么</h3>
+  <div class="box prep" data-page-node-id="y146qNl0QRCauCjFFO7xkL">
+    <h4 data-page-node-id="WhhtoVmSUgBIHXFqrUFPWc">极简回顾（五分钟，够用即可）</h4>
+    <p data-page-node-id="jcglqxlOPUpZTSycJlla94">要在 \(\mathbf{Set}\) 里谈自然数，需要：一个集合 \(\mathbb N\)、一个元素 \(0\)、一个后继函数 \(s(n)=n+1\)，再加上"归纳法"——若一个子集含 \(0\) 且对后继封闭，就等于整个 \(\mathbb N\)。把这三样搬到任意拓扑斯，就得到<strong data-page-node-id="CvXYKfQUzVPhTGg3rSmTrd">自然数对象</strong>。只需记住一句话：<strong data-page-node-id="W1XLBX7eujNYI9aznVLZKH">自然数对象 = 一个对象 + 0 + 后继 + 归纳原理</strong>，其中归纳原理用"泛性质"表述（像第 10 章的 Cox 风格），不依赖元素。</p>
+  </div>
+
+  <h3 class="sub" data-page-node-id="NGnc33k7yB9eR9udRibu3C">11.3.2 自然数对象与 Peano 规则</h3>
+  <div class="defn" data-page-node-id="IGb40TX6qUAc86BzETqEOH">
+    <span class="lbl" data-page-node-id="KRpX0qZ6gtesVoh87Gz4RU">定义 11.3.1（自然数对象，NNO）</span>
+    <p data-page-node-id="cCQoUsPn7m2H8vjYUQtlxI">拓扑斯 \(\mathcal E\) 中的<strong data-page-node-id="kx2auOHbPSCSmsmaCSQiyG">自然数对象</strong>是对象 \(N\) 连同箭头 \(0:1\to N\)、\(s:N\to N\)，满足如下泛性质：对任意对象 \(A\) 与箭头 \(q:1\to A\)、\(h:A\to A\)，存在<strong data-page-node-id="MyMl8yo1EncXbyKFZvi9D6">唯一</strong>箭头 \(u:N\to A\) 使
+      \[
+        u\circ 0=q,\qquad u\circ s=h\circ u.
+      \]
+    这叫"\(u\) 由 \(q\) 与 \(h\) 递归定义"。它在内部语言里就是说：每个函数 \(u:N\to A\) 由初值 \(q\) 与递推步 \(h\) 唯一决定——即数学归纳法。</p>
+  </div>
+  <svg class="cd" viewBox="0 0 620 210" width="620" height="210" role="img" aria-label="自然数对象的泛性质" data-page-node-id="vOYQyLeAv2uwyBsMYR2ooT">
+    <rect class="node" x="30" y="30" width="90" height="40" rx="7" data-page-node-id="aHz4f7VIHr6unbwhW74yYR"/>
+    <text class="nt" x="75" y="56" text-anchor="middle" data-page-node-id="VLF4g5rSL6SCukZ28zPUwv">1</text>
+    <rect class="nodeg" x="230" y="30" width="110" height="40" rx="7" data-page-node-id="XhMyqc9QBAVSJcrt3h9fW3"/>
+    <text class="nt" x="285" y="56" text-anchor="middle" data-page-node-id="PKJ9CnP6GC5Iz1curXA6WP">N</text>
+    <rect class="nodey" x="440" y="30" width="120" height="40" rx="7" data-page-node-id="499tJIuuFyAFmhPARKdhFo"/>
+    <text class="nt" x="500" y="56" text-anchor="middle" data-page-node-id="kAzQCtp84HqEHPWuyl1ksh">A</text>
+    <rect class="nodey" x="440" y="140" width="120" height="40" rx="7" data-page-node-id="HI1n2ZFOO8d21sHXWJN5g0"/>
+    <text class="nt" x="500" y="166" text-anchor="middle" data-page-node-id="QW5J7ZPJp3vz2sxTjlqKem">A</text>
+    <rect class="nodeg" x="230" y="140" width="110" height="40" rx="7" data-page-node-id="iJfAPnzeWzvI0pcekJkJJh"/>
+    <text class="nt" x="285" y="166" text-anchor="middle" data-page-node-id="ZsomgikcdLV38FqsGDgpmg">N</text>
+    <line class="arb" x1="120" y1="50" x2="230" y2="50" data-page-node-id="oNl8AiVW48ZszFeVyOVRfS"/>
+    <text class="hb" x="175" y="42" text-anchor="middle" data-page-node-id="0P0sKjk38AGBCip0lIy08E">0</text>
+    <line class="arb" x1="340" y1="50" x2="440" y2="50" data-page-node-id="GZD9HHhuJtRfIT8AWHfGcm"/>
+    <text class="hb" x="390" y="42" text-anchor="middle" data-page-node-id="ISdsjdt2RWcGCNOdpBlGwB">q</text>
+    <line class="arb" x1="285" y1="70" x2="285" y2="140" data-page-node-id="9A40qKVF8AC0et1qaEaUrH"/>
+    <text class="hb" x="273" y="108" text-anchor="end" data-page-node-id="Ng2kRuFKItYDLuQTHYRcBd">s</text>
+    <line class="ard" x1="285" y1="160" x2="285" y2="70" data-page-node-id="0PTZP029rkGWwXef699MdT"/>
+    <text class="lb" x="215" y="118" text-anchor="middle" data-page-node-id="J0Yr1lHsJSlYXHLMRrFTeb">u</text>
+    <line class="arb" x1="500" y1="70" x2="500" y2="140" data-page-node-id="dLlRHIdzdhZbSxhZNg9qmK"/>
+    <text class="hb" x="512" y="108" text-anchor="start" data-page-node-id="RBOSGA24caldwbDqLE0qqo">h</text>
+    <text class="lb" x="310" y="200" text-anchor="middle" data-page-node-id="C3ieoJS6abHJC8azEoHg0F">唯一 u 使 u∘0 = q 且 u∘s = h∘u（归纳法）</text>
+  </svg>
+  <p class="figcap" data-page-node-id="5PKhupTpZKxGaWEZ1c3pEl">图 11.5　自然数对象的泛性质：初值 \(q\) 与递推步 \(h\) 唯一确定 \(u\)，这就是归纳法</p>
+  <div class="rmk" data-page-node-id="vKh0h0cAuyp0VIbchGHArf">
+    <strong data-page-node-id="2cabFV29UHmxuYvbDViSne">NNO 不是免费的。</strong>初等拓扑斯的定义（11.2.3）不保证自然数对象存在；有 NNO 的拓扑斯叫"带自然数对象的拓扑斯"。L&amp;S §4 专门处理 Peano 规则如何在拓扑斯中成立——它不是公理，而是对拓扑斯的一条附加要求。这点要与"每个拓扑斯都有 \(\Omega\)"区分开。
+  </div>
+
+  <h3 class="sub" data-page-node-id="BRMGmaZlsNA4QtGIeer3Lw">11.3.3 用内部语言证明范畴事实：标准流程</h3>
+  <p data-page-node-id="wUhW6fIurfrqdLJXwZx7Ti">内部语言最有用的地方，是把繁琐的范畴图追踪变成熟悉的"元素式"推理。标准流程分三步：</p>
+  <div class="box walk" data-page-node-id="3BzChF0cHy6zLHW88SOzEG">
+    <h4 data-page-node-id="Pej1OctOl2JV1zHWzcouwK">图 11.6　内部语言证明流程（读图文字说明）</h4>
+    <ol data-page-node-id="4gWi3Jae9CVyoXr2hqvkG7">
+      <li data-page-node-id="itslr8HU07UFR3ZxYQnY09"><strong data-page-node-id="3grwqLIibH7QMBvYyA6NpZ">翻译：</strong>把范畴里的对象/箭头命题，翻译成 \(L(\mathcal E)\) 里的带类型语句。例如"\(f:A\to B\) 是单态"译成内部语句 \(\forall x,y:A.\,f(x)=f(y)\Rightarrow x=y\)（用 11.2.5 的翻译规则：相等用对角线特征箭头）。</li>
+      <li data-page-node-id="iRJntEEmhd32YBqPC6Esth"><strong data-page-node-id="QL63CPA1FRNUG6T2omkoCd">证明：</strong>在类型论（11.1 的系统）里用熟悉的推理证明这个语句。这一步完全像日常数学，不必追踪拉回方块。</li>
+      <li data-page-node-id="Y7JVzGfbkJwEICJ5Efj2PC"><strong data-page-node-id="uuD2nB8NWu1GTjDWsmoolj">搬回：</strong>由可靠性命题（11.2.7），语句在类型论中可证 \(\Rightarrow\) 它在 \(\mathcal E\) 中内部真 \(\Rightarrow\) 对应的范畴事实成立。</li>
+    </ol>
+    <p data-page-node-id="sZVDcBsyo8B3AD88pnWtek">三个步骤里，第 2 步是"人人会做"的逻辑推理，第 1、3 步是机械翻译。这就是内部语言的价值：把范畴论证的复杂度，转移到一套我们已经很熟练的语言里。</p>
+  </div>
+  <div class="prop" data-page-node-id="sN8N4memg0DfUpZQeECV3D">
+    <span class="lbl" data-page-node-id="9u2aYw7ySwBsjzTr9NTd9G">命题 11.3.2（内部语言判别单态）</span>
+    <p data-page-node-id="nfDTM3zpIkXLNozdkgTgeJ">设 \(f:A\to B\) 是 \(\mathcal E\) 中的箭头。则 \(f\) 是单态，当且仅当内部语句
+      \[
+        \forall x:A.\,\forall y:A.\,f(x)=f(y)\ \Rightarrow\ x=y
+      \]
+      在 \(\mathcal E\) 中内部真。</p>
+    <div class="proof" data-page-node-id="uRiEtLEih6rQL3hRzyRTTS">
+      <p class="pl" data-page-node-id="bCUyVQ2t6SrVRPsBBYkCbB">证明.</p>
+      <p data-page-node-id="QE5AMJqOMF9OQXbI7Dhe4S"><strong data-page-node-id="DGM4KBvLdnlTHHIqoyULVr">先解释这条内部语句的意思.</strong>由 11.2.5，\(x,y:A\) 是语境 \(A\times A\) 下的变元；\(f(x)=f(y)\) 对应 \((f\times f)\) 之后的对角线特征箭头；\(x=y\) 对应 \(A\times A\) 上的对角线特征箭头。故整个语句是 \(\operatorname{Sub}(A\times A)\) 中的一个元素：它说"\(f(x)=f(y)\) 这一子对象包含于 \(x=y\) 这一子对象"。记这两个子对象为 \(R=f(x)=f(y)\) 与 \(\Delta=x=y\)。</p>
+      <p data-page-node-id="Ozgb820HL9ERdDvHpmzKic"><strong data-page-node-id="q6KaCZDyPFBC2IEbCfK1to">"\(f\) 单 \(\Rightarrow\) 语句真".</strong>\(f\) 单的定义是：对任意 \(x,y:T\to A\)，\(f x=f y\Rightarrow x=y\)。取 \(T=A\times A\) 与泛元素 \(x=\pi_1,y=\pi_2\)，得 \(R\le\Delta\)，即语句内部真。</p>
+      <p data-page-node-id="nys1S8CyxfokVRjRUkAbEj"><strong data-page-node-id="5cJjsdsA278WN3dC5ffTZx">"语句真 \(\Rightarrow\) \(f\) 单".</strong>设 \(R\le\Delta\)。任取 \(x,y:T\to A\) 使 \(f x=f y\)，即有箭头 \(\langle x,y\rangle:T\to A\times A\) 分解穿过 \(R\)。由 \(R\le\Delta\)，它也分解穿过 \(\Delta\)，而 \(\Delta\) 是 \(x=y\) 的子对象，故 \(x=y\)。这正是 \(f\) 单。<span class="qed" data-page-node-id="vva5ViAfrE4ycOwl50DKOi">∎</span></p>
+    </div>
+  </div>
+  <div class="rmk" data-page-node-id="FdEswoGnMEymeRI3LjrJcB">
+    <strong data-page-node-id="YFu0f4zeautvXtQHxjSZGm">体会这里的省力.</strong>若不用内部语言，上面的证明要画一堆拉回方块、反复用泛性质；用内部语言，它几乎就是一句"单态就是保相等的映射"。可靠性保证这种"元素式"推理是严格的——拓扑斯里虽然没有"元素"，但泛元素 (\(\pi_1,\pi_2\)) 扮演了元素的角色，且推理合法。
+  </div>
+
+  <h3 class="sub" data-page-node-id="FC89KT7fL5M8kNMgwS76iY">11.3.4 内部逻辑是直觉主义的</h3>
+  <p data-page-node-id="oGsRNe7MuotVWhU94EuKk8">一个必须点明的事实：内部语言默认满足的是<strong data-page-node-id="uxDzbHjjkVpSlgg5BXlD50">直觉主义逻辑</strong>，不是经典逻辑。原因是 \(\operatorname{Sub}(A)\) 一般是 Heyting 代数（11.2.4），而 Heyting 代数里 \(\varphi\vee\neg\varphi=\top\) 通常不成立（参见第 5 章 3 节）。</p>
+  <div class="prop" data-page-node-id="6XW2gRw35CHdaqZxYingoo">
+    <span class="lbl" data-page-node-id="PcCK39PiCOo0euCQuoLuVC">命题 11.3.3（排中律并非普遍有效）</span>
+    <p data-page-node-id="JDpEJpPixKotDLWYM1BwA5">存在拓扑斯 \(\mathcal E\) 与句子 \(\varphi\)，使 \(\mathcal E\not\models\varphi\vee\neg\varphi\)。例如取 \(\mathcal E=\mathbf{Set}^{\mathbb N}\) 的某种层范畴（或开集格对应的拓扑斯），令 \(\varphi\) 对应一个既非全也非空的开集：则 \(\varphi\vee\neg\varphi\) 对应 \(U\cup\mathrm{int}(U^c)\neq X\)，不是顶元。</p>
+  </div>
+  <div class="rmk" data-page-node-id="5Ik9P8thWFrsPCHwWLwwVB">
+    <strong data-page-node-id="1nu3xmTXhPgT7f2AgzqtBH">与第 5 章开集格例子对接.</strong>在开集格 \(\mathcal O(X)\) 中，\(\neg U=\mathrm{int}(U^c)\)，故 \(U\vee\neg U=U\cup\mathrm{int}(U^c)\)，一般只是 \(X\) 的稠密开子集而非全部（参见第 5 章 3 节）。这正是排中律失效的现成模型。于是"拓扑斯里的逻辑是否经典"变成一个可检验的结构条件——11.4 就把这个条件精确化。
+  </div>
+  <div class="rmk" data-page-node-id="9fU8K7cQpO5bUi01kDfAxz">
+    <strong data-page-node-id="lEeyTVOWlHPRTEzgNscOQQ">内部 vs 元语言.</strong>要让读者不迷路，明确两点：(1) 我们（元语言）用的是普通数学与经典逻辑；(2) 拓扑斯"内部"说的是直觉主义逻辑。命题 11.3.2 是在元语言里证明"内部语句真"，这是合法的——就像研究直觉主义逻辑的人可以站在外面用经典数学讨论它。混用会导致看似悖论的 confusion。
+  </div>
+
+  <div class="box exer" data-page-node-id="VZE7bojFDaOPxXj0KmkBMf">
+    <h4 data-page-node-id="ZIh1fwb63ARDdhF2v52yZ5">② 习题</h4>
+    <div class="grp" data-page-node-id="uNgtPIaKMOBSI5HWgy2agB">基础</div>
+    <ol data-page-node-id="fYC5EyOqRGJgPucgxt0i3K">
+      <li id="ex11-3-1" data-page-node-id="K7AVADcFDr6cgKVaX7xi9g">写出自然数对象泛性质中的两条方程，并说明它们分别对应"初值"与"递推"。</li>
+      <li id="ex11-3-2" data-page-node-id="HFntCGBdiCrLC3ayPaJxk6">把"\(f:A\to B\) 是满态（epi）"翻译成内部语言句子。提示：用 \(\forall y:B.\,\exists x:A.\,f(x)=y\)。</li>
+      <li id="ex11-3-3" data-page-node-id="K0cYoYA9OQoCAHCUACZpuE">复述用内部语言证明范畴事实的三步流程。</li>
+      <div class="grp" data-page-node-id="tC5CpH5lrxieO9t2XgmXSO">进阶</div>
+      <li id="ex11-3-4" data-page-node-id="tpJjaQt92HFwL9oXT7K9k6">在命题 11.3.2 的证明中，为什么取 \(T=A\times A\)、\(x=\pi_1,y=\pi_2\) 的"泛元素"就够了？</li>
+      <li id="ex11-3-5" data-page-node-id="7BnESZr84H8p5zpCGo9wg0">用开集格 \(\mathcal O(X)\)（参见第 5 章 3 节）举一个具体的开集 \(U\)，使 \(U\vee\neg U\neq X\)，从而说明排中律在内部逻辑里失效。</li>
+      <li id="ex11-3-6" data-page-node-id="Fmf8CdHNJqwTogyuSdhqgu">解释"初等拓扑斯未必有自然数对象"这句话：NNO 是定义的一部分，还是附加要求？</li>
+    </ol>
+  </div>
+
+  <div class="box ans" data-page-node-id="OToXKXCN6XLZtBkxVFoF3T">
+    <h4 data-page-node-id="PbAomKBEW4NybDkqzmx2yG">③ 参考答案</h4>
+    <div class="item" data-page-node-id="7TUWKkoaZrNNZhk9bWpFjA"><b data-page-node-id="EHzNuQdzOh1oTyiLUaygRp">11.3.1</b>　两条方程是 \(u\circ 0=q\) 与 \(u\circ s=h\circ u\)。第一条说 \(u\) 在 \(0\) 处取初值 \(q\)；第二条说 \(u\) 与后继 \(s\) 相容，即 \(u(n+1)=h(u(n))\)，是递推步。二者加唯一性即归纳法。<span class="qed" data-page-node-id="3lGGEAa7vsGvvn0faZwikv">∎</span></div>
+    <div class="item" data-page-node-id="ToQGUcWRQrzMoz4o4T2aSC"><b data-page-node-id="5QReY5O21mq4BI9Y0NGKvp">11.3.2</b>　内部句子为 \(\forall y:B.\,\exists x:A.\,f(x)=y\)。翻译：\(\forall y\) 用 \(\forall\) 沿 \(B\to 1\) 的右伴随，\(\exists x\) 用 \(\exists\) 沿 \(A\times B\to B\) 的左伴随，\(f(x)=y\) 用相应对角线特征箭头；整体是 \(\operatorname{Sub}(B)\) 的顶元当且仅当该句子内部真。（注：范畴里的 epi 是消去性质，这条内部句子刻画的是"内部满"，在拓扑斯中两者对应。）<span class="qed" data-page-node-id="rmyIoH2CMFzfdYJZTXM5fV">∎</span></div>
+    <div class="item" data-page-node-id="jhmTirDgXiVi5vbG4TxDhM"><b data-page-node-id="KJLz2AIETo5IR8rMg7Jnmg">11.3.3</b>　三步：(1) 翻译——把范畴命题译成 \(L(\mathcal E)\) 的带类型语句；(2) 证明——在类型论中用熟悉的逻辑推理证明它；(3) 搬回——由可靠性，语句内部真，从而对应范畴事实成立。<span class="qed" data-page-node-id="AMVfKv3P3hs5QZTJYFV1XA">∎</span></div>
+    <div class="item" data-page-node-id="UxZTnFEdbA5Cey8uUB4fBx"><b data-page-node-id="wGTUB2LWJxcst2HRYSr0G2">11.3.4</b>　因为 \(\pi_1,\pi_2:A\times A\to A\) 是"最一般"的一对箭头：任何一对 \(x,y:T\to A\) 都因子化为 \(\langle x,y\rangle\) 后接 \(\pi_1,\pi_2\)。故在泛元素上成立的子对象包含关系 \(R\le\Delta\)，拉回到任意 \(T\) 上仍成立，从而对所有 \(x,y\) 成立。这就是泛元素能代替"任意元素"的原因。<span class="qed" data-page-node-id="L2q5kX6jwKuxEwtWKInsPZ">∎</span></div>
+    <div class="item" data-page-node-id="R3ZDgucw88ryYCV8zDgefV"><b data-page-node-id="JCknKB8t2CfSb6Byj5iMw8">11.3.5</b>　取 \(X=\mathbb R\)，\(U=(0,1)\) 开集。则 \(\neg U=\mathrm{int}(\mathbb R\setminus(0,1))=(-\infty,0)\cup(1,\infty)\)，于是 \(U\vee\neg U=(0,1)\cup\big((-\infty,0)\cup(1,\infty)\big)=\mathbb R\setminus\{0,1\}\neq\mathbb R\)。故 \(U\vee\neg U\neq X=\top\)，排中律失效。（更极端取 \(U\) 为非空真开子集且稠密，如 \(\mathbb Q\) 的补不行因非开；取 \(U=(0,1)\) 已够。）<span class="qed" data-page-node-id="eZFDgCzj1CPGzh8kyObzKn">∎</span></div>
+    <div class="item" data-page-node-id="7ZkOHMvVdE19fqA07mXTcx"><b data-page-node-id="nOIzoBeRgov9nxouncPyCa">11.3.6</b>　NNO 是附加要求，不是初等拓扑斯定义的一部分。定义（11.2.3）只要求有限极限、CCC、子对象分类子；具有 NNO 的拓扑斯是额外的一类（L&amp;S §4 专门讨论 Peano 规则如何在拓扑斯中成立）。故"初等拓扑斯未必有 NNO"正确。<span class="qed" data-page-node-id="nnNKGACFuGqhuYsSEHTHfa">∎</span></div>
+  </div>
+
+  <div class="box phil" data-page-node-id="5Np32IXyCBALWtlh1BMcur">
+    <h4 data-page-node-id="frFnkrbCiUw3h4jDnGGF5C">④ 选读：泛元素——没有元素的世界里如何"取元素"</h4>
+    <p data-page-node-id="gH2n3ZYkbAbk5LAQcbWzoi">拓扑斯里往往真的没有"元素"（对象未必是集合），但内部语言让我们能像有元素一样推理。诀窍是<strong data-page-node-id="Jmme1DFdmNE70Tl77xCauu">泛元素</strong>：在语境 \(A\) 下取"变量 \(x:A\)"，它其实是恒等箭头 \(\mathrm{id}_A:A\to A\)，在这个语境里 \(x\) 扮演"任意元素"。命题 11.3.2 的证明展示了这套技术的威力：在泛元素 \(\pi_1,\pi_2\) 上验证一次，就对所有具体元素成立。</p>
+    <p data-page-node-id="7mBktZaehW7mbPMHu1rVk2">这与你关心的"从模型内部表述"直接相关：所谓"内部可断言"，操作上就是在合适的语境（阶段/情境）下写出一个泛元素，并断定相应的箭头等于顶元。内部的"真"始终是相对于一个语境的——脱离语境谈"绝对真"在这里没有意义。</p>
+  </div>
+</section>
+<section class="sec" id="s11-4" data-page-node-id="F9JpXeMv8R9pKzu2KvF1EM">
+  <div class="sec-h" data-page-node-id="ME1o5vmCFoz96iDQhXTdsv"><span class="sec-no" data-page-node-id="krChBzCXYGUJUF177ktCYt">11.4</span><h2 data-page-node-id="qtYLkHpliv5dtrNnwCqBzY">选择与布尔公理</h2><span class="src" data-page-node-id="hzwYTuyLJSa1q68CYvKkm6">L Part II §7</span></div>
+
+  <div class="box learn" data-page-node-id="AXuKOBlx9tjPOxCqsMY36P">
+    <h4 data-page-node-id="IDBsYBKqZgV0uEyJCPVhiR">① 本节学习目标</h4>
+    <ol data-page-node-id="GoG0k63DpOd1PxD42R1eZs">
+      <li data-page-node-id="Dpy5FuxZdXYOLO1Sc7PNGn">用 \(\operatorname{Sub}(1)\) 是否为布尔代数，精确刻画"拓扑斯满足排中律"这一条件；</li>
+      <li data-page-node-id="BPagn7gxxAL34GGktyEBm0">写出内部选择公理（每个满射有截面）的范畴形式，并理解它为何是"内部"的；</li>
+      <li data-page-node-id="oH4PfuAMSF7nC6OvBgLnk7">证明关键方向：内部选择 \(\Rightarrow\) 布尔性（Diaconescu 型论证的骨架）；</li>
+      <li data-page-node-id="Ahi3AjHdEq5KjfmRTpVZgv">知道反向不成立：布尔拓扑斯未必满足选择；并区分内部选择与元理论的选择公理 AC；</li>
+      <li data-page-node-id="xoJBlxGEjGqYyl7fabxGCq">理解"古典 vs 直觉主义"的分歧如何变成对拓扑斯的可检验结构条件。</li>
+    </ol>
+  </div>
+
+  <div class="xref" data-page-node-id="epuqSvJdkS7oevfi1TgnmI">
+    <strong data-page-node-id="DrqILG3s8RvfyueryMoM5U">沿用前文（不再复述）.</strong> 布尔代数、Heyting 代数中 \(\neg U=U\Rightarrow\bot\)、排中律与开集格反例，见<strong data-page-node-id="MtzUV6BowGNSBKEkB8zKtj">（参见第 5 章 3 节）</strong>；满态（epi）、单态与截面分裂的概念见<strong data-page-node-id="Mlo6fV4hA8RRGCjCEanSAC">（参见第 4 章 4.1 节、第 8 章 8.2 节）</strong>；内部真 \(\mathcal E\models\varphi\) 与内部逻辑直觉主义性见<strong data-page-node-id="hDUWNfjypTfmd4lVoEzjis">（本节 11.2、11.3）</strong>。本节的布尔性判据与选择—布尔定理是新内容，逐条展开。
+  </div>
+
+  <h3 class="sub" data-page-node-id="JUrzug4wcN6IhXKuovofRY">11.4.1 极简回顾：布尔代数与补</h3>
+  <div class="box prep" data-page-node-id="fFSJZ1c7SXn9y6BAabomVy">
+    <h4 data-page-node-id="2SGrSnUzKY4YufEmSKXoSU">极简回顾（五分钟，够用即可）</h4>
+    <p data-page-node-id="59kAFM2SI3JrBd6pNcE1Tr">Heyting 代数（参见第 5 章 3 节）里定义否定 \(\neg a=a\Rightarrow\bot\)，但一般只有 \(a\vee\neg a\le\top\)（恒真），没有等号。若对<strong data-page-node-id="7B0GtkDyjgSTdtHKEEZddH">所有</strong> \(a\) 都有 \(a\vee\neg a=\top\)，这个 Heyting 代数就升级为<strong data-page-node-id="2oEVScHYCJwDhens92l3tI">布尔代数</strong>，此时 \(\neg a\) 就是真正的补（满足 \(a\wedge\neg a=\bot\)、\(a\vee\neg a=\top\)）。只需记住：<strong data-page-node-id="7VTEBX6yACBJdFmvCCiE5v">布尔 = Heyting + 排中律</strong>。把这个判据搬到 \(\operatorname{Sub}(1)\)，就得到"拓扑斯是否经典"的精确定义。</p>
+  </div>
+
+  <h3 class="sub" data-page-node-id="Wub5Pvlk2IhrafBw6VOrXF">11.4.2 布尔拓扑斯</h3>
+  <div class="defn" data-page-node-id="yMAgOFm9dibwCjTPtcsl3G">
+    <span class="lbl" data-page-node-id="34L183QjwHkVpIlNMz2Ouy">定义 11.4.1（布尔拓扑斯）</span>
+    <p data-page-node-id="M3bCSryEAeNJqK6FB19dyx">拓扑斯 \(\mathcal E\) 称为<strong data-page-node-id="rshHfZgsh3Gil0PUqkUJ4H">布尔的</strong>（Boolean），若下述等价条件成立（任一成立即全部成立）：</p>
+    <ul data-page-node-id="fTNgZcvT1SxqEzS6qcCwdE">
+      <li data-page-node-id="VhYK6uWMlW5bI6Fe2sGR7L">真值对象 \(\Omega\) 是内部布尔代数，即 \(\Omega\) 上的 Heyting 否定满足 \(\vee\neg=\top\)；</li>
+      <li data-page-node-id="bHUNl0QgvjeIEp18BhZKR7">\(\operatorname{Sub}(1)\) 是布尔代数；</li>
+      <li data-page-node-id="LdeKAmQlqFKwLFDfbaG4Ex">内部语言满足排中律：对每个句子 \(\varphi\)，\(\mathcal E\models\varphi\vee\neg\varphi\)；</li>
+      <li data-page-node-id="C2DhzE57GNmHiXSTL99b4C">每个子对象 \(S\to A\) 有补 \(S^c\to A\)，使 \(S\vee S^c=A\) 且 \(S\wedge S^c=0\)。</li>
+    </ul>
+  </div>
+  <div class="prop" data-page-node-id="T3IsSlVVKWzjJZgmvniUHG">
+    <span class="lbl" data-page-node-id="NlTA5t1BKrFnIye92BGS3z">命题 11.4.2（排中律的判据）</span>
+    <p data-page-node-id="qGuFqIsrv6mBcimXFG5NWj">\(\mathcal E\) 布尔 \(\Longleftrightarrow\) 内部语言对每个公式 \(\varphi\) 满足 \(\varphi\vee\neg\varphi=\top\)（作为 \(\operatorname{Sub}(A)\) 中的等式）。</p>
+    <div class="proof" data-page-node-id="5kMl5wnUmutAXh525HHJTW">
+      <p class="pl" data-page-node-id="pDyztw8VgNJabtBiz0Bndr">证明.</p>
+      <p data-page-node-id="AtdT9tky5q0LBYZPYE4X1R">由 11.2.5，公式 \(\varphi\)（语境 \(A\)）对应 \(\operatorname{Sub}(A)\) 的元素 \([\varphi]\)，且 \(\neg\varphi\)、\(\varphi\vee\neg\varphi\) 分别对应 Heyting 代数里的 \(\neg[\varphi]\)、\([\varphi]\vee\neg[\varphi]\)。"\(\varphi\vee\neg\varphi=\top\) 内部成立"即 \([\varphi]\vee\neg[\varphi]=\top\) 在 \(\operatorname{Sub}(A)\) 中成立。若这对所有 \(A,\varphi\) 成立，取 \(A=1\) 得 \(\operatorname{Sub}(1)\) 布尔；反之若 \(\operatorname{Sub}(1)\) 布尔，可提升到所有 \(\operatorname{Sub}(A)\)（用 \(\operatorname{Sub}(A)\cong\mathcal E(A,\Omega)\)，\(\Omega\) 布尔则逐点布尔）。故等价。<span class="qed" data-page-node-id="URqGZ4SvKlIh9lVvkxFnCR">∎</span></p>
+    </div>
+  </div>
+  <div class="rmk" data-page-node-id="XlSvjxpeyrrKQ3JYzFMgrT">
+    <strong data-page-node-id="AeEdOSRlUnAqJoxjJrjbJz">与 11.3.4 对接.</strong>11.3.4 说排中律一般失效（开集格例子）。命题 11.4.2 把"失效还是成立"压缩成对 \(\operatorname{Sub}(1)\) 的一个结构检验。\(\mathbf{Set}\) 的 \(\operatorname{Sub}(1)=\{0,1\}\) 是布尔代数，故 \(\mathbf{Set}\) 是布尔拓扑斯，内部逻辑是经典的；开集格拓扑斯的 \(\operatorname{Sub}(1)=\mathcal O(X)\) 一般不是布尔代数，故非布尔。
+  </div>
+
+  <h3 class="sub" data-page-node-id="oUcBVQR1OIOBstG7gPrrlj">11.4.3 内部选择公理</h3>
+  <div class="defn" data-page-node-id="N78I7cJscgwkCcwpKIXIJX">
+    <span class="lbl" data-page-node-id="jbagix2bu8c7bG6v92d2Ax">定义 11.4.3（内部选择公理）</span>
+    <p data-page-node-id="YdUMVc8w5uP3wwJl5uEkAS">称拓扑斯 \(\mathcal E\) 满足<strong data-page-node-id="Cke5xj8dnJf6bv9vgHCpUI">内部选择公理</strong>，若每个满射（epi）\(e:A\to B\) 都有<strong data-page-node-id="QODdFr00uTAUmZlMFWu3AA">截面</strong> \(s:B\to A\)，即 \(e\circ s=\mathrm{id}_B\)。用内部语言说，就是
+      \[
+        \forall y:B.\,\exists x:A.\,e(x)=y
+      \]
+      可以"一致地选出"见证，使选择函数 \(s(y)=x\) 在 \(\mathcal E\) 中是一个真正的箭头。</p>
+  </div>
+  <svg class="cd" viewBox="0 0 560 200" width="560" height="200" role="img" aria-label="满射的截面" data-page-node-id="DDpFdqFeiHwLoF06afpZGU">
+    <rect class="node" x="40" y="40" width="130" height="44" rx="7" data-page-node-id="PR2hGPGn1bjSEzxWtf9qXV"/>
+    <text class="nt" x="105" y="68" text-anchor="middle" data-page-node-id="hNCrzImx81Is9WoY1ZIoWd">A</text>
+    <rect class="nodeg" x="390" y="40" width="130" height="44" rx="7" data-page-node-id="pOSDTZyTakjlAZ4nvgf5QI"/>
+    <text class="nt" x="455" y="68" text-anchor="middle" data-page-node-id="Pc6KrvsieA4bOlmAwAs4cv">B</text>
+    <line class="arb" x1="170" y1="54" x2="390" y2="54" data-page-node-id="ciSIyu5IDbkUuuCCQrQoV2"/>
+    <text class="hb" x="280" y="46" text-anchor="middle" data-page-node-id="PTev8zCB38ajl0aO2pECGB">e（满射）</text>
+    <line class="arg" x1="390" y1="72" x2="170" y2="72" data-page-node-id="h3KvWT3FIffEorspFObHPX"/>
+    <text class="hg" x="280" y="92" text-anchor="middle" data-page-node-id="hA2VwoBkHkxxXstPev2dhL">s（截面）</text>
+    <text class="lb" x="280" y="140" text-anchor="middle" data-page-node-id="kGBAYaZS49pBF895cX7XZF">选择公理要求：e ∘ s = id_B（选出的见证确实映回 y）</text>
+    <text class="lb" x="280" y="168" text-anchor="middle" data-page-node-id="yrTjJEzhWuN2ThUgy1EcJ7">三角形不必交换成 s ∘ e = id_A，只要求 e ∘ s = id_B</text>
+  </svg>
+  <p class="figcap" data-page-node-id="KhYEOTI7W8NRzvBkqBCmz6">图 11.7　内部选择：满射 \(e\) 有截面 \(s\)，即 \(e\circ s=\mathrm{id}_B\)</p>
+  <div class="rmk" data-page-node-id="RGBM9ZIvgzsNhr8NwFGfcq">
+    <strong data-page-node-id="obkZEH9GlR3tTuRT8gnUWo">为何叫"内部".</strong>这里的选择不是"对每个 \(y\) 存在一个 \(x\)"（那是 11.3.3 习题的满态内部句子，只说了存在），而是要把这些见证<strong data-page-node-id="RQlSmEhrSJEcKjHZKWHGXM">装订成一个箭头</strong> \(s\)。后者是强得多的要求，且完全在范畴内部表述（截面是箭头），故名"内部选择"。它不同于元理论里证明所用的集合论选择公理 AC——我们用经典元数学讨论它，但 \(\mathcal E\) 内部是否选择，是 \(\mathcal E\) 自己的性质。
+  </div>
+
+  <h3 class="sub" data-page-node-id="n9RJcEi0naGLHWsUi1dvSK">11.4.4 选择蕴含布尔（Diaconescu 型论证）</h3>
+  <div class="prop" data-page-node-id="MP58K2DHfgB9YZrDy6NbGN">
+    <span class="lbl" data-page-node-id="mDibPdqCtGhccjfhgJ31MF">命题 11.4.4（内部选择 \(\Rightarrow\) 布尔）</span>
+    <p data-page-node-id="YcH71A07HlGFPr80Z1pElS">若拓扑斯 \(\mathcal E\) 满足内部选择公理，则 \(\mathcal E\) 是布尔的。</p>
+    <div class="proof" data-page-node-id="3zRZ7he9Fbnad5SomSqA5y">
+      <p class="pl" data-page-node-id="RhnP8AmPqIWL4OCoNLupvO">证明（给出构造骨架，这是集合论 Diaconescu 定理的范畴化）.</p>
+      <p data-page-node-id="akMKkn6iGKFk9jqLoQtjMN">取任意命题 \(\varphi\)（为简洁设语境为空，一般情形相同），要证 \(\varphi\vee\neg\varphi=\top\)。考虑两个"真值"对象拼成的满射：令 \(A=1+1=\{0,1\}\)，定义 \(e:A\to\Omega\) 为 \(e(0)=\varphi\)、\(e(1)=\neg\varphi\)。关键观察：因为 \(\varphi\vee\neg\varphi\) 在 Heyting 代数中虽未必等于顶元，但 \(e\) 作为一个从 \(1+1\) 到 \(\Omega\) 的箭头，在"局部"意义下是满的（\(\varphi\) 与 \(\neg\varphi\) 合起来覆盖；严格化用 \(\operatorname{Sub}(1)\) 的 Heyting 结构与 11.2.5 的量词伴随）。</p>
+      <p data-page-node-id="PY4lBHRS4PsJSOA2vBEakA">由内部选择，\(e\) 有截面 \(s:\Omega\to 1+1\)。截面把每个真值"选出"一个 0 或 1。由于 \(1+1\) 的两个分支是互相排斥的（在 \(\operatorname{Sub}(1+1)\) 中 \(\mathrm{inl}(1)\wedge\mathrm{inr}(1)=0\)），截面 \(s\) 把真值 \(\varphi\) 归入其中一支：若 \(s(\varphi)=\mathrm{inl}(*)\)，则得到 \(\varphi=\top\)；若 \(s(\varphi)=\mathrm{inr}(*)\)，则得到 \(\varphi=\bot\)。两种情形分别给出 \(\varphi\vee\neg\varphi=\top\)（前者因 \(\varphi=\top\)，后者因 \(\neg\varphi=\top\)）。故排中律成立，\(\mathcal E\) 布尔。<span class="qed" data-page-node-id="9WiwplRSbvHcmTDbjJCx5m">∎</span></p>
+    </div>
+  </div>
+  <div class="rmk" data-page-node-id="sMYapdlktbtQjvkqNxekWd">
+    <strong data-page-node-id="2GTMXLhh4y0yu5On60aECB">这个结论的分量.</strong>它说"每个满射分裂"这么一条看似中性的范畴条件，强到足以推出排中律。这与集合论里 AC 蕴含排中律（Diaconescu 定理）是同一个现象，这里在任意拓扑斯内部重演。反过来<strong data-page-node-id="KA96PGChM1Y9k4zZzXdJ0f">不成立</strong>：布尔拓扑斯未必满足选择——例如某些布尔值的层范畴满足排中律但存在不分裂的满射。故"选择 \(⇒\) 布尔"，但"布尔 \(⇏\) 选择"。
+  </div>
+
+  <div class="box exer" data-page-node-id="BEbLP0AVLHZAmNKGqDJAe5">
+    <h4 data-page-node-id="0KeyoODdZBEcVaMa26YraO">② 习题</h4>
+    <div class="grp" data-page-node-id="G79xXaD5iHewHH213p1CYF">基础</div>
+    <ol data-page-node-id="gRPiEWeOW7M6CHzEKr6WvO">
+      <li id="ex11-4-1" data-page-node-id="3V4nHC7Svs4OQm4cs8x3Fc">列出布尔拓扑斯的四个等价刻画。</li>
+      <li id="ex11-4-2" data-page-node-id="P7GTbfljxi7b3cD0MpTpl8">用第 5 章 3 节的开集格例子，说明为何 \(\mathbf{Set}\) 布尔而开集格拓扑斯一般非布尔。</li>
+      <li id="ex11-4-3" data-page-node-id="1CPV4OmQ4XElSZfFjCFX3w">写出内部选择公理的范畴形式：每个满射 \(e:A\to B\) 存在 \(s:B\to A\) 满足什么方程？</li>
+      <div class="grp" data-page-node-id="pzJQoe0FHZB7PBg4NI3swZ">进阶</div>
+      <li id="ex11-4-4" data-page-node-id="Od8JyOxntHHOvuGarYGJfE">说明"内部选择"与"元理论 AC"的区别：为何研究拓扑斯时用经典元数学证明"内部选择 \(\Rightarrow\) 布尔"不构成循环？</li>
+      <li id="ex11-4-5" data-page-node-id="wv8Ad2yI5zNl6YB3t9JQzX">复述命题 11.4.4 的证明骨架：构造哪个满射、用截面分出哪两支、如何得出排中律？</li>
+      <li id="ex11-4-6" data-page-node-id="cbBaFaB1maDuSsEpjKXAMh">判断正误并说明理由："布尔拓扑斯一定满足内部选择公理。"</li>
+    </ol>
+  </div>
+
+  <div class="box ans" data-page-node-id="hfFgWfL8tmGZFfvbWiwUJ3">
+    <h4 data-page-node-id="wMqJyXp9TKpSrEry6GQWPX">③ 参考答案</h4>
+    <div class="item" data-page-node-id="y7qhXl1boWl5eYvXNybhot"><b data-page-node-id="q9lVE1WtQYeKsHiDaPIGwA">11.4.1</b>　(1) \(\Omega\) 是内部布尔代数；(2) \(\operatorname{Sub}(1)\) 是布尔代数；(3) 内部语言满足排中律 \(\mathcal E\models\varphi\vee\neg\varphi\)；(4) 每个子对象有补（\(S\vee S^c=A\), \(S\wedge S^c=0\)）。<span class="qed" data-page-node-id="0G2eGiWInSGtlggJs9I6cA">∎</span></div>
+    <div class="item" data-page-node-id="9DzNWHeH7qLzA55P36RWaM"><b data-page-node-id="7FgAck6wS6tYQqBwrFoGTq">11.4.2</b>　\(\mathbf{Set}\) 的 \(\operatorname{Sub}(1)=\{0,1\}\) 是二值布尔代数，故布尔。开集格拓扑斯的 \(\operatorname{Sub}(1)=\mathcal O(X)\) 是 Heyting 代数，其 \(\neg U=\mathrm{int}(U^c)\)，一般 \(U\vee\neg U\neq X\)（如第 5 章例子），故非布尔。<span class="qed" data-page-node-id="DjUzFQlyPp6iEgNcH1u7tn">∎</span></div>
+    <div class="item" data-page-node-id="KAtO9gQycdvzxyXTLlhb5t"><b data-page-node-id="cxc2AcltMLU4bdSDXXEAf2">11.4.3</b>　对每个满射 \(e:A\to B\)，存在截面 \(s:B\to A\) 使 \(e\circ s=\mathrm{id}_B\)。注意只要求 \(e\circ s\) 为恒等，不要求 \(s\circ e=\mathrm{id}_A\)。<span class="qed" data-page-node-id="qVyYDb1JtRactkmNvkgJwk">∎</span></div>
+    <div class="item" data-page-node-id="VBmZpoPAF3HsJwymGh2S7L"><b data-page-node-id="FCmvuFz8nfawWpKQ9kqatW">11.4.4</b>　内部选择是 \(\mathcal E\) 自身的性质（其满射是否分裂），元理论 AC 是我们这些外部研究者证明时可能用到的集合论原则。命题 11.4.4 的证明是"在 \(\mathcal E\) 的对象与箭头层面直接构造"（构造满射、用截面分支），并不调用元理论 AC 去凭空选见证——见证由截面 \(s\) 这个给定的箭头提供。故不循环；我们只是在经典元语言里描述这个构造。<span class="qed" data-page-node-id="Q99S70DcetLPPp4q9b1Yek">∎</span></div>
+    <div class="item" data-page-node-id="07QJwhuEnT0mEbmsXQdqjk"><b data-page-node-id="DPZYcwxFyZIJ2Wsj6h0341">11.4.5</b>　构造满射 \(e:1+1\to\Omega\)，\(e(0)=\varphi,e(1)=\neg\varphi\)；由内部选择取截面 \(s:\Omega\to 1+1\)；截面把 \(\varphi\) 归入 \(1+1\) 的一支：若为 \(\mathrm{inl}\) 则 \(\varphi=\top\)，若为 \(\mathrm{inr}\) 则 \(\neg\varphi=\top\)；两种情形都给出 \(\varphi\vee\neg\varphi=\top\)，故布尔。<span class="qed" data-page-node-id="ErjWxdN0gFWEunGoVk2dfm">∎</span></div>
+    <div class="item" data-page-node-id="VHli4mc47cK4L0KB8SeKGt"><b data-page-node-id="yi9WUZ0FMU2XVZP4aASd0e">11.4.6</b>　错误。选择 \(\Rightarrow\) 布尔（命题 11.4.4），但反向不成立：存在布尔拓扑斯不满足内部选择（如某些布尔值层范畴有不可分裂的满射）。故布尔性弱于内部选择性。<span class="qed" data-page-node-id="bBTO12HRHr4vnZpmOI4Xzn">∎</span></div>
+  </div>
+
+  <div class="box phil" data-page-node-id="DBaQ0YZ8EEhx4t4RIHZ288">
+    <h4 data-page-node-id="PR3k2q0YlZHhtxgcepLrYC">④ 选读：你的逻辑立场是一个可检验的结构条件</h4>
+    <p data-page-node-id="TPrKw0KJUwGzojmWER4qSf">这里出现了一件对数学哲学很有分量的事："接受古典逻辑还是直觉主义逻辑"这种看似属于立场/语用的选择，在拓扑斯框架里被翻译成了<strong data-page-node-id="mzaNICYbCWoyIGffG1H41t">可检验的数学条件</strong>——\(\operatorname{Sub}(1)\) 是否为布尔代数、满射是否都分裂。你不必在元层次争论"哪个逻辑才对"，而可以问：我研究的这个世界（范畴）满足哪条结构性质？答案由结构决定，不由偏好决定。</p>
+    <p data-page-node-id="iIFpf4sFzdkHNfciO2g7e8">同时要看到这种翻译的限度：内部选择 \(\Rightarrow\) 布尔，但布尔不蕴含选择——"古典"内部还分出强弱不同的层次。这说明"古典 vs 直觉主义"不是一条线，而是一族结构条件的梯度。对因果哲学而言，这提示"用哪种逻辑谈论干预/可能性"应当跟着你所设的世界结构走，而不是先验明一个逻辑再套到所有世界上。</p>
+  </div>
+</section>
+<section class="sec" id="s11-5" data-page-node-id="rrpupviSgm9ZRh4aXwIM5c">
+  <div class="sec-h" data-page-node-id="RPpLLAcVhScPNXB9LVDmdG"><span class="sec-no" data-page-node-id="3vEPRagpDABTZLcwQJN1CW">11.5</span><h2 data-page-node-id="DQdlrAP0JhfZFLjsOg6Wma">拓扑斯语义与层范畴语义</h2><span class="src" data-page-node-id="4OSvV2vrWk4MAy4pU2Y863">L Part II §8–10</span></div>
+
+  <div class="box learn" data-page-node-id="VoHtu6njAVEolDGFX2OS2n">
+    <h4 data-page-node-id="Q98inZgJc72B35XOcT27TZ">① 本节学习目标</h4>
+    <ol data-page-node-id="hZNnqEhiPa7TBGXKADoA9G">
+      <li data-page-node-id="YHChxuZ3ttzaFJnjHbJwdb">理解"拓扑斯语义"：把一个形式理论解释到任意拓扑斯里，真值由该拓扑斯的 \(\Omega\) 给出；</li>
+      <li data-page-node-id="fe6Uwe6mswrqdiQI5mHG3s">掌握预层范畴 \(\mathbf{Set}^{\mathbf C^{\mathrm{op}}}\) 中 \(\Omega\) 的构造——筛（sieve）；</li>
+      <li data-page-node-id="bA5E1C5FA3XdqrbxyZSeo0">理解 Grothendieck 拓扑与层条件，知道层范畴 \(\mathbf{Sh}(\mathbf C,J)\) 为何是拓扑斯；</li>
+      <li data-page-node-id="seEQpLrenwjuXzcZD6EE7I">通过开集拓扑的例子，看到"真值随阶段/覆盖变化"的具体机制；</li>
+      <li data-page-node-id="qFDkdqkrQEwhWjgd8JAmUM">知道层化函子是包含函子的左伴随（预告第三本书的力迫语义）。</li>
+    </ol>
+  </div>
+
+  <div class="xref" data-page-node-id="EJolWeBr6aApCpSZJptph7">
+    <strong data-page-node-id="NZLFpxEeYYdkWucZrgXfJW">沿用前文（不再复述）.</strong> 函子范畴、Yoneda、预层的指数构造见<strong data-page-node-id="XbuIzFVJkJawNsOTa9XZFJ">（参见第 6 章；第 8 章 8.3）</strong>；伴随与 Kleisli 见<strong data-page-node-id="XtviAWyGPBjpv5sAghr3xK">（参见第 7 章；第 8 章 8.2）</strong>；子对象分类子与内部真见<strong data-page-node-id="FBXT8T1Qk8M6BTGpxYoRfS">（本节 11.2）</strong>；开集格的 Heyting 结构见<strong data-page-node-id="yL85x8jJK0wQ7rYOKrjgTe">（参见第 5 章 3 节）</strong>。筛、Grothendieck 拓扑、层是本章新概念，全部从最基础讲起。
+  </div>
+
+  <h3 class="sub" data-page-node-id="hHOyhpTKgGD9FWciLTWrJ6">11.5.1 极简回顾：什么是"语义随阶段变化"</h3>
+  <div class="box prep" data-page-node-id="wiqBOSnlHDEXXgJ2ow3irB">
+    <h4 data-page-node-id="SbyB6MYZTR2yToBH38RQFV">极简回顾（五分钟，够用即可）</h4>
+    <p data-page-node-id="C6nrJUejSAL1shr0ukA8po">经典语义里，一个句子的真值是固定的 0 或 1。但很多数学场景里，"真"是分阶段/分场合的：一个开集 \(U\) 上的命题"在 \(U\) 内成立"，换到更小的开集 \(V\subset U\) 可能仍成立（限制），换到更大的可能不成立。层范畴就是把这种"分阶段、可限制、可拼接"的情形做成范畴。只需记住三条直觉：</p>
+    <ul data-page-node-id="uMTAN8BwK3vpoAomAgjFfg">
+      <li data-page-node-id="3IEHioa2gEHGvtokMKwN16"><strong data-page-node-id="KZvw8Ee7gc66ANxs6C8u9Y">阶段：</strong>范畴 \(\mathbf C\) 的对象 \(c\) 代表一个"观察阶段/场合"；</li>
+      <li data-page-node-id="8pFDyqkcJr37thlq2KDzsS"><strong data-page-node-id="9yQBToKF0YwtOYzyjGO1QK">限制：</strong>箭头 \(d\to c\) 代表"从阶段 \(c\) 细化到阶段 \(d\)"；</li>
+      <li data-page-node-id="pxFqEZZKC3JTjaSr6j4WZq"><strong data-page-node-id="5J2GYhKe4soz7V6RQ9rMyi">局部拼全局：</strong>若一族局部阶段（覆盖）上都成立且彼此相容，就认为在整体上成立——这就是<strong data-page-node-id="AEG4cHMoCUMSZ5lAUX8GdT">层条件</strong>。</li>
+    </ul>
+    <p data-page-node-id="rTfm6Gr68qAwZ92WLrUoKa">这里只需建立直觉，严格定义马上给。第一遍若觉得抽象，就一直想着"开集 + 限制 + 局部拼全局"这个原型。</p>
+  </div>
+
+  <h3 class="sub" data-page-node-id="NLisjHEroI5qB0LvbdRi2i">11.5.2 预层范畴中的真值对象：筛</h3>
+  <p data-page-node-id="UbjCZg2v6EMCiGkUJyow2b">先做最容易的一步：预层范畴 \(\mathbf{Set}^{\mathbf C^{\mathrm{op}}}\)（把 \(\mathbf C\) 反变地映到集合，第 6 章已见过）。它是拓扑斯，其 \(\Omega\) 由"筛"给出。</p>
+  <div class="defn" data-page-node-id="SDoDcCO4EuyHKHyYUGvtEW">
+    <span class="lbl" data-page-node-id="UrUizkFqBSyl4JkEnzhA0K">定义 11.5.1（筛）</span>
+    <p data-page-node-id="VZXFP3p4ryEA5PHIOpeOS7">范畴 \(\mathbf C\) 中对象 \(c\) 上的一个<strong data-page-node-id="PSufkWEV82XlfWK8hfYFvZ">筛</strong>（sieve）是指一族以 \(c\) 为终点的箭头 \(S\)，满足：若 \(f:d\to c\) 在 \(S\) 中，且 \(g:e\to d\) 是任意箭头，则 \(f\circ g:e\to c\) 也在 \(S\) 中（对左复合封闭）。</p>
+    <p data-page-node-id="uGHjRdnw6HjG2lQWYz7yBy">筛是"以 \(c\) 为目标的一族箭头，且对细化封闭"。它可被看成可表预层 \(y(c)=\mathbf C(-,c)\) 的子预层。</p>
+  </div>
+  <div class="prop" data-page-node-id="KCRcc4Gl1cgHeCifQ6NmxT">
+    <span class="lbl" data-page-node-id="dEca7efKZfsg5VXlTXAeqW">命题 11.5.2（预层拓扑斯的 \(\Omega\)）</span>
+    <p data-page-node-id="FDFljc4GoabGOreA8h2EAF">在 \(\mathbf{Set}^{\mathbf C^{\mathrm{op}}}\) 中，子对象分类子 \(\Omega\) 由"\(c\) 上的筛的集合"给出。记 \(\mathrm{Sieve}(c)\) 为 \(c\) 上的筛之全体，则
+      \[
+        \Omega(c)=\mathrm{Sieve}(c).
+      \]
+      \(\mathrm{true}_c\) 是 \(c\) 上的最大筛（即以 \(c\) 为终点的全体箭头）。对 \(u:d\to c\)，\(\Omega(u)\) 把筛 \(S\) 送到其拉回 \(u^\ast S=\{\,g:e\to d: u g\in S\,\}\)。</p>
+    <div class="proof" data-page-node-id="oxRexGbsEXdi9aFOoNQ1Il">
+      <p class="pl" data-page-node-id="UPwIJyz8lC9UP9ftncl95X">证明（验证泛性质，细节对照定义 11.2.1）.</p>
+      <p data-page-node-id="5D6oZIB3V38sxAkgc5ZPZf">预层 \(F\) 的一个子预层 \(G\subseteq F\) 在每个 \(c\) 处给出子集 \(G(c)\subseteq F(c)\)，且对限制封闭。定义特征箭头 \(\chi_G(c):F(c)\to\Omega(c)\)：对 \(x\in F(c)\)，令 \(\chi_G(c)(x)=\{\,u:d\to c: F(u)(x)\in G(d)\,\}\)。这是 \(c\) 上的筛（由 \(G\) 对限制封闭保证）。反之给定 \(\chi\)，令 \(G(c)=\{x:\chi(c)(x)=\top_c\}\)，其中 \(\top_c\) 是最大筛。两处构造互逆，且自然；故 \(\chi\mapsto G\) 是 \(\mathcal E(F,\Omega)\cong\operatorname{Sub}(F)\) 的同构，即 \(\Omega\) 是子对象分类子。<span class="qed" data-page-node-id="64xRliEyG1sb8PxZDbwH9R">∎</span></p>
+    </div>
+  </div>
+  <div class="rmk" data-page-node-id="mLaCpn7Tu1jqzrufC9ZWXW">
+    <strong data-page-node-id="udkK6qaDFnkxNee7rQnVDe">直观.</strong>\(\chi_G(c)(x)\) 这个筛回答的问题是："\(x\) 在哪些阶段（箭头 \(u:d\to c\)）之后落进子对象 \(G\)？"——真值不是一个布尔值，而是一族阶段，即"真到什么程度/在哪些场合真"。这是从二值真值迈向可变真值的第一步。
+  </div>
+
+  <h3 class="sub" data-page-node-id="wjq4dm526DmjZ3gU0GPA4f">11.5.3 Grothendieck 拓扑与层</h3>
+  <p data-page-node-id="gHe6s5ZchtCMKO4wdiLcH9">筛本身还不能表达"哪些局部阶段合起来算覆盖整体"。Grothendieck 拓扑就是在每个 \(c\) 上指定哪些筛算"覆盖筛"。</p>
+  <div class="defn" data-page-node-id="s5LsrM8WpJDJB1uD6fpehD">
+    <span class="lbl" data-page-node-id="nQZZ6AV9KbHbg8OAJe8dZX">定义 11.5.3（Grothendieck 拓扑）</span>
+    <p data-page-node-id="7gvVO7vzD6GFVDP0pDvOWd">\(\mathbf C\) 上的<strong data-page-node-id="M1dreRat4mdsyiWWG7gY0T">Grothendieck 拓扑</strong> \(J\) 为每个对象 \(c\) 指定一族"覆盖筛" \(J(c)\)，满足：</p>
+    <ul data-page-node-id="clNwZbHjDDbrb0OpygubF0">
+      <li data-page-node-id="q8SJtHaK5WJN3d9cPGJ4Kq">（恒等）最大筛属于 \(J(c)\)；</li>
+      <li data-page-node-id="zlfd9QjGLwDMzsCzM0Y9aF">（稳定）若 \(S\in J(c)\) 且 \(u:d\to c\)，则拉回筛 \(u^\ast S\in J(d)\)；</li>
+      <li data-page-node-id="DXKlbMRwDsVIZcDBDelPVB">（传递）若 \(S\in J(c)\)，且对每个 \(f:d\to c\in S\) 有 \(R_f\in J(d)\)，则把这些 \(R_f\) 拉回后并成的筛属于 \(J(c)\)。</li>
+    </ul>
+    <p data-page-node-id="3tpqOqQdPUPhGPgYj5gL8X"> equipped with \(J\) 的范畴叫<strong data-page-node-id="mF3UGNAAqAy7Lg9o62HI8W">site</strong>，记作 \((\mathbf C,J)\)。</p>
+  </div>
+  <div class="defn" data-page-node-id="btHEPxDWDbK61LDdLC3jhz">
+    <span class="lbl" data-page-node-id="fcpq0AYB2p1Qvd2HHBWEZR">定义 11.5.4（层）</span>
+    <p data-page-node-id="c4B3XnEeCa51txjDBvy4eP">预层 \(F\) 称为（关于 \(J\) 的）<strong data-page-node-id="mySIskth504ZuQUViCsuyd">层</strong>，若对每个 \(c\)、每个覆盖筛 \(S\in J(c)\)，以及任一族相容的局部元素 \(x_f\in F(\mathrm{dom}\,f)\)（\(f\in S\)，且对 \(f g=f' g'\) 有 \(F(g)x_f=F(g')x_{f'}\)），存在<strong data-page-node-id="pgbEbANSCpfRZWsiIN10WG">唯一</strong> \(x\in F(c)\) 使 \(F(f)x=x_f\) 对所有 \(f\in S\)。全体层构成满子范畴 \(\mathbf{Sh}(\mathbf C,J)\subseteq\mathbf{Set}^{\mathbf C^{\mathrm{op}}}\)。</p>
+  </div>
+  <div class="prop" data-page-node-id="OtNNY3yeBYZAGkQYkmSoZQ">
+    <span class="lbl" data-page-node-id="Tmi01DPxjf2SDrg3w40FpN">命题 11.5.5（层范畴是拓扑斯）</span>
+    <p data-page-node-id="D1REAH79yRvtLP6yofx5e6">\(\mathbf{Sh}(\mathbf C,J)\) 是拓扑斯。其 \(\Omega\) 由"闭筛"（closed sieve）给出：\(\Omega(c)=\{\,S\in\mathrm{Sieve}(c): S\text{ is }J\text{-closed}\,\}\)，其中"\(S\) 闭"指：\(u:d\to c\) 属于 \(S\) 当且仅当 \(u^\ast S\in J(d)\)。</p>
+    <div class="proof" data-page-node-id="PSuk9gsUQSuzAcvGV65OdG">
+      <p class="pl" data-page-node-id="lEyB0Huv4uIagrXNHRJoIU">证明（要点）.</p>
+      <p data-page-node-id="zwvkVEnZJAUIQHw3yfXd5B">有限极限在预层范畴中逐点计算，而层对极限封闭，故 \(\mathbf{Sh}\) 有有限极限。指数可用预层中的指数（第 6 章）再取层化得到，故笛卡尔闭。子对象分类子由闭筛给出：预层中 \(\Omega\) 是全体筛，取"\(J\)-闭化"这一闭包算子，其不动点（闭筛）构成子对象分类子；\(\mathrm{true}\) 是最大（闭）筛。可验证拉回泛性质对闭筛成立。细节属标准结果，此处给出构造骨架而不逐项展开。故 \(\mathbf{Sh}(\mathbf C,J)\) 是拓扑斯。<span class="qed" data-page-node-id="UKK3l4vp6CxkJImTkSMsAv">∎</span></p>
+    </div>
+  </div>
+  <div class="box walk" data-page-node-id="M5kzn51dv1oD1u6aLw6hNT">
+    <h4 data-page-node-id="FzWW2RVMN6a1LlE9O3QUbI">图 11.8　层化的伴随（读图文字说明）</h4>
+    <p data-page-node-id="R2SwLKZiNJxSPRbKavNSCP">包含函子 \(i:\mathbf{Sh}(\mathbf C,J)\hookrightarrow\mathbf{Set}^{\mathbf C^{\mathrm{op}}}\)（把层看成预层）有左伴随 \(a\)（层化函子）：</p>
+    <p style="text-align:center;" data-page-node-id="EH1gtZrfPyq4WqrTSCLyAF">\(a\ \dashv\ i\)，即 \(\operatorname{Hom}_{\mathbf{Sh}}(aF,G)\cong\operatorname{Hom}_{\mathbf{PSh}}(F,iG)\)，其中 \(\mathbf{PSh}\) 记预层范畴。</p>
+    <p data-page-node-id="GN0mVkhLENkEUpz1pMGa3L">读图：左边是"任意预层"，右边是"层"。\(a\) 把预层强制改造成层（先分离化，再唯一粘合）；\(i\) 忘记层条件。伴随意味着"从预层 \(F\) 出发造一个层"的最佳方式由 \(a\) 给出。这个伴随是第三本书 Kripke–Joyal 力迫语义的技术核心——力迫就是在做层化。这里只需记住 \(a\dashv i\) 这一条，证明留到第三本书。</p>
+  </div>
+
+  <h3 class="sub" data-page-node-id="1HKaAr8LEVU5liK0BPYzap">11.5.4 例子：开集拓扑斯中真值如何随覆盖变化</h3>
+  <div class="prop" data-page-node-id="gIuWNf090FePXFHTdvPxdd">
+    <span class="lbl" data-page-node-id="FUEfnJI1c9YBFyKUGCA6FJ">例 11.5.6（开集 site 上的层）</span>
+    <p data-page-node-id="wDJm4sg90TiBPn1CDoabLZ">取 \(\mathbf C=\mathcal O(X)\)（拓扑空间 \(X\) 的开集，按包含当范畴），覆盖筛由开覆盖给出。则 \(\mathbf{Sh}(\mathcal O(X))\) 中的 \(\Omega(U)=\mathcal O(U)\)（\(U\) 的开子集格）——真值在阶段 \(U\) 就是 \(U\) 的开子集。这与第 5 章 3 节开集格 Heyting 代数（\(\neg V=\mathrm{int}(V^c)\)）完全一致：\(\operatorname{Sub}(1)=\Omega(X)=\mathcal O(X)\)，非布尔，故这个拓扑斯非布尔（呼应 11.4）。</p>
+  </div>
+  <div class="rmk" data-page-node-id="GReHufBmHH6M5cxoIrfJX0">
+    <strong data-page-node-id="tKwjXASQ4FOFcKcT8eVFwH">从二值到可变真值.</strong>在 \(\mathbf{Set}\) 里 \(\Omega=\{0,1\}\)；在开集拓扑斯里 \(\Omega(U)=\mathcal O(U)\)，一个命题的真值是"它在哪些开子集上成立"。同一句子在不同阶段 \(U\) 有不同真值，且沿限制 \(V\subset U\) 单调。这就是"真随阶段变化"的精确模型，也是为什么层范畴语义能容纳直觉主义逻辑（排中律失效见 11.3.4）。
+  </div>
+
+  <div class="box exer" data-page-node-id="TD8mQebxtGhMZE6LZa7cLN">
+    <h4 data-page-node-id="nZpEftyAYFSxEmAxZZ0Lu2">② 习题</h4>
+    <div class="grp" data-page-node-id="QMJNGcN6ZTUYQDqFfHH8DM">基础</div>
+    <ol data-page-node-id="Br5xaffGinpC4X8Wg3MqSi">
+      <li id="ex11-5-1" data-page-node-id="byqAdjOH8N1TYFfv9UqetD">写出"筛"的定义，并说明它为何等价于可表预层 \(y(c)\) 的子预层。</li>
+      <li id="ex11-5-2" data-page-node-id="IPEh7b4HzXsy0RrXuhuVvC">在预层范畴中，\(\Omega(c)\) 是什么？\(\mathrm{true}_c\) 是什么？</li>
+      <li id="ex11-5-3" data-page-node-id="BZAUHjXX6DIgF7OXEcvaiw">列出 Grothendieck 拓扑的三条公理，并用一句话说明各自的作用。</li>
+      <div class="grp" data-page-node-id="YmOKyMXxdueWYIUOAgDVBS">进阶</div>
+      <li id="ex11-5-4" data-page-node-id="i77DL2YHCE4OC9Imd2PzIK">在命题 11.5.2 中，验证 \(\chi_G(c)(x)=\{u:d\to c:F(u)(x)\in G(d)\}\) 确是 \(c\) 上的一个筛。</li>
+      <li id="ex11-5-5" data-page-node-id="Znwd4qz6i4y8DT9AOqvpaQ">说明开集 site 上 \(\mathbf{Sh}(\mathcal O(X))\) 的 \(\Omega(U)=\mathcal O(U)\)，并据此说明它为何非布尔。</li>
+      <li id="ex11-5-6" data-page-node-id="ceYuTV19G2mX6B0GEQUbGu">叙述层化伴随 \(a\dashv i\)，并说明它在第三本书力迫语义中的角色（只需一句话）。</li>
+    </ol>
+  </div>
+
+  <div class="box ans" data-page-node-id="3ANWLL9EXPWlDVucZyMSkM">
+    <h4 data-page-node-id="cGddmECbQebw5JdrbrYTaZ">③ 参考答案</h4>
+    <div class="item" data-page-node-id="pqlwqnik1IJY1dGGF1osOc"><b data-page-node-id="FpeabGwepmK7JTMbKIwoOK">11.5.1</b>　\(c\) 上的筛是一族以 \(c\) 为终点的箭头，对左复合封闭（\(f\in S,g:e\to d\Rightarrow fg\in S\)）。可表预层 \(y(c)=\mathbf C(-,c)\) 在 \(d\) 处的元素是箭头 \(d\to c\)；一个子预层在每处挑出一部分箭头且对限制（左复合）封闭，正是一个筛。故筛 ↔ \(y(c)\) 的子预层。<span class="qed" data-page-node-id="Llj93fPDT9xuOJFIQva5SB">∎</span></div>
+    <div class="item" data-page-node-id="nqDGulakisCHE7N9A1AazZ"><b data-page-node-id="Chvgjj8BcAoVrW5kGpBT6K">11.5.2</b>　\(\Omega(c)=c\) 上的筛的集合；\(\mathrm{true}_c\) 是 \(c\) 上的最大筛（以 \(c\) 为终点的全体箭头）。<span class="qed" data-page-node-id="PMO16ZhvuUaFQCDHzLRi1I">∎</span></div>
+    <div class="item" data-page-node-id="KBTeouh0GdFH89GGNshZT1"><b data-page-node-id="NPHs471EPlIDYiiCWvnRPf">11.5.3</b>　(1) 恒等：最大筛覆盖（整体覆盖自身）；(2) 稳定：覆盖拉回后仍覆盖（细化后仍覆盖）；(3) 传递：覆盖之覆盖仍覆盖（覆盖可叠加）。<span class="qed" data-page-node-id="R0HCc2Jbh7Tv2YQSflsD3B">∎</span></div>
+    <div class="item" data-page-node-id="cQl5Q4iiznjbBB3TemFE9N"><b data-page-node-id="VhNb1MR3Fc1x2LxrtMcKYD">11.5.4</b>　若 \(u:d\to c\in\chi_G(c)(x)\)，即 \(F(u)x\in G(d)\)。对任意 \(g:e\to d\)，\(F(g)(F(u)x)=F(ug)x\)；因 \(G\) 是子预层、对限制封闭，\(F(ug)x\in G(e)\)，故 \(ug\in\chi_G(c)(x)\)。这正是对左复合封闭，即 \(\chi_G(c)(x)\) 是筛。<span class="qed" data-page-node-id="1BeKg9jAOKek5BVUooGoV2">∎</span></div>
+    <div class="item" data-page-node-id="AFlGHU8Nmh3QVK89zDx9Ar"><b data-page-node-id="FUU9EuIbSvFZkhGkFAhSCe">11.5.5</b>　在开集 site 上，\(\Omega(U)\) 是 \(U\) 上的闭筛，可等同于 \(U\) 的开子集（筛由覆盖它的开集族决定，闭性对应取并），故 \(\Omega(U)=\mathcal O(U)\)。特别 \(\operatorname{Sub}(1)=\Omega(X)=\mathcal O(X)\)，而开集格一般非布尔（第 5 章），故该拓扑斯非布尔。<span class="qed" data-page-node-id="tsuPXDGK7EQLxvwUx4Cwal">∎</span></div>
+    <div class="item" data-page-node-id="NNRVHnB1wN4YgObctubjQO"><b data-page-node-id="mfwNhc0j3KTGbuuahcYbsQ">11.5.6</b>　\(a:\mathbf{Set}^{\mathbf C^{\mathrm{op}}}\to\mathbf{Sh}(\mathbf C,J)\) 是 \(i:\mathbf{Sh}\hookrightarrow\mathbf{PSh}\) 的左伴随：\(\operatorname{Hom}_{\mathbf{Sh}}(aF,G)\cong\operatorname{Hom}_{\mathbf{PSh}}(F,iG)\)。在第三本书中，层化（力迫）正是把"在某阶段可能成立"的预层语义改造成满足局部拼接的层语义，是 Kripke–Joyal 强制关系的技术核心。<span class="qed" data-page-node-id="72vOsE3cG8AxYL6F2gjdBO">∎</span></div>
+  </div>
+
+  <div class="box phil" data-page-node-id="5wZGzAcZ5MaBu38ZEKFbLA">
+    <h4 data-page-node-id="BlIKbCe9x5vE55yFAOvzjR">④ 选读：语义可塑性——覆盖规则即逻辑</h4>
+    <p data-page-node-id="rXbMyylkJOdzCwhds2H9sM">这里出现一个对因果/形而上学问题很有力的图景：同一个底层范畴 \(\mathbf C\)，选不同的 Grothendieck 拓扑 \(J\)（不同的"哪些局部拼成整体"规则），得到不同的层范畴、不同的 \(\Omega\)、因而不同的内部逻辑。也就是说，"哪些局部事实能拼成全局事实"不是一个形而上学教条，而是一个可以比较、可以更换的<strong data-page-node-id="6H6mxAWHB5w8K4Ls5drqAG">结构参数</strong>。</p>
+    <p data-page-node-id="58yD430v7E9twFp4DEvV44">对你关心的干预问题：不同的干预方案/实验设计，可以被读作不同的覆盖规则——什么算"局部已经决定了整体"。选 \(J\) 就是在选这个决定关系。层语义把这种选择做成数学对象，于是"换成另一套可能世界语义"不再是哲学口号，而是换一个 site 的计算。这正是第三本书要展开的 Kripke–Joyal 语义的方向；本章先把拓扑斯与层的骨架立好。</p>
+  </div>
+</section>
+<section class="sec" id="s11-6" data-page-node-id="ms27W4PcBxS4GklvmSL6fF">
+  <div class="sec-h" data-page-node-id="STmxlRi0gAjarTwz2kvzwC"><span class="sec-no" data-page-node-id="VD8tZwrpZPTZYji86vvHlH">11.6</span><h2 data-page-node-id="nOZvYn27rDhMC161wl5vv6">类型论与拓扑斯之间的伴随</h2><span class="src" data-page-node-id="dOO8yM76PA6BPQ33jAapsC">L Part II §11–16</span></div>
+
+  <div class="box learn" data-page-node-id="6yYkWHNUxpNuAPXFvz1F1L">
+    <h4 data-page-node-id="9LzIvtC7OCS7yb0E70ltkm">① 本节学习目标</h4>
+    <ol data-page-node-id="9R766uLSC0zFBxJJYEuo7z">
+      <li data-page-node-id="MLYDD2CWXIDqtc4CjLQRvz">理解 Part II 的主定理群：由类型论 \(T\) 生成三个范畴，其中 \(\mathcal C(T)\) 是拓扑斯；</li>
+      <li data-page-node-id="WKhPQvcd4pUYrVKDISIPax">掌握"由类型论生成拓扑斯"与"由拓扑斯读出内部语言"这对构造，以及它们之间的伴随；</li>
+      <li data-page-node-id="AJ95H3frNMhiO4uXlA3pJJ">证明两个方向的核心同构：内部语言生成的拓扑斯 \(\cong\) 原拓扑斯；</li>
+      <li data-page-node-id="NCGtZqK4IRfW1ryDx0xIzZ">理解"典型子对象"（canonical subobjects）与 Freyd cover 在完备性中的作用（陈述 + 思路）；</li>
+      <li data-page-node-id="ody1FHaqjAhaZxsY7x6UC0">看清 part I 三位一体（第 10 章）在 part II 的高阶推广：类型论 ↔ 拓扑斯，互逆到等价。</li>
+    </ol>
+  </div>
+
+  <div class="xref" data-page-node-id="KgFp1ub42F5ECsn1sRvGTQ">
+    <strong data-page-node-id="mEDftD3Auyl0cFSIedXvdy">沿用前文（不再复述）.</strong> Part I 的"语法范畴 ↔ CCC"三位一体与项模型 \(C_L\) 见<strong data-page-node-id="mPH7SACoBZSDK6TWgNIKhe">（参见第 10 章 10.2 节）</strong>；函数完备性与自由 CCC、多项式范畴见<strong data-page-node-id="23C717xejMElEbzFSxTodB">（参见第 9 章 4、5 节）</strong>；伴随与等价的定义、伴随的唯一性见<strong data-page-node-id="YLvxG5KoS7xqF1aUpEmAUW">（参见第 8 章 8.2 节；第 7 章）</strong>；内部语言 \(L(\mathcal E)\)、可靠性、拓扑斯定义见<strong data-page-node-id="ECYuwzo1uxcZFbMfEom8Vu">（本节 11.2、11.3）</strong>。本节是这些工具的集大成，逐条展开新构造。
+  </div>
+
+  <h3 class="sub" data-page-node-id="8m3SNnLnJpH4iCvU2eIrMq">11.6.1 极简回顾：把 Part I 的故事升高一级</h3>
+  <div class="box prep" data-page-node-id="9dFPFx7qIAZaUmTsGiReDL">
+    <h4 data-page-node-id="bHkQ9AXZk6iArf0qW3ohbK">极简回顾（五分钟，够用即可）</h4>
+    <p data-page-node-id="nEjwDTrx8ROovcOJRXZgW3">回忆第 10 章 10.2：给一个 λ-理论 \(L\)，造范畴 \(C_L\)（对象=类型，箭头=项模 βη），它是 CCC；反过来给 CCC 读出其 λ-理论，两者互逆到同构——这就是"语法范畴 ↔ CCC"的三位一体。</p>
+    <p data-page-node-id="AH6xDvhtSDHntBozmo1uZE">Part II 把同样的方法升高一级：现在语法侧是<strong data-page-node-id="4KxFBTuPzvRETsiHkrHMHJ">类型论</strong> \(T\)（含 \(\Pi,\Sigma,\mathrm{Id}\)，比 λ-演算强），语义侧是<strong data-page-node-id="J4C6I2LR3gfhiUoQ37lLin">拓扑斯</strong>（比 CCC 多了 \(\Omega\)）。于是期待同样的图景：给 \(T\) 生成一个拓扑斯，给拓扑斯读出内部语言（一个类型论），两者互逆到等价。这一节就是把它做出来。只需记住这个类比，后面的构造就都是 Part I 手法的加厚版。</p>
+  </div>
+
+  <h3 class="sub" data-page-node-id="2Ktxsh7tzuI9fHzmqwNdW1">11.6.2 由类型论生成的三个范畴</h3>
+  <p data-page-node-id="D9zgUC8hyPebv9XNH0LX4r">L&amp;S §11 指出，一个类型论 \(T\) 自然地关联三个范畴，它们分别对应"项、公式、集合"三个层次。</p>
+  <div class="defn" data-page-node-id="L5dj258TgUHTb7pO7Wwulm">
+    <span class="lbl" data-page-node-id="EuHQxNw6r3VxVK0nQ0Vnhf">定义 11.6.1（与类型论 \(T\) 关联的三个范畴）</span>
+    <p data-page-node-id="EgYTXml1h5j45DvBt8lJOU">给定类型论 \(T\)，构造：</p>
+    <ul data-page-node-id="oyA12QrrNE0BYaaDBStZL3">
+      <li data-page-node-id="VHAG76gGqnoK02Y9teuOBm"><strong data-page-node-id="9j52pz9XCxQ5EF9lGjOQ9r">\(\mathcal C(T)\)</strong>：对象是 \(T\) 的类型，箭头 \(A\to B\) 是项 \(x:A\vdash t:B\) 模可证相等。这是"项的范畴"，推广了第 10 章的 \(C_L\)。</li>
+      <li data-page-node-id="gJaLgPP1zYknDxqs40vZp6"><strong data-page-node-id="OreW9eZX3xcPrvjTtyfbgI">\(\mathcal D(T)\)</strong>（公式范畴）：对象是类型 \(A\)，箭头 \(A\to B\) 是公式 \(\varphi(x,y)\)（\(x:A,y:B\)）模可证相等，复合用存在量化。它是 \(\mathcal C(T)\) 的某种完备化。</li>
+      <li data-page-node-id="TcijbX6LwcV6vxiA6MZJRx"><strong data-page-node-id="zSvzlDFRmAxac6ZD7308RE">\(\mathcal E(T)\)</strong>：\(T\) 生成的<strong data-page-node-id="LWFuVEEiAokS7nqoz4IyS1">拓扑斯</strong>，可由 \(\mathcal D(T)\) 的层化/完备化得到（L&amp;S §12）。其对象可看作"集合"（类型）的函子式表示。</li>
+    </ul>
+    <p data-page-node-id="hKCShcyJgU42IUiikLSX5g">三者关系是 \(\mathcal C(T)\hookrightarrow\mathcal D(T)\hookrightarrow\mathcal E(T)\)，其中 \(\mathcal E(T)\) 是拓扑斯。本章主定理围绕 \(\mathcal E(T)\) 展开。</p>
+  </div>
+  <svg class="cd" viewBox="0 0 640 200" width="640" height="200" role="img" aria-label="类型论生成的三个范畴" data-page-node-id="W05a4SRkN7hBlPOnv8xiOT">
+    <rect class="node" x="30" y="70" width="150" height="48" rx="7" data-page-node-id="OCy2rMUvZ2ywjAUt5j48E1"/>
+    <text class="nt" x="105" y="99" text-anchor="middle" data-page-node-id="qWM55fiunAYqNpBI0qPQms">C(T)：项</text>
+    <rect class="nodeg" x="245" y="70" width="150" height="48" rx="7" data-page-node-id="SUpgGD4RaMJEGOHmGK5mMj"/>
+    <text class="nt" x="320" y="99" text-anchor="middle" data-page-node-id="lsC0aWhIv1RXuD2IAVzO7m">D(T)：公式</text>
+    <rect class="node2" x="460" y="70" width="150" height="48" rx="7" data-page-node-id="dxWWA1wWbucGFemn9sc0o0"/>
+    <text class="nt" x="535" y="99" text-anchor="middle" data-page-node-id="MMvSjmYmHW6mBAxSDtpItJ">E(T)：拓扑斯</text>
+    <line class="arb" x1="180" y1="94" x2="245" y2="94" data-page-node-id="4cvmtd0FieC180jeyAtFtk"/>
+    <line class="arb" x1="395" y1="94" x2="460" y2="94" data-page-node-id="jX0obHUaSxxg20RTvO5i65"/>
+    <text class="lb" x="320" y="160" text-anchor="middle" data-page-node-id="Kid12c5hzJmH2oyPCCLz70">C(T) 是 CCC（同 Part I）；E(T) 是拓扑斯；三者逐一嵌入</text>
+    <text class="lb" x="320" y="184" text-anchor="middle" data-page-node-id="HcMxKfCvPoYG3UfPXbBOBk">C(T) 的 CCC 结构回指第 10 章 10.2 节</text>
+  </svg>
+  <p class="figcap" data-page-node-id="UvNqDpEomnAaaW0fqAtkwM">图 11.9　类型论 \(T\) 生成的三个范畴：项 → 公式 → 拓扑斯</p>
+
+  <h3 class="sub" data-page-node-id="mmnRagKvusWetD7gSqS9rL">11.6.3 主伴随：生成拓扑斯 ⊣ 读出内部语言</h3>
+  <p data-page-node-id="G3svFP6GYFGzPQdBGMGOkv">现在陈述 Part II 的主定理群。它把"语法"与"语义"做成一对伴随。</p>
+  <div class="prop" data-page-node-id="fQkb0o2JJnXhyvHTHgcwR2">
+    <span class="lbl" data-page-node-id="j8cXDE86j433RYG3Zyj5tA">命题 11.6.2（类型论与拓扑斯的伴随）</span>
+    <p data-page-node-id="aip9MPPo526ela9aNJLf5B">存在范畴之间的伴随
+      \[
+        \mathbf{Topoi}\ \underset{\mathcal E\mapsto L(\mathcal E)}{\overset{T\mapsto\mathcal E(T)}{\rightleftharpoons}}\ \mathbf{TypeTheories},
+      \]
+      上箭头是由类型论生成拓扑斯 \(T\mapsto\mathcal E(T)\)，下箭头是由拓扑斯读出内部语言 \(\mathcal E\mapsto L(\mathcal E)\)，二者构成一对（反向的）伴随。其单位与余单位给出两个"往返"同构：</p>
+      <ul data-page-node-id="ylFE9PmuvULtUyQTsKhoSx">
+      <li data-page-node-id="rs7BLSvxpg6wB3H1gQUXVV">(a) 对任意类型论 \(T\)，\(T\cong L(\mathcal E(T))\)（生成后再读语言，回到原理论）；</li>
+      <li data-page-node-id="KP5IDqwMM9SBaIAkPFYwCu">(b) 对任意拓扑斯 \(\mathcal E\)，\(\mathcal E\cong \mathcal E(L(\mathcal E))\)（读出语言后再生成，回到原拓扑斯）。</li>
+      </ul>
+    <div class="proof" data-page-node-id="QpjNQro7UXuPKQdfa1vWKz">
+      <p class="pl" data-page-node-id="TQVcy9JeBOnpZgt8cznNVd">证明（骨架，两方向的核心同构）.</p>
+      <p data-page-node-id="cr6Jt5vDqUgfBVMnTrGPDe"><strong data-page-node-id="tLniGaRniyXh0PNf75vWKv">方向 (a).</strong>由定义 11.6.1，\(\mathcal E(T)\) 的构造以 \(T\) 的类型与可证相等为原料，其内部语言 \(L(\mathcal E(T))\) 的类型就是 \(\mathcal E(T)\) 的对象，项就是箭头。由 11.5 的翻译规则，\(\mathcal E(T)\) 中的箭头正由 \(T\) 的项（模可证相等）给出，公式由 \(T\) 的公式给出。于是 \(L(\mathcal E(T))\) 的类型、项、相等关系与 \(T\) 逐一对应，且由函数完备性（参见第 9 章 5 节；Part I 的函数完备性在这里保证"所有箭头都被内部语言命名"），这个对应是满的；由可证相等的刻画，它是单的。故 \(T\cong L(\mathcal E(T))\)。</p>
+      <p data-page-node-id="OLUCaMMD4mLv94T9vEhETu"><strong data-page-node-id="5AML4xn2y4fD8J2c8LAMKx">方向 (b).</strong>给定拓扑斯 \(\mathcal E\)，其内部语言 \(L(\mathcal E)\) 的类型=对象、项=箭头、公式=到 \(\Omega\) 的箭头。由定义 11.6.1 生成 \(\mathcal E(L(\mathcal E))\)，其对象与箭头由 \(L(\mathcal E)\) 的项生成——而这些项就是 \(\mathcal E\) 的对象与箭头。可靠性（11.2.7）保证生成的箭头都真实存在，函数完备性保证没有多余的箭头。故 \(\mathcal E(L(\mathcal E))\cong\mathcal E\)。</p>
+      <p data-page-node-id="aI5ELk8G42V4A7vrUoJ0Sh"><strong data-page-node-id="uikdqwFWoYgy4CciYUw0dY">伴随性.</strong>两个同构（单位、余单位）满足伴随三角恒等式（参见第 8 章 8.2），故此对函子构成伴随。因单位余单位都是同构，这实际上是<strong data-page-node-id="ApZvEEGZaEKgSVJRs1MHLd">等价</strong>：类型论与拓扑斯是同一结构的两种呈现。<span class="qed" data-page-node-id="IoDmpHJVUqhRIjv5AwyPur">∎</span></p>
+    </div>
+  </div>
+  <div class="rmk" data-page-node-id="IhA6PIY6kREEnLtPnBnkPz">
+    <strong data-page-node-id="6vttMG7Y56YhqI3rDIpuKL">与 Part I 对照.</strong>第 10 章 10.2 的三位一体是"λ-理论 ↔ CCC"；这里的主伴随是"类型论 ↔ 拓扑斯"。区别是：类型论比 λ-演算多了 \(\Pi,\Sigma,\mathrm{Id}\)（11.1），拓扑斯比 CCC 多了 \(\Omega\)（11.2）——多出来的正是"逻辑/命题"这一层。Part I 讲的是"函数"，Part II 讲的是"带逻辑的函数世界"。这就是本章与前面各章最本质的不同。
+  </div>
+
+  <h3 class="sub" data-page-node-id="2hHN372gkCtVrlXjC6o6BK">11.6.4 典型子对象与完备性（陈述 + 思路）</h3>
+  <p data-page-node-id="BX2IwhaEmXFZlQdGarzwxv">主伴随的一个重要应用是完备性定理：语法可证 ⟺ 语义有效。L&amp;S §17、§19 分别给出带选择规则与不带选择的版本。</p>
+  <div class="prop" data-page-node-id="ixiogKzRg5ZA2lq5N41eVI">
+    <span class="lbl" data-page-node-id="XmV7HTdM0vuTAcCBWGlrJS">命题 11.6.3（完备性定理，Part II §17/§19）</span>
+    <p data-page-node-id="1McGh9Ohx4F0frfIwd1FVD">设 \(\varphi\) 是高阶逻辑的句子。则"\(\varphi\) 在类型论中可证"当且仅当"\(\varphi\) 在所有（相应的）拓扑斯中内部真"，记作
+      \[
+        \vdash\varphi\quad\Longleftrightarrow\quad \forall\,\mathcal E:\ \mathcal E\models\varphi.
+      \]
+    <strong data-page-node-id="YHSI2EIfFKUViswm0vc1th">证明思路：</strong>"⟹"是可靠性（11.2.7）。"⟸"用反证构造：若 \(\varphi\) 不可证，则由类型论 \(T\) 生成拓扑斯 \(\mathcal E(T)\)，在其中 \(\varphi\) 不真——这需要一个"足够的"拓扑斯来分离不可证的句子。带选择规则版本（§17）用选择得到极大滤子/点；不带选择版本（§19）改用 Freyd cover 避免该步骤。</p>
+  </div>
+  <div class="defn" data-page-node-id="KOFvvyAHJp9cVXK0Ojecfv">
+    <span class="lbl" data-page-node-id="w5WrVHGFFR3OmQNoVs8c84">定义 11.6.4（典型子对象与 Freyd cover）</span>
+    <p data-page-node-id="VxLL1BjanUzhFrpJHYV1Sc"><strong data-page-node-id="nrje9A7leE8PoT3ZDjkA9O">典型子对象</strong>（canonical subobject，§15）：在生成的拓扑斯 \(\mathcal E(T)\) 中，由类型论的语法直接给出的那批子对象（由公式命名），它们使 \(\mathcal E(T)\) 忠实反映 \(T\) 的语法。<strong data-page-node-id="qNU6vJw1ZoUFyRL27ZhxNo">Freyd cover</strong>（§22）：一个构造，把任意拓扑斯 \(\mathcal E\) 嵌入一个"带点"的拓扑斯 \(\hat{\mathcal E}\)（对象是 \(\mathcal E\) 的对象配上集合论的点），用于在不假设选择的情形下达完备性。用它可以证明：若句子在所有拓扑斯中真，则在 \(\hat{\mathcal E(L(T))}\) 中真，从而由语法生成的结构推出可证。</p>
+  </div>
+  <div class="rmk" data-page-node-id="SAQoxoq1dTOJcIDYHGB4Ho">
+    <strong data-page-node-id="EbxIhHm2NyBXQl5eGIIkWI">函数完备性 vs 逻辑完备性（呼应第 9 章 3 节的提醒）.</strong>函数完备性（第 9 章 5 节）说的是内部语言的表达能力（能否命名所有箭头）；这里的完备性说的是语法可证与语义有效是否吻合。两者是不同的命题——前者关于"表达能力"，后者关于"证明系统的完全性"。不要混用"完备"一词。
+  </div>
+
+  <div class="box exer" data-page-node-id="awo0gAcHLSUBzx2PuP1wWk">
+    <h4 data-page-node-id="ZMUrxuJ9HdkrVahAwLvLdq">② 习题</h4>
+    <div class="grp" data-page-node-id="zb7jsnZNfR4nlCDCgwPDrZ">基础</div>
+    <ol data-page-node-id="HLfVgfxp3PARKHniLasQd5">
+      <li id="ex11-6-1" data-page-node-id="h3QvvCmtROD19AHB6SylYD">与类型论 \(T\) 关联的三个范畴分别是什么？各自的对象与箭头（大致）是什么？</li>
+      <li id="ex11-6-2" data-page-node-id="bWTTQLSDbrSIaEtD30Zqe6">叙述主伴随：哪两个函子构成伴随？写出两个往返同构 \(T\cong ?\) 与 \(\mathcal E\cong ?\)。</li>
+      <li id="ex11-6-3" data-page-node-id="CakQqUlX2JfU2doY6OHp9x">说明 Part I 三位一体（第 10 章）与 Part II 主伴随的类比：语法侧、语义侧各从什么升级到什么？</li>
+      <div class="grp" data-page-node-id="lJBPjCTDALCunJ5mBG6ldc">进阶</div>
+      <li id="ex11-6-4" data-page-node-id="EagnHNDB4IK4DL3uVC5cIg">在方向 (a) \(T\cong L(\mathcal E(T))\) 的证明中，函数完备性与"可证相等的刻画"各起什么作用？</li>
+      <li id="ex11-6-5" data-page-node-id="ZUsoYPPxjlvovijrWLgsdN">叙述完备性定理，并说明为何"⟸"方向需要构造一个"足够的"拓扑斯。</li>
+      <li id="ex11-6-6" data-page-node-id="tJ8jnSdmfR54t9jL4fWdHj">区分函数完备性与逻辑完备性：各说的是什么？为何不能混为一谈？</li>
+    </ol>
+  </div>
+
+  <div class="box ans" data-page-node-id="l6mKm2ob5mSzeEBKaDHU7i">
+    <h4 data-page-node-id="uUOC3UrppThAxenK1cjGhm">③ 参考答案</h4>
+    <div class="item" data-page-node-id="qXjPJ8RgaNFCGfjiE0Bodi"><b data-page-node-id="WWQpPlSVHvPllIPDKjeCmE">11.6.1</b>　\(\mathcal C(T)\)：对象=类型，箭头=项 \(x:A\vdash t:B\) 模可证相等（项的范畴）；\(\mathcal D(T)\)：对象=类型，箭头=公式 \(\varphi(x,y)\) 模可证相等（公式范畴）；\(\mathcal E(T)\)：由 \(T\) 生成的拓扑斯。三者逐一嵌入 \(\mathcal C(T)\hookrightarrow\mathcal D(T)\hookrightarrow\mathcal E(T)\)。<span class="qed" data-page-node-id="P2TvAEnX1o6pi9nDIqTmmC">∎</span></div>
+    <div class="item" data-page-node-id="W5cxKSF2A7fdWrm0GsA8Mg"><b data-page-node-id="422xSUQ6D2E7hGNMREy0fi">11.6.2</b>　伴随 \(T\mapsto\mathcal E(T)\)（生成拓扑斯）与 \(\mathcal E\mapsto L(\mathcal E)\)（读内部语言）构成反向伴随。往返同构：\(T\cong L(\mathcal E(T))\)（生成后读回），\(\mathcal E\cong\mathcal E(L(\mathcal E))\)（读后生成）。因单位余单位皆同构，实为等价。<span class="qed" data-page-node-id="s0npTAqxKnYNY72RBPpAy2">∎</span></div>
+    <div class="item" data-page-node-id="edGHHYdKQIvQ9bRmUqJ8W6"><b data-page-node-id="XfWAXmlpkpaqbgbiNDAaon">11.6.3</b>　Part I：语法侧 λ-理论 → 语义侧 CCC（三位一体，第 10 章 10.2）；Part II：语法侧升级为类型论（多 \(\Pi,\Sigma,\mathrm{Id}\)），语义侧升级为拓扑斯（多 \(\Omega\)）。方法相同（语法生范畴、范畴读语言、互逆到同构），但多了"逻辑/命题"一层。<span class="qed" data-page-node-id="YyLbB03rfqxef8ClrXSLNy">∎</span></div>
+    <div class="item" data-page-node-id="kyqMNNZv1GAf2wCr8a2bw8"><b data-page-node-id="dBZdpNLgleSCyfm58tAJoz">11.6.4</b>　函数完备性保证"满"：\(\mathcal E(T)\) 的每个箭头都被内部语言的项命名，故 \(L(\mathcal E(T))\) 的项覆盖 \(T\) 之外的箭头、无遗漏。可证相等的刻画保证"单"：两项在 \(L(\mathcal E(T))\) 中相等恰指它们在 \(T\) 中可证相等，故不混淆。满+单给出同构。<span class="qed" data-page-node-id="ZNTkrle2iaRpyBCawOn6c0">∎</span></div>
+    <div class="item" data-page-node-id="danC9fPczxNq43i4NtO1ek"><b data-page-node-id="J6vzKtUt3PtyW7lGkOQPXs">11.6.5</b>　完备性：\(\varphi\) 可证 ⟺ 在所有（相应）拓扑斯中内部真。"⟹"是可靠性。"⟸"用反证：若 \(\varphi\) 不可证，需构造一个拓扑斯（由语法生成并用典型子对象/Freyd cover 增强）使 \(\varphi\) 在其中不真，从而否证"在所有拓扑斯中真"。这个"足够的"拓扑斯必须忠实分离语法的可证与不可证。<span class="qed" data-page-node-id="gS5Z7arxRurzf5aAhBdiHJ">∎</span></div>
+    <div class="item" data-page-node-id="dU4npe9qNjk5IKusbavAwR"><b data-page-node-id="LdnbOh36feMAcEe86FuRii">11.6.6</b>　函数完备性：内部语言的项能否命名所有箭头（表达能力问题，第 9 章 5 节）。逻辑完备性：语法可证 ⟺ 语义有效（证明系统完全性问题，本节）。前者关乎"语言够不够丰富"，后者关乎"证明规则够不够强"，是不同维度，故不能混用"完备"。<span class="qed" data-page-node-id="UVBjOcl2WlDv50bWryNRMA">∎</span></div>
+  </div>
+
+  <div class="box phil" data-page-node-id="6ChBuGez9bDKkBAGS0Ufnk">
+    <h4 data-page-node-id="7XGLGUnJcAHjdcnrblQCXx">④ 选读：主伴随的哲学含义——逻辑与世界的互构</h4>
+    <p data-page-node-id="vGfU1WhkLsglwcHvTYyyrA">Part II 的主伴随给出了一个耐人寻味的图景：一个逻辑理论 \(T\) 可以"长出"一个数学世界 \(\mathcal E(T)\)，而一个数学世界 \(\mathcal E\) 又"自带"一套逻辑语言 \(L(\mathcal E)\)，且两者互逆到等价。这意味着"逻辑"与"世界（语义）"不是两件可以分开排序的东西——每一方都完整地编码了另一方。</p>
+    <p data-page-node-id="hl5bB8SxdDgLqO90LLFIQ1">这对你的问题有个克制的启示：与其先验地选一套逻辑再去找模型，不如问"我研究的这个结构自带什么样的内部逻辑"。主伴随保证了这两条路（从逻辑出发、从世界出发）在数学上等价。但也要看到限度：这里谈的是形式结构之间的等价，不直接回答"哪个世界是实际的"——那需要额外的（哲学的、经验的）_input，超出范畴论本身。本章到此收束 Part II 的主线，下一步（第 12 章）将进入 Part III：在这些范畴里表示可计算函数。</p>
+  </div>
+</section>
+
+<footer data-page-node-id="PemdFluFjZ0irsmlFBM5Nx">
+  <p data-page-node-id="PVUoexhTtHA9SE6rKC8BIh"><a href="范畴论-逻辑-拓扑斯_教材总目录.html" data-page-node-id="TT1sUb2Yjn4fEufQEFgtjR">← 返回总目录</a> ｜ 上一章：<a href="范畴论-逻辑-拓扑斯_教材第10章.html" data-page-node-id="UYNI7faEZob77xtJrjaClB">第 10 章 λ-演算与证明同一性</a> ｜ 下一章：<a href="范畴论-逻辑-拓扑斯_教材第12章.html">第 12 章 完备性问题</a></p>
+  <p data-page-node-id="EC7eFE0FPHMtsibkKomlcl">本章对应 Lambek &amp; Scott, <em data-page-node-id="sCfaDeMeScoYdGB2YjINCa">Introduction to Higher Order Categorical Logic</em>, Part II §1–§16。公式由 MathJax 渲染，需联网加载。</p>
+</footer>
+
+</div>
+</body>
+</html>

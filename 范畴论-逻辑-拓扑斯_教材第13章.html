@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>第 13 章 函子范畴（Ch. I）—— 三书递进自学教材</title>
+<script>
+window.MathJax = {
+  tex: {
+    inlineMath: [['\\(','\\)']], displayMath: [['\\[','\\]']], processEscapes: true,
+    macros: {
+      llbracket: '\\lbrack\\lbrack',
+      rrbracket: '\\rbrack\\rbrack'
+    }
+  },
+  options: { ignoreHtmlClass: 'no-tex' },
+  svg: { fontCache: 'global' }
+};
+</script>
+<script async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
+<style>
+  :root{
+    --bg:#f6f7f9; --card:#fff; --ink:#1b1f27; --ink2:#4d5461; --ink3:#7a8190;
+    --line:#e5e8ed; --soft:#f0f2f5;
+    --c1:#2563eb; --c1bg:#eef4ff; --gold:#b45309; --goldbg:#fdf3e3;
+    --ok:#15803d; --okbg:#eefaf1; --phil:#7c3aed; --philbg:#f6f1ff;
+    --teal:#0d9488; --tealbg:#eefaf7; --walk:#b45309;
+    --radius:12px;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;
+    line-height:1.75;-webkit-font-smoothing:antialiased;}
+  .wrap{max-width:920px;margin:0 auto;padding:0 22px 80px;}
+
+  header.top{padding:34px 0 22px;border-bottom:1px solid var(--line);margin-bottom:26px;}
+  .breadcrumb{font-size:12.5px;color:var(--ink3);margin-bottom:10px;}
+  .breadcrumb a{color:var(--c1);text-decoration:none;}
+  h1{font-size:29px;margin:0 0 8px;letter-spacing:-.02em;}
+  .lede{color:var(--ink2);font-size:14.5px;margin:0 0 16px;}
+  .jump{display:flex;gap:8px;flex-wrap:wrap;}
+  .jump a{font-size:12.5px;font-weight:650;text-decoration:none;color:var(--ink2);
+    background:var(--card);border:1px solid var(--line);border-radius:99px;padding:6px 13px;}
+  .jump a:hover{border-color:var(--c1);color:var(--c1);}
+
+  section.sec{margin:0 0 52px;scroll-margin-top:16px;}
+  .sec-h{display:flex;align-items:baseline;gap:12px;border-bottom:2px solid var(--c1);padding-bottom:10px;margin-bottom:22px;}
+  .sec-no{font-size:13px;font-weight:800;color:#fff;background:var(--c1);border-radius:7px;padding:3px 10px;white-space:nowrap;}
+  .sec-h h2{font-size:22px;margin:0;letter-spacing:-.01em;}
+  .src{font-size:11.5px;color:var(--ink3);margin-left:auto;white-space:nowrap;}
+
+  .box{border-radius:var(--radius);padding:16px 20px;margin:18px 0;border:1px solid var(--line);}
+  .box h4{margin:0 0 10px;font-size:14px;letter-spacing:.01em;}
+
+  .learn{background:var(--c1bg);border-color:#cfe0ff;}
+  .learn h4{color:var(--c1);}
+  .learn ol{margin:0;padding-left:22px;} .learn li{margin:4px 0;font-size:14px;}
+
+  .prep{background:var(--tealbg);border-color:#bfe9dd;}
+  .prep h4{color:var(--teal);}
+  .prep p{font-size:13.5px;color:#115e59;margin:8px 0;}
+  .prep ol,.prep ul{margin:8px 0;padding-left:22px;font-size:13.5px;color:#115e59;}
+  .prep li{margin:5px 0;}
+
+  .defn{background:#fafbfc;border-left:4px solid var(--ink2);padding:14px 18px;margin:16px 0;border-radius:0 10px 10px 0;}
+  .defn .lbl{font-weight:800;font-size:13.5px;color:var(--ink);}
+  .prop{background:#fbfcfe;border:1px solid #dbe6f8;border-left:4px solid var(--c1);padding:14px 18px;margin:16px 0;border-radius:0 10px 10px 0;}
+  .prop .lbl{font-weight:800;font-size:13.5px;color:var(--c1);}
+  .rmk{font-size:13.5px;color:var(--ink2);background:var(--soft);padding:11px 16px;border-radius:9px;margin:12px 0;}
+  .xref{font-size:13px;color:#115e59;background:var(--tealbg);border-left:3px solid var(--teal);padding:9px 14px;border-radius:0 8px 8px 0;margin:12px 0;}
+
+  .proof{margin:10px 0 4px;padding-left:16px;border-left:2px solid var(--line);font-size:14px;color:var(--ink2);}
+  .proof .pl{font-weight:700;color:var(--ink);}
+  .qed{float:right;font-style:normal;color:var(--ink3);}
+
+  .exer{background:var(--goldbg);border-color:#f2dfbb;}
+  .exer h4{color:var(--gold);}
+  .exer .grp{font-size:12.5px;font-weight:750;color:var(--gold);margin:12px 0 4px;}
+  .exer ol{margin:0;padding-left:22px;} .exer li{margin:9px 0;font-size:14px;}
+
+  .ans{background:var(--okbg);border-color:#c9ecd3;}
+  .ans h4{color:var(--ok);}
+  .ans .item{margin:14px 0 18px;font-size:14px;}
+  .ans .item:last-child{margin-bottom:0;}
+  .ans .item b{color:var(--ok);}
+  .ans .proof{border-left-color:#bfe6c9;}
+
+  .phil{background:var(--philbg);border-color:#e3d5ff;}
+  .phil h4{color:var(--phil);}
+  .phil p{font-size:14px;color:#5b3a8e;margin:8px 0;}
+
+  .walk{background:#fffbeb;border-color:#fde68a;}
+  .walk h4{color:var(--walk);}
+  .walk p,.walk li{font-size:13.5px;color:#78350f;}
+  .walk ol,.walk ul{margin:8px 0;padding-left:22px;}
+  .walk table{border-collapse:collapse;width:100%;font-size:13px;margin:10px 0;}
+  .walk th,.walk td{border:1px solid #fcd34d;padding:7px 9px;text-align:left;vertical-align:top;}
+  .walk th{background:#fef3c7;color:#78350f;}
+
+  h3.sub{font-size:16px;margin:26px 0 6px;color:var(--ink);}
+  p{margin:9px 0;} .math{overflow-x:auto;}
+
+  .figcap{font-size:12.5px;color:var(--ink3);margin:2px 0 12px;text-align:center;font-style:italic;}
+  .figdesc{font-size:13px;color:var(--ink2);background:var(--soft);padding:10px 15px;border-radius:8px;margin:6px 0 12px;}
+
+  footer{border-top:1px solid var(--line);margin-top:30px;padding-top:20px;font-size:13px;color:var(--ink3);}
+  footer a{color:var(--c1);text-decoration:none;}
+
+  @media(max-width:640px){
+    h1{font-size:23px;} .wrap{padding:0 14px 60px;}
+    .sec-h{flex-wrap:wrap;} .src{margin-left:0;}
+    .box{padding:14px 15px;}
+  }
+  @media print{body{background:#fff;}.jump{display:none;}.box{break-inside:avoid;}}
+  /* ---- 范畴交换图 SVG（浅色主题）---- */
+  svg.cd{display:block;margin:16px auto 2px;max-width:100%;height:auto;
+    font-family:"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;}
+  svg.cd rect.node{fill:#eef4ff;stroke:#2563eb;stroke-width:1.5;rx:7;}
+  svg.cd rect.node2{fill:#f6f1ff;stroke:#7c3aed;stroke-width:1.5;rx:7;}
+  svg.cd rect.nodeg{fill:#eefaf1;stroke:#15803d;stroke-width:1.5;rx:7;}
+  svg.cd rect.nodey{fill:#fdf3e3;stroke:#b45309;stroke-width:1.5;rx:7;}
+  svg.cd text.nt{fill:#1b1f27;font-size:13.5px;font-weight:600;}
+  svg.cd text.lb{fill:#334155;font-size:12.5px;}
+  svg.cd text.hb{fill:#2563eb;font-size:12.5px;font-weight:600;}
+  svg.cd text.hg{fill:#15803d;font-size:12.5px;font-weight:600;}
+  svg.cd text.hp{fill:#7c3aed;font-size:12.5px;font-weight:600;}
+  svg.cd line.ar,svg.cd path.ar{stroke:#475569;stroke-width:1.6;fill:none;marker-end:url(#cdArr);}
+  svg.cd line.arb,svg.cd path.arb{stroke:#2563eb;stroke-width:1.8;fill:none;marker-end:url(#cdArrB);}
+  svg.cd line.arg,svg.cd path.arg{stroke:#15803d;stroke-width:1.8;fill:none;marker-end:url(#cdArrG);}
+  svg.cd line.arp,svg.cd path.arp{stroke:#7c3aed;stroke-width:1.8;fill:none;marker-end:url(#cdArrP);}
+  svg.cd line.ard,svg.cd path.ard{stroke:#475569;stroke-width:1.5;fill:none;stroke-dasharray:5 4;marker-end:url(#cdArr);}
+  svg.cd line.noa{stroke:#475569;stroke-width:1.5;fill:none;stroke-dasharray:5 4;}
+
+  /* ---- 四类例子深度组件（本章新增，落实用户"每概念四类例"要求）---- */
+  .cases{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:6px 20px 14px;margin:18px 0;}
+  .cases>.ct{font-size:13.5px;font-weight:800;color:var(--ink);padding:11px 0 4px;border-bottom:1px dashed var(--line);margin-bottom:8px;}
+  .case{padding:9px 0 9px 14px;border-left:3px solid var(--line);margin:8px 0;font-size:13.5px;color:var(--ink2);}
+  .case b{display:inline-block;font-size:12px;padding:1px 9px;border-radius:99px;margin-right:8px;vertical-align:1px;}
+  .case.typ{border-left-color:var(--ok);}       .case.typ b{background:var(--okbg);color:var(--ok);}
+  .case.deep{border-left-color:var(--c1);}      .case.deep b{background:var(--c1bg);color:var(--c1);}
+  .case.edge{border-left-color:#dc2626;}        .case.edge b{background:#fef2f2;color:#dc2626;}
+  .case.use{border-left-color:var(--phil);}     .case.use b{background:var(--philbg);color:var(--phil);}
+  .case p{margin:6px 0;}
+  /* 数学动机框：解释"这个构造解决什么问题" */
+  .motiv{background:#fffbeb;border:1px solid #fde68a;border-left:4px solid #d97706;padding:13px 18px;border-radius:0 10px 10px 0;margin:16px 0;font-size:13.5px;color:#78350f;}
+  .motiv .lbl{font-weight:800;color:#b45309;display:block;margin-bottom:5px;}
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute;width:0;height:0;overflow:hidden" aria-hidden="true">
+<defs>
+  <marker id="cdArr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+    <path d="M 0 0 L 10 5 L 0 10 z" fill="#475569"/>
+  </marker>
+  <marker id="cdArrB" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+    <path d="M 0 0 L 10 5 L 0 10 z" fill="#2563eb"/>
+  </marker>
+  <marker id="cdArrG" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+    <path d="M 0 0 L 10 5 L 0 10 z" fill="#15803d"/>
+  </marker>
+  <marker id="cdArrP" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+    <path d="M 0 0 L 10 5 L 0 10 z" fill="#7c3aed"/>
+  </marker>
+</defs>
+</svg>
+<div class="wrap">
+
+<header class="top">
+  <div class="breadcrumb"><a href="范畴论-逻辑-拓扑斯_教材总目录.html">← 返回总目录</a> ｜ 第三部分 · Mac Lane &amp; Moerdijk《Sheaves in Geometry and Logic》</div>
+  <h1>第 13 章　函子范畴（Ch. I）</h1>
+  <p class="lede">这是第三本书的开篇，也是全书的第三个世界。前两本里，你已经把"拓扑斯"当作一个定义了就用的对象：子对象分类子 \(\Omega\)、内部语言、层。现在 M&amp;M 要还你一笔债——<strong>这些东西到底是从哪里长出来的？</strong>答案是函子范畴（尤其预层范畴 \(\mathbf{Set}^{\mathbf C^{\mathrm{op}}}\)）：它是制造拓扑斯的第一座工厂。本书前 12 章多次用到子对象、拉回、\(\Omega\)、特征函数，本章不重复那些定义，而是回到源头，把它们放进函子范畴里重新看一遍，问一个更高的问题：<strong>每一个熟悉的构造，究竟为了解决什么问题而被发明出来？</strong>尤其是子对象——你要重点理解的那一块——本章会把它拆到"为什么要这样定义、换一种定义会坏在哪里"的程度。</p>
+  <div class="xref"><strong>与前文的分工（去重说明）.</strong>下列已在前面章节完整给出，本章只回指、不重述：<br>
+    · 子对象 = 单态的等价类、子对象格——<strong>（参见第 4 章 4.1）</strong>。本章 13.2 重问"为什么非得是等价类"，不重述定义；<br>
+    · 拉回及其泛性质——<strong>（参见第 4 章 4.2）</strong>；<br>
+    · 函子范畴、Yoneda、可表示——<strong>（参见第 6 章 6.1、6.3）</strong>；<br>
+    · 伴随、量词作为 \(\exists_f\dashv f^\ast\dashv\forall_f\)——<strong>（参见第 7 章 7.3）</strong>；<br>
+    · 子对象分类子、\(\mathrm{Sub}(A)\cong\mathcal E(A,\Omega)\)、内部语言——<strong>（参见第 11 章 11.2）</strong>；<br>
+    · Heyting 代数、开集格例子——<strong>（参见第 5 章 3 节）</strong>。<br>
+    本章新增：可表示性视角下的子对象分类子、预层范畴里 \(\Omega=\) 筛的构造、各类具体 \(\Omega\)、函子范畴的余极限与指数、\(\mathrm{Sub}\) 的 Heyting 代数与量词伴随的完整构造。</div>
+  <div class="box phil">
+    <h4>章首导读：为什么这一章值得"重新学一遍子对象"</h4>
+    <p>你第一次见子对象（第 4 章）时，它大概是这么来的：集合有子集，范畴里的类比就是"到 \(X\) 的单态"，但因为很多单态描述同一个子集，所以要取等价类。当时这个定义像是一个不得不接受的约定。本章要让你看到，它其实每一步都被逼出来：不用单态就没法在"没有元素"的范畴里说"部分"；不取等价类，\(\mathrm{Sub}(X)\) 就不是集合而是真类，而且同一件事会被数无数次。理解了这个"被逼"，你就理解了为什么后面 \(\Omega\) 非长成那样不可。</p>
+    <p>更关键的是第二个飞跃。在 \(\mathbf{Set}\) 里，一个子集 \(S\subseteq X\) 可以用特征函数 \(\chi_S:X\to\{0,1\}\) 完全替代——"属于 \(S\)"这件事被编码成一个取值。M&amp;M 的核心问题是：<strong>在任何范畴里，能不能把"子对象"也变成"到某个固定对象的箭头"？</strong>如果能，那么关于子对象的一切问题（并、交、量词、逻辑）就都能用箭头的工具处理。这个"能"的答案就是子对象分类子 \(\Omega\)，而它在预层范畴里的具体形状——<strong>筛</strong>——是本章最值得细看的东西。你会看到，\(\Omega\) 从 \(\mathbf{Set}\) 里的两个点，长成有向图里的五个箭头，再长成一般预层范畴里随对象变化的筛的集合。这不是复杂化，而是"真值"这个概念在有了"阶段/时间"之后必然的丰富化。</p>
+    <p>读法建议：本章每个核心概念都会按四栏展开——<b>典型例</b>（一眼看懂）、<b>本质例</b>（揭示概念真正威力）、<b>边界与误解</b>（哪里容易错）、<b>结构中的应用</b>（在更大结构里干什么用）。如果你时间紧，至少把 13.2、13.3 的四栏逐字读完，那是你要重点理解的子对象核心。</p>
+  </div>
+  <nav class="jump">
+    <a href="#s13-1">13.1 函子范畴与拉回</a>
+    <a href="#s13-2">13.2 子对象的特征函数</a>
+    <a href="#s13-3">13.3 典型的子对象分类子</a>
+    <a href="#s13-4">13.4 余极限与指数</a>
+    <a href="#s13-5">13.5 Heyting 代数与量词</a>
+  </nav>
+</header>
+
+<section class="sec" id="s13-1">
+  <div class="sec-h"><span class="sec-no">13.1</span><h2>函子范畴与拉回</h2><span class="src">M Ch.I §1–2</span></div>
+
+  <div class="box learn">
+    <h4>① 本节学习目标</h4>
+    <ol>
+      <li>理解为什么要研究函子范畴 \(\mathbf{Set}^{\mathbf C^{\mathrm{op}}}\)，它"解决什么问题"；</li>
+      <li>掌握函子范畴里极限、拉回的逐点（pointwise）构造，并理解它为何自然；</li>
+      <li>通过三个层次的例子（集合值离散范畴、群作用、有向图）建立对预层的直觉；</li>
+      <li>看清边界：为什么要求 \(\mathbf C\) 小、为什么逐点极限成立、哪种极限不逐点。</li>
+    </ol>
+  </div>
+
+  <div class="xref"><strong>沿用前文.</strong> 函子、自然变换、函子范畴的基本记号见<strong>（参见第 6 章 6.1–6.2）</strong>；Yoneda 嵌入与可表示函子见<strong>（参见第 6 章 6.3–6.4）</strong>；极限与拉回的泛性质见<strong>（参见第 4 章 4.2–4.3）</strong>。本节只新增"逐点构造"这一技术。</div>
+
+  <h3 class="sub">13.1.1 动机：为什么要把范畴"做成函子"</h3>
+  <div class="motiv">
+    <span class="lbl">这个构造解决什么问题？</span>
+    前面两本书里，我们反复碰到一些"带结构的集合"：一个 \(G\)-集合（集合配一个群作用）、一个有向图（顶点集、边集，边标出起点终点）、一个锥上的预层。它们看似无关，却共享一整套构造（极限、指数、子对象逻辑）。逐个范畴从头证明，既重复又看不清共性。函子范畴的洞见是：<strong>这些对象全部是同一类东西——从某个小范畴 \(\mathbf C\) 到 \(\mathbf{Set}\) 的函子</strong>。于是 \(\mathbf{Set}^{\mathbf C}\)（或反变的 \(\mathbf{Set}^{\mathbf C^{\mathrm{op}}}\)，预层）一次性把它们统一：只要对一般的 \(\mathbf C\) 证明一次，所有例子免费得到。这就是本章的全部动机——<em>用统一换来深度</em>。
+  </div>
+
+  <div class="cases">
+    <div class="ct">函子范畴：四类例子</div>
+    <div class="case typ"><b>典型例</b>取 \(\mathbf C=\mathbf 1\)（只有一个对象、只有恒等箭头）。则 \(\mathbf{Set}^{\mathbf 1}\cong\mathbf{Set}\)：函子就是选一个集合。函子范畴最简单的情形就是集合范畴本身。</div>
+    <div class="case deep"><b>本质例</b>取 \(\mathbf C=BG\)（群 \(G\) 作为单对象范畴，箭头是群元素）。一个函子 \(BG\to\mathbf{Set}\) 就是一个 \(G\)-集合：单个集合 \(X\)，每个 \(g\in G\) 给出一个置换 \(X\to X\)，且满足作用公理（函子保复合与恒等）。自然变换就是 \(G\)-等变映射。<strong>群作用是函子范畴</strong>——这个例子揭示了"函子范畴"不只是抽象推广，它把群表示论也收了进来。反变版本 \(\mathbf{Set}^{BG^{\mathrm{op}}}\) 给出右作用。</div>
+    <div class="case edge"><b>边界与误解</b>一个常见错误：以为 \(\mathbf{Set}^{\mathbf C}\) 的对象是"给 \(\mathbf C\) 每个对象配一个集合"就完事了。错——还必须给每条箭头 \(f:c\to d\) 配一个函数 \(F(f):F(c)\to F(d)\)，并且保恒等与复合（反变函子则方向相反）。只配对象不配箭头，得到的是"一族集合"而非函子。另一个边界：为什么要求 \(\mathbf C\) 小？因为要保证函子范畴的对象构成真正的类而非"类的类"，避免大小悖论；本书默认在宇宙层面处理，读者记住这个小前提即可。</div>
+    <div class="case use"><b>结构中的应用</b>预层范畴 \(\mathbf{Set}^{\mathbf C^{\mathrm{op}}}\) 是"制造拓扑斯的工厂"：对任意小范畴 \(\mathbf C\)，它自动是一个拓扑斯（有 \(\Omega\)、有限极限、指数），不必逐个验证。本章后面所有 \(\Omega\) 的构造、层化、Kripke–Joyal 语义，都建立在这个事实上。你在第 11 章见过的层范畴 \(\mathbf{Sh}(\mathbf C,J)\) 就是预层范畴的一个"子范畴"（满足层条件的那些预层）。</div>
+  </div>
+
+  <h3 class="sub">13.1.2 有向图：贯穿本章的玩具模型</h3>
+  <p>为了让你对手里的抽象对象有"看得见"的抓手，本章固定一个玩具模型，反复使用。</p>
+  <div class="defn">
+    <span class="lbl">约定（有向图的形状范畴）</span>
+    <p>令 \(\mathbf G\) 为有两个对象 \(0,1\)（分别读作"边、顶点"）、两条非恒等箭头 \(s,t:1\to0\)（分别读作"边的起点、终点"）的小范畴。则反变函子 \(X:\mathbf G^{\mathrm{op}}\to\mathbf{Set}\) 就是一张有向图：集合 \(X(0)\)=\(X\) 的边集，\(X(1)\)=\(X\) 的顶点集，两条函数 \(X(s),X(t):X(0)\to X(1)\) 把每条边送到它的起点、终点。（下标约定随原著：\(0\) 对应边、\(1\) 对应顶点。）</p>
+    <p><strong>方向必须记死。</strong>预层是反变的：\(\mathbf G\) 中的箭头 \(s:1\to0\) 给出 \(X(s):X(0)\to X(1)\)，即"边集 \(\to\) 顶点集"，这正是图的结构映射。若把箭头写成 \(0\to1\)，反变性会把 \(X(s)\) 送成 \(X(1)\to X(0)\)（顶点 \(\to\) 边），那就不是图了。许多教材在这里只写"\(s,t:0\to1\)"而把 \(X\) 写成共变函子；两种写法都能自洽，但<strong>不能混用</strong>——混用会让下面 \(\Omega\) 在两个对象处的数值整体互换。</p>
+  </div>
+  <div class="rmk"><strong>为什么选有向图当玩具？</strong>它刚好比集合复杂一点点：集合只有一个"层次"，有向图有两个（顶点和边）且边依赖顶点。这种"多层次 + 依赖"正是预层范畴比 \(\mathbf{Set}\) 丰富的根源。你会在 13.3 看到，\(\mathbf{Set}\) 的 \(\Omega\) 只有 2 个真值；而有向图的 \(\Omega\) 本身是一张图，<strong>2 个顶点、5 条边</strong>（这两组数就是 \(\Omega(1)\) 与 \(\Omega(0)\) 的大小），全局真值 3 个——多出来的那些，正是为了描述"边的两个端点是否在子图里"这种分层信息。</div>
+
+  <h3 class="sub">13.1.3 拉回在函子范畴里逐点计算</h3>
+  <div class="prop">
+    <span class="lbl">命题 13.1.1（逐点极限）</span>
+    <p>若范畴 \(\mathbf D\) 小，函子范畴 \(\mathbf{Set}^{\mathbf C^{\mathrm{op}}}\) 有 \(\mathbf D\)-形状的极限，且按逐点方式计算：对函子 \(F:\mathbf D\to\mathbf{Set}^{\mathbf C^{\mathrm{op}}}\)，其极限满足
+      \[\bigl(\lim_{\leftarrow d}F(d)\bigr)(c)\;\cong\;\lim_{\leftarrow d}\bigl(F(d)(c)\bigr),\qquad c\in\mathbf C.
+      \]
+      特别地，拉回和终对象都逐点计算。</p>
+    <div class="proof">
+      <p class="pl">证明（用极限泛性质，逐点验证）.</p>
+      <p>对每个 \(c\in\mathbf C\)，令 \(L(c)=\lim_d F(d)(c)\)，即集合范畴里的极限（存在，因为 \(\mathbf{Set}\) 完备）。对箭头 \(\alpha:c\to c'\)，各 \(F(d)(\alpha):F(d)(c')\to F(d)(c)\) 与极限锥相容，按泛性质唯一诱导出 \(L(\alpha):L(c')\to L(c)\)，使 \(L\) 成为反变函子。再验证 \(L\) 带锥并满足泛性质：给定另一函子 \(H\) 到 \(F\) 的锥，逐点用 \(L(c)\) 的泛性质得唯一映射 \(H(c)\to L(c)\)，这些映射对 \(\alpha\) 自然（仍由唯一性），故给出唯一的自然变换。∎</p>
+    </div>
+  </div>
+  <div class="cases">
+    <div class="ct">逐点拉回：四类例子</div>
+    <div class="case typ"><b>典型例</b>在 \(\mathbf{Set}\) 里，\(A\times_X B=\{(a,b):f(a)=g(b)\}\)。这是逐点公式在 \(\mathbf C=\mathbf 1\) 时的特例。</div>
+    <div class="case deep"><b>本质例</b>在有向图范畴里，两个子图 \(H,K\subseteq G\) 的交 \(H\cap K\) 就是在顶点和边上分别取交：\((H\cap K)(\text{顶点})=H(\text{顶点})\cap K(\text{顶点})\)，边集同理，且边的起终点自动相容。这就是为什么"子图的交"看起来理所当然——它是逐点交。没有逐点构造，你得重新证明交的存在。</div>
+    <div class="case edge"><b>边界与误解</b>极限逐点，但<strong>余极限一般不逐点</strong>（见 13.4）——这是初学者最容易踩的坑。原因：极限由映射"进到"图里定义，逐点取没问题；余极限由映射"从图出去"定义，逐点取未必能拼成自然变换（需要额外的层化/商）。另一个边界：终对象逐点，故预层范畴的终对象是常值单点预层 \(1(c)=\{*\}\)。</div>
+    <div class="case use"><b>结构中的应用</b>"有限极限逐点存在"是证明预层范畴是拓扑斯的第一步（拓扑斯要求有限极限）。后面 \(\Omega\) 的泛性质证明里，"拉回 \(\mathrm{true}\) 沿 \(\chi\)"正是逐点拉回：在每个 \(c\) 处取集合的拉回，再验证自然性。</div>
+  </div>
+  <div class="phil">
+    <h4>② 选读：逐点原则的哲学——"全局 = 每个阶段局部"</h4>
+    <p>逐点构造不只是技术便利，它 embodies 了预层范畴的世界观。把 \(\mathbf C\) 想成"阶段"或"时间"，一个预层 \(F\) 是在每个阶段 \(c\) 持有一批元素 \(F(c)\)，箭头给出阶段间的转移。逐点极限说：<strong>一个由许多预层拼成的极限，其在某阶段的部分，就等于各自在该阶段的部分再拼</strong>。换句话说，"整体地取极限"和"逐个阶段取极限"可交换。这正是几何里"局部—整体"直觉的范畴版本。</p>
+    <p>但要小心：这个可交换性只对极限成立，余极限失败。这个失败不是偶然的漏洞，而是层论的全部戏剧性的来源——把局部片段黏成整体时需要额外信息（覆盖、相容性），正是逐点余极限所缺失的。记住这条分界：极限逐点、余极限不逐点。它会在 13.4 和层化里反复回响。</p>
+  </div>
+
+  <div class="box exer">
+    <h4>③ 习题（13.1）</h4>
+    <ol>
+      <li id="ex13-1-1">说明 \(\mathbf{Set}^{\mathbf 1}\cong\mathbf{Set}\)，并解释为什么 \(\mathbf 1\) 上的函子范畴就是集合范畴。</li>
+      <li id="ex13-1-2">把"\(G\)-集合"写成函子 \(BG\to\mathbf{Set}\)，验证函子公理对应作用公理；说明自然变换为何是等变映射。</li>
+      <li id="ex13-1-3">用有向图的形状范畴 \(\mathbf G\) 说明：一个反变函子 \(\mathbf G^{\mathrm{op}}\to\mathbf{Set}\) 需要哪些数据才能确定一张有向图。</li>
+      <li id="ex13-1-4">陈述并证明逐点拉回公式：给出 \((F\times_H K)(c)\) 的集合表达式，并说明诱导的转移映射为何良定义。</li>
+      <li id="ex13-1-5">举一个例子说明"余极限一般不逐点"（可用第 13.4 的提示），并解释极限逐点为何更容易。</li>
+      <li id="ex13-1-6">解释为什么要求 \(\mathbf C\) 小；若 \(\mathbf C\) 是大范畴会出什么问题？</li>
+    </ol>
+  </div>
+  <div class="box ans">
+    <h4>④ 参考答案（13.1）</h4>
+    <div class="item"><b>13.1.1</b>\(\mathbf 1\) 只有一个对象 \(*\) 与恒等箭头。函子 \(F\) 由集合 \(F(*)\) 唯一确定（\(F(\mathrm{id})=\mathrm{id}\)）；自然变换 \(F\to G\) 是一个函数 \(F(*)\to G(*)\)，自然性自动成立。故函子范畴与 \(\mathbf{Set}\) 同构。</div>
+    <div class="item"><b>13.1.2</b>\(BG\) 单对象 \(*\)，箭头是 \(G\) 的元素，复合是乘法。函子 \(F\) 给出集合 \(X=F(*)\) 与每个 \(g\) 的函数 \(F(g):X\to X\)；函子保复合 \(F(gh)=F(g)F(h)\) 与保恒等 \(F(e)=\mathrm{id}\) 正是作用公理。自然变换 \(\eta:F\to F'\) 是函数 \(\eta:X\to X'\) 满足对每个 \(g\)：\(F'(g)\eta=\eta F(g)\)，即等变性。</div>
+    <div class="item"><b>13.1.3</b>需要：集合 \(V=X(1)\)（顶点）、集合 \(E=X(0)\)（边）、两个函数 \(X(s),X(t):E\to V\)（起终点）。由反变性，\(\mathbf G\) 中的箭头 \(s:1\to0\) 给出 \(X(s):X(0)\to X(1)\)，即 \(E\to V\)，方向正确。这些数据完全确定一张图，箭头处的数据保证与图的形态相容。</div>
+    <div class="item"><b>13.1.4</b>\((F\times_H K)(c)=\{(a,b)\in F(c)\times K(c):\alpha(a)=\beta(b)\in H(c)\}\)，其中 \(\alpha:F\to H,\beta:K\to H\)。对 \(\gamma:c\to c'\)，定义转移 \((a,b)\mapsto(F(\gamma)a,K(\gamma)b)\)，因 \(\alpha,\beta\) 自然，仍满足相等条件，故落在 \((F\times_H K)(c')\) 中，良定义。</div>
+    <div class="item"><b>13.1.5</b>由覆盖黏合的余极限不逐点：逐点取余极限只得到各阶段片段，还需把沿覆盖箭头相容的片段黏合（取商），结果一般不等于逐点余极限。极限逐点更容易，因为极限由"进到图里"的锥定义，各阶段可独立取再自然拼合，不需要黏合信息；余极限由"从图出去"定义，逐点结果未必能拼成自然变换。</div>
+    <div class="item"><b>13.1.6</b>若 \(\mathbf C\) 是大范畴，\(\mathbf{Set}^{\mathbf C^{\mathrm{op}}}\) 的对象（函子是proper class 大小的数据）本身可能构成"类的类"，不是合法的类，引发大小悖论（如 Russell 悖论式的问题）。要求小 \(\mathbf C\) 保证函子范畴在选定的宇宙里是良定义的局部小范畴。</div>
+  </div>
+</section>
+<section class="sec" id="s13-2">
+  <div class="sec-h"><span class="sec-no">13.2</span><h2>子对象的特征函数</h2><span class="src">M Ch.I §3</span></div>
+
+  <div class="box learn">
+    <h4>① 本节学习目标（核心节，请慢读）</h4>
+    <ol>
+      <li>彻底想通：子对象为什么是"单态的等价类"——换掉这个定义会在哪里坏掉；</li>
+      <li>理解 \(\mathrm{Sub}\) 是反变函子 \(\mathbf C^{\mathrm{op}}\to\mathbf{Set}\)，其作用是拉回；</li>
+      <li>掌握子对象分类子的定义，以及它如何等价于 "\(\mathrm{Sub}\) 可表示"；</li>
+      <li>把特征函数 \(\chi\) 的泛性质（拉回方块）逐点算一遍，直到它变成你的直觉。</li>
+    </ol>
+  </div>
+
+  <div class="xref"><strong>沿用前文（不重述）.</strong> 子对象的基本定义、单态、等价类、子对象格见<strong>（参见第 4 章 4.1）</strong>，本节只回答"为什么非要这样定义"。拉回泛性质见<strong>（参见第 4 章 4.2）</strong>。可表示函子与 Yoneda 见<strong>（参见第 6 章 6.3–6.4）</strong>。</div>
+
+  <h3 class="sub">13.2.1 第一步：子对象为什么必须是等价类</h3>
+  <div class="motiv">
+    <span class="lbl">这个定义解决什么问题？</span>
+    在集合里，"\(S\) 是 \(X\) 的子集"是字面清楚的事实。但在一般范畴里没有"元素"，只能说"有一个单态 \(m:S\rightarrowtail X\)"。问题立刻出现：<strong>很多不同的单态描述的是同一件事</strong>。例如 \(m:\{0\}\to\{0,1\}\) 与 \(m':\{0'\}\to\{0,1\}\) 是不同的函数（值域不同），但它们显然是"同一个子集 \(\{0\}\)"。如果不把它们认作同一个，\(\mathrm{Sub}(X)\) 会把同一子集数上无穷多次，甚至不是集合。于是必须取等价类：\(m\sim m'\) 若存在同构 \(i:S\to S'\) 使 \(m=m'\circ i\)。这一步不是学究式的讲究，而是<em>为了让"子对象的集合"这个概念成立</em>。
+  </div>
+
+  <div class="cases">
+    <div class="ct">子对象作为等价类：四类例子</div>
+    <div class="case typ"><b>典型例</b>\(X=\{1,2\}\) 的子对象是四个等价类 \([\varnothing],[\{1\}],[\{2\}],[\{1,2\}]\)。每个类里有无数个单态（定义域可以是任何与子集等势的集合），但都归为一个。</div>
+    <div class="case deep"><b>本质例</b>在群范畴 \(\mathbf{Grp}\) 里，子对象是子群（到满射的单态是子群嵌入）。两个同构但作为不同子群嵌入的单态——如 \(S_3\) 里三个不同的 2 阶子群——<strong>不等价</strong>，因为不存在使嵌入三角交换的同构（它们落在 \(S_3\) 的不同位置）。这说明"等价"认的是<em>在 \(X\) 中的位置</em>，不是抽象同构型。这是理解等价类最关键的检验。</div>
+    <div class="case edge"><b>边界与误解</b>误解一：以为子对象就是"子对象对象"的同构类——错，必须带嵌入 \(m\)。误解二：以为 \(m\sim m'\) 只要定义域同构——错，还要求嵌入三角交换。边界情形：在偏序范畴（视为范畴）里，每个对象到另一对象至多一个箭头，单态就是 \(\le\) 关系，子对象退化为"小于等于它的元素"，等价类退化为元素本身——这是最简单也最容易让人误以为"子对象就是元素"的特例。</div>
+    <div class="case use"><b>结构中的应用</b>取等价类后 \(\mathrm{Sub}(X)\) 成为偏集：\([m]\le[m']\) 若 \(m\) 经 \(m'\) 分解。在拓扑斯里这个偏序是 Heyting 代数（13.5），内部逻辑的命题就是子对象——所以"取等价类"直接决定了逻辑里命题的同一性标准：两个公式等价当且仅当它们命名同一子对象。</div>
+  </div>
+
+  <h3 class="sub">13.2.2 第二步：\(\mathrm{Sub}\) 是反变函子</h3>
+  <p>一旦有了子对象的集合，就要问它如何随对象变化。答案由拉回给出，而且方向是反的。</p>
+  <div class="prop">
+    <span class="lbl">命题 13.2.1</span>
+    <p>设 \(\mathbf C\) 有拉回。则 \(\mathrm{Sub}_{\mathbf C}:\mathbf C^{\mathrm{op}}\to\mathbf{Set}\) 是函子：对箭头 \(f:Y\to X\)，定义
+      \[\mathrm{Sub}(f):\mathrm{Sub}(X)\to\mathrm{Sub}(Y),\qquad [m:S\rightarrowtail X]\longmapsto[m':S'\rightarrowtail Y],
+      \]
+      其中 \(S'=X\) 沿 \(f\) 拉回 \(m\) 得到。此定义与代表元选择无关，且 \(\mathrm{Sub}(g\circ f)=\mathrm{Sub}(f)\circ\mathrm{Sub}(g)\)。</p>
+    <div class="proof">
+      <p class="pl">证明要点.</p>
+      <p>拉回保持单态，故 \(m'\) 确是单态，代表 \(Y\) 的一个子对象。与代表元无关：若 \(m\sim m'\)，拉回后仍同构（拉回保同构）。函子性：由拉回的黏合律（pasting law），先沿 \(g\) 再沿 \(f\) 拉回，等于沿复合 \(g\circ f\) 拉回；反变体现在顺序反转。∎</p>
+    </div>
+  </div>
+  <div class="rmk"><strong>为什么方向反过来？</strong>这值得停一下。集合之间 \(f:Y\to X\) 给出子集的原像映射 \(f^{-1}:\mathcal P(X)\to\mathcal P(Y)\)——把 \(X\) 的子集拉回到 \(Y\)。范畴里的拉回正是原像的推广，而原像总是把"大的"映到"小的"那一侧，方向与原箭头相反。所以 \(\mathrm{Sub}\) 天然是反变的。这与你熟悉的"幂集函子是反变的 \(\mathcal P:\mathbf{Set}^{\mathrm{op}}\to\mathbf{Set}\)"是同一件事。</div>
+
+  <h3 class="sub">13.2.3 第三步：把子对象变成箭头——分类子与可表示性</h3>
+  <div class="motiv">
+    <span class="lbl">这个构造解决什么问题？</span>
+    \(\mathrm{Sub}(X)\) 是个集合，但我们对集合的工具远不如对箭头（Hom-集）的工具熟。如果能把"\(X\) 的子对象"和"从 \(X\) 出发到某个固定对象 \(\Omega\) 的箭头"一一对应起来，那么所有关于子对象的问题就转移到 \(\mathrm{Hom}(X,\Omega)\) 上——而后者有 Yoneda、有复合、有自然性，威力大得多。<strong>这正是子对象分类子要干的事：让 \(\mathrm{Sub}\) 这个反变函子变得可表示。</strong>
+  </div>
+  <div class="defn">
+    <span class="lbl">定义 13.2.2（子对象分类子）</span>
+    <p>在有有限极限的范畴 \(\mathbf C\) 中，<strong>子对象分类子</strong>是一个单态 \(\mathrm{true}:1\rightarrowtail\Omega\)（从终对象出发），满足：对任意单态 \(m:S\rightarrowtail X\)，存在<strong>唯一</strong>箭头 \(\chi_m:X\to\Omega\) 使下图是拉回：
+      \[\begin{array}{ccc} S&\longrightarrow&1\\ {\scriptstyle m}\Big\downarrow&&\Big\downarrow{\scriptstyle \mathrm{true}}\\ X&\underset{\chi_m}{\longrightarrow}&\Omega \end{array}
+      \]
+      \(\Omega\) 叫真值对象，\(\chi_m\) 叫 \(m\) 的特征函数（特征态射）。</p>
+  </div>
+  <div class="prop">
+    <span class="lbl">命题 13.2.3（等价刻画：可表示性，M&amp;M Prop. I.3.1）</span>
+    <p>\(\mathbf C\)（局部小、有拉回）有子对象分类子 \(\iff\) 反变函子 \(\mathrm{Sub}:\mathbf C^{\mathrm{op}}\to\mathbf{Set}\) 可表示。此时表示对象就是 \(\Omega\)，且有自然同构
+      \[\mathrm{Sub}(X)\;\cong\;\mathbf C(X,\Omega).
+      \]
+      特别地 \(\mathbf C\) 是良势（well-powered）的。</p>
+    <div class="proof">
+      <p class="pl">证明（两个方向）.</p>
+      <p>(\(\Rightarrow\)) 由分类子的泛性质，\([m]\mapsto\chi_m\) 给出双射 \(\mathrm{Sub}(X)\to\mathbf C(X,\Omega)\)；其自然性由拉回黏合律：对 \(f:Y\to X\)，\(\chi_{\mathrm{Sub}(f)(m)}=\chi_m\circ f\)。(\(\Leftarrow\)) 设 \(\mathrm{Sub}\cong\mathbf C(-,\Omega)\) 自然，取 \(\mathrm{true}\) 为 \(\mathrm{id}_\Omega\) 在 \(\mathrm{Sub}(\Omega)\cong\mathbf C(\Omega,\Omega)\) 下对应的子对象 \(T\rightarrowtail\Omega\)；可证 \(T\cong 1\)（用自然性对常值映射的考察），于是得分类子。∎</p>
+    </div>
+  </div>
+  <div class="cases">
+    <div class="ct">分类子与可表示性：四类例子</div>
+    <div class="case typ"><b>典型例</b>\(\mathbf{Set}\) 里 \(\Omega=\{0,1\}\)，\(\mathrm{true}:1\to2\) 选中 \(1\)。子集 \(S\subseteq X\) 的特征函数 \(\chi_S(x)=1\) 当 \(x\in S\)，否则 \(0\)。\(S\) 正是 \(\mathrm{true}\) 沿 \(\chi_S\) 拉回：\(\{x:\chi_S(x)=1\}=S\)。</div>
+    <div class="case deep"><b>本质例</b>这个可表示性视角的威力在于：\(\mathrm{Sub}\) 的作用（拉回）被翻译成 \(\mathbf C(-,\Omega)\) 的作用（后复合）。于是"\(X\) 有多少子对象"变成"有多少箭头 \(X\to\Omega\)"，可以用 Hom-集的全部工具。例如要证 \(\mathrm{Sub}\) 保某些极限/结构，只需证 \(\Omega\) 的相应泛性质——这正是 13.5 里量词（\(\exists_f,\forall_f\) 作为伴随）的构造基础。</div>
+    <div class="case edge"><b>边界与误解</b>误解一：以为 \(\Omega\) 总是 \(\{0,1\}\)。错！只在布尔拓扑斯里 \(\Omega\cong1+1\)；一般 \(\Omega\) 可以是有向图的 5 箭头、开集格、筛的集合。误解二：以为 \(\mathrm{true}:1\to\Omega\) 的定义域可以是任意对象——其实它必然是终对象（可由泛性质推出）。边界：有子对象分类子要求有终对象与拉回；仅有单态不够。</div>
+    <div class="case use"><b>结构中的应用</b>一旦 \(\mathrm{Sub}(X)\cong\mathbf C(X,\Omega)\)，内部逻辑就落地了：一个命题（\(X\) 的子对象）就是一个箭头 \(X\to\Omega\)，即"对 \(X\) 的每个广义元素判定真值"。\(\Omega\) 的全局元素 \(\Gamma\Omega=\mathbf C(1,\Omega)\) 就是真值集合。这把第 11 章的内部语言从描述变成了可计算的构造。</div>
+  </div>
+  <div class="figcap">图 13.1　子对象分类子的拉回方块（读图文字说明）</div>
+  <div class="figdesc">一个方形，四条边：左边是待分类的单态 \(m:S\rightarrowtail X\)（向下），下边是特征函数 \(\chi_m:X\to\Omega\)（向右），右边是固定的 \(\mathrm{true}:1\rightarrowtail\Omega\)（向下），上边是 \(S\to1\) 唯一映射（向右）。方块带"pb"标记表示它是拉回。读法：\(S\) 恰好是"使 \(\chi_m\) 落到 \(\mathrm{true}\) 的那部分 \(X\)"——即 \(S\cong X\times_\Omega 1\)。换句话说，\(\chi_m\) 把 \(X\) 上每个点送去一个真值，而 \(S\) 就是被判为"真"的点收集起来。这条"判定—收集"的往返，是整章的基石：往是把单态变成特征函数，返是把特征函数拉回成单态，二者互逆。</div>
+
+  <h3 class="sub">13.2.4 \(\chi_m\) 的唯一性与良定义：一个容易含糊的点</h3>
+  <p>初学者常问：如果 \(m,m'\) 是同一子对象的两个代表，\(\chi_m\) 与 \(\chi_{m'}\) 会不同吗？答案是不会，这正是"良定义"要处理的。</p>
+  <div class="prop">
+    <span class="lbl">命题 13.2.4</span>
+    <p>若 \(m\sim m'\)（同一子对象），则 \(\chi_m=\chi_{m'}\)。故 \([m]\mapsto\chi_m\) 是良定义的函数。</p>
+    <div class="proof">
+      <p class="pl">证明.</p>
+      <p>设 \(m=m'\circ i\)，\(i:S\to S'\) 同构。由拉回黏合律，\(S\xrightarrow{i}S'\to1\) 与 \(m\) 构成的方块也是 \(\mathrm{true}\) 沿 \(\chi_m\) 的拉回；同时 \(S'\to1\) 与 \(m'\) 构成 \(\mathrm{true}\) 沿 \(\chi_{m'}\) 的拉回。把两式比较，\(\chi_m\) 与 \(\chi_{m'}\) 都使同一个（等价意义下的）方块成为拉回；由分类子泛性质中 \(\chi\) 的唯一性，\(\chi_m=\chi_{m'}\)。∎</p>
+    </div>
+  </div>
+  <div class="rmk"><strong>一句话记住本节.</strong>子对象 = 单态的等价类（为了数得对），\(\mathrm{Sub}\) 反变（因为拉回像原像），分类子让 \(\mathrm{Sub}(X)\cong\mathbf C(X,\Omega)\)（为了能用箭头工具）。三步每一步都在解决一个具体的"不方便"，把它们连起来，你就从"知道定义"进到"理解定义"。下一节看 \(\Omega\) 在各种范畴里究竟长什么样。</div>
+
+  <div class="box exer">
+    <h4>③ 习题（13.2）</h4>
+    <ol>
+      <li id="ex13-2-1">在 \(X=\{1,2,3\}\) 里写出子集 \(S=\{1,3\}\) 的特征函数 \(\chi_S\)，并验证 \(S\cong X\times_2 1\)。</li>
+      <li id="ex13-2-2">举两个到 \(X\) 的单态，它们定义域同构但不等价（提示：考虑 \(\mathbf{Set}\) 里两个不同的二元子集）。</li>
+      <li id="ex13-2-3">说明为什么 \(\mathrm{Sub}(f)\) 用拉回定义，并验证 \(\mathrm{Sub}(g\circ f)=\mathrm{Sub}(f)\circ\mathrm{Sub}(g)\)（写出反变顺序）。</li>
+      <li id="ex13-2-4">证明 \(\mathrm{Sub}(X)\cong\mathbf C(X,\Omega)\) 的自然性：对 \(f:Y\to X\)，说明 \(\chi_{\mathrm{Sub}(f)(m)}=\chi_m\circ f\)。</li>
+      <li id="ex13-2-5">为什么说"有子对象分类子"蕴含良势（well-powered）？</li>
+      <li id="ex13-2-6">证明 \(\mathrm{true}\) 的定义域必为终对象（提示：对 \(X=1\) 用泛性质与唯一性）。</li>
+    </ol>
+  </div>
+  <div class="box ans">
+    <h4>④ 参考答案（13.2）</h4>
+    <div class="item"><b>13.2.1</b>\(\chi_S(1)=1,\chi_S(2)=0,\chi_S(3)=1\)。拉回 \(X\times_2 1=\{(x,*):\chi_S(x)=\mathrm{true}\}=\{1,3\}\times\{*\}=S\)（忽略标签）。</div>
+    <div class="item"><b>13.2.2</b>取 \(X=\{1,2,3\}\)，\(S=\{1,2\},S'=\{2,3\}\)，两个包含单态 \(m:S\to X,m':S'\to X\)。定义域 \(S\cong S'\)（都是二元集），但不存在同构 \(i:S\to S'\) 使 \(m=m'\circ i\)（因为 \(i\) 若把 \(1\mapsto2\)，则 \(m'(i(1))=2\ne1=m(1)\)）。故不等价——嵌入位置不同。</div>
+    <div class="item"><b>13.2.3</b>拉回是原像的范畴化，\(f:Y\to X\) 诱导 \(f^{-1}:\mathrm{Sub}(X)\to\mathrm{Sub}(Y)\)，方向反转。由拉回黏合律：\(\mathrm{Sub}(g\circ f)(m)=m\) 沿 \(g\circ f\) 的拉回；而 \(\mathrm{Sub}(f)(\mathrm{Sub}(g)(m))\) 是先沿 \(g\) 再沿 \(f\) 拉回，两者同构，故相等（作为等价类），顺序为 \(\mathrm{Sub}(f)\circ\mathrm{Sub}(g)\)。</div>
+    <div class="item"><b>13.2.4</b>\(\mathrm{Sub}(f)(m)\) 是 \(m\) 沿 \(f\) 的拉回；把特征方块 \(\chi_m\) 沿 \(f\) 拉回，仍是由 \(\mathrm{true}\) 控制的拉回方块，其底边为 \(\chi_m\circ f:Y\to\Omega\)。由分类子唯一性，这个底边就是 \(\mathrm{Sub}(f)(m)\) 的特征函数，故 \(\chi_{\mathrm{Sub}(f)(m)}=\chi_m\circ f\)。这正是自然性方块的交换条件。</div>
+    <div class="item"><b>13.2.5</b>因为 \(\mathrm{Sub}(X)\cong\mathbf C(X,\Omega)\)，而 \(\mathbf C\) 局部小意味着 \(\mathbf C(X,\Omega)\) 是集合，故 \(\mathrm{Sub}(X)\) 是集合，即良势。</div>
+    <div class="item"><b>13.2.6</b>对 \(X=1\)，终对象的唯一箭头 \(1\to1\) 对应特征函数 \(1\to\Omega\)；又把 \(\mathrm{true}:T\to\Omega\) 视为子对象 \((T\le\Omega)\)。取 \(m=\mathrm{id}_1:1\to1\)，其拉回方块底边给出某箭头 \(1\to\Omega\)，由唯一性可得 \(\mathrm{true}\) 的定义域 \(T\) 满足到 \(1\) 的唯一箭头与泛性质，故 \(T\cong1\)。</div>
+  </div>
+</section>
+<section class="sec" id="s13-3">
+  <div class="sec-h"><span class="sec-no">13.3</span><h2>典型的子对象分类子</h2><span class="src">M Ch.I §4</span></div>
+
+  <div class="box learn">
+    <h4>① 本节学习目标（多例子核心节）</h4>
+    <ol>
+      <li>亲手算出 \(\mathbf{Set}\)、\(G\)-集合、幺半群作用、有向图范畴的 \(\Omega\) 与特征函数；</li>
+      <li>理解预层范畴里 \(\Omega(c)=\{\) \(c\) 上的筛 \(\}\) 这个构造为什么是唯一自然的答案；</li>
+      <li>看懂真值随"阶段"变多：从 2 个（Set）到 3 个（有向图）到筛的集合（一般预层）；</li>
+      <li>区分布尔与非布尔：为什么群作用是布尔的、幺半群/有向图/层范畴一般不是。</li>
+    </ol>
+  </div>
+
+  <h3 class="sub">13.3.1 从集合开始：\(\Omega=2\)</h3>
+  <div class="motiv">
+    <span class="lbl">这个例子解决什么问题？</span>
+    \(\mathbf{Set}\) 是所有例子的标定基准。在这里 \(\Omega=\{0,1\}\)（原著取 \(0=\) 真），\(\mathrm{true}:1\to2\) 选中真值。它告诉我们分类子概念在最熟悉的地方确实退化为特征函数，从而给抽象定义一个锚点。后面每个复杂的 \(\Omega\)，都可以问："它比 \(\{0,1\}\) 多出来的东西在描述什么？"
+  </div>
+  <div class="cases">
+    <div class="ct">\(\mathbf{Set}\)：四类例子</div>
+    <div class="case typ"><b>典型例</b>\(S\subseteq X\) 的特征函数 \(\chi_S(x)=1\iff x\in S\)；\(S=\chi_S^{-1}(1)\)。</div>
+    <div class="case deep"><b>本质例</b>真值的数量 = 从 \(1\) 到 \(\Omega\) 的箭头数 = \(|\Omega|\)。在 \(\mathbf{Set}\) 里这是 2，对应二值逻辑。注意 \(\mathrm{Sub}(1)=\{\varnothing,1\}\) 恰有两个子对象，与 \(\mathbf{Set}(1,2)\) 的两个元素对应——这是 \(\mathrm{Sub}(1)\cong\mathbf C(1,\Omega)\) 在 \(X=1\) 的具体化。</div>
+    <div class="case edge"><b>边界与误解</b>原著用 \(0=\) 真、\(1=\) 假（与很多教材相反）。这只是约定，不影响结构，但读原著公式时要留意别弄反。边界：空集 \(\varnothing\subseteq X\) 的特征函数是常值 \(0\)（假），全集的特征函数是常值 \(1\)（真）。</div>
+    <div class="case use"><b>结构中的应用</b>\(\Omega=2=1+1\) 是余积——这使得 \(\mathbf{Set}\) 成为布尔拓扑斯。判据 \(\Omega\cong1+1\) 贯穿本章：凡是满足它的拓扑斯，内部逻辑排中律成立；不满足的，逻辑是真正直觉主义的。</div>
+  </div>
+
+  <h3 class="sub">13.3.2 群作用与幺半群作用：布尔性的分水岭</h3>
+  <div class="prop">
+    <span class="lbl">命题 13.3.1（群作用 \(BG\)-集）</span>
+    <p>若 \(G\) 是群，\(\mathbf{Set}^{BG}\)（\(G\)-集合范畴）的分类子是两点集 \(\Omega=\{0,1\}\) 带<strong>平凡 \(G\)-作用</strong>，\(\mathrm{true}\) 选真值。故 \(G\)-集合拓扑斯是布尔的。</p>
+  </div>
+  <div class="cases">
+    <div class="ct">群/幺半群作用：四类例子</div>
+    <div class="case typ"><b>典型例</b>\(G\)-集合 \(X\) 的 \(G\)-子集的的特征函数 \(\chi:X\to\{0,1\}\) 必须是 \(G\)-等变的；因真值带平凡作用，等变性意味着 \(\chi(gx)=\chi(x)\)——即子集必须对 \(G\)-作用封闭。这正是"\(G\)-子集"的定义。</div>
+    <div class="case deep"><b>本质例</b>群没有非平凡左理想（若左理想 \(L\ne\varnothing\)，取 \(l\in L\)，则任意 \(m=(ml^{-1})l\in L\)，故 \(L=M\)）。所以 \(G\)-集的 \(\Omega\) 只有两个元素。这个代数事实直接解释了布尔性：<strong>因为没有中间真值可选</strong>。</div>
+    <div class="case edge"><b>边界与误解（关键对照）</b>若 \(M\) 是幺半群而非群，情况大变：\(M\) 有非平凡左理想，\(\Omega\) 的真值是 \(M\) 的全部左理想，作用为 \(m\cdot L=\{n:nm\in L\}\)。例如 \(M=(\mathbb N,\cdot)\) 时左理想有无穷多，\(\Omega\) 无穷大，逻辑非布尔。<strong>群 vs 幺半群这一个字的差别，决定拓扑斯布尔与否</strong>——这是最容易被忽略的边界。</div>
+    <div class="case use"><b>结构中的应用</b>\(M\)-集合范畴是理解"真值 = 随作用变化的性质"的最简实验室。它也是 Kripke 语义的代数原型：单幺半群的作用轨迹就像"时间演化"，左理想记录"从某时刻起一直成立"的性质。</div>
+  </div>
+
+  <h3 class="sub">13.3.3 有向图：五箭头 \(\Omega\) 与三值逻辑（重点算例）</h3>
+  <div class="motiv">
+    <span class="lbl">这个例子解决什么问题？</span>
+    有向图是"比集合多一层"的最小模型。它的 \(\Omega\) 有 2 个顶点、5 条边，全局真值（\(1\to\Omega\) 的箭头）恰有 3 个，形成一个三值 Heyting 代数——非布尔。把这个例子彻底算清楚，你就理解了"真值变多"到底多在哪里：<strong>多出来的真值在描述边的端点是否进入子图</strong>。这是你建立"预层逻辑"直觉的最佳跳板。
+  </div>
+  <div class="prop">
+    <span class="lbl">命题 13.3.2（有向图范畴 \(\mathbf{Quiv}\) 的 \(\Omega\)）</span>
+    <p>形状范畴 \(\mathbf G\)（对象 \(0=\) 边、\(1=\) 顶点，箭头 \(s,t:1\to0\)）上，\(\Omega(c)=\) \(c\) 上的筛（即 \(\mathbf G(c,-)\) 的子对象）。注意筛数的是"以 \(c\) 为<strong>终点</strong>的箭头"，所以两个对象的答案不对称：</p>
+    <ul>
+      <li>顶点处：以 \(1\) 为终点的箭头只有 \(\mathrm{id}_1\)（\(s,t\) 的终点是 \(0\)，不算），故 \(\Omega(1)=\{\varnothing,\{\mathrm{id}_1\}\}\)——2 个元素（顶点不在/在子图中）；</li>
+      <li>边处：以 \(0\) 为终点的箭头是 \(\mathrm{id}_0,s,t\)，\(\mathrm{id}_0\in S\Rightarrow s,t\in S\)，故 \(\Omega(0)=\{\varnothing,\{s\},\{t\},\{s,t\},\{\mathrm{id}_0,s,t\}\}\)——5 个元素，对应"两端点都不在、只在起点、只在终点、两端点都在但边不在、边与两端点都在"。</li>
+    </ul>
+    <p>（这里 \(\Omega(1)\) 的 2 是 \(\Omega\) <em>作为图</em>的顶点数，\(\Omega(0)\) 的 5 是它的边数——所以图 13.2 说"\(\Omega\) 有 2 个顶点、5 条边"，与上表是同一句话的两种说法。）</p>
+    <p>\(\mathrm{true}\) 在每个对象处取最大筛。全局真值 \(\Gamma\Omega=\mathbf{Quiv}(1,\Omega)\) 有 3 个，构成三值线性序（非布尔）。</p>
+  </div>
+  <div class="figcap">图 13.2　有向图的真值对象 \(\Omega\)（读图文字说明）</div>
+  <div class="figdesc">\(\Omega\) 是一张有向图，有 2 个顶点、5 条边。记两个顶点为 \(F=\varnothing\)（假：不在子图中）和 \(T\)（真：在子图中）。边分两类：从 \(F\) 到 \(T\)、从 \(T\) 到 \(F\)、\(F\) 上的环，都只有一条，因为边的端点若缺了一个，边就只能是"缺失"这一种情况；从 \(T\) 到 \(T\) 有两条不同的边，分别记为"这条边缺失"和"这条边存在"——因为当两端点都在子图中时，边本身可在可不在。合起来：\(F\to F\) 一条、\(F\to T\) 一条、\(T\to F\) 一条、\(T\to T\) 两条，共 5 条。\(\mathrm{true}\) 把唯一顶点的图送到 \(T\) 顶点、把唯一边送到 \(T\to T\) 中"存在"那条。读图要点：一个子图 \(H\subseteq G\) 的特征态射 \(\chi_H:G\to\Omega\) 把每个顶点送到 \(F\) 或 \(T\)，把每条边按其两端点是否在 \(H\) 及边是否在 \(H\) 送到 5 条边之一——\(\Omega\) 的 5 条边恰好穷尽了"一条边相对于子图的所有可能状态"。</div>
+  <div class="cases">
+    <div class="ct">有向图 \(\Omega\)：四类例子</div>
+    <div class="case typ"><b>典型例</b>若子图 \(H\) 既不含某条边的起点也不含终点，该边被 \(\chi_H\) 送到 \(F\to F\) 的边（String 里叫"空边"）；若 \(H\) 是整张图，每条边送到 \(T\to T\) 的"存在"边。</div>
+    <div class="case deep"><b>本质例（三值逻辑）</b>全局真值有 3 个：全假（顶点映到 \(F\)）、全真但边取"缺失"（顶点 \(T\)，边取 \(T\to T\) 的缺失边）、全真（顶点 \(T\)，边取存在边）。三者排成线性序 \(0<\frac12<1\)，是三值 Heyting 代数，<strong>不是布尔代数</strong>（有限布尔代数基数必为 \(2^n\)，3 不是）。这就是"图论的内部逻辑是直觉主义的"的精确含义。</div>
+    <div class="case edge"><b>边界与误解</b>常见错误：以为 \(\Omega\) 只有 2 个顶点就以为真值只有 2 个——错，真值是箭头 \(1\to\Omega\)，一条边图 \(1\)（一个顶点一条自环）送到 \(\Omega\) 时，顶点可去 \(F/T\)，但只有顶点去 \(T\) 时边才有两种选择，故总共 \(1+2=3\) 个箭头。另一个边界：为什么 \(F\to F\) 只有一条边而不是两条？因为起点终点都不在子图中时，"边在子图中"不可能（子图的边端点必须在子图顶点里），所以只有"缺失"一种。</div>
+    <div class="case use"><b>结构中的应用</b>有向图范畴是最小的"非布尔预层拓扑斯"，常被用来做逻辑反例：任何在图中成立的内部推理，都必须对这 3 个真值都成立。它也是证明"直觉主义逻辑完备性"时的廉价模型来源（第 12 章的 model topos 思想在这里有了一个手指般大小的实例）。</div>
+  </div>
+
+  <h3 class="sub">13.3.4 预层范畴的一般答案：\(\Omega=\) 筛</h3>
+  <div class="motiv">
+    <span class="lbl">这个构造解决什么问题？</span>
+    前面所有例子的 \(\Omega\) 都是一个统一构造的特例。对任意小范畴 \(\mathbf C\)，预层范畴 \(\mathbf{Set}^{\mathbf C^{\mathrm{op}}}\) 的分类子是 \(\Omega(c)=\{c\text{ 上的筛}\}\)。为什么是筛？回看 \(\mathbf{Set}\)：子对象 \(S\subseteq X\) 由"哪些元素在 \(S\) 里"决定；在预层里，"\(c\) 阶段的元素"是箭头 \(y(c)\to F\)（Yoneda），于是一个子预层 \(S\subseteq F\) 在 \(c\) 阶段要判定"哪些箭头 \(y(c)\to F\) 落进 \(S\)"——这正是一个筛（对 \(c\) 的箭头集合，且对拉回封闭）。<strong>筛就是"在当前阶段成立的广义元素的集合"</strong>，是真值概念在有了"阶段"之后的必然形态。
+  </div>
+  <div class="defn">
+    <span class="lbl">定义 13.3.3（筛）</span>
+    <p>范畴 \(\mathbf C\) 中对象 \(c\) 上的<strong>筛</strong>（sieve）是一个箭头集合 \(S\)，满足：每个箭头以 \(c\) 为终点；且若 \(f\in S\) 且 \(g\) 可与之复合（\(f\circ g\) 有意义），则 \(f\circ g\in S\)（左理想条件）。最大筛是所有以 \(c\) 为终点的箭头全体。预层 \(\Omega\) 在 \(c\) 处取值 \(\Omega(c)=\mathrm{Sieve}(c)\)，\(\Omega\) 对箭头 \(f:d\to c\) 的作用为拉回筛 \(f^\ast(S)=\{g:\mathrm{cod}(g)=d,\ f\circ g\in S\}\)。</p>
+  </div>
+  <div class="prop">
+    <span class="lbl">命题 13.3.4（预层范畴的分类子）</span>
+    <p>在 \(\mathbf{Set}^{\mathbf C^{\mathrm{op}}}\) 中，\(\Omega(c)=\mathrm{Sieve}(c)\)，\(\mathrm{true}_c\) 取最大筛。对子预层 \(m:S\rightarrowtail F\)，其特征态射 \(\chi_m:F\to\Omega\) 在 \(c\) 处、对元素 \(x\in F(c)\) 给出筛
+      \[\chi_m(c)(x)=\{\,f:d\to c:\ F(f)(x)\in S(d)\,\},
+      \]
+      即"把 \(x\) 拉回到各阶段后落进 \(S\) 的那些箭头的集合"。</p>
+    <div class="proof">
+      <p class="pl">证明要点.</p>
+      <p>先验证 \(\chi_m(c)(x)\) 是筛：若 \(f\in\) 此集合且 \(f\circ g\) 有意义，则 \(F(f\circ g)(x)=F(g)(F(f)(x))\in S\)（因 \(S\) 是子预层，对转移封闭），故 \(f\circ g\) 也在其中。再验证拉回方块：\(x\in S(c)\iff\mathrm{id}_c\in\chi_m(c)(x)\iff\chi_m(c)(x)=\) 最大筛（筛含恒等即最大），故 \(S\) 正是 \(\mathrm{true}\) 沿 \(\chi_m\) 的拉回。唯一性由分类子泛性质的一般论证给出。∎</p>
+    </div>
+  </div>
+  <div class="cases">
+    <div class="ct">筛构造：四类例子</div>
+    <div class="case typ"><b>典型例</b>\(\mathbf C=\mathbf 1\)：唯一对象上只有恒等箭头，筛只有 \(\varnothing\) 与 \(\{\mathrm{id}\}\) 两个，\(\Omega\) 退化为 \(\{0,1\}\)——集合情形是特例。</div>
+    <div class="case deep"><b>本质例</b>有向图的 5 个边真值就是 \(\mathbf G(0,-)=\ \)以<strong>边对象 \(0\)</strong> 为终点的那些箭头所构成的筛的全体：以 \(0\) 为终点的箭头是 \(\mathrm{id}_0,s,t\)（因 \(s,t:1\to0\)，终点确实是 \(0\)），其全部封闭子集恰为那 5 个。顶点处同理：以 \(1\) 为终点的只有 \(\mathrm{id}_1\)，得 2 个。这证明 13.3.3 的一般公式确实统摄了前面的具体计算——有向图不是特例，而是公式的代入。</div>
+    <div class="case edge"><b>边界与误解</b>误解：以为 \(\Omega(c)\) 是"\(c\) 的元素的真值"——其实是"\(c\) 上广义元素（箭头）的判定"。关键区分：\(\Omega\) 的全局元素 \(\mathbf C(1,\Omega)\) 才是"绝对真值"，而 \(\Omega(c)\) 是"相对 \(c\) 阶段的真值"，两者一般不同（有向图：前者 3 个，后者分别是 2、5 个）。这正是内部真与外部真的差别。</div>
+    <div class="case use"><b>结构中的应用</b>筛构造是层论的起点：Grothendieck 拓扑就是指定哪些筛算"覆盖筛"，层化就是把预层对覆盖筛做局部化。第 11 章的 \(\mathbf{Sh}(\mathbf C,J)\) 及其 \(\Omega\)（闭筛）都由此而来。掌握了 \(\Omega=\) 筛，你就掌握了第三本书后半部的钥匙。</div>
+  </div>
+  <div class="phil">
+    <h4>② 选读：真值为何会"变多"——从 2 到 5 到无穷</h4>
+    <p>请把这三种 \(\Omega\) 并排放：\(\mathbf{Set}\) 的 2 个真值、有向图的 3 个全局真值（顶点处 2、边处 5）、一般预层的筛集合。它们不是"同一个东西的不同实现"，而是同一个概念在<strong>不同丰富程度的世界上必然呈现的不同面貌</strong>。</p>
+    <p>根子在于"阶段"。在 \(\mathbf{Set}\) 里没有阶段，一个命题非真即假，真值是开关。在预层范畴里，命题的真假要"随阶段变化"：一个元素在阶段 \(c\) 属于子对象，拉回到更细的阶段可能变，也可能不变。筛 \(\chi_m(c)(x)\) 记录的正是这种"在哪些箭头拉回后仍成立"的完整信息——它比一个布尔值多得多，因为它必须编码"真到什么程度、在哪些阶段真"。有向图的 3 个真值就是这个丰富性最小的可见影子：全假、端点真但边缺失、全真。</p>
+    <p>这回应了你从第 11 章就有的困惑："为什么拓扑斯里的存在不等于全局有元素？"现在有了答案：因为"存在"是在某个阶段、某个筛上成立的意思，而全局元素只是最大筛处的特例。真值变多，不是逻辑变复杂了，而是世界变细腻了——你学的拓扑学里"局部 vs 全局"的那道裂缝，在这里终于有了精确的代数名字：筛。</p>
+  </div>
+
+  <div class="box exer">
+    <h4>③ 习题（13.3）</h4>
+    <ol>
+      <li id="ex13-3-1">写出 \(\mathbf{Set}\) 中 \(\Omega\)、\(\mathrm{true}\)、以及 \(S\subseteq X\) 的 \(\chi_S\)，验证拉回方块。</li>
+      <li id="ex13-3-2">证明群 \(G\) 没有非平凡左理想，并据此解释为何 \(G\)-集的 \(\Omega\) 只有两点。</li>
+      <li id="ex13-3-3">举一个幺半群 \(M\)（如 \((\mathbb N,\cdot)\)）的两个不同左理想，说明其 \(\Omega\) 比群情形大。</li>
+      <li id="ex13-3-4">列出有向图形状范畴 \(\mathbf G\) 中对象 \(0\)（边）上的全部 5 个筛，并说明每个对应边的哪种端点状态。</li>
+      <li id="ex13-3-5">验证有向图范畴的全局真值恰为 3 个，并说明它们构成的三值代数为何非布尔。</li>
+      <li id="ex13-3-6">对一般预层范畴，证明 \(\chi_m(c)(x)=\{f:d\to c:F(f)(x)\in S(d)\}\) 确是筛，并说明为何 \(S\) 是 \(\mathrm{true}\) 沿它的拉回。</li>
+    </ol>
+  </div>
+  <div class="box ans">
+    <h4>④ 参考答案（13.3）</h4>
+    <div class="item"><b>13.3.1</b>\(\Omega=\{0,1\}\)（原著 \(0=\) 真），\(\mathrm{true}:1\to2\) 送 \(*\mapsto0\)。\(S\subseteq X\) 的 \(\chi_S(x)=0\) 当 \(x\in S\)，否则 \(1\)。拉回 \(X\times_2 1=\{x:\chi_S(x)=0\}=S\)。</div>
+    <div class="item"><b>13.3.2</b>设 \(L\subseteq G\) 是非空左理想，取 \(l\in L\)；对任意 \(m\in G\)，有 \(m=(ml^{-1})l\in L\)（因 \(ml^{-1}\in G\)，左理想对左乘封闭），故 \(L=G\)。所以左理想只有 \(\varnothing\) 与 \(G\)，\(\Omega\) 两点，布尔。</div>
+    <div class="item"><b>13.3.3</b>在 \((\mathbb N,\cdot)\) 中，\(2\mathbb N=\{2n:n\in\mathbb N\}\) 与 \(3\mathbb N\) 是不同的左理想（\(2\notin3\mathbb N\)），还有 \(4\mathbb N\subseteq2\mathbb N\) 等，形成无穷多层的格。故 \(\Omega\) 的点是全体左理想，远多于两点，非布尔。</div>
+    <div class="item"><b>13.3.4</b>按约定 \(s,t:1\to0\)，故以边对象 \(0\) 为终点的箭头恰是 \(\mathrm{id}_0,s,t\)，筛即其封闭子集：\(S\ni s\Rightarrow S\ni \mathrm{id}_0\circ s=s\)（无新信息），\(S\ni\mathrm{id}_0\Rightarrow S\ni s,t\)。故 \(\Omega(0)=\{\varnothing,\{s\},\{t\},\{s,t\},\{\mathrm{id}_0,s,t\}\}\)，五个筛分别对应：两端点都不在子图、仅起点在、仅终点在、两端点都在但边不在、边与两端点都在。以顶点 \(1\) 为终点的只有 \(\mathrm{id}_1\)，故 \(\Omega(1)=\{\varnothing,\{\mathrm{id}_1\}\}\)，即 2 个。注意这里不能混入 \(0\to1\) 的写法，否则 \(s,t\) 的终点变成 \(1\)，两个数字会整体互换。</div>
+    <div class="item"><b>13.3.5</b>箭头 \(1\to\Omega\)：顶点可送 \(F\) 或 \(T\)。送 \(F\) 时边只能送 \(F\to F\) 一条；送 \(T\) 时边可送 \(T\to T\) 的两条之一。故 \(1+2=3\) 个。三值线性序 \(0<\frac12<1\) 是 Heyting 代数但非布尔（有限布尔代数基数须为 \(2^n\)）。</div>
+    <div class="item"><b>13.3.6</b>见命题 13.3.4 证明：闭包性来自 \(S\) 是子预层（对转移封闭）；拉回方块来自 \(x\in S(c)\iff\mathrm{id}_c\in\chi_m(c)(x)\iff\chi_m(c)(x)\) 为最大筛（筛含恒等即最大），故 \(S\cong F\times_\Omega1\)。</div>
+  </div>
+</section>
+<section class="sec" id="s13-4">
+  <div class="sec-h"><span class="sec-no">13.4</span><h2>余极限与指数</h2><span class="src">M Ch.I §5–6</span></div>
+
+  <div class="box learn">
+    <h4>① 本节学习目标</h4>
+    <ol>
+      <li>理解余极限在函子范畴里"不逐点"这一关键现象及其原因；</li>
+      <li>掌握指数对象 \(G^F\) 的构造，尤其是 \(G^F(c)=\mathrm{Hom}(y(c)\times F,G)\)；</li>
+      <li>看懂 Yoneda 在构造中的核心作用：把"泛元素"变成可计算的 Hom-集；</li>
+      <li>确认预层范畴是笛卡尔闭的，并理解这对内部逻辑的意义。</li>
+    </ol>
+  </div>
+
+  <div class="xref"><strong>沿用前文.</strong> 指数对象与笛卡尔闭范畴的定义、β/η 见<strong>（参见第 9 章 3 节）</strong>；Yoneda 引理与泛元素见<strong>（参见第 6 章 6.3–6.4）</strong>；余极限的定义见<strong>（参见第 4 章 4.3）</strong>。</div>
+
+  <h3 class="sub">13.4.1 余极限：为什么不逐点</h3>
+  <div class="motiv">
+    <span class="lbl">这个现象解决什么问题（或者说暴露什么问题）？</span>
+    13.1 说极限逐点，很顺。余极限若也逐点，预层范畴就几乎与集合范畴逐点同构，拓扑斯理论会平淡许多。事实是余极限<strong>不</strong>逐点——这个"失败"恰恰是层论戏剧性的来源：<strong>把局部片段黏成整体需要额外的相容性数据</strong>，逐点取余极限丢掉了这些数据。理解这个失败，你就理解了为什么需要层化、为什么覆盖条件不可省。
+  </div>
+  <div class="cases">
+    <div class="ct">余极限：四类例子</div>
+    <div class="case typ"><b>典型例</b>余积逐点：\((F\amalg G)(c)=F(c)\amalg G(c)\)。这个简单情形逐点成立，容易让人误以为余极限都逐点。</div>
+    <div class="case deep"><b>本质例</b>预层范畴的余极限由"自由生成 + 商"两步给出：先逐点取余极限得到一个预层，但它可能不满足函子性所需的相容，需再作适当的商/层化。一般公式用余端（coend）表达：\((\mathrm{colim}_d F_d)(c)\) 不是 \(\mathrm{colim}_d(F_d(c))\)，而是要对箭头 \(c\to c'\) 生成的等价关系取商。这是余极限"记住黏合信息"的方式。</div>
+    <div class="case edge"><b>边界与误解</b>最容易错的就是把余积的逐点成立推广到所有余极限。记住分界线：余积、余等化子等"逐点型"的可以逐点；由任意形状图取余极限、特别是按覆盖黏合的，不能逐点。这个 distinction 是检验你是否真懂逐点原则的试金石。</div>
+    <div class="case use"><b>结构中的应用</b>余极限不逐点直接导致层化函子（preheaf \(\to\) sheaf）不是逐点的、而是需要一个伴随（层化左伴随包含函子）。第 11 章的层化伴随 \(a\dashv i\) 的技术根源就在这里。</div>
+  </div>
+
+  <h3 class="sub">13.4.2 指数对象：Yoneda 的漂亮应用</h3>
+  <div class="prop">
+    <span class="lbl">命题 13.4.1（预层范畴笛卡尔闭）</span>
+    <p>对预层 \(F,G\)，其指数对象 \(G^F\) 在对象 \(c\) 处为
+      \[G^F(c)=\mathrm{Hom}_{\mathbf{Set}^{\mathbf C^{\mathrm{op}}}}\bigl(y(c)\times F,\ G\bigr),
+      \]
+      其中 \(y(c)=\mathbf C(-,c)\) 是 Yoneda 嵌入。对箭头 \(f:d\to c\)，\(G^F(f)\) 由前复合 \(y(d)\to y(c)\)（即 \(-\circ f\)）给出。于是 \(\mathbf{Set}^{\mathbf C^{\mathrm{op}}}\) 是笛卡尔闭的。</p>
+    <div class="proof">
+      <p class="pl">证明要点.</p>
+      <p>要构造自然同构 \(\mathrm{Hom}(H\times F,G)\cong\mathrm{Hom}(H,G^F)\)。定义 \(\Phi\)：给定 \(\alpha:H\times F\to G\)，对每个 \(c\) 与 \(h\in H(c)\)，由 Yoneda 对应一个自然变换 \(y(c)\to H\)（\(h\) 的"泛元素"表示），复合 \(y(c)\times F\to H\times F\xrightarrow{\alpha}G\) 得 \(y(c)\times F\to G\)，即 \(G^F(c)\) 的元素；验证对 \(c\) 自然。逆映射 \(\Psi\)：给定 \(\beta:H\to G^F\)，对 \(h\in H(c)\) 取 \(\beta(c)(h):y(c)\times F\to G\)，在恒等箭头处求值得到 \(F(c)\to G(c)\)，拼成 \(\alpha:H\times F\to G\)。由 Yoneda 引理，\(\Phi,\Psi\) 互逆。∎</p>
+    </div>
+  </div>
+  <div class="cases">
+    <div class="ct">指数对象：四类例子</div>
+    <div class="case typ"><b>典型例</b>取 \(\mathbf C=\mathbf 1\)，\(y(*)=1\)，公式退化为 \(G^F=\mathrm{Hom}(F,G)\)（集合间的函数集）——熟悉的集合指数。</div>
+    <div class="case deep"><b>本质例（泛元素技巧）</b>公式的核心是用 \(y(c)\) 探测：\(G^F(c)\) 是"在阶段 \(c\) 可用的从 \(F\) 到 \(G\) 的族"。一个自然变换 \(y(c)\times F\to G\) 相当于"给 \(F\) 的每个 \(c\)-阶段元素指派一个 \(G\) 的元素，且对转移相容"——这正是"在阶段 \(c\) 看见的函数"的正确含义。Yoneda 把抽象的 Hom 变成可操作的元素级计算。</div>
+    <div class="case edge"><b>边界与误解</b>误解：以为 \(G^F(c)=G(c)^{F(c)}\)（集合间的函数集）。错——那样得到的预层不满足正确的泛性质，因为它不管转移相容性。正确的公式必须带 \(y(c)\times F\)，把"阶段 \(c\) 的泛元素"纳入。这是"逐点思维"在指数上的又一次失效。</div>
+    <div class="case use"><b>结构中的应用</b>笛卡尔闭 + 有限极限 + 子对象分类子 = 拓扑斯。指数对象的存在使内部语言有函数类型 \(G^F\)（ Curry–Howard 的 \(\Rightarrow\)）；13.5 的 Heyting 蕴涵与量词都建立在指数与伴随之上。</div>
+  </div>
+  <div class="phil">
+    <h4>② 选读：Yoneda 为什么在这里无所不在</h4>
+    <p>你会发现指数构造、\(\Omega\) 的筛构造、泛元素的刻画，全都用到 \(y(c)=\mathbf C(-,c)\)。这不是巧合。Yoneda 说："一个对象的全部信息，编码在它与其它对象的箭头里。"在预层范畴里，\(y(c)\) 是"阶段 \(c\) 的泛元素"——用它去探测任何预层 \(F\)，\(\mathrm{Hom}(y(c),F)\cong F(c)\) 就把它在 \(c\) 处的元素还原出来。于是所有"逐点的元素级叙述"都能翻译成"与 \(y(c)\) 的箭头"。这就是为什么本章的技术陈述总带 \(y(c)\)：它是把"元素直觉"合法地搬进无元素范畴的桥。你在第 6 章初学 Yoneda 时可能只觉得它漂亮，到这里才看到它是<strong>干活的工具</strong>。</p>
+  </div>
+
+  <div class="box exer">
+    <h4>③ 习题（13.4）</h4>
+    <ol>
+      <li id="ex13-4-1">说明为什么余积在预层范畴里逐点，而一般余极限不逐点。</li>
+      <li id="ex13-4-2">用余端/商的语言描述一般余极限为何要额外取商。</li>
+      <li id="ex13-4-3">写出指数公式 \(G^F(c)=\mathrm{Hom}(y(c)\times F,G)\)，并说明 \(y(c)\) 的作用。</li>
+      <li id="ex13-4-4">证明 \(\Phi,\Psi\) 互逆（用 Yoneda 引理）。</li>
+      <li id="ex13-4-5">解释为什么 \(G^F(c)\ne G(c)^{F(c)}\)，举有向图的例子说明。</li>
+      <li id="ex13-4-6">说明"预层范畴有有限极限 + 指数 + 子对象分类子"为何足以称它为拓扑斯，并各指出对应本章哪一节。</li>
+    </ol>
+  </div>
+  <div class="box ans">
+    <h4>④ 参考答案（13.4）</h4>
+    <div class="item"><b>13.4.1</b>余积由"从两支出发"的映射定义，逐点取不相交并即可满足泛性质；一般余极限涉及沿箭头的黏合，逐点取会丢失"哪些片段应被认作同一个"的相容信息，故需额外商。</div>
+    <div class="item"><b>13.4.2</b>逐点余极限给出一族集合，但箭头 \(c\to c'\) 会在其中生成等价关系（把沿该箭头对应的片段认作同一），余极限是对此关系取商后的结果，而非逐点集合本身。</div>
+    <div class="item"><b>13.4.3</b>\(G^F(c)=\mathrm{Hom}(y(c)\times F,G)\)；\(y(c)=\mathbf C(-,c)\) 代表阶段 \(c\) 的泛元素，用它探测使"阶段 \(c\) 的函数"可被元素级计算（Yoneda：\(\mathrm{Hom}(y(c),F)=F(c)\)）。</div>
+    <div class="item"><b>13.4.4</b>从 \(\alpha\) 出发构造 \(\beta\)，再由 \(\beta\) 重建 \(\alpha'\)，在 \(y(c)\) 的恒等箭头处求值即对 \(F(c)\) 的元素给出与 \(\alpha\) 相同的结果；由 Yoneda（自然变换由其在大象元素处的值唯一决定）得 \(\alpha'=\alpha\)，反向同理。</div>
+    <div class="item"><b>13.4.5</b>逐点函数集 \(G(c)^{F(c)}\) 不管转移相容性，无法给出正确的 Hom 伴随。有向图中：一个从图 \(F\) 到 \(G\) 的"阶段 \(c\) 函数"必须在顶点与边上同时相容（边函数与端点函数匹配），而 \(G(c)^{F(c)}\) 把顶点和边分开算，会允许不匹配的"函数"，故不对。</div>
+    <div class="item"><b>13.4.6</b>拓扑斯的定义即"有有限极限、指数（笛卡尔闭）、子对象分类子的范畴"。有限极限逐点构造（13.1）、指数存在（13.4）、子对象分类子 \(\Omega=\) 筛（13.3）三者齐备，故 \(\mathbf{Set}^{\mathbf C^{\mathrm{op}}}\) 是拓扑斯。这解释了为何预层范畴是制造拓扑斯的标准工厂。</div>
+  </div>
+</section>
+
+<section class="sec" id="s13-5">
+  <div class="sec-h"><span class="sec-no">13.5</span><h2>命题演算、Heyting 代数、量词作为伴随</h2><span class="src">M Ch.I §7–9</span></div>
+
+  <div class="box learn">
+    <h4>① 本节学习目标</h4>
+    <ol>
+      <li>证明 \(\mathrm{Sub}(X)\) 是 Heyting 代数，并把它读作命题演算的代数；</li>
+      <li>理解交、并、蕴涵、否定如何由范畴结构（拉回、像、指数、伴随）给出；</li>
+      <li>把量词 \(\exists_f,\forall_f\) 作为拉回函子 \(f^\ast\) 的左右伴随，重现第 7 章的偏序结论在拓扑斯中的完整形态；</li>
+      <li>通过有界与非有界量词的边界，理解 Beck–Chevalley 条件的来源。</li>
+    </ol>
+  </div>
+
+  <h3 class="sub">13.5.1 \(\mathrm{Sub}(X)\) 是 Heyting 代数</h3>
+  <div class="motiv">
+    <span class="lbl">这个结构解决什么问题？</span>
+    逻辑需要一套"命题之间的运算"：与、或、蕴涵、非，并满足相应规律。在第 5 章你见过 Heyting 代数作为直觉主义命题的代数。这里要说明：<strong>任何拓扑斯里，\(\mathrm{Sub}(X)\) 天然就是 Heyting 代数</strong>——不是额外假设，而是从范畴结构（有限极限 + 指数 + 像）推导出来。这意味着"每个对象 \(X\) 都自带一套逻辑"，内部语言因此落地。
+  </div>
+  <div class="prop">
+    <span class="lbl">命题 13.5.1（子对象格的 Heyting 结构）</span>
+    <p>在拓扑斯中，\(\mathrm{Sub}(X)\) 是 Heyting 代数。四种种运算如下（交为拉回、并为像之并、蕴涵由指数 \(V^U\) 构造、否定为蕴涵假）：
+      \[\begin{aligned}
+        U\wedge V&=\text{meet (pullback)}, & U\vee V&=\text{join (union of images)},\\
+        U\Rightarrow V&:\quad W\le(U\Rightarrow V)\iff W\wedge U\le V, & \neg U&= U\Rightarrow\bot.
+      \end{aligned}
+      \]
+      其中 \(\bot=\varnothing\rightarrowtail X\)，\(\top=1_X\)。蕴涵 \(U\Rightarrow V\) 由指数 \(V^U\) 配合对角映射给出，是使得上面伴随成立的那个子对象。</p>
+    <div class="proof">
+      <p class="pl">证明要点.</p>
+      <p>交由拉回给出（13.1）；并由并的像给出（需拓扑斯有像分解，由正则—外部稳固）；蕴涵由伴随 \(-\wedge U\dashv(U\Rightarrow-)\) 定义——这个右伴随的存在由指数 \(V^U\) 保证：\(W\wedge U\le V\iff W\le V^U\) 在适当的子对象刻画下成立。分配律与 Heyting 公理由伴随的泛性质（伴随唯一、保极限）推出。∎</p>
+    </div>
+  </div>
+  <div class="cases">
+    <div class="ct">Heyting 结构：四类例子</div>
+    <div class="case typ"><b>典型例</b>\(\mathbf{Set}\)：\(\mathrm{Sub}(X)=\mathcal P(X)\) 是布尔代数，\(\wedge=\cap,\vee=\cup,\neg=\) 补集。</div>
+    <div class="case deep"><b>本质例</b>开集拓扑斯 \(\mathbf{Sh}(X)\)：\(\mathrm{Sub}(1)=\mathcal O(X)\) 是开集格，\(\wedge=\cap,\vee=\cup\)，但 \(\neg U=\mathrm{int}(X\setminus U)\)（补的内部），且一般 \(U\vee\neg U\ne X\)——这是非布尔的 Heyting 代数。这解释了第 12 章排中律反例的来源。</div>
+    <div class="case edge"><b>边界与误解</b>误解：以为 \(\mathrm{Sub}(X)\) 总是布尔代数。只有布尔拓扑斯才是；一般只是 Heyting。边界：\(\neg\neg=\mathrm{id}\) 当且仅当布尔；有向图的三值代数里 \(\neg\neg\ne\mathrm{id}\)（中间值 \(\frac12\) 被送到 \(0\) 或 \(1\)）。</div>
+    <div class="case use"><b>结构中的应用</b>\(\mathrm{Sub}(X)\) 的 Heyting 结构就是内部逻辑在 \(X\) 阶段的命题代数：\(\wedge,\vee,\Rightarrow,\neg\) 分别解释"且/或/蕴涵/非"，\(\forall,\exists\) 由 13.5.2 给出。于是整个一阶/高阶直觉主义逻辑在拓扑斯内得到解释。</div>
+  </div>
+
+  <h3 class="sub">13.5.2 量词作为拉回的伴随</h3>
+  <div class="prop">
+    <span class="lbl">命题 13.5.2（量词的伴随刻画，M&amp;M §9）</span>
+    <p>对态射 \(f:X\to Y\)，拉回函子 \(f^\ast:\mathrm{Sub}(Y)\to\mathrm{Sub}(X)\) 两侧都有伴随：
+      \[\exists_f\;\dashv\; f^\ast\;\dashv\;\forall_f,
+      \]
+      即 \(\exists_f U\le V\iff U\le f^\ast V\iff U\le \forall_f\) 的形式。其中 \(\exists_f\) 由 \(f^\ast\) 的左伴随给出（像的推广），\(\forall_f\) 由右伴随给出。特别地对唯一映射 \(X\to1\)，\(\exists,\forall\) 就是通常的存在/全称量词。</p>
+  </div>
+  <div class="cases">
+    <div class="ct">量词伴随：四类例子</div>
+    <div class="case typ"><b>典型例</b>在 \(\mathbf{Set}\) 里 \(f:X\to Y\)，\(f^\ast=f^{-1}\)（原像）；\(\exists_f(U)=f(U)\)（像），\(\forall_f(U)=\{y:f^{-1}(y)\subseteq U\}\)（所有纤维都在 \(U\) 里的那些 \(y\)）。验证 \(\exists_f U\subseteq V\iff U\subseteq f^{-1}(V)\)。</div>
+    <div class="case deep"><b>本质例</b>这个伴随三角把整个一阶逻辑代数化：代入 = 拉回 \(f^\ast\)，\(\exists\) = 左伴随，\(\forall\) = 右伴随。第 7 章 7.3 在偏序范畴里已见此结构；这里说明它在任意拓扑斯的子对象格里同样成立——量词不再是语法规则，而是伴随的必然产物。这是 Lawvere 的核心洞见。</div>
+    <div class="case edge"><b>边界与误解（Beck–Chevalley）</b>误解：以为量词与代入总是随意交换。对拉回方块 \(X'\to X\to Y\leftarrow Y'\)，有 \(\exists\) 的 Beck–Chevalley 条件 \(g^\ast\exists_f=\exists_{f'}g'^\ast\)（保底变换），但 \(\forall\) 一般需要更强的条件才满足。这个不对称是直觉主义量词语义里微妙之处的根源，也是理解"存在比全称更几何"的关键。</div>
+    <div class="case use"><b>结构中的应用</b>量词伴随 + Heyting 结构构成内部语言的完整逻辑：Kripke–Joyal 语义里 \(U\Vdash\exists x.\varphi\) 用左伴随（局部见证）解释，\(U\Vdash\forall x.\varphi\) 用右伴随解释。第 11 章的内部语言规则由此获得语义依据。</div>
+  </div>
+  <div class="figcap">图 13.3　量词伴随三角 \(\exists_f\dashv f^\ast\dashv\forall_f\)（读图文字说明）</div>
+  <div class="figdesc">画两个偏序格 \(\mathrm{Sub}(X)\)（左）与 \(\mathrm{Sub}(Y)\)（右），中间三个箭头：\(f^\ast\) 从右指向左（原像/代入），\(\exists_f\) 从左指向右（左伴随，像），\(\forall_f\) 从左指向右（右伴随）。箭头旁标注伴随关系：\(\exists_f\le\) 关系上的左伴随意味着 \(\exists_f(U)\le V\iff U\le f^\ast(V)\)；右伴随 \(f^\ast\dashv\forall_f\) 意味着 \(U\le f^\ast(V)\iff f^\ast\) 的右伴随给出 \(\forall_f(U)\)。图的读法：代入 \(f^\ast\) 居中，两个量词像它的影子向两侧展开——存在是最宽松的（左伴随，只要有一点落在里头），全称是最严格的（右伴随，要求全部落在里头）。</div>
+  <div class="phil">
+    <h4>② 选读：从这一章回头看整本书</h4>
+    <p>走到这里，你可以把三本书读成一次逐级"兑现"的过程。第一本书教你范畴的语言（伴随、Yoneda、极限）；第二本书用它证明"逻辑 = CCC = λ-演算"，再推广到"类型论 ↔ 拓扑斯"；第三本书从函子范畴出发，告诉你这些结构<strong>从哪里来</strong>：\(\mathrm{Sub}\) 的可表示性给出 \(\Omega\)，筛给出 \(\Omega\) 的具体形状，伴随给出量词，Heyting 结构给出内部逻辑。</p>
+    <p>你重点理解的子对象，在这条线上恰好处于枢纽：它一头连着拉回（13.1–13.2 的等价类与可表示性），一头连着逻辑（13.5 的 Heyting 代数与量词），中间长出 \(\Omega\)（13.3）和指数（13.4）。把子对象真正吃透，就等于同时抓住了这本书的几何侧和逻辑侧。这也是为什么本章值得你花最多篇幅在 13.2–13.3——那不是两节技术细节，而是整本书的交汇点。</p>
+  </div>
+
+  <div class="box exer">
+    <h4>③ 习题（13.5）</h4>
+    <ol>
+      <li id="ex13-5-1">在 \(\mathcal P(X)\) 里验证 \(\wedge,\vee,\Rightarrow,\neg\) 的 Heyting 伴随刻画 \(W\cap U\subseteq V\iff W\subseteq(U\Rightarrow V)\)。</li>
+      <li id="ex13-5-2">在开集格里计算 \(\neg U\)，验证 \(U\vee\neg U\ne X\) 的例子。</li>
+      <li id="ex13-5-3">对 \(f:X\to Y\) 在 \(\mathbf{Set}\) 里写出 \(\exists_f,\forall_f\)，验证伴随 \(\exists_f\dashv f^\ast\dashv\forall_f\)。</li>
+      <li id="ex13-5-4">说明 \(\forall\) 的 Beck–Chevalley 条件比 \(\exists\) 更强，举例说明差异。</li>
+      <li id="ex13-5-5">解释为何 \(\mathrm{Sub}(X)\) 的 Heyting 结构使拓扑斯能解释直觉主义逻辑。</li>
+      <li id="ex13-5-6">总结：子对象在 13.1–13.5 中分别扮演什么角色，串成一条线。</li>
+    </ol>
+  </div>
+  <div class="box ans">
+    <h4>④ 参考答案（13.5）</h4>
+    <div class="item"><b>13.5.1</b>在幂集里 \(U\Rightarrow V=U^c\cup V\)。则 \(W\cap U\subseteq V\iff W\subseteq U^c\cup V\)（逐元素验证：若 \(x\in W\) 且 \(x\in U\) 则 \(x\in V\)；反之若 \(x\in U^c\cup V\) 且 \(x\in W,x\in U\) 则 \(x\in V\)）。</div>
+    <div class="item"><b>13.5.2</b>\(\neg U=\mathrm{int}(X\setminus U)\)。取 \(X=\mathbb R,U=(0,1)\)，\(\neg U=(-\infty,0)\cup(1,\infty)\)，\(U\vee\neg U=\mathbb R\setminus\{0,1\}\ne\mathbb R\)（补的内部漏掉边界点）。</div>
+    <div class="item"><b>13.5.3</b>\(f^\ast=f^{-1}\)，\(\exists_f(U)=f(U)\)，\(\forall_f(U)=\{y:f^{-1}(y)\subseteq U\}\)。验证：\(f(U)\subseteq V\iff U\subseteq f^{-1}(V)\)；\(U\subseteq f^{-1}(V)\iff\) 对 \(y\) 有 \(f^{-1}(y)\subseteq U\Rightarrow y\in V\)，即 \(f^{-1}(V)\supseteq\) 相应集合，得 \(f^{-1}\dashv\forall_f\)。</div>
+    <div class="item"><b>13.5.4</b>对拉回方块，\(\exists\) 满足 Beck–Chevalley \(g^\ast\exists_f\cong\exists_{f'}g'^\ast\)（由伴随与拉回黏合推出）；\(\forall\) 的对应同态需要 \(f\) 为某类映射（如适当条件）才成立，一般不成立。差异反映"存在"是左伴随（保余极限、与拉回相容较好），"全称"是右伴随（相容性更弱）。</div>
+    <div class="item"><b>13.5.5</b>因为 \(\mathrm{Sub}(X)\) 有 Heyting 代数结构，命题可用子对象解释，\(\wedge,\vee,\Rightarrow,\neg\) 有对应运算，量词由伴随给出，可靠性/完备性（第 12 章）保证这套解释恰好刻画直觉主义逻辑的可证性。</div>
+    <div class="item"><b>13.5.6</b>线：13.1 拉回逐点 → 13.2 子对象=等价类、\(\mathrm{Sub}\) 反变、可表示性 → 13.3 \(\Omega=\) 筛、各例真值 → 13.4 指数（蕴涵基础）→ 13.5 \(\mathrm{Sub}(X)\) 成 Heyting 代数、量词伴随。子对象是贯穿的轴：从拉回定义它，用可表示性分类它，算出它的 \(\Omega\)，最后把它变成逻辑。</div>
+  </div>
+</section>
+
+<footer>
+  <p><a href="范畴论-逻辑-拓扑斯_教材总目录.html">← 返回总目录</a> ｜ 上一章：<a href="范畴论-逻辑-拓扑斯_教材第12章.html">第 12 章 完备性问题</a></p>
+  <p>本章对应 Mac Lane &amp; Moerdijk, <em>Sheaves in Geometry and Logic</em>, Chapter I §1–§9。公式由 MathJax 渲染。每节核心概念配"典型例 / 本质例 / 边界与误解 / 结构应用"四类例子。</p>
+</footer>
+
+</div>
+</body>
+</html>

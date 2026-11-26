@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>第 12 章 完备性问题（Part II）—— 三书递进自学教材</title>
+<script>
+window.MathJax = {
+  tex: {
+    inlineMath: [['\\(','\\)']], displayMath: [['\\[','\\]']], processEscapes: true,
+    macros: {
+      llbracket: '\\lbrack\\lbrack',
+      rrbracket: '\\rbrack\\rbrack'
+    }
+  },
+  options: { ignoreHtmlClass: 'no-tex' },
+  svg: { fontCache: 'global' }
+};
+</script>
+<script async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
+<style>
+  :root{
+    --bg:#f6f7f9; --card:#fff; --ink:#1b1f27; --ink2:#4d5461; --ink3:#7a8190;
+    --line:#e5e8ed; --soft:#f0f2f5;
+    --c1:#2563eb; --c1bg:#eef4ff; --gold:#b45309; --goldbg:#fdf3e3;
+    --ok:#15803d; --okbg:#eefaf1; --phil:#7c3aed; --philbg:#f6f1ff;
+    --teal:#0d9488; --tealbg:#eefaf7; --walk:#b45309;
+    --radius:12px;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;
+    line-height:1.75;-webkit-font-smoothing:antialiased;}
+  .wrap{max-width:920px;margin:0 auto;padding:0 22px 80px;}
+
+  header.top{padding:34px 0 22px;border-bottom:1px solid var(--line);margin-bottom:26px;}
+  .breadcrumb{font-size:12.5px;color:var(--ink3);margin-bottom:10px;}
+  .breadcrumb a{color:var(--c1);text-decoration:none;}
+  h1{font-size:29px;margin:0 0 8px;letter-spacing:-.02em;}
+  .lede{color:var(--ink2);font-size:14.5px;margin:0 0 16px;}
+  .jump{display:flex;gap:8px;flex-wrap:wrap;}
+  .jump a{font-size:12.5px;font-weight:650;text-decoration:none;color:var(--ink2);
+    background:var(--card);border:1px solid var(--line);border-radius:99px;padding:6px 13px;}
+  .jump a:hover{border-color:var(--c1);color:var(--c1);}
+
+  section.sec{margin:0 0 52px;scroll-margin-top:16px;}
+  .sec-h{display:flex;align-items:baseline;gap:12px;border-bottom:2px solid var(--c1);padding-bottom:10px;margin-bottom:22px;}
+  .sec-no{font-size:13px;font-weight:800;color:#fff;background:var(--c1);border-radius:7px;padding:3px 10px;white-space:nowrap;}
+  .sec-h h2{font-size:22px;margin:0;letter-spacing:-.01em;}
+  .src{font-size:11.5px;color:var(--ink3);margin-left:auto;white-space:nowrap;}
+
+  .box{border-radius:var(--radius);padding:16px 20px;margin:18px 0;border:1px solid var(--line);}
+  .box h4{margin:0 0 10px;font-size:14px;letter-spacing:.01em;}
+
+  .learn{background:var(--c1bg);border-color:#cfe0ff;}
+  .learn h4{color:var(--c1);}
+  .learn ol{margin:0;padding-left:22px;} .learn li{margin:4px 0;font-size:14px;}
+
+  .prep{background:var(--tealbg);border-color:#bfe9dd;}
+  .prep h4{color:var(--teal);}
+  .prep p{font-size:13.5px;color:#115e59;margin:8px 0;}
+  .prep ol,.prep ul{margin:8px 0;padding-left:22px;font-size:13.5px;color:#115e59;}
+  .prep li{margin:5px 0;}
+
+  .defn{background:#fafbfc;border-left:4px solid var(--ink2);padding:14px 18px;margin:16px 0;border-radius:0 10px 10px 0;}
+  .defn .lbl{font-weight:800;font-size:13.5px;color:var(--ink);}
+  .prop{background:#fbfcfe;border:1px solid #dbe6f8;border-left:4px solid var(--c1);padding:14px 18px;margin:16px 0;border-radius:0 10px 10px 0;}
+  .prop .lbl{font-weight:800;font-size:13.5px;color:var(--c1);}
+  .rmk{font-size:13.5px;color:var(--ink2);background:var(--soft);padding:11px 16px;border-radius:9px;margin:12px 0;}
+  .xref{font-size:13px;color:#115e59;background:var(--tealbg);border-left:3px solid var(--teal);padding:9px 14px;border-radius:0 8px 8px 0;margin:12px 0;}
+
+  .proof{margin:10px 0 4px;padding-left:16px;border-left:2px solid var(--line);font-size:14px;color:var(--ink2);}
+  .proof .pl{font-weight:700;color:var(--ink);}
+  .qed{float:right;font-style:normal;color:var(--ink3);}
+
+  .exer{background:var(--goldbg);border-color:#f2dfbb;}
+  .exer h4{color:var(--gold);}
+  .exer .grp{font-size:12.5px;font-weight:750;color:var(--gold);margin:12px 0 4px;}
+  .exer ol{margin:0;padding-left:22px;} .exer li{margin:9px 0;font-size:14px;}
+
+  .ans{background:var(--okbg);border-color:#c9ecd3;}
+  .ans h4{color:var(--ok);}
+  .ans .item{margin:14px 0 18px;font-size:14px;}
+  .ans .item:last-child{margin-bottom:0;}
+  .ans .item b{color:var(--ok);}
+  .ans .proof{border-left-color:#bfe6c9;}
+
+  .phil{background:var(--philbg);border-color:#e3d5ff;}
+  .phil h4{color:var(--phil);}
+  .phil p{font-size:14px;color:#5b3a8e;margin:8px 0;}
+
+  .walk{background:#fffbeb;border-color:#fde68a;}
+  .walk h4{color:var(--walk);}
+  .walk p,.walk li{font-size:13.5px;color:#78350f;}
+  .walk ol,.walk ul{margin:8px 0;padding-left:22px;}
+  .walk table{border-collapse:collapse;width:100%;font-size:13px;margin:10px 0;}
+  .walk th,.walk td{border:1px solid #fcd34d;padding:7px 9px;text-align:left;vertical-align:top;}
+  .walk th{background:#fef3c7;color:#78350f;}
+
+  h3.sub{font-size:16px;margin:26px 0 6px;color:var(--ink);}
+  p{margin:9px 0;} .math{overflow-x:auto;}
+
+  .figcap{font-size:12.5px;color:var(--ink3);margin:2px 0 12px;text-align:center;font-style:italic;}
+  .figdesc{font-size:13px;color:var(--ink2);background:var(--soft);padding:10px 15px;border-radius:8px;margin:6px 0 12px;}
+
+  footer{border-top:1px solid var(--line);margin-top:30px;padding-top:20px;font-size:13px;color:var(--ink3);}
+  footer a{color:var(--c1);text-decoration:none;}
+
+  @media(max-width:640px){
+    h1{font-size:23px;} .wrap{padding:0 14px 60px;}
+    .sec-h{flex-wrap:wrap;} .src{margin-left:0;}
+    .box{padding:14px 15px;}
+  }
+  @media print{body{background:#fff;}.jump{display:none;}.box{break-inside:avoid;}}
+  /* ---- 范畴交换图 SVG（浅色主题）---- */
+  svg.cd{display:block;margin:16px auto 2px;max-width:100%;height:auto;
+    font-family:"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;}
+  svg.cd rect.node{fill:#eef4ff;stroke:#2563eb;stroke-width:1.5;rx:7;}
+  svg.cd rect.node2{fill:#f6f1ff;stroke:#7c3aed;stroke-width:1.5;rx:7;}
+  svg.cd rect.nodeg{fill:#eefaf1;stroke:#15803d;stroke-width:1.5;rx:7;}
+  svg.cd rect.nodey{fill:#fdf3e3;stroke:#b45309;stroke-width:1.5;rx:7;}
+  svg.cd text.nt{fill:#1b1f27;font-size:13.5px;font-weight:600;}
+  svg.cd text.lb{fill:#334155;font-size:12.5px;}
+  svg.cd text.hb{fill:#2563eb;font-size:12.5px;font-weight:600;}
+  svg.cd text.hg{fill:#15803d;font-size:12.5px;font-weight:600;}
+  svg.cd text.hp{fill:#7c3aed;font-size:12.5px;font-weight:600;}
+  svg.cd line.ar,svg.cd path.ar{stroke:#475569;stroke-width:1.6;fill:none;marker-end:url(#cdArr);}
+  svg.cd line.arb,svg.cd path.arb{stroke:#2563eb;stroke-width:1.8;fill:none;marker-end:url(#cdArrB);}
+  svg.cd line.arg,svg.cd path.arg{stroke:#15803d;stroke-width:1.8;fill:none;marker-end:url(#cdArrG);}
+  svg.cd line.arp,svg.cd path.arp{stroke:#7c3aed;stroke-width:1.8;fill:none;marker-end:url(#cdArrP);}
+  svg.cd line.ard,svg.cd path.ard{stroke:#475569;stroke-width:1.5;fill:none;stroke-dasharray:5 4;marker-end:url(#cdArr);}
+  svg.cd line.noa{stroke:#475569;stroke-width:1.5;fill:none;stroke-dasharray:5 4;}
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute;width:0;height:0;overflow:hidden" aria-hidden="true">
+<defs>
+  <marker id="cdArr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+    <path d="M 0 0 L 10 5 L 0 10 z" fill="#475569"/>
+  </marker>
+  <marker id="cdArrB" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+    <path d="M 0 0 L 10 5 L 0 10 z" fill="#2563eb"/>
+  </marker>
+  <marker id="cdArrG" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+    <path d="M 0 0 L 10 5 L 0 10 z" fill="#15803d"/>
+  </marker>
+  <marker id="cdArrP" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+    <path d="M 0 0 L 10 5 L 0 10 z" fill="#7c3aed"/>
+  </marker>
+</defs>
+</svg><div class="wrap">
+
+<header class="top">
+  <div class="breadcrumb"><a href="范畴论-逻辑-拓扑斯_教材总目录.html">← 返回总目录</a> ｜ 第二部分 · Lambek &amp; Scott《Introduction to Higher Order Categorical Logic》</div>
+  <h1>第 12 章　完备性问题（Part II）</h1>
+  <p class="lede">第 11 章把类型论与拓扑斯做成了一对伴随，并给出了主定理的轮廓。本章是 Part II 的收官，也是全书在哲学上最吃劲的一章：它要回答一个朴素却尖锐的问题——<strong>我们的形式推理规则，究竟能不能推出所有"该为真"的东西？</strong>这就是完备性。L&amp;S 在高阶逻辑里给出的答案，比一阶完备性更精细：它随"是否允许选择规则"而分岔，并把"构造性"本身变成了可以用终对象的范畴性质来度量的东西。因为这一章直接连着"什么是真、什么是存在、什么是证明"这些直觉，本章放慢节奏：每个定理先讲清它在哲学上想说什么，再给严格的构造与证明。按原著 §17、§19–§22 展开三节。</p>
+  <div class="xref"><strong>与前文的分工（去重说明）。</strong>下列内容已在前面章节完整给出，本章只交叉引用、沿用记号，不再复述证明：<br>
+    · 类型论的四类判断、\(\Pi,\Sigma,\mathrm{Id}\) 规则、Curry–Howard 对照——<strong>（参见第 11 章 11.1）</strong>；<br>
+    · 拓扑斯、子对象分类子 \(\Omega\)、内部语言 \(L(\mathcal E)\)、可靠性定理——<strong>（参见第 11 章 11.2–11.3）</strong>；<br>
+    · 选择规则、布尔拓扑斯、Diaconescu 定理（内部选择 \(\Rightarrow\) 布尔）——<strong>（参见第 11 章 11.4）</strong>；<br>
+    · 三范畴 \(\mathcal C(T),\mathcal D(T),\mathcal E(T)\)、主伴随 \(T\dashv L\)、函数完备性与生成拓扑斯——<strong>（参见第 11 章 11.6）</strong>；<br>
+    · 演绎系统、演绎定理、函数完备性（CCC 内）——<strong>（参见第 9 章 1、2、5 节）</strong>。本章只新增：model topos、Henkin/素滤子构造、Freyd cover 与完备性定理、直觉主义原则，逐条展开。</div>
+  <div class="box phil">
+    <h4>章首导读：完备性到底在问什么（值得先想三分钟）</h4>
+    <p>把"真"和"可证"分开，是现代逻辑最要紧的一步。<strong>可证</strong>是语法事实：按规则有限步推出来；<strong>真</strong>是语义事实：在所有允许的模型中成立。可靠性说"可证必真"——这是对称的、容易的一半，它保证我们的规则不会推出假东西。完备性说"真必可证"——这是不对称的、困难的一半，它保证我们的规则<em>足够强</em>，没有漏掉任何该推的东西。</p>
+    <p>为什么这一章对你格外重要？因为你此前自学拓扑学时，遇到的"真"往往是<strong>外部</strong>的：一个点在开集里、一个截面存在。而拓扑斯的内部语言里，"真"是<strong>内部</strong>的、随阶段变化的（第 11 章的 Kripke–Joyal 语义）。完备性定理正是把这两者缝合起来的针线：它告诉你，内部逻辑里"在所有模型都真"的那批句子，恰好就是你在语法上能证明的那批。于是"逻辑"与"数学世界"不是两张皮——第 11 章的主伴随是范畴层面的缝合，本章的完备性是逻辑层面的缝合。两者是同一件事的两种说法。</p>
+    <p>还有一个更隐蔽的点，本章会反复回到它：<strong>选择规则</strong>在经典逻辑里几乎不言自明，但在构造性语境里它是一个真正改变结论的开关。打开它，你会得到一套"经典的"完备性；关掉它，你会得到一套"构造性的"完备性，而且后者的模型带着明显的"人工痕迹"（Henkin 常元、Freyd cover）。这个差别不是技术细节，而是"存在"这个词两种含义的分水岭。读的时候请始终带着这个问题：<em>说我证明了一个 \(\exists x\)，和说世界上真的躺着一个 \(x\)，是一回事吗？</em></p>
+  </div>
+  <nav class="jump">
+    <a href="#s12-1">12.1 带选择规则的完备性</a>
+    <a href="#s12-2">12.2 不带选择规则的完备性</a>
+    <a href="#s12-3">12.3 直觉主义原则</a>
+  </nav>
+</header>
+
+<section class="sec" id="s12-1">
+  <div class="sec-h"><span class="sec-no">12.1</span><h2>带选择规则的完备性</h2><span class="src">L Part II §17</span></div>
+
+  <div class="box learn">
+    <h4>① 本节学习目标</h4>
+    <ol>
+      <li>说清一阶与高阶完备性的差别，以及为什么高阶情形必须借助类型论的 Henkin 模型；</li>
+      <li>掌握<strong>选择规则</strong>（Rule of Choice）与<strong>存在性质</strong>（EP）的精确陈述，理解它为什么是"构造性"的核心开关；</li>
+      <li>理解 <strong>model topos</strong> 的定义，以及它的三条逻辑性质（C）、（DP）、（EP）如何逐一对应终对象 \(1\) 的三条范畴性质；</li>
+      <li>走通 Henkin + 素滤子构造，证明带选择规则的类型论的完备性定理；</li>
+      <li>看懂"层表示"图景：生成拓扑斯如何成为一个 model topos 层的全局截面。</li>
+    </ol>
+  </div>
+
+  <div class="xref"><strong>沿用前文（不再复述）.</strong> 可靠性定理（可证 \(\Rightarrow\) 内部真）、主伴随 \(T\dashv L\)、\(L(\mathcal E(T))\) 对 \(T\) 的保守性，均见<strong>（参见第 11 章 11.3、11.6）</strong>。选择规则与 Diaconescu 定理的原始讨论见<strong>（参见第 11 章 11.4）</strong>。本节沿用记号：\(T\) 为类型论，\(\mathcal E(T)\) 为其生成拓扑斯，\(\varphi\) 为闭公式（\(1\to\Omega\) 的项），\(\Gamma=\mathcal E(1,-)\) 为全局截面函子。</div>
+
+  <h3 class="sub">12.1.1 极简回顾：从哥德尔到高阶</h3>
+  <div class="box prep">
+    <h4>极简回顾（五分钟，够用即可）</h4>
+    <p>你可能听过一阶逻辑的哥德尔完备性定理：一个一阶句子可证，当且仅当它在所有模型中真。它依赖一个关键工具——对每个相容的理论，用<strong>常元扩张</strong>造出一个"_term 模型"（Henkin 模型）：为每条 \(\exists x\,\varphi(x)\) 添一个新常元 \(c\) 当见证，再把所有公式在 term 上的真值定下来。</p>
+    <p>高阶逻辑里这条路会卡住：量词可以作用于"谓词""谓词的谓词"，类型层级无限上升，一阶的 term 模型不够用了。L&amp;S 的办法是<strong>把类型论本身当作形式系统</strong>（第 11 章），用<strong>类型论的 Henkin 补全</strong>造模型，而模型恰好是一个拓扑斯。于是高阶完备性不再是逻辑学内部的孤立的定理，而是主伴随 \(T\dashv L\) 的一个推论。</p>
+    <p><em>预备提示：</em>本节用到"素滤子"（prime filter）与"全局截面函子"。素滤子只要记住它是"一致的、对析取封闭的判定器"；\(\Gamma\) 只要记住它把一个拓扑斯对象 \(A\) 送到集合 \(\mathcal E(1,A)\)（\(A\) 的全局元素）。不熟的话先按这两句话读，12.1.4 会展开。</p>
+  </div>
+
+  <h3 class="sub">12.1.2 选择规则与存在性质：构造性的开关</h3>
+  <p>先把上一章的选择规则用精确的语言固定下来。它有三个彼此等价的常见说法，分别属于语法、范畴、哲学三个层面。</p>
+  <div class="defn">
+    <span class="lbl">定义 12.1.1（选择规则与存在性质）</span>
+    <p>设 \(T\) 是类型论，\(\varphi(x)\) 是类型 \(A\) 上的公式（闭公式或带语境，这里先说闭的）。</p>
+    <ul>
+      <li><strong>选择规则</strong>（Rule of Choice, RC）：若 \(\vdash\exists x:A.\,\varphi(x)\)，则可<em>构造地</em>给出一个闭项 \(a:A\)，使 \(\vdash\varphi(a)\)。</li>
+      <li><strong>存在性质</strong>（Existence Property, EP）：同一条陈述，在模型一侧的说法——内部语言 \(L(\mathcal E)\) 满足 EP，若 \(L(\mathcal E)\vdash\exists x:A.\,\varphi(x)\) 蕴含存在全局元素 \(a:1\to A\) 使 \(L(\mathcal E)\vdash\varphi(a)\)。</li>
+      <li>范畴说法（12.1.3 给出）：EP 等价于终对象 \(1\) 是<strong>投射的</strong>（projective），即 \(\Gamma=\mathcal E(1,-)\) 保满射。</li>
+    </ul>
+    <p>三种说法里的关键词都是"<strong>构造地给出一个</strong>"。这正是要害：经典逻辑里 \(\exists x\,\varphi(x)\) 只要"不是所有 \(x\) 都不满足"就够了，不必指出是哪个；而 RC/EP 要求你把见证<em>写出来</em>。</p>
+  </div>
+  <div class="rmk">
+    <strong>直观：两种"存在"。</strong>设想命题"存在一个满足条件的学生"。经典的读法可以是反证式的：假设没有，推出矛盾，于是"存在"——但你自始至终没说出是谁。构造性的读法必须点名："是张三，这是他的作业。"选择规则就是要求逻辑永远按第二种读法说话。你在拓扑学里熟悉的"存在截面但写不出来"的现象，正是这种区分的几何版本：内部语言说 \(\exists\)，全局（外部）却未必有那个元素。第 11 章 11.4 的 Diaconescu 定理说明：一旦强行要求内部选择对所有子对象成立，拓扑斯就被逼成布尔的——构造性世界和经典世界在这里正面相撞。
+  </div>
+
+  <h3 class="sub">12.1.3 model topos：三条逻辑性质 = 三条范畴性质</h3>
+  <p>现在引入本章的中心概念。它把"一个范畴像不像集合范畴"变成了三个可以逐条检验的条件。</p>
+  <div class="defn">
+    <span class="lbl">定义 12.1.2（model topos，L&amp;S Part II §17；Lambek 引理）</span>
+    <p>称拓扑斯 \(\mathcal M\) 为 <strong>model topos</strong>，若其内部语言 \(L(\mathcal M)\) 满足：</p>
+    <ul>
+      <li><strong>（C）一致性</strong>：\(\nvdash\bot\)（并非所有闭公式可证）；</li>
+      <li><strong>（DP）析取性质</strong>：若 \(\vdash\varphi\vee\psi\)，则 \(\vdash\varphi\) 或 \(\vdash\psi\)；</li>
+      <li><strong>（EP）存在性质</strong>：若 \(\vdash\exists x:A.\,\varphi(x)\)，则存在闭项 \(a:A\) 使 \(\vdash\varphi(a)\)。</li>
+    </ul>
+    <p>若只满足（C）与（DP），称为 <strong>local topos</strong>。</p>
+  </div>
+  <div class="prop">
+    <span class="lbl">命题 12.1.3（Freyd 的转换词典）</span>
+    <p>上述三条逻辑性质，逐条等价于终对象 \(1\) 的范畴性质：</p>
+    <ul>
+      <li>（C）\(\iff\) \(1\) 不是初始对象；</li>
+      <li>（DP）\(\iff\) \(1\) 是<strong>不可分解的</strong>（indecomposable）：若 \(1\cong U\amalg V\)，则 \(U\cong 1\) 或 \(V\cong 1\)；</li>
+      <li>（EP）\(\iff\) \(1\) 是<strong>投射的</strong>（projective）：对任一满射 \(e:B\twoheadrightarrow A\) 与任一 \(a:1\to A\)，存在提升 \(1\to B\)，即 \(\Gamma=\mathcal M(1,-)\) 保满射。</li>
+    </ul>
+    <div class="proof">
+      <p class="pl">证明（逐条）.</p>
+      <p>（C）：\(\bot\) 在内部语言里就是初始对象 \(0\) 的子对象；\(\vdash\bot\) 意味着 \(0\cong 1\)，即 \(1\) 初始。故 \(\nvdash\bot\iff 1\not\cong 0\)。</p>
+      <p>（DP）：\("\varphi\vee\psi"\) 解释为子对象 \([\varphi]\cup[\psi]\subseteq 1\)。若 \(\vdash\varphi\vee\psi\)，则 \([\varphi]\cup[\psi]=1\)。\(1\) 不可分解保证这个并必有一个分支等于 \(1\)，即 \(\vdash\varphi\) 或 \(\vdash\psi\)；反之若 \(1\cong U\amalg V\) 且两分支都非 \(1\)，取 \(\varphi,\psi\) 为两分支的特征公式就有 \(\vdash\varphi\vee\psi\) 却都不可证。</p>
+      <p>（EP）：\(\Gamma(1)=\mathcal M(1,1)\) 是单点集。\(\Gamma\) 保满射 \(e:B\twoheadrightarrow A\) 的意思是：任一全局元素 \(a:1\to A\) 都能提升到 \(1\to B\)。把 \(A\) 取成某个幂对象 \(PA\)、把 \(B\) 取成"\(\{x\mid\varphi(x)\}\) 的元素"子对象，这条提升性恰好说：若内部证出 \(\exists x\,\varphi(x)\)（即有满射指向真值），就有一个全局见证。形式上，\(\Gamma\) 保满射 \(\iff\) 每个 \(1\to A\) 对满射可提升 \(\iff\) EP。∎</p>
+    </div>
+  </div>
+  <div class="figcap">图 12.1　model topos 的三条逻辑性质 ↔ 终对象 \(1\) 的三条范畴性质（读图文字说明）</div>
+  <div class="figdesc">把这张图读成一部"翻译机"，左右两栏一一对应：左栏（逻辑）的（C）一致性，翻译到右栏（范畴）就是 \(1\) 不是初始对象——因为假命题对应 \(0\)，\(\bot\) 可证即 \(1=0\)。左栏的（DP）析取性质，翻译到右栏是 \(1\) 不可分解——因为 \(\varphi\vee\psi\) 对应 \(1\) 上两个子对象的并。左栏的（EP）存在性质，翻译到右栏是 \(1\) 投射（全局截面函子 \(\Gamma\) 保满射）——因为给出见证就是把 \(1\to A\) 沿满射提升。三条性质里，（EP）最"重"，它正是选择规则的范畴化身；加上（C）（DP）就得到 model topos，去掉（EP）只剩 local topos。全章后面反复用的，就是这部翻译机。</div>
+
+  <h3 class="sub">12.1.4 Henkin–素滤子构造与完备性定理</h3>
+  <p>现在走通证明。思路是 L&amp;S §17 的 Henkin 方法：给理论 \(T\) 添足见证常元，再用素滤子挑出一个"极大一致的世界"，在那个世界里每个真的 \(\exists\) 都已经被某个常元兑现。</p>
+  <div class="defn">
+    <span class="lbl">定义 12.1.4（Spec T 与素滤子）</span>
+    <p>设 \(T\) 的闭公式（\(1\to\Omega\) 的项）按可证相等组成一个 Heyting 代数 \(H(T)\)。</p>
+    <ul>
+      <li>\(H(T)\) 的一个<strong>滤子</strong> \(F\) 是对 \(\wedge\) 封闭、向上封闭、含 \(\top\) 的闭公式集合；</li>
+      <li>滤子 \(P\) 是<strong>素的</strong>，若 \(\varphi\vee\psi\in P\Rightarrow\varphi\in P\) 或 \(\psi\in P\)；</li>
+      <li><strong>Spec \(T\)</strong> 是全体素滤子的集合，基本开集取 \(V(\varphi)=\{P\in\mathrm{Spec}\,T:\varphi\in P\}\)。</li>
+    </ul>
+    <p>对素滤子 \(P\)，记 \(T/P\) 为把 \(P\) 里公式当作新公理加入得到的理论；于是有解释链 \(T\to T/P\to\mathcal E(T/P)\)。</p>
+  </div>
+  <div class="prop">
+    <span class="lbl">命题 12.1.5（素滤子给出 model topos）</span>
+    <p>若 \(T\) 满足选择规则 \(RC\)，则对每个素滤子 \(P\)，\(\mathcal E(T/P)\) 是 model topos。</p>
+    <div class="proof">
+      <p class="pl">证明.</p>
+      <p>先证 \(T/P\) 满足选择规则：若 \(T/P\vdash\exists x:A.\,\varphi(x)\)，按商理论的定义，存在 \(f\in P\) 使 \(T\vdash f\Rightarrow\exists x\,\varphi(x)\)；把 \(f\wedge\exists x\,\varphi(x)\) 用 \(T\) 的选择规则处理，可得闭项 \(a\) 使 \(T/P\vdash\varphi(a)\)。于是 \(T/P\) 有 EP。</p>
+      <p>由命题 12.1.3，EP 等价于 \(1_{\mathcal E(T/P)}\) 投射。一致性（C）与析取性质（DP）从 \(P\) 的素性与 \(T\) 的相容性直接读出：\(P\) 素性保证 DP（\(\varphi\vee\psi\in P\) 则有一支在 \(P\) 中），\(\bot\notin P\) 保证 C。故 \(\mathcal E(T/P)\) 满足（C）（DP）（EP），是 model topos。∎</p>
+    </div>
+  </div>
+  <div class="prop">
+    <span class="lbl">定理 12.1.6（带选择规则的高阶完备性，L&amp;S Part II §17）</span>
+    <p>设 \(T\) 满足选择规则，\(\varphi\) 是闭公式。则
+      \[\vdash_T\varphi\quad\iff\quad \varphi\ \mathrm{holds\ in\ all\ model\ topoi}.
+      \]
+      用中文说就是：\(\varphi\) 可证，当且仅当它在所有 model topos 的解释下为真；又等价于 \(\varphi\) 属于每个素滤子 \(P\)。</p>
+    <div class="proof">
+      <p class="pl">证明.</p>
+      <p>"\(\Rightarrow\)"是可靠性（第 11 章 11.3）：定理在任何解释下都为真。</p>
+      <p>"\(\Leftarrow\)"用反证。设 \(\nvdash_T\varphi\)。闭公式的 Heyting 代数里，由滤子–理想分离定理（素滤子存在定理），存在一个素滤子 \(P\) 使 \(\top\not\Rightarrow\varphi\) 落在其中而 \(\varphi\notin P\)；等价地，\(P\) 不含 \(\varphi\)。于是 \(T/P\) 一致（因 \(P\) 素）且 \(\nvdash_{T/P}\varphi\)。由命题 12.1.5 与 \(L(\mathcal E(T/P))\) 对 \(T/P\) 的保守性（第 11 章 11.6），\(\varphi\) 在 model topos \(\mathcal E(T/P)\) 中不成立。于是存在一个 model topos 使 \(\varphi\) 为假，与"在所有 model topos 中真"矛盾。故 \(\vdash_T\varphi\)。∎</p>
+    </div>
+  </div>
+  <div class="rmk">
+    <strong>把证明读成一句话.</strong> 若 \(\varphi\) 不可证，就找一个"极大一致的立场" \(P\)（素滤子），在这个立场里 \(\varphi\) 被排除；由于选择规则把 \(T/P\) 抬成一个 model topos，这个立场真的实现为一个数学世界。于是"不可证"直接翻译成"有一个世界其中为假"——这正是完备性要的东西。素滤子扮演的角色，就是经典 Henkin 证明里那个"极大一致集"。
+  </div>
+
+  <h3 class="sub">12.1.5 层表示：生成拓扑斯是 model topos 层的截面</h3>
+  <p>还有一个更结构化的图景值得单列。L&amp;S（及 Lambek–Moerdijk）证明：\(\mathcal E(T)\) 不只是若干 model topos 的并，而是它们在谱空间 Spec \(T\) 上的<strong>层</strong>的全局截面。</p>
+  <div class="walk">
+    <h4>图 12.2　层表示图景（读图文字说明）</h4>
+    <p>想象三层结构，自下而上：</p>
+    <ol>
+      <li><strong>底：谱空间</strong> Spec \(T\)。它的点是素滤子 \(P\)，基本开集是 \(V(\varphi)=\{P:\varphi\in P\}\)。空间本身编码了理论 \(T\) 所有"可能的极大一致立场"。</li>
+      <li><strong>中：预层</strong> \(V(\varphi)\mapsto\mathcal E(T/(p))\)。每个开集 \(V(p)\) 上放一个由商理论生成的拓扑斯；包含关系 \(V(q)\subseteq V(p)\) 给出限制函子。选择规则保证每个茎（过点 \(P\) 的局部）是 model topos。</li>
+      <li><strong>顶：全局截面</strong>。这个预层实际上是层，而 \(\mathcal E(T)\) 恰是它的连续全局截面拓扑斯。一句话：\(\mathcal E(T)\) 等于这个 model topos 层在 Spec \(T\) 上的全局截面。</li>
+    </ol>
+    <p><strong>为什么值得知道：</strong>它把"完备性"从一句抽象的话变成一个几何图像——理论的生成拓扑斯"铺开"成一族局部世界，每个局部世界都是一个 Henkin 式的 model topos；全局截面把这些局部拼回整体。你在拓扑学里熟悉的"层 = 局部数据 + 黏合"，在这里成了逻辑完备性的骨架。</p>
+  </div>
+  <div class="phil">
+    <h4>② 选读：选择规则为什么是分水岭——兼谈"真"的两个层次</h4>
+    <p>请认真想这件事：定义 12.1.1 里那句"构造地给出见证 \(a\)"，其实偷偷换了"存在"的意思。经典数学里的 \(\exists x\) 是一个<strong>关于整体的断言</strong>：只要"并非处处为假"，它就成立，至于见证是谁可以永远不出现。选择规则要求的却是一个<strong>关于证明的断言</strong>：你必须交出一个项。这两者在没有额外结构时并不等价。</p>
+    <p>范畴语言把这件事说得极干净：选择规则 \(\iff\) \(1\) 投射 \(\iff\) \(\Gamma\) 保满射。而 \(\Gamma\) 保满射正是"内部看到的满射，在外部集合层面仍是满射"——也就是"内部说存在，外部就能找到"。可我们在第 11 章 11.5 讲 Kripke–Joyal 语义时已经看到，内部的存在是分阶段、可在扩张里兑现的，未必在全局阶段就有元素。于是选择规则本质上是在要求：<strong>内部真与外部真不发生分裂</strong>。一旦要求它，Diaconescu 定理（第 11 章 11.4）就逼出布尔性，把世界推向经典那一侧。</p>
+    <p>这对你的直觉有个具体的落点。你熟悉的拓扑空间 \(X\) 上的层范畴 \(\mathbf{Sh}(X)\)：内部逻辑说"存在一个局部截面覆盖 \(U\)"，往往真的只能在更细的开集上实现，而没有 \(U\) 上的全局截面。这不是缺陷，而是"存在"在几何里本来的样子。选择规则就是把这种细密的局部结构强行压平。所以本节标题叫"带选择规则的完备性"——它的干净（model topos、\(\Gamma\) 保满射）正是以放弃这种局部细密为代价换来的。下一节我们关掉这个开关，会看到一个更"脏"但更忠实于构造性的完备性。</p>
+  </div>
+
+  <div class="box exer">
+    <h4>③ 习题（12.1）</h4>
+    <ol>
+      <li id="ex12-1-1">用一句话分别说明可靠性与完备性在说什么，并指出为什么后者更难。</li>
+      <li id="ex12-1-2">把选择规则 RC、存在性质 EP、\(1\) 投射三种表述各写一遍，并说明它们等价于什么。</li>
+      <li id="ex12-1-3">证明：\(1\) 不可分解 \(\iff\) 析取性质（DP）。（提示：\(\varphi\vee\psi\) 对应 \([\varphi]\cup[\psi]=1\)。）</li>
+      <li id="ex12-1-4">设 \(P\) 是素滤子。说明为什么 \(P\) 素性保证 \(T/P\) 满足析取性质，以及 \(\bot\notin P\) 保证一致性。</li>
+      <li id="ex12-1-5">在定理 12.1.6 的"\(\Leftarrow\)"证明中，素滤子存在定理用在哪里？若去掉选择规则，这个证明在哪一步会失效？</li>
+      <li id="ex12-1-6">（选做，需第 11 章 11.5）用开集拓扑斯 \(\mathbf{Sh}(X)\) 举一个"内部 \(\exists\) 真但无全局见证"的例子，并说明它为什么不满足选择规则。</li>
+    </ol>
+  </div>
+
+  <div class="box ans">
+    <h4>④ 参考答案（12.1）</h4>
+    <div class="item"><b>12.1.1</b>　可靠性：可证 \(\Rightarrow\) 在所有模型真，由对证明树结构归纳得到，只需逐规则检查保真。完备性：在所有模型真 \(\Rightarrow\) 可证，难在要<em>构造</em>一个模型：给定不可证公式，得造出一个使它为假的世界，这需要 Henkin 见证、素滤子/Scott 域等额外构造，无法靠归纳完成。</div>
+    <div class="item"><b>12.1.2</b>　RC（语法）：\(\vdash\exists x\varphi(x)\Rightarrow\) 可构造闭项 \(a\) 使 \(\vdash\varphi(a)\)。EP（内部语言）：同上但针对 \(L(\mathcal E)\)，并要求 \(a\) 是全局元素 \(1\to A\)。范畴：\(1\) 投射，即 \(\Gamma=\mathcal E(1,-)\) 保满射。三者等价的枢纽是"把 \(A\) 取成幂对象、把满射取成公式的子对象"。</div>
+    <div class="item"><b>12.1.3</b>　(\(\Rightarrow\)) 若 \(1\cong U\amalg V\)，取 \(\varphi,\psi\) 为两分支的特征公式，则 \(\vdash\varphi\vee\psi\)；由 DP 得 \(\vdash\varphi\) 或 \(\vdash\psi\)，即 \(U=1\) 或 \(V=1\)。(\(\Leftarrow\)) 若 \(\vdash\varphi\vee\psi\) 即 \([\varphi]\cup[\psi]=1\)，且 \(1\) 不可分解，则 \([\varphi]=1\) 或 \([\psi]=1\)，即 \(\vdash\varphi\) 或 \(\vdash\psi\)。</div>
+    <div class="item"><b>12.1.4</b>　\(P\) 素：若 \(T/P\vdash\varphi\vee\psi\)，则存在 \(f\in P\) 使 \(f\Rightarrow\varphi\vee\psi\in T\)，从而 \(f\wedge(\varphi\vee\psi)\in P\)；由素性与滤子性推出 \(\varphi\in P\) 或 \(\psi\in P\)，即 \(T/P\vdash\varphi\) 或 \(\vdash\psi\)。\(\bot\notin P\)：否则 \(P\) 含所有公式（滤子向上封闭），失去极大一致的分离作用，\(T/P\) 不一致。</div>
+    <div class="item"><b>12.1.5</b>　素滤子存在定理用于：从 \(\nvdash_T\varphi\) 分离出一个素滤子 \(P\) 使 \(\varphi\notin P\)，从而得到使 \(\varphi\) 为假的模型 \(T/P\)。去掉选择规则后，命题 12.1.5 失效——\(T/P\) 未必有 EP，\(\mathcal E(T/P)\) 未必是 model topos；"有见证"这一步无法在 \(\mathcal E(T/P)\) 内部兑现，需要 12.2 的 Freyd cover/Henkin 补全来补救。</div>
+    <div class="item"><b>12.1.6</b>　例如取 \(X=\mathbb R\)，\(U=(0,1)\)，令 \(A\) 为内部对象的截面层。内部句子 \(\exists x:A.\,\top\)（存在某个截面）可在每个开集上成立（局部总能取到小截片），但未必有 \(U\) 上的全局截面把它实现为一个 \(1\to A\)。这违反 EP 的"全局见证"要求，故不满足选择规则；对照第 11 章 11.4、11.5。</div>
+  </div>
+</section>
+<section class="sec" id="s12-2">
+  <div class="sec-h"><span class="sec-no">12.2</span><h2>不带选择规则的完备性</h2><span class="src">L Part II §19, §22</span></div>
+
+  <div class="box learn">
+    <h4>① 本节学习目标</h4>
+    <ol>
+      <li>说清关掉选择规则后，12.1 的 Henkin–素滤子证明具体在哪一步卡住；</li>
+      <li>掌握<strong>饱和素滤子</strong>与<strong>Henkin 补全</strong>，理解它们如何为每条存在公式预先备好见证；</li>
+      <li>从零构造 <strong>Freyd cover</strong>（Artin gluing），并读懂它的终对象为什么是投射的；</li>
+      <li>理解自由拓扑斯（initial topos）终对象连通且投射这一 Freyd 定理，以及它如何给出析取/存在/否定性质；</li>
+      <li>走通不带选择规则的完备性定理，比较它与带选择版本的代价与收益。</li>
+    </ol>
+  </div>
+
+  <div class="xref"><strong>沿用前文（不再复述）.</strong> 选择规则与 Diaconescu 定理见<strong>（参见第 11 章 11.4）</strong>；\(\mathcal E(T)\) 的构造、函数完备性与主伴随见<strong>（参见第 11 章 11.6）</strong>；12.1 的 model topos、素滤子、Spec \(T\) 直接沿用，记号一致。</div>
+
+  <h3 class="sub">12.2.1 关掉开关之后：证明在哪里卡住</h3>
+  <div class="box prep">
+    <h4>极简回顾（五分钟，够用即可）</h4>
+    <p>先定位困难。12.1 定理 12.1.6 的关键一步是命题 12.1.5：素滤子 \(P\) 让 \(T/P\) 满足选择规则，从而 \(\mathcal E(T/P)\) 是 model topos（尤其有 EP，\(1\) 投射）。现在把选择规则拿掉，这一步就断了——\(T/P\) 的 \(\exists\) 未必能在全局兑现，\(\mathcal E(T/P)\) 的终对象未必投射。</p>
+    <p>补救有两条互补的思路，L&amp;S 都用：</p>
+    <ol>
+      <li><strong>语法侧（§19）</strong>：不指望任意素滤子，只挑"足够好"的——<strong>饱和素滤子</strong>；若这样的滤子足够多（能分离所有不可证公式），完备性照样成立。为了让它们足够多，先给理论做 <strong>Henkin 补全</strong>，添足见证常元。</li>
+      <li><strong>范畴侧（§22）</strong>：用一个普遍构造 <strong>Freyd cover</strong>，把任意拓扑斯 \(\mathcal E\) "缝"上一个集合范畴，得到的新拓扑斯 \(\overline{\mathcal E}\) 的终对象是投射的。取 \(\mathcal E=\mathcal E(T)\)，就得到带 EP 的模型，无需假设选择规则。</li>
+    </ol>
+    <p><em>预备提示：</em>Henkin 补全只是给语言添常元，逻辑规则一条不改；Freyd cover 用到"逗号范畴"（comma category），只会用到定义，不熟可先记住它的对象形状 \((X,\xi,U)\)。</p>
+  </div>
+
+  <h3 class="sub">12.2.2 饱和素滤子与 Henkin 补全</h3>
+  <div class="defn">
+    <span class="lbl">定义 12.2.1（饱和素滤子）</span>
+    <p>类型论 \(T\) 的素滤子 \(P\) 称为<strong>饱和的</strong>（saturated），若对任意类型 \(A\)：只要 \(\exists x:A.\,\varphi(x)\in P\) 且 \(T\vdash\exists x:A.\,\top\)（类型 \(A\) 非空），则存在闭项 \(a:A\) 使 \(\varphi(a)\in P\)。</p>
+    <p>称 \(T\) 有<strong>足够的饱和素滤子</strong>，若全体饱和素滤子的交恰为 \(T\) 的可证闭公式集——即每个不可证闭公式都被某个饱和素滤子排除。</p>
+  </div>
+  <div class="prop">
+    <span class="lbl">命题 12.2.2（饱和素滤子给出 model topos）</span>
+    <p>(a) 若 \(P\) 是饱和素滤子，则 \(T\to T/P\to\mathcal E(T/P)\) 是 \(T\) 在某个 model topos 中的解释。<br>
+       (b) 若 \(T\) 有足够的饱和素滤子，则闭公式 \(\varphi\) 可证 \(\iff\) \(\varphi\) 在所有 \(T/P\)（\(P\) 饱和素滤子）的解释下为真。</p>
+    <div class="proof">
+      <p class="pl">证明.</p>
+      <p>(a) 饱和性保证 \(T/P\) 对所有非空类型 \(A\) 满足 EP；由 12.1 的论证（EP 只需在幂对象类型上成立即可， Lambek 引理），得 \(\mathcal E(T/P)\) 满足 EP，\(1\) 投射。素性给 DP，一致性给 C。故为 model topos。</p>
+      <p>(b) "\(\Rightarrow\)"是可靠性。"\(\Leftarrow\)"反证：若 \(\nvdash\varphi\)，由"足够"取饱和素滤子 \(P\) 使 \(\varphi\notin P\)；则 \(\nvdash_{T/P}\varphi\)，由保守性 \(\varphi\) 在 \(\mathcal E(T/P)\) 不为真。∎</p>
+    </div>
+  </div>
+  <p>还剩一步：凭什么每个理论都有足够的饱和素滤子？答案是先把理论扩张成 Henkin 理论。</p>
+  <div class="defn">
+    <span class="lbl">定义 12.2.3（Henkin 补全 / Hilbert–Bernays 补全）</span>
+    <p>对类型论 \(T\)，对每个类型 \(A\) 引入一组新常元 \(X_A=\{c_{\alpha}:\alpha\ \mathrm{is\ a\ closed\ term\ of\ type}\ A\}\)（即 \(\alpha\) 取遍类型 \(A\) 的闭项；即便 \(\alpha,\alpha'\) 可证相等也给不同常元，或按可证相等取商，二选一不影响结论），要求每个非空类型 \(A\) 都分到足够多的常元。把 \(T\) 的语言扩大到含这些常元、并加入 Henkin 公理
+      \[\exists x:A.\,\varphi(x)\ \Rightarrow\ \varphi(c_{\varphi})\]
+      得到的保守扩张，称为 \(T\) 的 <strong>Henkin 补全</strong> \(T^{H}\)。</p>
+  </div>
+  <div class="prop">
+    <span class="lbl">命题 12.2.4（补全的保守性）</span>
+    <p>\(T^{H}\) 是 \(T\) 的保守扩张：对 \(T\) 语言的闭公式 \(\varphi\)，\(\vdash_{T^{H}}\varphi\iff\vdash_T\varphi\)。且 \(T^{H}\) 有足够的饱和素滤子。</p>
+    <div class="proof">
+      <p class="pl">证明（保守性）.</p>
+      <p>\(\Rightarrow\)：设 \(\nvdash_T\varphi\)。Henkin 公理只是为已有公式添见证，逐次添常元的过程每一步都是保守的（新常元只在"见证"位置出现，不增加原语言的可证公式）。故 \(\nvdash_{T^{H}}\varphi\)。\(\Leftarrow\)：显然（扩张含原规则）。饱和素滤子的"足够"性由 Henkin 公理保证：任何 \(\exists x\,\varphi(x)\) 在素滤子里时，其见证 \(c_{\varphi}\) 使 \(\varphi(c_{\varphi})\) 也在其中。∎</p>
+    </div>
+  </div>
+
+  <h3 class="sub">12.2.3 Freyd cover：把抽象范畴缝成具体范畴</h3>
+  <p>范畴侧的工具更漂亮，也更"范畴"。它是 Peter Freyd 的想法，L&amp;S §22 专门讲它。</p>
+  <div class="defn">
+    <span class="lbl">定义 12.2.5（Freyd cover / Artin gluing）</span>
+    <p>设范畴 \(\mathcal T\) 有终对象 \(1\)，\(\Gamma=\mathcal T(1,-):\mathcal T\to\mathbf{Set}\)。其 <strong>Freyd cover</strong> \(\overline{\mathcal T}\) 的对象是三元组 \((X,\xi,U)\)：</p>
+    <ul>
+      <li>\(X\) 是集合；</li>
+      <li>\(U\) 是 \(\mathcal T\) 的对象；</li>
+      <li>\(\xi:X\to\Gamma(U)=\mathcal T(1,U)\) 是集合映射。</li>
+    </ul>
+    <p>从 \((X,\xi,U)\) 到 \((Y,\eta,V)\) 的态射是对 \((f:X\to Y,\ t:U\to V)\)，满足方块交换 \(\eta\circ f=\Gamma(t)\circ\xi\)。</p>
+    <p>它就是逗号范畴 \(\mathbf{Set}\downarrow\Gamma\)，也称 Sierpinski 锥（scone）。</p>
+  </div>
+  <div class="figcap">图 12.3　Freyd cover 中态射的交换方块（读图文字说明）</div>
+  <div class="figdesc">画一个方形：左上角是集合 \(X\)，右上角是 \(\Gamma(U)\)（\(U\) 的全局元素集），左下角是集合 \(Y\)，右下角是 \(\Gamma(V)\)。上边是从 \(X\) 到 \(\Gamma(U)\) 的映射 \(\xi\)，下边是从 \(Y\) 到 \(\Gamma(V)\) 的映射 \(\eta\)，左边是集合映射 \(f:X\to Y\)，右边是 \(\Gamma(t):\Gamma(U)\to\Gamma(V)\)（由 \(\mathcal T\) 中态射 \(t:U\to V\) 后复合得到）。方块交换即 \(\eta\circ f=\Gamma(t)\circ\xi\)：先取 \(x\in X\) 经 \(f\) 到 \(Y\) 再读 \(\eta\)，等于先由 \(\xi\) 读到 \(\Gamma(U)\) 再经 \(\Gamma(t)\) 搬运——两条路给出同一个 \(\Gamma(V)\) 中的元素。这个方块正是"集合侧数据 \(X\)"与"范畴侧对象 \(U\)"被 \(\Gamma\) 黏合的接缝。</div>
+  <div class="prop">
+    <span class="lbl">命题 12.2.6（Freyd cover 的关键性质）</span>
+    <p>设 \(\mathcal T\) 是拓扑斯，则：</p>
+    <ol>
+      <li>\(\overline{\mathcal T}\) 也是拓扑斯；</li>
+      <li>其终对象为 \(\overline 1=(1,\ 1\to\Gamma(1),\ 1)\)，即集合 \(1\)、对象 \(1\)、及唯一映射；</li>
+      <li>（Freyd 引理）\(\overline 1\) 是<strong>投射的</strong>：\(\overline{\mathcal T}(\overline 1,-)\) 保（存在的）余极限，特别是保满射；</li>
+      <li>有逻辑函子 \(\pi:\overline{\mathcal T}\to\mathcal T\)（投影到第三分量），它是末函子 \(i:\mathcal T\to\overline{\mathcal T}\) 的收缩：\(\pi\circ i=\mathrm{id}_{\mathcal T}\)。</li>
+    </ol>
+    <div class="proof">
+      <p class="pl">证明要点.</p>
+      <p>(1) \(\Gamma\) 保有限极限，故逗号范畴 \(\mathbf{Set}\downarrow\Gamma\) 继承拓扑斯结构（Artin gluing 的一般结果）。</p>
+      <p>(3) 验证 \(\overline{\mathcal T}(\overline 1,-)\) 与一个可表函子同构：事实上对偶地看，\(\overline{\mathcal T}(\overline 1,(X,\xi,U))\) 由满足 \(\xi(x)=\ast\) 的 \(x\in X\) 给出；这正是由对象 \((2,1,2\to\Gamma(1))\) 表示的对偶可表函子，而幂集函子 \(2^{-}\) 是单态的，故它保持极限的对偶，即原函子保余极限。特别地保满射，于是 \(\overline 1\) 投射。这正是 12.1.3 里 EP 的范畴条件。∎</p>
+    </div>
+  </div>
+  <div class="rmk">
+    <strong>直觉：Freyd cover 到底做了什么？</strong>它把一个"抽象"的拓扑斯 \(\mathcal T\)（对象没有元素，只有箭头）强行"具体化"成带集合的数据 \((X,\xi,U)\)：每个对象 \(U\) 被配上一堆"标签" \(X\)，标签通过 \(\xi\) 指到 \(U\) 的全局元素上。这样做的收益是：新范畴 \(\overline{\mathcal T}\) 的终对象变得投射——也就是说，它<strong>凭空拥有了存在性质</strong>，哪怕原范畴 \(\mathcal T\) 没有。代价是新对象带着"集合标签"这层人工结构。这正对应语法侧的 Henkin 补全：给每条 \(\exists\) 添一个见证常元，就是把 \(\mathcal T\) 的对象配上标签。两条路是同一件事的范畴版与语法版。
+  </div>
+
+  <h3 class="sub">12.2.4 Freyd 定理与不带选择的完备性</h3>
+  <div class="prop">
+    <span class="lbl">定理 12.2.7（Freyd：自由拓扑斯的终对象连通且投射）</span>
+    <p>设 \(\mathcal T\) 是自由拓扑斯（initial topos，关于逻辑函子），则 \(1\) 在 \(\mathcal T\) 中连通且投射，即 \(\Gamma=\mathcal T(1,-)\) 保有限余极限。</p>
+    <div class="proof">
+      <p class="pl">证明（三段式，用 Freyd cover）.</p>
+      <p>第一段：\(\Gamma\) 保有限极限，由 Artin gluing 一般性质 \(\overline{\mathcal T}\) 仍是拓扑斯；且 \(\mathcal T\simeq\overline{\mathcal T}/M\)（其中 \(M=(\varnothing,1,\varnothing\to\Gamma(1))\)），切片是逻辑函子，故有逻辑函子 \(\pi:\overline{\mathcal T}\to\mathcal T\)。由 \(\mathcal T\) 的初始性，\(\pi\) 是末函子 \(i:\mathcal T\to\overline{\mathcal T}\) 的收缩。</p>
+      <p>第二段：比较 \(\mathcal T(1,-)\) 与 \(\overline{\mathcal T}(1,i-)\)（用 \(i(1)\cong1\)）。两条自然变换——一条由 \(i\) 诱导，一条由 \(\pi\) 诱导——的复合是 \(\Gamma\) 上的自同态；由 Yoneda 与终对象唯一性，这个自同态只能是恒等。故 \(\Gamma\) 是保有限余极限的函子 \(\overline{\mathcal T}(1,i-)\) 的收缩。</p>
+      <p>第三段：收缩闭于"保有限余极限"这一性质，故 \(\Gamma\) 也保有限余极限。特别地 \(\Gamma\) 保满射（EP）、保余积（DP 的范畴形式）、且不把 \(1\) 送到空集（C）。∎</p>
+    </div>
+  </div>
+  <div class="prop">
+    <span class="lbl">推论 12.2.8（构造性原则）</span>
+    <p>自由拓扑斯的内部逻辑（即不带选择规则的纯直觉主义高阶逻辑）满足：</p>
+    <ul>
+      <li><strong>析取性质</strong>：若 \(\vdash\varphi\vee\psi\)，则 \(\vdash\varphi\) 或 \(\vdash\psi\)；</li>
+      <li><strong>存在性质</strong>：若 \(\vdash\exists x:A.\,\varphi(x)\)，则存在闭项 \(a:A\) 使 \(\vdash\varphi(a)\)；</li>
+      <li><strong>否定性质</strong>：\(\nvdash\bot\)；</li>
+      <li><strong>数字标准性</strong>：\(\Gamma\) 保自然数对象 \(N\)，故自由拓扑斯里没有"非标准自然数"。</li>
+    </ul>
+  </div>
+  <div class="prop">
+    <span class="lbl">定理 12.2.9（不带选择规则的完备性，L&amp;S Part II §19）</span>
+    <p>设 \(T\) 为（不带选择规则的）类型论，\(\varphi\) 为闭公式。则
+      \[\vdash_T\varphi\quad\iff\quad \varphi\ \mathrm{holds\ in\ all\ model\ topoi}.
+      \]
+      即：\(\varphi\) 可证当且仅当它在所有 model topos 的解释下为真。
+    </p>
+    <div class="proof">
+      <p class="pl">证明（用 Henkin 补全 + Freyd cover）. </p>
+      <p>"\(\Rightarrow\)"仍为可靠性。"\(\Leftarrow\)"反证：设 \(\nvdash_T\varphi\)。由保守性 \(\nvdash_{T^{H}}\varphi\)。对 \(T^{H}\) 取饱和素滤子 \(P\) 使 \(\varphi\notin P\)（存在性由 Henkin 公理保证）。由命题 12.2.2，\(\mathcal E(T^{H}/P)\) 是 model topos，且其中 \(\varphi\) 不为真。于是存在 model topos 使 \(\varphi\) 为假，矛盾。故 \(\vdash_T\varphi\)。∎</p>
+    </div>
+  </div>
+  <div class="rmk">
+    <strong>两条证明路线如何合并.</strong>Henkin 补全（语法）和 Freyd cover（范畴）看着不同，其实是同一个动作的两面：前者给理论添见证常元，后者给范畴对象配集合标签；前者靠保守性保证不改变可证公式，后者靠 \(\pi\circ i=\mathrm{id}\) 保证 \(\mathcal T\) 是收缩。它们都造出一个"终对象投射"的 model topos，于是 12.1.3 的翻译词典把存在性质交还给完备性。差别只在代价：12.1 的直接构造要求理论本身满足选择规则；12.2 的构造对任意理论都成立，但模型带上了 Henkin/Freyd 的人工痕迹。
+  </div>
+  <div class="phil">
+    <h4>② 选读：Freyd cover 的哲学——"具体化"是有代价的</h4>
+    <p>Freyd cover 是全书最值得慢慢嚼的构造之一，因为它把一个哲学困境做成了精确的数学。困境是这样的：一个抽象拓扑斯里的对象没有"元素"，只有箭头；可我们的直觉偏偏离不开元素——"存在 \(x\)"这句话在心里总是"有那么一个东西"。Freyd cover 说：想要元素？可以，我给你造。办法是把每个对象 \(U\) 和它的全局元素集 \(\Gamma(U)\) 绑在一起，做成 \((X,\xi,U)\)。于是新范畴里"有元素"这件事是字面成立的。</p>
+    <p>但你付出的代价是：这些元素是<strong>额外加进去的标签</strong>，不是对象本来就有的。这像极了我们给一个抽象群"取一个具体表示"：表示让元素可见，却也引入了表示本身的任意性。Freyd 定理的漂亮之处在于，尽管有这层任意性，终对象的投射性、析取性质、存在性质这些<strong>构造性的硬核</strong>却能被稳定地继承下来——因为 \(\mathcal T\) 是 \(\overline{\mathcal T}\) 的收缩（\(\pi\circ i=\mathrm{id}\)），那些好性质经过"扩张再收缩"这个来回后原样保留。</p>
+    <p>把这和你正在学的拓扑学对照，会有一个辛酸的领悟：我们之所以觉得"层范畴里的存在不实在"，是因为我们偷偷拿集合范畴当标尺——要求每个内部 \(\exists\) 都有一个全局截面。Freyd cover 恰恰是把这种"要求"做成了一个范畴。它告诉你：你可以拥有这种实在感，但要明白它是你缝上去的，不是世界自带的。关掉选择规则的完备性之所以"脏"，正因为它诚实地记录了这笔交易。</p>
+  </div>
+
+  <div class="box exer">
+    <h4>③ 习题（12.2）</h4>
+    <ol>
+      <li id="ex12-2-1">指出 12.1 完备性证明在不假设选择规则时具体在哪一步失效，并写出补救思路的一句话概括。</li>
+      <li id="ex12-2-2">写出饱和素滤子的定义，说明它比普通素滤子多要求了什么。</li>
+      <li id="ex12-2-3">说明 Henkin 补全"保守"的含义，以及为什么保守性对完备性定理是必需的。</li>
+      <li id="ex12-2-4">完整写出 Freyd cover 的对象、态射与交换条件；验证 \((1,1\to\Gamma(1),1)\) 是终对象。</li>
+      <li id="ex12-2-5">陈述 Freyd 引理（\(\overline 1\) 投射），并说明它如何对应存在性质 EP。</li>
+      <li id="ex12-2-6">比较 12.1 与 12.2 两个完备性定理：陈述相同在哪里、模型的构造不同在哪里。</li>
+    </ol>
+  </div>
+
+  <div class="box ans">
+    <h4>④ 参考答案（12.2）</h4>
+    <div class="item"><b>12.2.1</b>　失效于命题 12.1.5：素滤子 \(P\) 不再保证 \(T/P\) 满足选择规则，故 \(\mathcal E(T/P)\) 未必有 EP、\(1\) 未必投射，"内部 \(\exists\) 有全局见证"断掉。补救：只用饱和素滤子（§19），或给理论做 Henkin 补全、或改用 Freyd cover（§22）凭空造出投射的终对象。</div>
+    <div class="item"><b>12.2.2</b>　饱和素滤子额外要求：若 \(\exists x:A.\varphi(x)\in P\) 且 \(A\) 非空，则存在闭项 \(a:A\) 使 \(\varphi(a)\in P\)。普通素滤子只判定析取，不保证存在公式被某个具体项兑现；饱和性正是补上"见证"这一条。</div>
+    <div class="item"><b>12.2.3</b>　保守：对原语言闭公式 \(\varphi\)，\(\vdash_{T^{H}}\varphi\iff\vdash_T\varphi\)。必需性：完备性要由"\(\nvdash_T\varphi\)"推出存在使 \(\varphi\) 为假的模型；若补全不保守，可能在 \(T^{H}\) 里 \(\varphi\) 变得可证，就找不到反例模型了。</div>
+    <div class="item"><b>12.2.4</b>　对象 \((X,\xi:X\to\Gamma U,U)\)，态射 \((f,t)\) 满足 \(\eta f=\Gamma(t)\xi\)。终对象取 \(\overline 1=(1,!,1)\)：对任意 \((X,\xi,U)\)，态射 \((X,\xi,U)\to\overline 1\) 由唯一的 \(f:X\to1\) 与唯一 \(t:U\to1\) 组成，交换条件因 \(\Gamma(1)\) 是单点集自动成立，且唯一。</div>
+    <div class="item"><b>12.2.5</b>　Freyd 引理：\(\overline{\mathcal T}(\overline 1,-)\) 保余极限，特别保满射，故 \(\overline 1\) 投射。按命题 12.1.3，\(1\) 投射 \(\iff\) 存在性质 EP，故 Freyd cover 的内部语言自动满足"证出 \(\exists\) 就有见证"。</div>
+    <div class="item"><b>12.2.6</b>　陈述相同：都是"\(\varphi\) 可证 \(\iff\) 在所有 model topos 中真"。不同：12.1 要求理论本身满足选择规则，模型取素滤子商 \(\mathcal E(T/P)\)，构造干净；12.2 对任意理论成立，须先做 Henkin 补全并取饱和素滤子（或 Freyd cover），模型带见证常元/集合标签的人工结构。等价地，前者是"选择规则的代价"，后者是"构造性的代价"。</div>
+  </div>
+</section>
+<section class="sec" id="s12-3">
+  <div class="sec-h"><span class="sec-no">12.3</span><h2>直觉主义原则</h2><span class="src">L Part II §20–21</span></div>
+
+  <div class="box learn">
+    <h4>① 本节学习目标</h4>
+    <ol>
+      <li>系统掌握直觉主义逻辑里成立、而经典逻辑里不成立的核心原则：析取性质、存在性质、否定性质；</li>
+      <li>理解排中律与双重否定消除为什么在构造性语境里失效，并能给出拓扑斯反例；</li>
+      <li>理解"真 = 可证"的 BHK 直观，以及它如何被 12.2 的构造性原则精确刻画；</li>
+      <li>认识若干"进一步的直觉主义原则"（选择序列、连续性、Church 论题的相容性），并知道它们在拓扑斯中如何存活；</li>
+      <li>能把构造性/经典性这条主线与全书三本书的坐标（CCC → 类型论 → 拓扑斯）连起来。</li>
+    </ol>
+  </div>
+
+  <div class="xref"><strong>沿用前文（不再复述）.</strong> 析取性质与存在性质的范畴翻译（\(1\) 不可分解 / 投射）见<strong>（参见本节 12.1.3、12.2.4）</strong>；Heyting 代数中 \(\neg a=a\Rightarrow\bot\)、\(a\vee\neg a\le\top\) 但未必取等见<strong>（参见第 5 章 3 节、第 11 章 11.4）</strong>；Kripke–Joyal 语义与开集拓扑斯见<strong>（参见第 11 章 11.5）</strong>。Curry–Howard 对照见<strong>（参见第 11 章 11.1）</strong>。</div>
+
+  <h3 class="sub">12.3.1 极简回顾：直觉主义到底改了什么</h3>
+  <div class="box prep">
+    <h4>极简回顾（五分钟，够用即可）</h4>
+    <p>直觉主义不是"少用了几条推理规则"的奇怪逻辑，而是对"<strong>真</strong>"换了一个要求。经典逻辑把真理解成"符合某个独立于我们的实在"，于是排中律 \(p\vee\neg p\) 天经地义：一个命题要么符合、要么不符合。直觉主义（Brouwer–Heyting–Kolmogorov，BHK 解释）把真理解成<strong>可构造</strong>：说 \(p\) 真，等于说我们手上有一份 \(p\) 的证明。于是：</p>
+    <ul>
+      <li>\(p\vee q\) 的证明 = 给出 \(p\) 的证明<em>或</em> \(q\) 的证明（必须指明是哪个）；</li>
+      <li>\(\exists x\,\varphi(x)\) 的证明 = 给出一个见证 \(a\) 加上 \(\varphi(a)\) 的证明；</li>
+      <li>\(\neg p\) 的证明 = 一个把 \(p\) 的证明变成矛盾的方法。</li>
+    </ul>
+    <p>按这套要求，排中律凭什么成立？没有任何理由保证"对任意 \(p\)，我手上要么有 \(p\) 的证明、要么有 \(\neg p\) 的证明"——很多数学命题我们既证不出也证不伪。所以直觉主义拒绝把它当公理。这套"证明即构造"的立场，正是 Curry–Howard（第 11 章 11.1）的哲学源头：命题就是类型，证明就是项。</p>
+  </div>
+
+  <h3 class="sub">12.3.2 三条构造性原则及其范畴化身</h3>
+  <p>12.2 的 Freyd 定理其实已经证明了纯直觉主义高阶逻辑满足三条原则。这里把它们集中陈述，并逐条给出直观与反例。</p>
+  <div class="defn">
+    <span class="lbl">定义 12.3.1（三条直觉主义原则）</span>
+    <p>对（无选择规则的）类型论 \(T\) 或其自由拓扑斯：</p>
+    <ul>
+      <li><strong>析取性质</strong>（DP）：\(\vdash\varphi\vee\psi\ \Rightarrow\ \vdash\varphi\) 或 \(\vdash\psi\)。</li>
+      <li><strong>存在性质</strong>（EP）：\(\vdash\exists x:A.\,\varphi(x)\ \Rightarrow\ \exists\) 闭项 \(a:A\) 使 \(\vdash\varphi(a)\)。</li>
+      <li><strong>否定性质</strong>（NP）：\(\nvdash\bot\)。</li>
+    </ul>
+    <p>范畴化身（命题 12.1.3）：\(1\) 不可分解、\(1\) 投射、\(1\) 非初始。</p>
+  </div>
+  <div class="rmk">
+    <strong>DP 的直观：证明必须"选边".</strong>\(\varphi\vee\psi\) 的证明按 BHK 必须是"左边那份"或"右边那份"。所以若整体上能证出 \(\varphi\vee\psi\)，这个证明内部必已包含了选边信息，拆开它就得到 \(\varphi\) 的证明或 \(\psi\) 的证明。经典逻辑里这条彻底失败：你可以用排中律证出"\(p\vee\neg p\)"（对任意 \(p\)），但既未必能证 \(p\)，也未必能证 \(\neg p\)——证明里根本没有选边，它是靠"二者必居其一"的语义信念撑起来的。这就是 DP 与排中律不能共存的根源。
+  </div>
+  <div class="rmk">
+    <strong>EP 的直观：见证必须"交出来".</strong>正是 12.1 反复讨论的选择规则。EP 说语法里的每个存在证明都自带见证；这和你天天在拓扑学里看到的"存在但给不出全局截面"形成尖锐对照——所以满足 EP 的往往是 Set 或自由拓扑斯这类"点足够多"的世界，而不是一般层范畴。
+  </div>
+
+  <h3 class="sub">12.3.3 排中律与双重否定的失效：拓扑斯反例</h3>
+  <p>抽象地说完，看一个具体反例，让失效"看得见"。</p>
+  <div class="prop">
+    <span class="lbl">命题 12.3.2（排中律在一般拓扑斯中失效）</span>
+    <p>存在拓扑斯 \(\mathcal E\) 与闭公式 \(\varphi\)，使 \(\not\Vdash_{\mathcal E}\varphi\vee\neg\varphi\)，即 \([\varphi]\cup[\neg\varphi]\ne 1\)。</p>
+    <div class="proof">
+      <p class="pl">证明（开集拓扑斯反例）.</p>
+      <p>取 \(\mathcal E=\mathbf{Sh}(\mathbb R)\)，\(\varphi\) 为"点落在开集 \(U=(0,1)\)"这一命题，其在 \(V\in\mathcal O(\mathbb R)\) 上的解释为子对象 \(V\cap U\subseteq V\)。则 \(\neg\varphi\) 解释为内部 \(\mathrm{int}(V\setminus U)\)（见第 11 章 11.3、11.5）。取 \(V=\mathbb R\)：\([\varphi]=U\)，\([\neg\varphi]=\mathrm{int}(\mathbb R\setminus(0,1))=(-\infty,0)\cup(1,\infty)\)，二者之并少了边界点 \(0,1\)，不等于 \(1=\mathbb R\)。故 \(\not\Vdash\varphi\vee\neg\varphi\)。等价地，Heyting 代数 \(\mathcal O(\mathbb R)\) 里 \(U\vee\neg U\ne\top\)。∎</p>
+    </div>
+  </div>
+  <div class="rmk">
+    <strong>这个反例值得反复看.</strong>它把"排中律失效"变成一个你能在纸上画出来的事实：开区间 \((0,1)\) 和它的补的内部，中间漏了两个边界点。在集合的世界里，一个子集和它的补必然瓜分全集，没有缝隙；在开集的世界里，"补"只能取内部，于是留下了边界这条"既不真也不假"的模糊地带。这就是直觉主义"真"的几何形状——真值不是开关，而是随开集连续变化的量。你研究拓扑学时对边界的敏感，在这里正好成了逻辑的直观。
+  </div>
+  <div class="prop">
+    <span class="lbl">命题 12.3.3（双重否定消除失效，但引入有效）</span>
+    <p>在直觉主义逻辑中，\(\varphi\Rightarrow\neg\neg\varphi\) 普遍可证，但 \(\neg\neg\varphi\Rightarrow\varphi\) 一般不可证。在 Heyting 代数里，恒有 \(a\le\neg\neg a\)，但 \(\neg\neg a\le a\) 等价于该代数为布尔代数。</p>
+    <div class="proof">
+      <p class="pl">证明要点.</p>
+      <p>\(\neg a=a\Rightarrow0\)。由 \(a\wedge\neg a=0\le 0\)，按伴随 \(\Rightarrow\) 的定义得 \(a\le\neg\neg a=(a\Rightarrow0)\Rightarrow0\)。反向 \(\neg\neg a\le a\)：取上面的开集代数，令 \(a=(0,1)\)，则 \(\neg\neg a=\mathrm{int}(\overline{(0,1)})=(0,1)=a\) 此处恰相等；但取 \(a=\mathbb R\setminus\{0\}\)（非空开集），\(\neg a=\mathrm{int}(\{0\})=\varnothing\)，\(\neg\neg a=\mathbb R\ne a\)，反向失效。一般地，\(\neg\neg=\mathrm{id}\) 正是布尔性的刻画（第 11 章 11.4）。∎</p>
+    </div>
+  </div>
+  <div class="figcap">图 12.4　经典 vs 直觉主义：三条原则对照（读图文字说明）</div>
+  <div class="figdesc">一张两栏表。左栏"经典逻辑"：排中律 \(p\vee\neg p\) 成立、双重否定消除 \(\neg\neg p\Rightarrow p\) 成立、析取/存在性质一般<em>不</em>成立（可证 \(p\vee q\) 却两边都证不出）。右栏"直觉主义逻辑"：排中律不成立、双重否定消除不成立、析取/存在性质成立。中间一列写范畴对应：排中律成立 \(\iff\) 拓扑斯布尔（\(\Omega\cong1+1\)）；析取/存在性质成立 \(\iff\) \(1\) 不可分解且投射。读图要点：左右两栏是取舍关系而非优劣——经典用"语义二值"换掉了"证明可拆解"，直觉主义用"证明可拆解"换掉了"二值"。中间那列告诉你，这个取舍在拓扑斯里就是"要不要布尔、终对象投不投射"。</div>
+
+  <h3 class="sub">12.3.4 进一步的直觉主义原则</h3>
+  <p>L&amp;S §21 还讨论了若干更"强"的构造性原则。它们不是纯逻辑定理，而是与数学实践（尤其分析、可计算性）相连的Additional principles，需要知道它们的处境。</p>
+  <div class="defn">
+    <span class="lbl">定义 12.3.4（若干进一步原则）</span>
+    <ul>
+      <li><strong>可数选择 / 选择序列原则</strong>（countable choice）：对可数族非空类型可同时选见证；在拓扑斯里对应某些对象的投射性。</li>
+      <li><strong>连续性原则</strong>（continuity）：直觉主义分析里，所有函数 \(\mathbb N^{\mathbb N}\to\mathbb N\) 都是连续的（只依赖有限初段）——因为无限对象的证明只能是有限信息给出的。</li>
+      <li><strong>Church 论题</strong>（CT）：每个函数 \(\mathbb N\to\mathbb N\) 都是可计算函数。它与经典数学冲突（经典里存在不可计算函数），但与直觉主义逻辑相容。</li>
+      <li><strong>Markov 原则</strong>：若 \(\neg\neg\exists n.\varphi(n)\) 则 \(\exists n.\varphi(n)\)（对可判定 \(\varphi\)）。它介于直觉主义与经典之间，某些拓扑斯满足、某些不满足。</li>
+    </ul>
+  </div>
+  <div class="rmk">
+    <strong>它们在拓扑斯里如何存活？</strong>关键事实是：这些原则不是绝对的，而是<strong>相对于所选拓扑斯</strong>的。自由拓扑斯里 DP、EP 成立；加入连续性与 Church 论题得到的一种"有效拓扑斯"（effective topos）里，Church 论题成立；而在 \(\mathbf{Set}\) 里它们失败。拓扑斯理论的贡献，是把"要不要接受某条原则"从一场哲学争论变成一个数学选择：你想要哪个世界，就进哪个拓扑斯，逻辑随世界而定。这正是第 11 章主伴随"逻辑与世界互构"的延伸。
+  </div>
+
+  <h3 class="sub">12.3.5 全章收束：三本书的坐标里看完备性</h3>
+  <div class="walk">
+    <h4>把整条主线连起来（读完本章该有的全局图景）</h4>
+    <ol>
+      <li><strong>第一本书（Awodey，第 1–7 章）</strong>：范畴论的语言。伴随、Yoneda、Monad——尤其是"伴随"这个贯穿全书的骨架。</li>
+      <li><strong>第二本书 Part I（第 8–10 章）</strong>：CCC 与 λ-演算被证明是同一件事的三种说法（函数完备性、三位一体）。这里完备性是"函数层面的"：每个多项式都由唯一项表示。</li>
+      <li><strong>第二本书 Part II（第 11–12 章）</strong>：类型论与拓扑斯由主伴随 \(T\dashv L\) 相连。本章的完备性是"逻辑层面的"：语法可证 \(\iff\) 所有 model topos 中真。它随选择规则分岔：开则干净（12.1），关则带人工痕迹（12.2）。</li>
+      <li><strong>贯穿的哲学</strong>：真与可证的关系，在 CCC 里是"函数与表达式"，在拓扑斯里是"世界内部真与语法可证"，在逻辑里是"语义与句法"。三次都是同一件事：把两个看似分离的层面用一个伴随/完备性定理缝回去。</li>
+    </ol>
+  </div>
+  <div class="phil">
+    <h4>② 选读：给你的一点私人化的读法</h4>
+    <p>你在自学拓扑学时大概有过这种时刻：一个定理在 \(\mathbf{Set}\) 里显然，到了一般拓扑斯里突然要加一堆条件，甚至干脆不成立。以前的解释往往是"拓扑斯更一般，所以更弱"。这章给了你一个更锋利的解释框架：<strong>不是更弱，是选择了不同的"真"</strong>。\(\mathbf{Set}\) 是一个布尔、点足够多、终对象投射的世界——在那里存在就是有元素、排中律成立、每个 \(\exists\) 都能点名。一般拓扑斯放弃的正是这些，换来的是能容纳"随阶段变化的真"这种 finer 的结构。</p>
+    <p>完备性定理在这里给你的最大安慰是：即便真值变得再细密、再"不像集合"，语法和语义依然严丝合缝——你用形式规则能证的，恰好是所有这样的世界里真的。所以构造性不是混乱，而是一种被精确刻画的、自洽的选择。当有人再说"直觉主义只是少用了排中律"，你现在可以给出一个带反例的回答：它少用的是"真必须二值"这个承诺，换来的是析取性质、存在性质这些能让你把证明真正拆开来看的硬性质。这个取舍，L&amp;S 用 Freyd cover 和完备性定理替你算清楚了。</p>
+    <p>最后提醒一句关于读原著：§20–21 的"直觉主义原则"散着讲了不少历史与独立性结果，本教材抓的是与范畴主线直接相连的那部分。若你想顺着哲学兴趣往下读，Mac Lane–Moerdijk 的《Sheaves in Geometry and Logic》是自然的下一站——它把本章的层表示和 Kripke–Joyal 语义展开成整本书。按你的节奏，不必急。</p>
+  </div>
+
+  <div class="box exer">
+    <h4>③ 习题（12.3）</h4>
+    <ol>
+      <li id="ex12-3-1">用 BHK 解释说明：为什么 \(\varphi\vee\psi\) 的证明必须包含"选边"信息？</li>
+      <li id="ex12-3-2">用排中律说明：为什么 DP 与排中律不能同时成立。</li>
+      <li id="ex12-3-3">在 \(\mathbf{Sh}(\mathbb R)\) 中取 \(U=(0,1)\)，计算 \([\varphi]\cup[\neg\varphi]\)，验证排中律失效。</li>
+      <li id="ex12-3-4">证明 Heyting 代数里恒有 \(a\le\neg\neg a\)，并给出一个 \(\neg\neg a\ne a\) 的开集例子。</li>
+      <li id="ex12-3-5">陈述连续性原则与 Church 论题，并说明它们为何与经典数学冲突、却与直觉主义相容。</li>
+      <li id="ex12-3-6">（总结题）用不超过五句话，说清" CCC 的函数完备性"与"拓扑斯的逻辑完备性"各自缝合了哪两个层面。</li>
+    </ol>
+  </div>
+
+  <div class="box ans">
+    <h4>④ 参考答案（12.3）</h4>
+    <div class="item"><b>12.3.1</b>　BHK 规定 \(p\vee q\) 的证明是一个对子（标记 \(L\) 或 \(R\)，加对应分支的证明），因此从证明里读出标记即知选了哪边。这正是 DP 的直观内容；经典证明可以靠"二值"的信息证出 \(p\vee\neg p\) 而不含选边，故不适用。</div>
+    <div class="item"><b>12.3.2</b>　若排中律成立，则对任意 \(\varphi\) 都有 \(\vdash\varphi\vee\neg\varphi\)；若 DP 也成立，则 \(\vdash\varphi\) 或 \(\vdash\neg\varphi\) 对所有 \(\varphi\) 成立——取一个独立命题（如连续统假设在某理论中独立）即得矛盾。故二者不能并存。</div>
+    <div class="item"><b>12.3.3</b>　\([\varphi]=U=(0,1)\)，\([\neg\varphi]=\mathrm{int}(\mathbb R\setminus U)=(-\infty,0)\cup(1,\infty)\)，并集 \(=\mathbb R\setminus\{0,1\}\ne\mathbb R=1\)。边界点 \(0,1\) 处既不真也不假，排中律失效。</div>
+    <div class="item"><b>12.3.4</b>　\(a\wedge\neg a=0\)，由 \(\Rightarrow\) 的伴随性（\(x\le y\Rightarrow z\iff x\wedge y\le z\)）取 \(x=a,y=\neg a,z=0\) 得 \(a\le(\neg a\Rightarrow0)=\neg\neg a\)。反例：开集代数里 \(a=\mathbb R\setminus\{0\}\)，\(\neg a=\mathrm{int}(\{0\})=\varnothing\)，\(\neg\neg a=\mathbb R\ne a\)。</div>
+    <div class="item"><b>12.3.5</b>　连续性：\(\mathbb N^{\mathbb N}\to\mathbb N\) 的函数只依赖输入的有限初段；Church 论题：每个 \(\mathbb N\to\mathbb N\) 函数可计算。经典数学里存在不可计算函数、存在处处不连续的函数，故冲突；直觉主义里"函数"须由有限构造给出，天然带连续性/可计算性，故相容；且已在有效拓扑斯等模型中实现。</div>
+    <div class="item"><b>12.3.6</b>　函数完备性（CCC/第 9 章）：缝合"语义侧的箭头 \(1\to A\)（多项式/泛元素）"与"语法侧的项 \(\lambda x.\varphi\)"，说每个多项式由唯一项表示。逻辑完备性（拓扑斯/本章）：缝合"语义侧的'在所有 model topos 中真'"与"语法侧的可证 \(\vdash\)"，说二者等价。前者关乎表达力、后者关乎证明系统的完全，是同一"语法—语义缝合"主题在函数层面与命题层面的两次出现。</div>
+  </div>
+</section>
+
+<footer>
+  <p><a href="范畴论-逻辑-拓扑斯_教材总目录.html">← 返回总目录</a> ｜ 上一章：<a href="范畴论-逻辑-拓扑斯_教材第11章.html">第 11 章 类型论与拓扑斯</a> ｜ 下一章：<a href="范畴论-逻辑-拓扑斯_教材第13章.html">第 13 章 函子范畴</a></p>
+  <p>本章对应 Lambek &amp; Scott, <em>Introduction to Higher Order Categorical Logic</em>, Part II §17, §19–§22（含 §17 的 Henkin 方法与 model topos、§19 的无选择完备性、§22 的 Freyd cover）。公式由 MathJax 渲染。</p>
+</footer>
+
+</div>
+</body>
+</html>

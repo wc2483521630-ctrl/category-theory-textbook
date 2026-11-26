@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>第 19 章 几何态射与分类拓扑斯（Ch. VII–VIII）—— 三书递进自学教材</title>
+<script>
+window.MathJax = {
+  tex: {
+    inlineMath: [['\\(','\\)']], displayMath: [['\\[','\\]']], processEscapes: true,
+    macros: {
+      llbracket: '\\lbrack\\lbrack',
+      rrbracket: '\\rbrack\\rbrack'
+    }
+  },
+  options: { ignoreHtmlClass: 'no-tex' },
+  svg: { fontCache: 'global' }
+};
+</script>
+<script async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
+<style>
+  :root{
+    --bg:#f6f7f9; --card:#fff; --ink:#1b1f27; --ink2:#4d5461; --ink3:#7a8190;
+    --line:#e5e8ed; --soft:#f0f2f5;
+    --c1:#2563eb; --c1bg:#eef4ff; --gold:#b45309; --goldbg:#fdf3e3;
+    --ok:#15803d; --okbg:#eefaf1; --phil:#7c3aed; --philbg:#f6f1ff;
+    --teal:#0d9488; --tealbg:#eefaf7; --walk:#b45309;
+    --radius:12px;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;
+    line-height:1.75;-webkit-font-smoothing:antialiased;}
+  .wrap{max-width:920px;margin:0 auto;padding:0 22px 80px;}
+
+  header.top{padding:34px 0 22px;border-bottom:1px solid var(--line);margin-bottom:26px;}
+  .breadcrumb{font-size:12.5px;color:var(--ink3);margin-bottom:10px;}
+  .breadcrumb a{color:var(--c1);text-decoration:none;}
+  h1{font-size:29px;margin:0 0 8px;letter-spacing:-.02em;}
+  .lede{color:var(--ink2);font-size:14.5px;margin:0 0 16px;}
+  .jump{display:flex;gap:8px;flex-wrap:wrap;}
+  .jump a{font-size:12.5px;font-weight:650;text-decoration:none;color:var(--ink2);
+    background:var(--card);border:1px solid var(--line);border-radius:99px;padding:6px 13px;}
+  .jump a:hover{border-color:var(--c1);color:var(--c1);}
+
+  section.sec{margin:0 0 52px;scroll-margin-top:16px;}
+  .sec-h{display:flex;align-items:baseline;gap:12px;border-bottom:2px solid var(--c1);padding-bottom:10px;margin-bottom:22px;}
+  .sec-no{font-size:13px;font-weight:800;color:#fff;background:var(--c1);border-radius:7px;padding:3px 10px;white-space:nowrap;}
+  .sec-h h2{font-size:22px;margin:0;letter-spacing:-.01em;}
+  .src{font-size:11.5px;color:var(--ink3);margin-left:auto;white-space:nowrap;}
+
+  .box{border-radius:var(--radius);padding:16px 20px;margin:18px 0;border:1px solid var(--line);}
+  .box h4{margin:0 0 10px;font-size:14px;letter-spacing:.01em;}
+
+  .learn{background:var(--c1bg);border-color:#cfe0ff;}
+  .learn h4{color:var(--c1);}
+  .learn ol{margin:0;padding-left:22px;} .learn li{margin:4px 0;font-size:14px;}
+
+  .prep{background:var(--tealbg);border-color:#bfe9dd;}
+  .prep h4{color:var(--teal);}
+  .prep p{font-size:13.5px;color:#115e59;margin:8px 0;}
+  .prep ol,.prep ul{margin:8px 0;padding-left:22px;font-size:13.5px;color:#115e59;}
+  .prep li{margin:5px 0;}
+
+  .defn{background:#fafbfc;border-left:4px solid var(--ink2);padding:14px 18px;margin:16px 0;border-radius:0 10px 10px 0;}
+  .defn .lbl{font-weight:800;font-size:13.5px;color:var(--ink);}
+  .prop{background:#fbfcfe;border:1px solid #dbe6f8;border-left:4px solid var(--c1);padding:14px 18px;margin:16px 0;border-radius:0 10px 10px 0;}
+  .prop .lbl{font-weight:800;font-size:13.5px;color:var(--c1);}
+  .rmk{font-size:13.5px;color:var(--ink2);background:var(--soft);padding:11px 16px;border-radius:9px;margin:12px 0;}
+  .xref{font-size:13px;color:#115e59;background:var(--tealbg);border-left:3px solid var(--teal);padding:9px 14px;border-radius:0 8px 8px 0;margin:12px 0;}
+
+  .proof{margin:10px 0 4px;padding-left:16px;border-left:2px solid var(--line);font-size:14px;color:var(--ink2);}
+  .proof .pl{font-weight:700;color:var(--ink);}
+  .qed{float:right;font-style:normal;color:var(--ink3);}
+
+  .exer{background:var(--goldbg);border-color:#f2dfbb;}
+  .exer h4{color:var(--gold);}
+  .exer .grp{font-size:12.5px;font-weight:750;color:var(--gold);margin:12px 0 4px;}
+  .exer ol{margin:0;padding-left:22px;} .exer li{margin:9px 0;font-size:14px;}
+
+  .ans{background:var(--okbg);border-color:#c9ecd3;}
+  .ans h4{color:var(--ok);}
+  .ans .item{margin:14px 0 18px;font-size:14px;}
+  .ans .item:last-child{margin-bottom:0;}
+  .ans .item b{color:var(--ok);}
+  .ans .proof{border-left-color:#bfe6c9;}
+
+  .phil{background:var(--philbg);border-color:#e3d5ff;}
+  .phil h4{color:var(--phil);}
+  .phil p{font-size:14px;color:#5b3a8e;margin:8px 0;}
+
+  .walk{background:#fffbeb;border-color:#fde68a;}
+  .walk h4{color:var(--walk);}
+  .walk p,.walk li{font-size:13.5px;color:#78350f;}
+  .walk ol,.walk ul{margin:8px 0;padding-left:22px;}
+  .walk table{border-collapse:collapse;width:100%;font-size:13px;margin:10px 0;}
+  .walk th,.walk td{border:1px solid #fcd34d;padding:7px 9px;text-align:left;vertical-align:top;}
+  .walk th{background:#fef3c7;color:#78350f;}
+
+  h3.sub{font-size:16px;margin:26px 0 6px;color:var(--ink);}
+  p{margin:9px 0;} .math{overflow-x:auto;}
+
+  .figcap{font-size:12.5px;color:var(--ink3);margin:2px 0 12px;text-align:center;font-style:italic;}
+  .figdesc{font-size:13px;color:var(--ink2);background:var(--soft);padding:10px 15px;border-radius:8px;margin:6px 0 12px;}
+
+  footer{border-top:1px solid var(--line);margin-top:30px;padding-top:20px;font-size:13px;color:var(--ink3);}
+  footer a{color:var(--c1);text-decoration:none;}
+
+  @media(max-width:640px){
+    h1{font-size:23px;} .wrap{padding:0 14px 60px;}
+    .sec-h{flex-wrap:wrap;} .src{margin-left:0;}
+    .box{padding:14px 15px;}
+  }
+  @media print{body{background:#fff;}.jump{display:none;}.box{break-inside:avoid;}}
+  /* ---- 范畴交换图 SVG（浅色主题）---- */
+  svg.cd{display:block;margin:16px auto 2px;max-width:100%;height:auto;
+    font-family:"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;}
+  svg.cd rect.node{fill:#eef4ff;stroke:#2563eb;stroke-width:1.5;rx:7;}
+  svg.cd rect.node2{fill:#f6f1ff;stroke:#7c3aed;stroke-width:1.5;rx:7;}
+  svg.cd rect.nodeg{fill:#eefaf1;stroke:#15803d;stroke-width:1.5;rx:7;}
+  svg.cd rect.nodey{fill:#fdf3e3;stroke:#b45309;stroke-width:1.5;rx:7;}
+  svg.cd text.nt{fill:#1b1f27;font-size:13.5px;font-weight:600;}
+  svg.cd text.lb{fill:#334155;font-size:12.5px;}
+  svg.cd text.hb{fill:#2563eb;font-size:12.5px;font-weight:600;}
+  svg.cd text.hg{fill:#15803d;font-size:12.5px;font-weight:600;}
+  svg.cd text.hp{fill:#7c3aed;font-size:12.5px;font-weight:600;}
+  svg.cd line.ar,svg.cd path.ar{stroke:#475569;stroke-width:1.6;fill:none;marker-end:url(#cdArr);}
+  svg.cd line.arb,svg.cd path.arb{stroke:#2563eb;stroke-width:1.8;fill:none;marker-end:url(#cdArrB);}
+  svg.cd line.arg,svg.cd path.arg{stroke:#15803d;stroke-width:1.8;fill:none;marker-end:url(#cdArrG);}
+  svg.cd line.arp,svg.cd path.arp{stroke:#7c3aed;stroke-width:1.8;fill:none;marker-end:url(#cdArrP);}
+  svg.cd line.ard,svg.cd path.ard{stroke:#475569;stroke-width:1.5;fill:none;stroke-dasharray:5 4;marker-end:url(#cdArr);}
+  svg.cd line.noa{stroke:#475569;stroke-width:1.5;fill:none;stroke-dasharray:5 4;}
+
+  /* ---- 四类例子深度组件（本章新增，落实用户"每概念四类例"要求）---- */
+  .cases{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:6px 20px 14px;margin:18px 0;}
+  .cases>.ct{font-size:13.5px;font-weight:800;color:var(--ink);padding:11px 0 4px;border-bottom:1px dashed var(--line);margin-bottom:8px;}
+  .case{padding:9px 0 9px 14px;border-left:3px solid var(--line);margin:8px 0;font-size:13.5px;color:var(--ink2);}
+  .case b{display:inline-block;font-size:12px;padding:1px 9px;border-radius:99px;margin-right:8px;vertical-align:1px;}
+  .case.typ{border-left-color:var(--ok);}       .case.typ b{background:var(--okbg);color:var(--ok);}
+  .case.deep{border-left-color:var(--c1);}      .case.deep b{background:var(--c1bg);color:var(--c1);}
+  .case.edge{border-left-color:#dc2626;}        .case.edge b{background:#fef2f2;color:#dc2626;}
+  .case.use{border-left-color:var(--phil);}     .case.use b{background:var(--philbg);color:var(--phil);}
+  .case p{margin:6px 0;}
+  /* 数学动机框：解释"这个构造解决什么问题" */
+  .motiv{background:#fffbeb;border:1px solid #fde68a;border-left:4px solid #d97706;padding:13px 18px;border-radius:0 10px 10px 0;margin:16px 0;font-size:13.5px;color:#78350f;}
+  .motiv .lbl{font-weight:800;color:#b45309;display:block;margin-bottom:5px;}
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute;width:0;height:0;overflow:hidden" aria-hidden="true">
+<defs>
+  <marker id="cdArr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+    <path d="M 0 0 L 10 5 L 0 10 z" fill="#475569"/>
+  </marker>
+  <marker id="cdArrB" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+    <path d="M 0 0 L 10 5 L 0 10 z" fill="#2563eb"/>
+  </marker>
+  <marker id="cdArrG" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+    <path d="M 0 0 L 10 5 L 0 10 z" fill="#15803d"/>
+  </marker>
+  <marker id="cdArrP" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+    <path d="M 0 0 L 10 5 L 0 10 z" fill="#7c3aed"/>
+  </marker>
+</defs>
+</svg><div class="wrap">
+<header class="top">
+  <div class="kicker">范畴论 · 逻辑 · 拓扑斯 —— 三书递进自学教材</div>
+  <h1>第 19 章　几何态射与分类拓扑斯（Ch. VII–VIII）</h1>
+  <p class="lede">前四章一直在单个拓扑斯<strong>内部</strong>打转：造对象、装逻辑、做力迫。这一章第一次把镜头拉远，问<strong>拓扑斯之间</strong>的关系。答案就是几何态射——一对伴随函子，其中逆像保有限极限；它同时推广了连续映射、群作用的商、以及逻辑理论的解释。本章先建立几何态射的语言（§19.1），再用滤子函子把"点"和"模型"统一起来（§19.2），最后抵达分类拓扑斯：一个逻辑理论可以完整地"住进"一个拓扑斯里，使该理论在任意拓扑斯中的模型都变成从这个分类拓扑斯出发的几何态射（§19.3）。以 Mac Lane &amp; Moerdijk 第七、八章为主线，用 Johnstone《Elephant》补 2-范畴层面的严格性，用 Caramello《Theories, Sites, Toposes》补"同一理论的不同 site 呈现互为桥梁"的当代视角，Bell《Toposes and Local Set Theories》补局部集合论一侧的对照。</p>
+
+  <div class="xref">
+    <strong>章首去重说明.</strong>本章反复用到但不重述：伴随函子与左伴随保余极限、右伴随保极限（<strong>第 7 章 7.1–7.3</strong>）；有限极限与拉回（<strong>第 3 章</strong>）；拓扑斯的定义、\(\Omega\) 的泛性质与 Heyting 代数结构（<strong>第 16 章 16.1、16.4</strong>）；内部语言、Kripke–Joyal 语义与 Cohen 拓扑斯（<strong>第 18 章 18.1–18.4</strong>）；site、覆盖与层化（<strong>第 15 章</strong>）；米田嵌入与平坦函子的雏形（<strong>第 6 章、第 13 章</strong>）。这些只复述关键结论，不重证。
+  </div>
+
+  <div class="phil">
+    <span class="lbl">导读（哲学联系，选读）</span>
+    <p>数学里最有力的概念往往不是"对象"而是"对象之间的映射"：群同态、连续函数、自然变换。拓扑斯理论里对应的概念就是<strong>几何态射</strong>。它之所以叫"几何"，是因为连续映射 \(\varphi:X\to Y\) 恰好给出一个几何态射 \(\mathbf{Sh}(X)\to\mathbf{Sh}(Y)\)；它之所以叫"态射"而不是"函子"，是因为方向相反的两条腿必须配对：逆像 \(\varphi^\ast\) 保有限极限（几何的"取开集原像"），正像 \(\varphi_\ast\) 则负责其余。Caramello 把这个图景推到极致：<strong>一个拓扑斯的不同 site 呈现，就是同一理论的不同"语言"；几何态射是语言之间的翻译；而同一座桥的两端连着两个看似无关的数学理论时，就能把一边的结果搬到另一边。</strong>本章就是学会造桥、过桥、并看懂桥上运的是什么。</p>
+  </div>
+
+  <nav class="jump">
+    <a href="#s19-1">19.1 几何态射</a>
+    <a href="#s19-2">19.2 点与滤子函子</a>
+    <a href="#s19-3">19.3 分类拓扑斯与对象分类子</a>
+  </nav>
+</header>
+<section class="sec" id="s19-1">
+  <div class="sec-h"><span class="sec-no">19.1</span><h2>几何态射：拓扑斯之间的映射</h2><span class="src">M Ch.VII §1</span></div>
+
+  <div class="box learn">
+    <h4>① 本节学习目标</h4>
+    <ol>
+      <li>准确说出几何态射 \(f:\mathcal F\to\mathcal E\) 的两条腿及其方向约定，并解释为什么逆像 \(f^\ast\) 必须保有限极限；</li>
+      <li>在连续映射、常值层、开子拓扑斯、点这四类例子里把 \(f^\ast\) 与 \(f_\ast\) 具体算出来；</li>
+      <li>证明逆像保余极限、正像保极限，并说明"左正合"不是可省的装饰而是几何性的来源；</li>
+      <li>区分几何嵌入与满射，陈述并证明满射—嵌入分解；</li>
+      <li>理解 Caramello 的"桥"隐喻：同一个几何态射既是空间映射，又是理论之间的解释。</li>
+    </ol>
+  </div>
+
+  <div class="xref"><strong>沿用前文（不再复述）.</strong>伴随函子的单位/余单位与极限保性（<strong>7.1–7.3</strong>）；拉回与有限极限（<strong>3.2</strong>）；拓扑斯、\(\Omega\)、层化（<strong>16.1、15.3</strong>）；LT 拓扑与 \(j\)-层子拓扑斯（<strong>17.1、17.2</strong>）。</div>
+
+  <div class="box prep">
+    <h4>极简回顾（五分钟）</h4>
+    <p><strong>1. 连续映射的原像保有限极限.</strong>若 \(\varphi:X\to Y\) 连续，则 \(\varphi^{-1}\) 把开集送到开集，且 \(\varphi^{-1}(U\cap V)=\varphi^{-1}U\cap\varphi^{-1}V\)、\(\varphi^{-1}(\varnothing)=\varnothing\)。这就是"几何"二字的来源：拓扑结构在逆像下被保留。</p>
+    <p><strong>2. 层范畴里也有同样的对偶.</strong>连续 \(\varphi\) 给出 \(\varphi^\ast:\mathbf{Sh}(Y)\to\mathbf{Sh}(X)\)（逆像，左伴随且左正合）与 \(\varphi_\ast:\mathbf{Sh}(X)\to\mathbf{Sh}(Y)\)（正像，右伴随）。把这对函子抽象出来，就得到任意拓扑斯之间的几何态射。</p>
+    <p><strong>3. 本节要跨的一步.</strong>抛开底层空间，只留下"一对伴随 + 逆像左正合"这个结构。剩下的章节会证明：这一步抽象换来巨大的统一性——点、模型、理论解释全都是几何态射的特例。</p>
+  </div>
+
+  <h3 class="sub">19.1.1 定义与方向约定</h3>
+
+  <div class="defn">
+    <span class="lbl">定义 19.1.1（几何态射）</span>
+    <p>设 \(\mathcal E,\mathcal F\) 是拓扑斯。一个<strong>几何态射</strong> \(f:\mathcal F\to\mathcal E\) 是一对函子</p>
+    <p class="math">\[f^\ast:\mathcal E\longrightarrow\mathcal F,\qquad f_\ast:\mathcal F\longrightarrow\mathcal E,\]</p>
+    <p>满足 \(f^\ast\dashv f_\ast\)（\(f^\ast\) 左伴随于 \(f_\ast\)），并且<strong>逆像 \(f^\ast\) 保有限极限</strong>（左正合）。\(f^\ast\) 叫<strong>逆像</strong>，\(f_\ast\) 叫<strong>正像</strong>。</p>
+  </div>
+
+  <div class="rmk"><strong>方向为什么这样定？</strong>几何态射 \(f:\mathcal F\to\mathcal E\) 的箭头方向与正像 \(f_\ast:\mathcal F\to\mathcal E\) 相同，与逆像 \(f^\ast:\mathcal E\to\mathcal F\) 相反。这与拓扑空间一致：连续 \(\varphi:X\to Y\) 给出 \(\mathbf{Sh}(X)\to\mathbf{Sh}(Y)\)，而拉回 \(\varphi^{-1}\) 走反方向。初次接触极易搞反，记住一句话：<em>态射跟着正像走，几何装在逆像里</em>。</div>
+
+  <div class="prop">
+    <span class="lbl">命题 19.1.2（极限与余极限）</span>
+    <p>设 \(f:\mathcal F\to\mathcal E\) 是几何态射。则</p>
+    <ol>
+      <li>\(f^\ast\) 保所有余极限（包括初始对象、余等化子、任意小余积）；</li>
+      <li>\(f_\ast\) 保所有极限（包括终对象、等化子、任意小积）；</li>
+      <li>若 \(f^\ast\) 还有左伴随 \(f_!\)（此时称 \(f\) 为<strong>本质的</strong>），则 \(f^\ast\) 也保所有极限。</li>
+    </ol>
+    <div class="proof"><span class="pl">证.</span>(1)(2) 是伴随函子的一般事实：左伴随保余极限，右伴随保极限（<strong>7.2</strong>），这里只额外要求 \(f^\ast\) 左正合。(3) 此时 \(f^\ast\) 是右伴随，故保所有极限；结合定义中的有限极限保性，结论自明。∎</div>
+  </div>
+
+  <div class="rmk">注意：<strong>并不</strong>要求 \(f_\ast\) 左正合，也不要求 \(f^\ast\) 保所有极限。正是这个"不对称"使得几何态射比逻辑态射（要求两侧都保相应结构）更宽松，也更能容纳拓扑信息。</div>
+
+  <h3 class="sub">19.1.2 四类基本例子</h3>
+
+  <div class="cases">
+    <div class="ct">四个例子：把抽象定义落到具体计算</div>
+    <div class="case typ"><b>典型例</b><p><strong>连续映射.</strong>\(\varphi:X\to Y\) 连续 \(\Longrightarrow\) \(f=\mathbf{Sh}(\varphi):\mathbf{Sh}(X)\to\mathbf{Sh}(Y)\)，\(f^\ast=\varphi^{-1}\)，\(f_\ast\) 为直接像层 \(f_\ast F(V)=F(\varphi^{-1}V)\)。逆像左正合可由开集原像保交与空集验证。</p></div>
+    <div class="case deep"><b>本质例</b><p><strong>全局截面.</strong>唯一映射 \(\pi:X\to\ast\) 给出 \(\Gamma=\pi_\ast:\mathbf{Sh}(X)\to\mathbf{Set}\)，其逆像为常值层函子 \(\Delta:\mathbf{Set}\to\mathbf{Sh}(X)\)。\(\Delta\dashv\Gamma\) 且 \(\Delta\) 保有限极限——这正说明 \(\Gamma\) 是几何态射。注意 \(\Delta\) 是<em>左</em>伴随，这与"忘却函子通常右伴随"的常见直觉相反。</p></div>
+    <div class="case edge"><b>边界与误解</b><p><strong>开子拓扑斯.</strong>设 \(U\subseteq X\) 开，包含 \(i:U\hookrightarrow X\) 给出 \(i^\ast:\mathbf{Sh}(X)\to\mathbf{Sh}(U)\)（限制），\(i_\ast\) 为"（在 \(U\) 外补空）"的直接像。\(i^\ast\) 左正合。更一般地，任意 LT 拓扑 \(j\) 的层化函子 \(\mathbf{Sh}_j:\mathcal E\to\mathcal E_j\) 是某几何嵌入的逆像（<strong>17.2</strong>）——嵌入是一类特殊的几何态射，而非例外。</p></div>
+    <div class="case use"><b>结构应用</b><p><strong>点.</strong>\(\mathbf{Set}\to\mathcal E\) 的几何态射叫 \(\mathcal E\) 的<strong>点</strong>（§19.2）。当 \(\mathcal E=\mathbf{Sh}(X)\) 时，点恰对应 \(X\) 的通常点；当 \(\mathcal E=\mathbf{B}G\)（\(G\)-集）时，点对应 \(G\)-挠子的同构类。一个定义统一了"空间中的点"与"代数中的模型"。</p></div>
+  </div>
+
+  <h3 class="sub">19.1.3 手把手：把两点到一点的态射算到底</h3>
+
+  <div class="box walk">
+    <h4>③ 手把手：\(\varphi:\{0,1\}\to\{\ast\}\) 的几何态射</h4>
+    <ol>
+      <li><strong>设定.</strong>取离散空间 \(X=\{0,1\}\)、单点 \(Y=\{\ast\}\)。则 \(\mathbf{Sh}(X)\cong\mathbf{Set}\times\mathbf{Set}\)（层就是两个集合 \((A_0,A_1)\)），\(\mathbf{Sh}(Y)\cong\mathbf{Set}\)。</li>
+      <li><strong>逆像.</strong>对 \(S\in\mathbf{Set}\)，\(\varphi^{-1}S=(\varphi^{-1}S(0),\varphi^{-1}S(1))=(S,S)\)。逐分量看，它显然保有限极限 ✓。</li>
+      <li><strong>正像.</strong>\((\varphi_\ast A)(Y)=A(\varphi^{-1}Y)=A(X)=A_0\times A_1\)，因为 \(X\) 上层的截面是 \(A_0\times A_1\)。故 \(f_\ast(A_0,A_1)=A_0\times A_1\)。</li>
+      <li><strong>验证伴随.</strong>\(\mathbf{Set}\times\mathbf{Set}\big((S,S),(A_0,A_1)\big)=\mathbf{Set}(S,A_0)\times\mathbf{Set}(S,A_1)\cong\mathbf{Set}(S,A_0\times A_1)=\mathbf{Set}(S,f_\ast A)\)。自然性逐分量显然，故 \(f^\ast\dashv f_\ast\) ✓。</li>
+      <li><strong>读出几何.</strong>这个几何态射把"一个集合"送到"两个相同的集合"，把"两集合"送到"它们的积"。全局截面函子 \(\Gamma(A_0,A_1)=A_0\times A_1\) 在这里就是 \(f_\ast\)，而常值层是 \(S\mapsto(S,S)\)。整个抽象定义在这个最小例子里完全具体化。</li>
+    </ol>
+  </div>
+
+  <h3 class="sub">19.1.4 嵌入、满射与分解</h3>
+
+  <div class="defn">
+    <span class="lbl">定义 19.1.3（嵌入与满射）</span>
+    <p>几何态射 \(f:\mathcal F\to\mathcal E\) 称为</p>
+    <ul>
+      <li><strong>几何嵌入</strong>，若 \(f_\ast\) 是全忠实的；</li>
+      <li><strong>满射</strong>，若 \(f^\ast\) 是忠实的。</li>
+    </ul>
+  </div>
+
+  <div class="prop">
+    <span class="lbl">命题 19.1.4（嵌入的刻画）</span>
+    <p>对几何态射 \(f:\mathcal F\to\mathcal E\)，以下等价：</p>
+    <ol>
+      <li>\(f\) 是几何嵌入（\(f_\ast\) 全忠实）；</li>
+      <li>余单位 \(\varepsilon:f^\ast f_\ast\to\mathrm{id}_{\mathcal F}\) 是同构；</li>
+      <li>存在 \(\mathcal E\) 上的 LT 拓扑 \(j\)，使 \(\mathcal F\simeq\mathcal E_j\) 且 \(f^\ast\) 就是层化函子。</li>
+    </ol>
+    <div class="proof"><span class="pl">证.</span>(1)⟺(2) 是伴随函子的标准事实：右伴随全忠实当且仅当余单位是同构（<strong>7.1</strong>）。(2)⟹(3)：由 \(f^\ast\) 是左正合的加性函子且其右伴随全忠实，可定义 \(j=\) 由 \(f^\ast\) 诱导的闭包算子；\(\mathcal F\) 等价于 \(j\)-层范畴，且 \(f^\ast\) 与层化函子同构（<strong>17.2</strong> 的构造）。(3)⟹(1)：层化函子的右伴随是层的包含，显然全忠实。∎</div>
+  </div>
+
+  <div class="prop">
+    <span class="lbl">命题 19.1.5（满射—嵌入分解）</span>
+    <p>任意几何态射 \(f:\mathcal F\to\mathcal E\) 可分解为</p>
+    <p class="math">\[\mathcal F\xrightarrow{\ e\ }\mathcal G\xrightarrow{\ m\ }\mathcal E,\qquad f=m\circ e,\]</p>
+    <p>其中 \(e\) 是满射，\(m\) 是几何嵌入；该分解在等价意义下唯一。</p>
+    <div class="proof"><span class="pl">证（构造）.</span>令 \(j\) 为 \(\mathcal F\) 上使得 \(f^\ast\) 分解为 \(\mathcal E\xrightarrow{f^\ast}\mathcal F\xrightarrow{L}\mathcal F_j\) 的 LT 拓扑，取 \(\mathcal G=\mathcal F_j\)，\(m\) 为对应的几何嵌入。取 \(e\) 为自然诱导的几何态射；可以验证 \(e^\ast\) 忠实，故 \(e\) 满射。唯一性由 \(j\) 被 \(f^\ast\) 的核唯一决定给出。详细构造见 M&amp;M Ch.VII §4。∎</div>
+  </div>
+
+  <svg class="cd" viewBox="0 0 620 190" role="img" aria-label="几何态射的满射—嵌入分解三角图">
+    <rect class="node" x="40" y="60" width="120" height="46" rx="7"/>
+    <text class="nt" x="100" y="88" text-anchor="middle">F</text>
+    <rect class="node2" x="250" y="60" width="120" height="46" rx="7"/>
+    <text class="nt" x="310" y="88" text-anchor="middle">G = F_j</text>
+    <rect class="nodeg" x="460" y="60" width="120" height="46" rx="7"/>
+    <text class="nt" x="520" y="88" text-anchor="middle">E</text>
+    <line class="arb" x1="160" y1="83" x2="248" y2="83"/>
+    <text class="hb" x="204" y="74" text-anchor="middle">e（满射）</text>
+    <line class="arg" x1="370" y1="83" x2="458" y2="83"/>
+    <text class="hg" x="414" y="74" text-anchor="middle">m（嵌入）</text>
+    <path class="ard" d="M 100 60 Q 100 20 310 20 Q 520 20 520 58"/>
+    <text class="lb" x="310" y="16" text-anchor="middle">f = m ∘ e</text>
+    <text class="lb" x="310" y="150" text-anchor="middle" style="font-size:12px">逆像方向：E → G → F（与箭头相反）</text>
+  </svg>
+  <p class="figcap">图 19.1　几何态射的满射—嵌入分解：任何态射都可穿过一个层化</p>
+
+  <div class="phil">
+    <span class="lbl">Caramello 的桥（补充，来源：Olivia Caramello, <em>Theories, Sites, Toposes</em>）</span>
+    <p>同一个拓扑斯 \(\mathcal E\) 可以由许多不同的 site \((\mathbf C,J)\)、\((\mathbf D,K)\) 呈现。每一种呈现就是一门"描述 \(\mathcal E\) 的语言"。两个拓扑斯之间的几何态射，则是在两种语言之间建立翻译的规则。Caramello 的核心观察是：当一个理论 \(T\) 与另一个理论 \(S\) 的分类拓扑斯之间存在几何态射时，就形成一座<strong>拓扑斯理论的桥</strong>，可以把一边的定理（比如某种不可判定性或独立性）翻译到另一边。§19.3 会把"理论 \(\mapsto\) 分类拓扑斯"这一步做严格，届时这座桥的含义就完全清楚了。</p>
+  </div>
+
+  <div class="box exer">
+    <h4>④ 习题（19.1）</h4>
+    <ol>
+      <li id="ex19-1-1">设 \(X\) 为拓扑空间。证明 \(\Delta\dashv\Gamma:\mathbf{Sh}(X)\to\mathbf{Set}\)，并验证 \(\Delta\) 保有限极限。</li>
+      <li id="ex19-1-2">对 \(\varphi:\{0,1\}\to\{\ast\}\)，直接计算 \(f^\ast\) 与 \(f_\ast\) 在层 \((A_0,A_1)\) 上的作用，并验证伴随同构的自然性。</li>
+      <li id="ex19-1-3">证明命题 19.1.2：左伴随保余极限、右伴随保极限，并解释为什么 \(f_\ast\) 一般不保余极限（举一个开包含的例子）。</li>
+      <li id="ex19-1-4">设 \(U\subseteq X\) 为开集，\(i:U\hookrightarrow X\)。写出 \(i^\ast\) 与 \(i_\ast\) 在开集上的公式，验证 \(i^\ast\dashv i_\ast\) 且 \(i^\ast\) 左正合。</li>
+      <li id="ex19-1-5">证明：几何态射 \(f\) 是嵌入当且仅当 \(f_\ast\) 全忠实；并说明 \(\mathbf{Sh}(X)\to\mathbf{Set}\) 何时是嵌入。</li>
+      <li id="ex19-1-6">设 \(X\) 局部连通。证明 \(\Delta:\mathbf{Set}\to\mathbf{Sh}(X)\) 有左伴随 \(f_!\)（即全局截面态射是本质的），并给出 \(f_!F\) 的公式（提示：用 \(F\) 的 étale 空间的连通分支）。</li>
+    </ol>
+  </div>
+
+  <div class="box ans">
+    <h4>⑤ 参考答案（19.1）</h4>
+    <div class="item"><b>19.1.1</b>对集合 \(S\) 与层 \(F\)，\(\mathbf{Sh}(X)(\Delta S,F)\) 中的箭头由每个连通分支上的常值选择给出，逐开集 \(U\) 有 \(\Delta S(U)=S\)（常值预层的层化），而 \(\Gamma F=F(X)\)。映射 \(\mathbf{Set}(S,F(X))\to\mathbf{Sh}(X)(\Delta S,F)\) 由 \(g:S\to F(X)\) 送到"在 \(U\) 上取 \(g\) 的常值限制再层化"，反向由箭头在 \(X\) 处取值给出；二者互逆且自然，故 \(\Delta\dashv\Gamma\) ✓。\(\Delta\) 作为左伴随保余极限；有限极限方面，\(\Delta(S\times T)\cong\Delta S\times\Delta T\)、\(\Delta\varnothing=\varnothing\) 逐开集成立（层化保持有限极限，见 <strong>15.3</strong>），故保有限极限 ✓。</div>
+    <div class="item"><b>19.1.2</b>\(f^\ast(S)=(S,S)\)，\(f_\ast(A_0,A_1)=A_0\times A_1\)。伴随同构 \(\mathbf{Set}(S,A_0\times A_1)\cong\mathbf{Set}(S,A_0)\times\mathbf{Set}(S,A_1)\) 由 \(h\mapsto(\pi_0h,\pi_1h)\) 与 \((h_0,h_1)\mapsto(s\mapsto(h_0(s),h_1(s)))\) 给出，逐分量验证自然性 ✓。</div>
+    <div class="item"><b>19.1.3</b>左伴随保余极限、右伴随保极限是伴随三角恒等式的直接推论（<strong>7.2</strong>）。\(f_\ast\) 不保余极限：取开包含 \(i:U\hookrightarrow X\)，\(i_\ast F(V)=F(V\cap U)\)。对 \(X=[0,1]\)、\(U=(0,1)\) 与两个层 \(F,G\)，\((i_\ast(F\amalg G))(X)=(F\amalg G)(U)\) 是 \(U\) 上 \(F,G\) 截面的"局部择一"，一般不等于 \(F(U)\amalg G(U)\)（后者要求全局选一支），故 \(i_\ast\) 不保余积 ✓。</div>
+    <div class="item"><b>19.1.4</b>\(i^\ast F(V)=F(V)\)（\(V\subseteq U\) 开），\(i_\ast G(W)=G(W\cap U)\)（\(W\subseteq X\) 开）。伴随：\(\mathbf{Sh}(U)(i^\ast F,G)=\mathbf{Sh}(U)(F|_U,G)\cong\mathbf{Sh}(X)(F,i_\ast G)\)，由限制与"外部补空"的泛性质给出 ✓。\(i^\ast\) 是限制，逐开集就是取同一集合，故保有限极限 ✓。</div>
+    <div class="item"><b>19.1.5</b>由命题 19.1.4，(1)⟺(2) 是伴随全忠实的标准判据。\(\Gamma:\mathbf{Sh}(X)\to\mathbf{Set}\) 的右伴随（若存在）需满足 \(\mathbf{Set}(S,\Gamma F)\cong\mathbf{Sh}(X)(\Delta S,F)\) 的反向，即 \(\Delta\) 也是 \(\Gamma\) 的右伴随；这只在 \(X\) 为离散空间（此时 \(\mathbf{Sh}(X)\cong\mathbf{Set}^{X}\) 且 \(\Gamma=\prod_{x\in X}\)）或 \(X\) 为空时可能——一般 \(\Delta\) 不是右伴随，故 \(\Gamma\) 通常不是嵌入 ✓。</div>
+    <div class="item"><b>19.1.6</b>\(X\) 局部连通时，对每个 \(F\) 取其 étale 空间 \(E(F)\)，令 \(f_!F=\pi_0(E(F))\)（连通分支集合）。对集合 \(S\)，连续映射 \(E(F)\to S_{\mathrm{disc}}\)（离散拓扑）恰好在每根茎上局部常值，故与层射 \(F\to\Delta S\) 一一对应；自然性逐分支验证，得 \(f_!\dashv\Delta\) ✓。特别地 \(X=\{\ast\}\) 时 \(f_!=f^\ast=\mathrm{id}\)，\(X\) 离散无限时 \(f_!F\) 是 \(F\) 在 \(X\) 上的支集之并的连通分支。局部连通性不可省：若 \(X\) 非局部连通，\(\Delta S\) 的茎判别不能由连通分支连续实现，\(f_!\) 不存在。∎</div>
+  </div>
+</section>
+<section class="sec" id="s19-2">
+  <div class="sec-h"><span class="sec-no">19.2</span><h2>点与滤子函子</h2><span class="src">M Ch.VII §5–6</span></div>
+
+  <div class="box learn">
+    <h4>① 本节学习目标</h4>
+    <ol>
+      <li>把"点"定义为 \(\mathbf{Set}\to\mathcal E\) 的几何态射，并解释它为什么推广了拓扑空间的点；</li>
+      <li>写出滤子（平坦）函子的三条条件，理解每条条件对应"局部存在共同细化"的哪一层意思；</li>
+      <li>陈述 Diaconescu 定理：层拓扑斯的点恰是连续的滤子函子，并给出证明骨架；</li>
+      <li>在 \(\mathbf{Sh}(X)\)、预层范畴与群作用的拓扑斯 \(\mathbf{B}G\) 里各算一次点；</li>
+      <li>理解"有足够多点"是什么意思，以及它为什么让内部语言的真伪可以用逐点检验来判定。</li>
+    </ol>
+  </div>
+
+  <div class="xref"><strong>沿用前文（不再复述）.</strong>几何态射的定义（<strong>19.1</strong>）；米田引理与表示函子（<strong>6.4</strong>）；site 与覆盖筛（<strong>15.1</strong>）；Kripke–Joyal 语义的局部性（<strong>18.2</strong>）。</div>
+
+  <div class="box prep">
+    <h4>极简回顾（五分钟）</h4>
+    <p><strong>1. 拓扑空间的点就是"从一点出发的连续映射".</strong>对 \(x\in X\)，包含 \(\iota_x:\{\ast\}\to X\)，\(\iota_x(\ast)=x\) 连续。由 §19.1，它给出几何态射 \(\mathbf{Sh}(\ast)\cong\mathbf{Set}\to\mathbf{Sh}(X)\)。</p>
+    <p><strong>2. 反过来也成立（在适当条件下）.</strong>若 \(X\) 是 Sober 空间，\(\mathbf{Sh}(X)\) 的每个点都来自 \(X\) 的某个点。于是"拓扑斯的点"严格推广了"空间的点"。</p>
+    <p><strong>3. 本节要跨的一步.</strong>把 \(\iota_x\) 的逆像函子抽象出来——它是 \(\mathbf{Sh}(X)\to\mathbf{Set}\) 的保有限极限左伴随——就得到滤子函子。对一般的 site，点就是用这种函子来描述的。</p>
+  </div>
+
+  <h3 class="sub">19.2.1 点的定义</h3>
+
+  <div class="defn">
+    <span class="lbl">定义 19.2.1（拓扑斯的点）</span>
+    <p>拓扑斯 \(\mathcal E\) 的一个<strong>点</strong>是一个几何态射 \(p:\mathbf{Set}\to\mathcal E\)。等价地，是一个保有限极限且有右伴随的函子 \(p^\ast:\mathcal E\to\mathbf{Set}\)。</p>
+  </div>
+
+  <div class="rmk">记 \(p^\ast\) 为"在点 \(p\) 处取茎"。当 \(\mathcal E=\mathbf{Sh}(X)\) 且 \(p\) 来自 \(x\in X\) 时，\(p^\ast F=F_x\) 正是层 \(F\) 在 \(x\) 处的茎。这个记号上的一致不是巧合——茎函子确实是保有限极限的左伴随（其右伴随是"在 \(x\) 处装配一个茎"的层，即 skyscraper 层）。</div>
+
+  <h3 class="sub">19.2.2 滤子函子</h3>
+
+  <div class="defn">
+    <span class="lbl">定义 19.2.2（滤子/平坦函子）</span>
+    <p>设 \(\mathbf C\) 是小范畴。函子 \(F:\mathbf C\to\mathbf{Set}\) 称为<strong>滤子的</strong>（或<strong>平坦的</strong>），若：</p>
+    <ol>
+      <li><strong>非空：</strong>存在 \(C\in\mathbf C\) 使 \(F(C)\ne\varnothing\)；</li>
+      <li><strong>共同细化：</strong>对 \(x\in F(C)\)、\(y\in F(D)\)，存在对象 \(E\)、箭头 \(u:C\to E\)、\(v:D\to E\) 与 \(z\in F(E)\)，使 \(F(u)(z)=x\) 且 \(F(v)(z)=y\)；</li>
+      <li><strong>相等化：</strong>对 \(u,v:C\to D\) 与 \(x\in F(C)\)，若 \(F(u)(x)=F(v)(x)\)，则存在 \(w:E\to C\) 与 \(y\in F(E)\)，使 \(F(w)(y)=x\) 且 \(uw=vw\)。</li>
+    </ol>
+    <p>若 \((\mathbf C,J)\) 是 site，进一步要求 \(F\) 是<strong>连续的</strong>：对任一覆盖筛 \(S\in J(C)\) 与 \(x\in F(C)\)，存在 \(f:C'\to C\) 属于 \(S\) 与 \(y\in F(C')\)，使 \(F(f)(y)=x\)。</p>
+  </div>
+
+  <div class="motiv">
+    <span class="lbl">为什么是这三条？</span>
+    滤子函子的三条条件，逐条翻译了"一个几何态射的逆像必须做什么"：第 (1) 条保证 \(F\) 不完全空（逆像不把终对象送到始对象）；第 (2) 条保证任意两个"局部截面"能被推进到共同细化（对应 \(f^\ast\) 保拉回/有限极限）；第 (3) 条保证平行箭头的像若相等，则可在更细处相等化（对应 \(f^\ast\) 保等化子）。连续性条件则说：覆盖筛里的箭头足以"看到" \(F(C)\) 的所有元素——这正是层条件的对偶。三条合起来，恰好是 \(F\) 作为左伴随且左正合所需的全部条件。
+  </div>
+
+  <div class="prop">
+    <span class="lbl">命题 19.2.3（预层拓扑斯的点）</span>
+    <p>设 \(\mathbf C\) 小，则 \(\mathbf{Set}^{\mathbf C^{\mathrm{op}}}\) 的点与 \(\mathbf C\) 上的滤子函子 \(F:\mathbf C\to\mathbf{Set}\) 一一对应。</p>
+    <div class="proof"><span class="pl">证（骨架）.</span>给定点 \(p\)，令 \(F=p^\ast\circ y:\mathbf C\to\mathbf{Set}\)，其中 \(y:\mathbf C\to\mathbf{Set}^{\mathbf C^{\mathrm{op}}}\) 是米田嵌入。因 \(p^\ast\) 保有限极限且 \(y(C)\) 是表示对象，\(F\) 满足定义 19.2.2 的三条：非空来自 \(p^\ast 1=1\ne\varnothing\)；共同细化来自 \(p^\ast\) 保拉回；相等化来自 \(p^\ast\) 保等化子。反之，给定滤子 \(F\)，用米田扩张 \(p^\ast(G)=\varinjlim_{(C,x)\in\int_{\mathbf C}F}G(C)\)（在 \(F\) 的积分范畴上取余极限）定义函子；条件 (1)(2)(3) 保证该余极限保有限极限，且 \(p^\ast\) 有右伴随 \(H\mapsto(\mathbf C(S,-),H)\) 型的构造。两侧互为逆，由米田引理验证。∎</div>
+  </div>
+
+  <div class="prop">
+    <span class="lbl">命题 19.2.4（Diaconescu 定理）</span>
+    <p>设 \((\mathbf C,J)\) 是小 site。则层拓扑斯 \(\mathbf{Sh}(\mathbf C,J)\) 的点与 \(\mathbf C\) 上<strong>连续滤子函子</strong>一一对应。</p>
+    <div class="proof"><span class="pl">证（骨架）.</span>层化函子 \(a:\mathbf{Set}^{\mathbf C^{\mathrm{op}}}\to\mathbf{Sh}(\mathbf C,J)\) 是几何态射的逆像，其右伴随是层的包含 \(i\)。任一 \(p:\mathbf{Set}\to\mathbf{Sh}(\mathbf C,J)\) 复合 \(i\) 给出 \(\mathbf{Set}\to\mathbf{Set}^{\mathbf C^{\mathrm{op}}}\) 的点，由命题 19.2.3 对应滤子函子 \(F\)。因为 \(p^\ast\) 只依赖层化后的值，\(F\) 必满足连续性——否则覆盖筛的像会给出层化中被等同的元素，与 \(F\) 来自层范畴矛盾。反之，连续滤子函子诱导的 \(p^\ast\) 在层化上良定义，给出点。∎</div>
+  </div>
+
+  <h3 class="sub">19.2.3 手把手：三点处的点，四点处的计算</h3>
+
+  <div class="box walk">
+    <h4>③ 手把手：从 \(x\in X\) 造出滤子函子</h4>
+    <ol>
+      <li><strong>设定.</strong>取 site \((\mathcal O(X),J)\)，其中 \(\mathcal O(X)\) 是开集按包含构成的范畴，\(J\) 是通常的开覆盖拓扑。</li>
+      <li><strong>构造.</strong>定义 \(F_x:\mathcal O(X)\to\mathbf{Set}\) 为 \(F_x(U)=\{*\}\) 若 \(x\in U\)，否则 \(F_x(U)=\varnothing\)；包含 \(U\subseteq V\) 送到唯一映射（当 \(x\in U\) 时 \(\{*\}\to\{*\}\)）。</li>
+      <li><strong>验证滤子性.</strong>非空：取 \(U=X\ni x\)。共同细化：若 \(x\in U\) 且 \(x\in V\)，取 \(E=U\cap V\ni x\)，\(u:E\to U\)、\(v:E\to V\) 为包含，\(F_x(E)=\{*\}\) 同时映到两侧 ✓。相等化：\(\mathcal O(X)\) 是偏序，平行箭头相等，条件自动成立 ✓。</li>
+      <li><strong>验证连续性.</strong>若 \(\{U_i\}\) 覆盖 \(U\) 且 \(x\in U\)，则存在 \(i\) 使 \(x\in U_i\)，于是 \(F_x(U_i)=\{*\}\) 映到 \(F_x(U)=\{*\}\) ✓。</li>
+      <li><strong>读出茎.</strong>由 Diaconescu 定理，\(F_x\) 对应点 \(p_x:\mathbf{Set}\to\mathbf{Sh}(X)\)。对层 \(G\)，\(p_x^\ast G=\varinjlim_{x\in U}G(U)=G_x\)——正是 \(G\) 在 \(x\) 处的茎。拓扑斯的点由此严格包含空间的点。</li>
+    </ol>
+  </div>
+
+  <svg class="cd" viewBox="0 0 640 210" role="img" aria-label="Diaconescu 定理的对应关系图">
+    <rect class="node" x="40" y="55" width="210" height="52" rx="7"/>
+    <text class="nt" x="145" y="85" text-anchor="middle">Sh(C, J) 的点</text>
+    <rect class="node2" x="390" y="55" width="210" height="52" rx="7"/>
+    <text class="nt" x="495" y="85" text-anchor="middle">连续滤子函子 C → Set</text>
+    <line class="arb" x1="250" y1="72" x2="388" y2="72"/>
+    <text class="hb" x="319" y="64" text-anchor="middle">Diaconescu</text>
+    <line class="arb" x1="388" y1="92" x2="250" y2="92"/>
+    <text class="hb" x="319" y="110" text-anchor="middle">逆像 ∘ 米田</text>
+    <text class="lb" x="320" y="160" text-anchor="middle">特例：C = O(X), J = 开覆盖 ⟹ 点 ↔ X 的点（X Sober）</text>
+    <text class="lb" x="320" y="185" text-anchor="middle" style="font-size:12px">再特例：J 平凡 ⟹ 预层拓扑斯的点 ↔ 滤子函子</text>
+  </svg>
+  <p class="figcap">图 19.2　Diaconescu 定理：把"点"翻译成"局部截面的相容系统"</p>
+
+  <h3 class="sub">19.2.4 有足够多点</h3>
+
+  <div class="defn">
+    <span class="lbl">定义 19.2.5（足够多点）</span>
+    <p>称拓扑斯 \(\mathcal E\) <strong>有足够多点</strong>，若箭头 \(\alpha:A\to B\) 是同构当且仅当对每个点 \(p\)，\(p^\ast\alpha\) 是同构。</p>
+  </div>
+
+  <div class="prop">
+    <span class="lbl">命题 19.2.6</span>
+    <p>对任意拓扑空间 \(X\)，\(\mathbf{Sh}(X)\) 有足够多点；点由 \(X\) 的点给出。</p>
+    <div class="proof"><span class="pl">证.</span>层射 \(\alpha\) 是同构当且仅当在所有茎 \(\alpha_x\) 上是同构（<strong>14.2</strong>）。而 \(\alpha_x=p_x^\ast\alpha\)，且由 Diaconescu 定理 \(X\) 的每个点给出 \(\mathbf{Sh}(X)\) 的点。反向：对 Sober 空间，\(\mathbf{Sh}(X)\) 的每个点都同构于某个 \(p_x\)（用点在 \(\Omega\) 上的作用恢复唯一不可约闭集，Sober 性给出唯一 \(x\)），故没有"额外的点"会误判。∎</div>
+  </div>
+
+  <div class="cases">
+    <div class="ct">四个例子：点在何处现身</div>
+    <div class="case typ"><b>典型例</b><p><strong>空间.</strong>\(\mathbf{Sh}(X)\) 的点 = \(X\) 的点（\(X\) Sober）。茎 \(F_x\) 就是逆像的值。</p></div>
+    <div class="case deep"><b>本质例</b><p><strong>群.</strong>\(G\) 视作单对象范畴，则 \(\mathbf{B}G=\mathbf{Set}^G\) 的点 = \(G\)-挠子（非空、自由、传递的 \(G\)-集）。滤子函子的三条条件恰好是挠子的三条公理——"非空""共同细化"给出传递性，"相等化"给出自由性。</p></div>
+    <div class="case edge"><b>边界与误解</b><p><strong>无点的拓扑斯.</strong>并非每个拓扑斯都有点。例如某些非 Sober 空间的层范畴、以及由无模型的几何理论分类的拓扑斯，都可能没有点。此时"逐点检验"失效，必须用 Kripke–Joyal 的局部判据（<strong>18.2</strong>）——这正是 KJ 语义比茎语义更强的地方。</p></div>
+    <div class="case use"><b>结构应用</b><p><strong>模型论.</strong>§19.3 会看到：一个几何理论 \(T\) 的分类拓扑斯 \(\mathbf{Set}[T]\) 的点，恰是 \(T\) 在 \(\mathbf{Set}\) 中的模型。于是"点"统一了空间的点与代数结构的模型——Diaconescu 定理是这座桥的第一块石。</p></div>
+  </div>
+
+  <div class="phil">
+    <span class="lbl">Bell 的对照（补充，来源：J. L. Bell, <em>Toposes and Local Set Theories</em>）</span>
+    <p>从局部集合论角度看，一个点 \(p:\mathbf{Set}\to\mathcal E\) 就是给 \(\mathcal E\) 的内部语言提供一种"外部解读"：内部对象 \(A\) 被读成集合 \(p^\ast A\)，内部命题被读成真值 \(\top\) 或 \(\bot\)（因为 \(\mathbf{Set}\) 的 \(\Omega=2\)）。所以"有足够多点"等价于：内部语言中两个对象同构与否，可以由足够多的外部解读判定。这与模型论中"理论的模型决定理论的表达力"是同一件事。</p>
+  </div>
+
+  <div class="box exer">
+    <h4>④ 习题（19.2）</h4>
+    <ol>
+      <li id="ex19-2-1">验证 \(F_x(U)=\{*\}\)（若 \(x\in U\)）满足滤子函子的三条条件与连续性。</li>
+      <li id="ex19-2-2">设 \(G\) 是群，视作单对象范畴。证明滤子函子 \(F:G\to\mathbf{Set}\) 恰是 \(G\)-挠子。</li>
+      <li id="ex19-2-3">证明表示函子 \(\mathbf C(C,-):\mathbf C\to\mathbf{Set}\) 是滤子的，并说明它对应哪个点。</li>
+      <li id="ex19-2-4">设 \(\mathbf C\) 有两个对象 \(0,1\) 与唯一非恒等箭头 \(u:0\to1\)。列出所有滤子函子。</li>
+      <li id="ex19-2-5">证明：若 \(\mathbf{Sh}(\mathbf C,J)\) 有足够多点，则 \(\alpha\)  mono/epi 可由逐点检验判定。</li>
+      <li id="ex19-2-6">解释为什么无点拓扑斯仍可能有"内部点"（即存在从其他拓扑斯出发的几何态射），并举例。</li>
+    </ol>
+  </div>
+
+  <div class="box ans">
+    <h4>⑤ 参考答案（19.2）</h4>
+    <div class="item"><b>19.2.1</b>逐条见 19.2.3 手把手：非空取 \(X\)；共同细化取交 \(U\cap V\)；相等化因 \(\mathcal O(X)\) 是偏序自动成立；连续性因覆盖必有一片含 \(x\)。故 \(F_x\) 是连续滤子函子，对应点 \(p_x\) ✓。</div>
+    <div class="item"><b>19.2.2</b>单对象范畴里 \(F\) 就是一个 \(G\)-集 \(S\)。(1) 非空 ⟹ \(S\ne\varnothing\)。(2) 对 \(a,b\in S\)，存在 \(t\in S\)、\(g,h\in G\) 使 \(g t=a\)、\(h t=b\)；取 \(t=a\)、\(g=e\)、\(h=ba^{-1}\)（在 \(G\) 左作用下），得传递性。(3) 若 \(g a=h a\)，存在 \(k\) 与 \(c\) 使 \(k c=a\) 且 \(gk=hk\)，由 \(k\) 可逆得 \(g=h\)，即作用自由。反之非空自由传递的 \(G\)-集显然满足三条 ✓。</div>
+    <div class="item"><b>19.2.3</b>表示函子 \(\mathbf C(C,-)\) 非空（取恒等箭头）；共同细化由拉回给出（若 \(x:C\to D\)、\(y:C\to E\)，取 \(D\times_CE\) 与投影的复合）；相等化由等化子给出。它对应的点是预层拓扑斯的"表示点" \(p_C\)，\(p_C^\ast G=G(C)\)（由米田引理）✓。</div>
+    <div class="item"><b>19.2.4</b>滤子函子 \(F\) 由集合 \(F(0),F(1)\) 与映射 \(F(u):F(1)\to F(0)\) 组成。三条条件化简为：(1) \(F(0)\ne\varnothing\) 或 \(F(1)\ne\varnothing\)；由 \(u\) 的存在，若 \(F(0)\ne\varnothing\) 不保证 \(F(1)\ne\varnothing\)，但共同细化要求两处元素有共同原像：取 \(a\in F(0)\)、\(b\in F(1)\)，需 \(E\) 与箭头到 \(0,1\)。到 \(0\) 的箭头只能是 \(\mathrm{id}_0\) 或 \(u\circ(\text{到 }1)\)；到 \(1\) 只有 \(\mathrm{id}_1\)。故需 \(c\in F(1)\) 使 \(F(u)(c)=a\) 且 \(c=b\)，即 \(F(u)\) 满。相等化条件因无平行非恒等箭头自动成立。故滤子函子 = \(F(1)\ne\varnothing\) 且 \(F(u):F(1)\to F(0)\) 满射 ✓。</div>
+    <div class="item"><b>19.2.5</b>由 19.2.6，\(\alpha\) 同构 ⟺ 逐点同构。\(\alpha\) mono ⟺ 逐点 mono：若 \(\alpha\) mono 则逐点 mono（逆像保 mono）；反之若逐点 mono 且 \(\alpha\circ\beta=\alpha\circ\gamma\)，则逐点相等，由足够多点得 \(\beta=\gamma\)。epi 同理由足够多点与"逐点 epi ⟹ 逐点同构的余等化子判定"推出 ✓。</div>
+    <div class="item"><b>19.2.6</b>内部点是任意 \(p:\mathcal F\to\mathcal E\) 的几何态射，\(\mathcal F\) 不必是 \(\mathbf{Set}\)。例如无点拓扑斯 \(\mathbf{Sh}(X)\)（\(X\) 无可辨点）仍接受来自 \(\mathbf{Set}[T]\) 的几何态射（若 \(\mathbf{Set}[T]\) 有模型）；更典型地，\(\mathcal E\) 总有恒等态射 \(\mathcal E\to\mathcal E\) 作为"泛内部点"。这说明"点"是相对于基拓扑斯的概念，换基就换出新的点 ✓。</div>
+  </div>
+</section>
+<section class="sec" id="s19-3">
+  <div class="sec-h"><span class="sec-no">19.3</span><h2>分类拓扑斯与对象分类子</h2><span class="src">M Ch.VIII §3–4</span></div>
+
+  <div class="box learn">
+    <h4>① 本节学习目标</h4>
+    <ol>
+      <li>从拓扑学的分类空间 \(BG\) 与挠子出发，说出分类拓扑斯的定义与泛性质；</li>
+      <li>证明分类拓扑斯在等价意义下唯一，并说明"模型 = 几何态射"这一对应为何是 2-自然的；</li>
+      <li>构造对象分类子 \(\mathbf{Set}[\mathbb O]\cong\mathbf{Set}^{\mathbf{FinSet}^{\mathrm{op}}}\)，验证其泛性质；</li>
+      <li>在 \(\mathbf{Sh}(X)\) 中用点来理解分类拓扑斯的模型；</li>
+      <li>理解 Caramello 的"桥"：同一理论的不同呈现给出同一分类拓扑斯的不同 site，从而连通不同数学领域。</li>
+    </ol>
+  </div>
+
+  <div class="xref"><strong>沿用前文（不再复述）.</strong>拓扑空间的点、滤子函子与 Diaconescu 定理（<strong>19.2</strong>）；site、层化与几何态射（<strong>15、19.1</strong>）；挠子与群作用（<strong>18.2、19.2</strong>）；米田引理（<strong>6.4</strong>）。</div>
+
+  <div class="box prep">
+    <h4>极简回顾（五分钟）</h4>
+    <p><strong>1. 拓扑学的分类空间.</strong>对拓扑群 \(G\)，存在空间 \(BG\) 使 \(X\) 上的主 \(G\)-丛同构类 \(\cong[X,BG]\)（同伦类）。"分类"的意思是：研究所有 \(G\)-丛，等价于研究到单个空间 \(BG\) 的映射。</p>
+    <p><strong>2. 代数几何的类比.</strong>对环 \(R\)，\(\operatorname{Spec}R\) 上的模的同构类也可由到某个"模空间"的映射分类。拓扑斯理论把这两类现象抽象成同一个模式。</p>
+    <p><strong>3. 本节要跨的一步.</strong>把"分类空间"换成"分类拓扑斯"，把"同伦类"换成"几何态射"，把"主丛"换成"理论的模型"。这一步之所以能跨，是因为几何态射提供了比同伦更精细、又比同构更灵活的比较方式。</p>
+  </div>
+
+  <h3 class="sub">19.3.1 从分类空间到分类拓扑斯</h3>
+
+  <div class="defn">
+    <span class="lbl">定义 19.3.1（分类拓扑斯）</span>
+    <p>设 \(T\) 是一个（几何）理论。一个<strong>分类拓扑斯</strong> \(\mathbf{Set}[T]\) 是满足如下泛性质的拓扑斯：对任意拓扑斯 \(\mathcal E\)，有自然的等价（2-范畴意义下）</p>
+    <p class="math">\[\mathbf{Geom}\big(\mathcal E,\mathbf{Set}[T]\big)\;\simeq\;T\text{-}\mathbf{Mod}(\mathcal E),\]</p>
+    <p>右边是 \(T\) 在 \(\mathcal E\) 中的模型构成的范畴（模型间的同态）。等价对 \(\mathcal E\) 自然。</p>
+  </div>
+
+  <div class="prop">
+    <span class="lbl">命题 19.3.2（唯一性）</span>
+    <p>若 \(\mathcal B,\mathcal B'\) 都是 \(T\) 的分类拓扑斯，则 \(\mathcal B\simeq\mathcal B'\)（作为拓扑斯等价）。</p>
+    <div class="proof"><span class="pl">证.</span>在泛性质中取 \(\mathcal E=\mathcal B'\)，得几何态射 \(f:\mathcal B'\to\mathcal B\) 对应 \(\mathcal B'\) 中的泛模型；对称地得 \(g:\mathcal B\to\mathcal B'\)。取 \(\mathcal E=\mathcal B\) 与 \(\mathcal B'\)，由自然性验证 \(fg\cong\mathrm{id}\)、\(gf\cong\mathrm{id}\)。这是表示对象的标准唯一性论证（米田引理的 2-范畴版本）。∎</div>
+  </div>
+
+  <div class="rmk"><strong>几何态射的方向.</strong>注意泛性质里几何态射是 \(\mathcal E\to\mathbf{Set}[T]\)，方向朝向分类拓扑斯。这与分类空间 \([X,BG]\) 的方向一致：模型在 \(\mathcal E\) 中，而"分类者"是被映射到的那个对象。</div>
+
+  <h3 class="sub">19.3.2 对象分类子</h3>
+
+  <div class="prop">
+    <span class="lbl">命题 19.3.3（对象分类子）</span>
+    <p>设 \(\mathbb O\) 是"一个对象"的理论（一个类型、无公理、无运算）。则</p>
+    <p class="math">\[\mathbf{Set}[\mathbb O]\;\cong\;\mathbf{Set}^{\mathbf{FinSet}^{\mathrm{op}}},\]</p>
+    <p>即有限集范畴对偶上的预层拓扑斯。其泛模型是表示函子 \(\mathcal U=y(1):\mathbf{FinSet}^{\mathrm{op}}\to\mathbf{Set}\)，\(\mathcal U(n)=n\)。</p>
+    <div class="proof"><span class="pl">证.</span>由 Diaconescu 定理（<strong>19.2</strong>），几何态射 \(\mathcal E\to\mathbf{Set}^{\mathbf{FinSet}^{\mathrm{op}}}\) 对应左正合函子 \(\mathbf{FinSet}\to\mathcal E\)。而 \(\mathbf{FinSet}^{\mathrm{op}}\) 是由一个对象在有限积下自由生成的范畴，故保有限积的函子 \(\mathbf{FinSet}\to\mathcal E\) 由 \(1\) 的像 \(A\in\mathcal E\) 唯一决定（\(n\mapsto A^n\)），且左正合性在 \(\mathbf{FinSet}\) 上自动满足（所有有限极限可由有限积与等化子构造，而 \(\mathbb O\) 无公理，等化子条件为空）。于是 \(\mathbf{Geom}(\mathcal E,\mathbf{Set}[\mathbb O])\simeq\mathcal E\simeq\mathbb O\text{-}\mathbf{Mod}(\mathcal E)\)，泛性质成立 ✓。泛模型 \(\mathcal U=y(1)\) 在 \(n\) 处的值为 \(\mathbf{FinSet}(1,n)\cong n\)，故 \(\mathcal U(n)=n\) ✓。</div>
+  </div>
+
+  <div class="cases">
+    <div class="ct">四个例子：分类拓扑斯的具体面目</div>
+    <div class="case typ"><b>典型例</b><p><strong>群挠子.</strong>\(G\) 的挠子理论由 \(\mathbf{B}G=\mathbf{Set}^{G^{\mathrm{op}}}\) 分类（M&amp;M Ch.VIII §2）。\(\mathcal E\) 中 \(G\)-挠子的同构类，等于几何态射 \(\mathcal E\to\mathbf{B}G\) 的同构类。特别地 \(\mathcal E=\mathbf{Set}\) 时，点 \(\mathbf{Set}\to\mathbf{B}G\) 对应通常的 \(G\)-挠子。</p></div>
+    <div class="case deep"><b>本质例</b><p><strong>环.</strong>交换环的理论由 \(\mathbf{Set}^{\mathbf{Ring}_{\mathrm{fp}}^{\mathrm{op}}}\) 分类（M&amp;M Ch.VIII §5），其中 \(\mathbf{Ring}_{\mathrm{fp}}\) 是有限表示环范畴。原因：有限表示环是有限可 Present 的模型，任何环都是它们的滤余极限；左正合函子由其在生成元上的值决定。</p></div>
+    <div class="case edge"><b>边界与误解</b><p><strong>局部环.</strong>若把"环"换成"局部环"，分类拓扑斯不再是预层拓扑斯，而是 \(\mathbf{Sh}(\mathbf{Ring}_{\mathrm{fp}}^{\mathrm{op}},J_{\mathrm{Zar}})\)——Zariski 拓扑上的层（M&amp;M Ch.VIII §6）。这说明<strong>理论的公理直接决定了 site 上的拓扑</strong>，不是可有可无的装饰。</p></div>
+    <div class="case use"><b>结构应用</b><p><strong>线性序.</strong>单对象、无公理、带首尾不同元素的线性序理论，其分类拓扑斯是单纯集范畴 \(\mathbf{sSet}\)（M&amp;M Ch.VIII §7–8）。这说明分类拓扑斯可以非常"具体"：一个熟悉的组合范畴就是某个理论的分类者。</p></div>
+  </div>
+
+  <h3 class="sub">19.3.3 手把手：在 \(\mathbf{Sh}(X)\) 里读模型</h3>
+
+  <div class="box walk">
+    <h4>③ 手把手：一个几何态射就是一个 \(X\) 上的对象</h4>
+    <ol>
+      <li><strong>设定.</strong>取 \(T=\mathbb O\)（对象的理论），\(\mathcal E=\mathbf{Sh}(X)\)。则 \(\mathbb O\)-模型就是 \(\mathbf{Sh}(X)\) 中的一个层 \(F\)。</li>
+      <li><strong>正向.</strong>给定层 \(F\)，定义 \(f^\ast:\mathbf{Set}^{\mathbf{FinSet}^{\mathrm{op}}}\to\mathbf{Sh}(X)\) 为 \(f^\ast(G)=\varinjlim_{n}(G(n)\times F^n)\) 的适当层化；这是左正合左伴随，故给出几何态射 \(f:\mathbf{Sh}(X)\to\mathbf{Set}[\mathbb O]\)。可验证 \(f^\ast\mathcal U=F\)。</li>
+      <li><strong>反向.</strong>给定几何态射 \(f\)，取 \(F=f^\ast\mathcal U\)。由泛性质，\(\mathcal U\) 是泛模型，\(F\) 就是 \(\mathbf{Sh}(X)\) 中对应的模型。</li>
+      <li><strong>检查.</strong>两侧互逆：由米田引理与 \(\mathbf{FinSet}^{\mathrm{op}}\) 自由生成性，从 \(F\) 重建的 \(f^\ast\) 与原来的同构 ✓。</li>
+      <li><strong>读出意义.</strong>于是"\(\mathbf{Sh}(X)\) 中所有层"这个巨大范畴，被压缩成"到 \(\mathbf{Set}[\mathbb O]\) 的几何态射"这一个 Hom-范畴。分类拓扑斯把一个理论的所有模型装进一个拓扑斯里。</li>
+    </ol>
+  </div>
+
+  <svg class="cd" viewBox="0 0 640 220" role="img" aria-label="分类拓扑斯的泛性质：模型范畴与几何态射范畴等价">
+    <rect class="node" x="40" y="55" width="210" height="56" rx="7"/>
+    <text class="nt" x="145" y="88" text-anchor="middle">T-Mod(E)</text>
+    <rect class="node2" x="390" y="55" width="210" height="56" rx="7"/>
+    <text class="nt" x="495" y="88" text-anchor="middle">Geom(E, Set[T])</text>
+    <line class="arb" x1="250" y1="72" x2="388" y2="72"/>
+    <text class="hb" x="319" y="62" text-anchor="middle">泛性质</text>
+    <line class="arb" x1="388" y1="96" x2="250" y2="96"/>
+    <text class="hb" x="319" y="115" text-anchor="middle">取回泛模型</text>
+    <text class="lb" x="320" y="155" text-anchor="middle">特例 E = Set：T 的模型 ↔ Set[T] 的点</text>
+    <text class="lb" x="320" y="180" text-anchor="middle" style="font-size:12px">T = 对象的理论：Set[O] = Set^{FinSetᵒᵖ}，模型 = 对象</text>
+  </svg>
+  <p class="figcap">图 19.3　分类拓扑斯的泛性质：把"模型"翻译成"几何态射"</p>
+
+  <h3 class="sub">19.3.4 Caramello 的桥</h3>
+
+  <div class="phil">
+    <span class="lbl">同一理论，多个 site（来源：Olivia Caramello, <em>Theories, Sites, Toposes</em>）</span>
+    <p>Caramello 把分类拓扑斯的泛性质读成一个更强的结论：<strong>理论 \(T\) 的分类拓扑斯 \(\mathbf{Set}[T]\) 可以由许多不同的 site 呈现，而每一种呈现就是 \(T\) 的一门"语法"。</strong>例如对象的理论既可由 \(\mathbf{FinSet}^{\mathrm{op}}\)（平凡拓扑）呈现，也可由其他等价 site 呈现；局部环的理论由 Zariski site 呈现，也可由别的 site 呈现。当两个理论 \(T,S\) 的分类拓扑斯之间存在几何态射或等价时，就有一座<strong>拓扑斯理论的桥</strong>：可以把 \(T\) 的模型论性质翻译成 \(S\) 的模型论性质，把一边的一致性/独立性结果搬到另一边。这一视角把本章的几何态射、§19.2 的点、以及第 18 章的力迫串成一条线——它们全都是同一座桥的不同过法。</p>
+  </div>
+
+  <div class="box exer">
+    <h4>④ 习题（19.3）</h4>
+    <ol>
+      <li id="ex19-3-1">陈述分类拓扑斯的泛性质，并用它证明唯一性。</li>
+      <li id="ex19-3-2">证明 \(\mathbf{Set}[\mathbb O]\cong\mathbf{Set}^{\mathbf{FinSet}^{\mathrm{op}}}\)。</li>
+      <li id="ex19-3-3">说明为什么群 \(G\) 的分类拓扑斯是 \(\mathbf{Set}^{G^{\mathrm{op}}}\)，并写出 \(\mathcal E=\mathbf{Set}\) 时的点。</li>
+      <li id="ex19-3-4">解释"环"与"局部环"的分类拓扑斯为何不同，Zariski 拓扑在这里起什么作用。</li>
+      <li id="ex19-3-5">用 Diaconescu 定理说明：\(\mathbf{Set}[\mathbb O]\) 的点恰是集合。</li>
+      <li id="ex19-3-6">（研究问题）按 Caramello 的观点，说明两个理论的几何态射如何给出模型范畴之间的函子。</li>
+    </ol>
+  </div>
+
+  <div class="box ans">
+    <h4>⑤ 参考答案（19.3）</h4>
+    <div class="item"><b>19.3.1</b>泛性质：\(\mathbf{Geom}(\mathcal E,\mathbf{Set}[T])\simeq T\text{-}\mathbf{Mod}(\mathcal E)\)，对 \(\mathcal E\) 自然。唯一性：若 \(\mathcal B,\mathcal B'\) 皆满足，取 \(\mathcal E=\mathcal B'\) 得 \(f:\mathcal B'\to\mathcal B\)，取 \(\mathcal E=\mathcal B\) 得 \(g:\mathcal B\to\mathcal B'\)，由自然性得 \(fg\cong\mathrm{id}_{\mathcal B}\)、\(gf\cong\mathrm{id}_{\mathcal B'}\)（米田论证）✓。</div>
+    <div class="item"><b>19.3.2</b>由 Diaconescu，\(\mathbf{Geom}(\mathcal E,\mathbf{Set}^{\mathbf{FinSet}^{\mathrm{op}}})\simeq\{\text{左正合 }\mathbf{FinSet}\to\mathcal E\}\)。\(\mathbf{FinSet}^{\mathrm{op}}\) 由 \(1\) 在有限积下自由生成，故这样的函子由 \(A=f^\ast(1)\) 唯一决定。于是该 Hom-范畴 \(\simeq\mathcal E\simeq\mathbb O\text{-}\mathbf{Mod}(\mathcal E)\)，满足泛性质，故同构于 \(\mathbf{Set}[\mathbb O]\) ✓。</div>
+    <div class="item"><b>19.3.3</b>\(G\) 的单对象范畴表示群，\(\mathbf{Set}^{G^{\mathrm{op}}}\) 上的点由连续滤子函子给出，恰是 \(G\)-挠子（<strong>19.2.2</strong>）；挠子的理论由该拓扑斯分类（M&amp;M Ch.VIII §2）。\(\mathcal E=\mathbf{Set}\) 时，点 \(\mathbf{Set}\to\mathbf{B}G\) 就是通常的 \(G\)-挠子（非空自由传递 \(G\)-集）✓。</div>
+    <div class="item"><b>19.3.4</b>"环"理论的模型是任意环；"局部环"额外要求唯一极大理想，这是一条非几何的（蕴含存在唯一）条件，需先几何化为"每个元素或其逆可逆"的覆盖条件。Zariski 拓扑正是编码这种"局部可逆"的 site 结构：覆盖由有限个主开集 \(D(f_i)\) 构成且 \(\sum f_i=1\)，它把"局部环"的几何内容装进层条件。故两者分类拓扑斯不同 ✓。</div>
+    <div class="item"><b>19.3.5</b>由 Diaconescu，\(\mathbf{Set}[\mathbb O]\) 的点 = 连续滤子函子 \(\mathbf{FinSet}^{\mathrm{op}}\to\mathbf{Set}\)。因 \(\mathbf{FinSet}^{\mathrm{op}}\) 由 \(1\) 自由生成且滤子函子左正合，这样的函子由 \(F(1)\) 唯一决定，即一个集合。故点 \(\cong\) 集合，与 \(\mathbf{Set}[\mathbb O]\) 分类"对象"一致 ✓。</div>
+    <div class="item"><b>19.3.6</b>设 \(f:\mathbf{Set}[T]\to\mathbf{Set}[S]\) 是几何态射。对任意 \(\mathcal E\) 与 \(T\)-模型 \(M\)（即 \(g:\mathcal E\to\mathbf{Set}[T]\)），复合 \(f\circ g:\mathcal E\to\mathbf{Set}[S]\) 给出 \(S\)-模型。这定义了函子 \(T\text{-}\mathbf{Mod}(\mathcal E)\to S\text{-}\mathbf{Mod}(\mathcal E)\)，对 \(\mathcal E\) 自然——这就是 Caramello 所说的"桥"在模型范畴层面的实现。∎</div>
+  </div>
+</section>
+<footer>
+  <p><a href="范畴论-逻辑-拓扑斯_教材总目录.html">← 返回总目录</a> ｜ 上一章：<a href="范畴论-逻辑-拓扑斯_教材第18章.html">第 18 章 拓扑斯与逻辑</a> ｜ 下一章：<a href="范畴论-逻辑-拓扑斯_教材第20章.html">第 20 章 局部性拓扑斯</a></p>
+  <p>本章对应 Mac Lane &amp; Moerdijk, <em>Sheaves in Geometry and Logic</em>, Chapter VII（§1 几何态射与基本例子、§4 嵌入与满射、§5 点、§6 滤子函子）与 Chapter VIII（§2 挠子、§3 分类拓扑斯、§4 对象分类子、§5–8 环／局部环／单纯集的分类）。进阶参考 P. T. Johnstone, <em>Sketches of an Elephant</em>（2-范畴层面的几何态射与分类拓扑斯）、O. Caramello, <em>Theories, Sites, Toposes</em>（topos-theoretic bridges 与同一理论的多 site 呈现）、J. L. Bell, <em>Toposes and Local Set Theories</em>（点与局部集合论的对照）。公式由 MathJax 渲染。每节核心概念配"典型例 / 本质例 / 边界与误解 / 结构应用"四类例子。</p>
+</footer>
+
+</div>
+</body>
+</html>

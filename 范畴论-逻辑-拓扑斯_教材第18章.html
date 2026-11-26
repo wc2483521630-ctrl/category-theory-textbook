@@ -1,0 +1,970 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>第 18 章 拓扑斯与逻辑（Ch. VI）—— 三书递进自学教材</title>
+<script>
+window.MathJax = {
+  tex: {
+    inlineMath: [['\\(','\\)']], displayMath: [['\\[','\\]']], processEscapes: true,
+    macros: {
+      llbracket: '\\lbrack\\lbrack',
+      rrbracket: '\\rbrack\\rbrack'
+    }
+  },
+  options: { ignoreHtmlClass: 'no-tex' },
+  svg: { fontCache: 'global' }
+};
+</script>
+<script async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
+<style>
+  :root{
+    --bg:#f6f7f9; --card:#fff; --ink:#1b1f27; --ink2:#4d5461; --ink3:#7a8190;
+    --line:#e5e8ed; --soft:#f0f2f5;
+    --c1:#2563eb; --c1bg:#eef4ff; --gold:#b45309; --goldbg:#fdf3e3;
+    --ok:#15803d; --okbg:#eefaf1; --phil:#7c3aed; --philbg:#f6f1ff;
+    --teal:#0d9488; --tealbg:#eefaf7; --walk:#b45309;
+    --radius:12px;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;
+    line-height:1.75;-webkit-font-smoothing:antialiased;}
+  .wrap{max-width:920px;margin:0 auto;padding:0 22px 80px;}
+
+  header.top{padding:34px 0 22px;border-bottom:1px solid var(--line);margin-bottom:26px;}
+  .breadcrumb{font-size:12.5px;color:var(--ink3);margin-bottom:10px;}
+  .breadcrumb a{color:var(--c1);text-decoration:none;}
+  h1{font-size:29px;margin:0 0 8px;letter-spacing:-.02em;}
+  .lede{color:var(--ink2);font-size:14.5px;margin:0 0 16px;}
+  .jump{display:flex;gap:8px;flex-wrap:wrap;}
+  .jump a{font-size:12.5px;font-weight:650;text-decoration:none;color:var(--ink2);
+    background:var(--card);border:1px solid var(--line);border-radius:99px;padding:6px 13px;}
+  .jump a:hover{border-color:var(--c1);color:var(--c1);}
+
+  section.sec{margin:0 0 52px;scroll-margin-top:16px;}
+  .sec-h{display:flex;align-items:baseline;gap:12px;border-bottom:2px solid var(--c1);padding-bottom:10px;margin-bottom:22px;}
+  .sec-no{font-size:13px;font-weight:800;color:#fff;background:var(--c1);border-radius:7px;padding:3px 10px;white-space:nowrap;}
+  .sec-h h2{font-size:22px;margin:0;letter-spacing:-.01em;}
+  .src{font-size:11.5px;color:var(--ink3);margin-left:auto;white-space:nowrap;}
+
+  .box{border-radius:var(--radius);padding:16px 20px;margin:18px 0;border:1px solid var(--line);}
+  .box h4{margin:0 0 10px;font-size:14px;letter-spacing:.01em;}
+
+  .learn{background:var(--c1bg);border-color:#cfe0ff;}
+  .learn h4{color:var(--c1);}
+  .learn ol{margin:0;padding-left:22px;} .learn li{margin:4px 0;font-size:14px;}
+
+  .prep{background:var(--tealbg);border-color:#bfe9dd;}
+  .prep h4{color:var(--teal);}
+  .prep p{font-size:13.5px;color:#115e59;margin:8px 0;}
+  .prep ol,.prep ul{margin:8px 0;padding-left:22px;font-size:13.5px;color:#115e59;}
+  .prep li{margin:5px 0;}
+
+  .defn{background:#fafbfc;border-left:4px solid var(--ink2);padding:14px 18px;margin:16px 0;border-radius:0 10px 10px 0;}
+  .defn .lbl{font-weight:800;font-size:13.5px;color:var(--ink);}
+  .prop{background:#fbfcfe;border:1px solid #dbe6f8;border-left:4px solid var(--c1);padding:14px 18px;margin:16px 0;border-radius:0 10px 10px 0;}
+  .prop .lbl{font-weight:800;font-size:13.5px;color:var(--c1);}
+  .rmk{font-size:13.5px;color:var(--ink2);background:var(--soft);padding:11px 16px;border-radius:9px;margin:12px 0;}
+  .xref{font-size:13px;color:#115e59;background:var(--tealbg);border-left:3px solid var(--teal);padding:9px 14px;border-radius:0 8px 8px 0;margin:12px 0;}
+
+  .proof{margin:10px 0 4px;padding-left:16px;border-left:2px solid var(--line);font-size:14px;color:var(--ink2);}
+  .proof .pl{font-weight:700;color:var(--ink);}
+  .qed{float:right;font-style:normal;color:var(--ink3);}
+
+  .exer{background:var(--goldbg);border-color:#f2dfbb;}
+  .exer h4{color:var(--gold);}
+  .exer .grp{font-size:12.5px;font-weight:750;color:var(--gold);margin:12px 0 4px;}
+  .exer ol{margin:0;padding-left:22px;} .exer li{margin:9px 0;font-size:14px;}
+
+  .ans{background:var(--okbg);border-color:#c9ecd3;}
+  .ans h4{color:var(--ok);}
+  .ans .item{margin:14px 0 18px;font-size:14px;}
+  .ans .item:last-child{margin-bottom:0;}
+  .ans .item b{color:var(--ok);}
+  .ans .proof{border-left-color:#bfe6c9;}
+
+  .phil{background:var(--philbg);border-color:#e3d5ff;}
+  .phil h4{color:var(--phil);}
+  .phil p{font-size:14px;color:#5b3a8e;margin:8px 0;}
+
+  .walk{background:#fffbeb;border-color:#fde68a;}
+  .walk h4{color:var(--walk);}
+  .walk p,.walk li{font-size:13.5px;color:#78350f;}
+  .walk ol,.walk ul{margin:8px 0;padding-left:22px;}
+  .walk table{border-collapse:collapse;width:100%;font-size:13px;margin:10px 0;}
+  .walk th,.walk td{border:1px solid #fcd34d;padding:7px 9px;text-align:left;vertical-align:top;}
+  .walk th{background:#fef3c7;color:#78350f;}
+
+  h3.sub{font-size:16px;margin:26px 0 6px;color:var(--ink);}
+  p{margin:9px 0;} .math{overflow-x:auto;}
+
+  .figcap{font-size:12.5px;color:var(--ink3);margin:2px 0 12px;text-align:center;font-style:italic;}
+  .figdesc{font-size:13px;color:var(--ink2);background:var(--soft);padding:10px 15px;border-radius:8px;margin:6px 0 12px;}
+
+  footer{border-top:1px solid var(--line);margin-top:30px;padding-top:20px;font-size:13px;color:var(--ink3);}
+  footer a{color:var(--c1);text-decoration:none;}
+
+  @media(max-width:640px){
+    h1{font-size:23px;} .wrap{padding:0 14px 60px;}
+    .sec-h{flex-wrap:wrap;} .src{margin-left:0;}
+    .box{padding:14px 15px;}
+  }
+  @media print{body{background:#fff;}.jump{display:none;}.box{break-inside:avoid;}}
+  /* ---- 范畴交换图 SVG（浅色主题）---- */
+  svg.cd{display:block;margin:16px auto 2px;max-width:100%;height:auto;
+    font-family:"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;}
+  svg.cd rect.node{fill:#eef4ff;stroke:#2563eb;stroke-width:1.5;rx:7;}
+  svg.cd rect.node2{fill:#f6f1ff;stroke:#7c3aed;stroke-width:1.5;rx:7;}
+  svg.cd rect.nodeg{fill:#eefaf1;stroke:#15803d;stroke-width:1.5;rx:7;}
+  svg.cd rect.nodey{fill:#fdf3e3;stroke:#b45309;stroke-width:1.5;rx:7;}
+  svg.cd text.nt{fill:#1b1f27;font-size:13.5px;font-weight:600;}
+  svg.cd text.lb{fill:#334155;font-size:12.5px;}
+  svg.cd text.hb{fill:#2563eb;font-size:12.5px;font-weight:600;}
+  svg.cd text.hg{fill:#15803d;font-size:12.5px;font-weight:600;}
+  svg.cd text.hp{fill:#7c3aed;font-size:12.5px;font-weight:600;}
+  svg.cd line.ar,svg.cd path.ar{stroke:#475569;stroke-width:1.6;fill:none;marker-end:url(#cdArr);}
+  svg.cd line.arb,svg.cd path.arb{stroke:#2563eb;stroke-width:1.8;fill:none;marker-end:url(#cdArrB);}
+  svg.cd line.arg,svg.cd path.arg{stroke:#15803d;stroke-width:1.8;fill:none;marker-end:url(#cdArrG);}
+  svg.cd line.arp,svg.cd path.arp{stroke:#7c3aed;stroke-width:1.8;fill:none;marker-end:url(#cdArrP);}
+  svg.cd line.ard,svg.cd path.ard{stroke:#475569;stroke-width:1.5;fill:none;stroke-dasharray:5 4;marker-end:url(#cdArr);}
+  svg.cd line.noa{stroke:#475569;stroke-width:1.5;fill:none;stroke-dasharray:5 4;}
+
+  /* ---- 四类例子深度组件（本章新增，落实用户"每概念四类例"要求）---- */
+  .cases{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:6px 20px 14px;margin:18px 0;}
+  .cases>.ct{font-size:13.5px;font-weight:800;color:var(--ink);padding:11px 0 4px;border-bottom:1px dashed var(--line);margin-bottom:8px;}
+  .case{padding:9px 0 9px 14px;border-left:3px solid var(--line);margin:8px 0;font-size:13.5px;color:var(--ink2);}
+  .case b{display:inline-block;font-size:12px;padding:1px 9px;border-radius:99px;margin-right:8px;vertical-align:1px;}
+  .case.typ{border-left-color:var(--ok);}       .case.typ b{background:var(--okbg);color:var(--ok);}
+  .case.deep{border-left-color:var(--c1);}      .case.deep b{background:var(--c1bg);color:var(--c1);}
+  .case.edge{border-left-color:#dc2626;}        .case.edge b{background:#fef2f2;color:#dc2626;}
+  .case.use{border-left-color:var(--phil);}     .case.use b{background:var(--philbg);color:var(--phil);}
+  .case p{margin:6px 0;}
+  /* 数学动机框：解释"这个构造解决什么问题" */
+  .motiv{background:#fffbeb;border:1px solid #fde68a;border-left:4px solid #d97706;padding:13px 18px;border-radius:0 10px 10px 0;margin:16px 0;font-size:13.5px;color:#78350f;}
+  .motiv .lbl{font-weight:800;color:#b45309;display:block;margin-bottom:5px;}
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute;width:0;height:0;overflow:hidden" aria-hidden="true">
+<defs>
+  <marker id="cdArr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+    <path d="M 0 0 L 10 5 L 0 10 z" fill="#475569"/>
+  </marker>
+  <marker id="cdArrB" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+    <path d="M 0 0 L 10 5 L 0 10 z" fill="#2563eb"/>
+  </marker>
+  <marker id="cdArrG" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+    <path d="M 0 0 L 10 5 L 0 10 z" fill="#15803d"/>
+  </marker>
+  <marker id="cdArrP" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+    <path d="M 0 0 L 10 5 L 0 10 z" fill="#7c3aed"/>
+  </marker>
+</defs>
+</svg><div class="wrap">
+<header class="top">
+  <div class="kicker">范畴论 · 逻辑 · 拓扑斯 —— 三书递进自学教材</div>
+  <h1>第 18 章　拓扑斯与逻辑（Ch. VI）</h1>
+  <p class="lede">前面三章把拓扑斯"造"出来了：第 16 章给出公理，第 17 章装上局部算子 \(j\)。这一章问一个不同的问题——<strong>一个拓扑斯会"说"什么？</strong>答案是：它自带一门内部语言，其语法由范畴结构生成，其语义由范畴结构解释，二者严格对应。我们将看到逻辑联结词不是外部规定的符号，而是拉回、像、伴随这些范畴构造的投影；Kripke–Joyal 语义把抽象的子对象翻译成"在覆盖上局部成立"的具体判据；而 Cohen 拓扑斯与力迫则表明，这门语言强大到可以重做集合论的独立性证明。本章以 Mac Lane &amp; Moerdijk 第六章为主线，用 Johnstone《Elephant》Part D 补范畴逻辑的严格骨架，Awodey 补语法—语义对应的证明论视角，Low 补内部语言与 Kripke–Joyal 语义的教学过渡，Bell 补布尔值模型与独立性证明的细节。</p>
+
+  <div class="xref">
+    <strong>章首去重说明.</strong>本章反复用到但不重述：内部 Heyting 代数 \(\Omega\) 与 \(\operatorname{Sub}(X)\cong\mathcal E(X,\Omega)\)（<strong>第 16 章 16.1、16.4</strong>）；像分解、切片、\(\Sigma_f\dashv f^\ast\dashv\Pi_f\) 与 Beck–Chevalley（<strong>第 16 章 16.3</strong>）；内部语言的语法与语义、直觉主义原则（<strong>第 11 章 11.2–11.5</strong>）；\(\neg\neg\) 是 LT 拓扑、布尔化 \(\mathcal E_{\neg\neg}\)、\(j\)-层（<strong>第 17 章 17.1、17.2、17.4</strong>）；偏序伴随与量词作为伴随（<strong>第 7 章 7.3、第 13 章 13.5</strong>）。这些只复述关键结论，不重证。
+  </div>
+
+  <div class="phil">
+    <span class="lbl">导读（哲学联系，选读）</span>
+    <p>本章的主线是一句话：<strong>逻辑是范畴结构的影子</strong>。当你说"存在"\((\exists)\)，范畴里发生的是"取像"；当你说"任意"\((\forall)\)，发生的是"取右伴随"；当你说"或"\((\vee)\)，发生的是"取并"；当你说"非"\((\neg)\)，发生的是 Heyting 伪补。逻辑规则之所以是现在这个样子（而不是别的样子），是因为底层范畴结构有这些构造。理解了这一点，直觉主义逻辑不再是一套"人为削弱"的规则，而是"没有布尔补时，剩余结构自然给出的逻辑"；经典逻辑则是在 \(\Omega\) 布尔时多出来的一层。第 18 章要把这句口号变成定理。</p>
+  </div>
+
+  <nav class="jump">
+    <a href="#s18-1">18.1 Mitchell–Bénabou 语言</a>
+    <a href="#s18-2">18.2 Kripke–Joyal 语义</a>
+    <a href="#s18-3">18.3 层语义</a>
+    <a href="#s18-4">18.4 Cohen 拓扑斯与力迫</a>
+    <a href="#s18-5">18.5 选择、布尔化与实数对象</a>
+  </nav>
+</header>
+<section class="sec" id="s18-1">
+  <div class="sec-h"><span class="sec-no">18.1</span><h2>Mitchell–Bénabou 语言：内部语言</h2><span class="src">M Ch.VI §5</span></div>
+
+  <div class="box learn">
+    <h4>① 本节学习目标</h4>
+    <ol>
+      <li>说出内部语言的三层语法（类型、项、公式），并解释为什么"类型 = 对象、项 = 箭头、公式 = 子对象"不是比喻而是严格对应；</li>
+      <li>把七种逻辑构造——\(\wedge,\vee,\Rightarrow,\neg,=,\exists,\forall\)——逐一还原成范畴构造（交、并、Heyting 伪补、伴随、像、对角）；</li>
+      <li>陈述并证明可靠性定理：语法上可证的公式，其解释必为"真"（等于顶子对象）；</li>
+      <li>理解量词为什么是伴随：\(\exists_f\dashv f^\ast\dashv\forall_f\)，并用它解释代入与量词的相容性；</li>
+      <li>在 \(\mathbf{Set}\)、预层范畴、\(\mathbf{Sh}(X)\) 里各演算一遍，看清经典逻辑与直觉主义逻辑的分水岭在哪一步。</li>
+    </ol>
+  </div>
+
+  <div class="xref"><strong>沿用前文（不再复述）.</strong>拓扑斯的定义与 \(\Omega\) 的泛性质（<strong>16.1</strong>）；\(\operatorname{Sub}(X)\cong\mathcal E(X,\Omega)\) 是 Heyting 代数同构、\(\Omega\) 的内部 Heyting 结构（<strong>16.4</strong>）；像分解与三函子伴随（<strong>16.3</strong>）；内部语言的直觉与布尔公理（<strong>11.2–11.4</strong>）。</div>
+
+  <div class="box prep">
+    <h4>极简回顾（五分钟）</h4>
+    <p><strong>1. 命题 = 子对象。</strong>在拓扑斯里，"\(X\) 上的一个命题"不是抽象真值，而是 \(X\) 的一个子对象 \(S\hookrightarrow X\)。由 \(\Omega\) 的泛性质，它又唯一对应一个特征函数 \(\chi_S:X\to\Omega\)。于是三种说法指向同一物：子对象 \(S\)、箭头 \(\chi_S\)、"公式 \(\varphi(x)\) 成立的对象"。</p>
+    <p><strong>2. \(\operatorname{Sub}(X)\) 是 Heyting 代数。</strong>交是拉回、并是并、伪补由 Heyting 伴随 \(a\wedge b\le c\iff b\le(a\Rightarrow c)\) 给出。这说明子对象格自带一套"逻辑运算"。</p>
+    <p><strong>3. 本节要跨的一步。</strong>前两点是代数地看逻辑。现在我们要把它<em>语法化</em>：造一门形式语言，让它的每个类型、每项、每公式都在 \(\mathcal E\) 里有解释，且逻辑联结词的解释恰好是第 2 点的范畴运算。这就是 Mitchell–Bénabou 语言。</p>
+  </div>
+
+  <h3 class="sub">18.1.1 为什么要有一门内部语言</h3>
+
+  <div class="motiv">
+    <span class="lbl">这个构造解决什么问题？</span>
+    在 \(\mathbf{Set}\) 里做数学，我们习惯写"取所有满足 \(P(x)\) 的 \(x\)"、"存在 \(x\) 使……"，这些话有熟悉的集合论意义。但在一个抽象的初等拓扑斯 \(\mathcal E\) 里，对象不是集合、元素不是集合论元素（17 章反复强调只能谈"广义元素" \(1\to X\) 或 \(U\to X\)）。如果每次都要说"取子对象 \(S\hookrightarrow X\)、其特征函数 \(\chi\)、沿箭头拉回、取像……"，推理会笨重到无法进行。内部语言的作用，就是让我们能<strong>像在集合里一样写公式</strong>，同时保证每个公式背后都有一个明确、可还原的范畴对象。它不是装饰性的记号，而是一套有严格可靠性定理的形式系统。
+  </div>
+
+  <div class="defn">
+    <span class="lbl">定义 18.1.1（内部语言 \(L(\mathcal E)\) 的词汇）</span>
+    <p>给定拓扑斯 \(\mathcal E\)，它的内部语言 \(L(\mathcal E)\) 的词汇直接取自 \(\mathcal E\)：</p>
+    <ul>
+      <li><strong>类型</strong>就是 \(\mathcal E\) 的对象 \(A,B,X,\ldots\)；</li>
+      <li><strong>函数符号</strong>就是 \(\mathcal E\) 的箭头 \(f:A\to B\)（零元函数符号即常量 \(c:1\to A\)）；</li>
+      <li><strong>关系符号</strong>就是子对象 \(R\hookrightarrow A_1\times\cdots\times A_n\)（特别地，等号 \(=\) 永远是对象 \(A\) 的对角子对象 \(\Delta_A:A\hookrightarrow A\times A\)）；</li>
+      <li><strong>逻辑联结词</strong> \(\wedge,\vee,\Rightarrow,\neg,\top,\bot\) 与量词 \(\exists x:A,\forall x:A\) 是逻辑常项。</li>
+    </ul>
+    <p>项与公式按通常的一阶语法生成，但带"语境"：写 \(\Gamma\mid t:A\) 表示在语境 \(\Gamma=(x_1:A_1,\ldots,x_n:A_n)\) 下，\(t\) 是类型 \(A\) 的项；写 \(\Gamma\mid\varphi\) 表示同一语境下的公式。</p>
+  </div>
+
+  <div class="rmk"><strong>Awodey 的视角。</strong>Awodey《Introduction to Categorical Logic》强调：内部语言的语法其实是一套<strong>类型化的 λ-演算加逻辑</strong>，它生成的自由范畴正是我们熟悉的笛卡尔闭范畴／拓扑斯。所以"语法 → 语义"不是两个不相干的世界之间搭桥，而是：范畴是语法的代数化，语法是范畴的展示。本章证明的可靠性／完备性，本质是这套对应的两个方向。第 9、10 章的自由 CCC 与函数完备性已在 CCC 层面做过，这里把它升级到带 \(\Omega\) 和量词的层面。</div>
+
+  <h3 class="sub">18.1.2 语义解释：语法 → 范畴</h3>
+
+  <p>解释（interpretation，记号 \(\llbracket-\rrbracket\)）把语法逐层翻译成范畴数据。这是全章最核心的定义，务必逐行读。</p>
+
+  <div class="defn">
+    <span class="lbl">定义 18.1.2（语义解释）</span>
+    <p><strong>语境</strong> \(\Gamma=(x_1:A_1,\ldots,x_n:A_n)\) 解释为积 \(\llbracket\Gamma\rrbracket=A_1\times\cdots\times A_n\)。</p>
+    <p><strong>项</strong> \(\Gamma\mid t:A\) 解释为箭头 \(\llbracket t\rrbracket:\llbracket\Gamma\rrbracket\to A\)，递归定义：变量的解释是投影 \(\pi_i\)；函数符号 \(f\) 作用于项用复合；常量 \(c:1\to A\) 解释为 \(c\circ!_{\Gamma}\)。</p>
+    <p><strong>公式</strong> \(\Gamma\mid\varphi\) 解释为子对象 \(\llbracket\varphi\rrbracket\hookrightarrow\llbracket\Gamma\rrbracket\)（等价地其特征函数 \(\llbracket\Gamma\rrbracket\to\Omega\)），递归定义见下一小节。</p>
+    <p>称公式 \(\varphi\)（在语境 \(\Gamma\) 下）<strong>为真</strong>，若 \(\llbracket\varphi\rrbracket=\llbracket\Gamma\rrbracket\)（顶子对象），记作 \(\mathcal E\models\Gamma\mid\varphi\)。</p>
+  </div>
+
+  <div class="prop">
+    <span class="lbl">命题 18.1.3（联结词的范畴构造）</span>
+    <p>在解释下，逻辑联结词恰好对应 \(\operatorname{Sub}(\llbracket\Gamma\rrbracket)\) 的 Heyting 运算：</p>
+    <p><strong>(a)</strong> \(\llbracket\top\rrbracket=\llbracket\Gamma\rrbracket\)，\(\llbracket\bot\rrbracket=0\hookrightarrow\llbracket\Gamma\rrbracket\)（初始对象）。</p>
+    <p><strong>(b)</strong> \(\llbracket\varphi\wedge\psi\rrbracket=\llbracket\varphi\rrbracket\cap\llbracket\psi\rrbracket\)（拉回／交）。</p>
+    <p><strong>(c)</strong> \(\llbracket\varphi\vee\psi\rrbracket=\llbracket\varphi\rrbracket\cup\llbracket\psi\rrbracket\)（并）。</p>
+    <p><strong>(d)</strong> \(\llbracket\varphi\Rightarrow\psi\rrbracket=(\llbracket\varphi\rrbracket\Rightarrow\llbracket\psi\rrbracket)\)（Heyting 伪补）。</p>
+    <p><strong>(e)</strong> \(\llbracket\neg\varphi\rrbracket=(\llbracket\varphi\rrbracket\Rightarrow 0)\)，即特征函数 \(\neg\circ\chi_{\varphi}\)。</p>
+    <p><strong>(f)</strong> \(\llbracket x=y\rrbracket=\Delta_A\hookrightarrow A\times A\)（对角）。</p>
+  </div>
+
+  <div class="proof">
+    <p class="pl">证明.</p>
+    <p>(a)(b)(c) 直接来自拓扑斯有终／初始对象、有限极限、有限余极限，且这些运算在子对象格上的表现正是交与并（16.4 的格结构）。(d)(e) 来自 \(\Phi_{\llbracket\Gamma\rrbracket}:\operatorname{Sub}(\llbracket\Gamma\rrbracket)\cong\mathcal E(\llbracket\Gamma\rrbracket,\Omega)\) 是 Heyting 代数同构：\(\Rightarrow\) 在两边由同一个 Heyting 伴随刻画，伪补 \(=\varphi\Rightarrow\bot\)。(f) 是等号关系符号的定义——我们在词汇表里就规定 \(=\) 解释为对角。∎</p>
+  </div>
+
+  <div class="rmk"><strong>关键点：公式的真假不是二值的。</strong>\(\llbracket\varphi\rrbracket\) 是子对象，不是 \(\{0,1\}\) 里的一个布尔值。只有在 \(\Gamma=1\)（闭公式、无自由变量）且 \(\mathcal E=\mathbf{Set}\) 时，\(\operatorname{Sub}(1)=\{0,1\}\) 才退化成二值。在一般拓扑斯里，"真"是"等于顶子对象"，而一个公式可以既不真也不假——这正是直觉主义的语义根源，18.1.5 会细讲。</div>
+
+  <h3 class="sub">18.1.3 量词就是伴随</h3>
+
+  <div class="motiv">
+    <span class="lbl">为什么要请出伴随？</span>
+    联结词作用在"同一个语境"的子对象格上，是格内运算。但量词会<strong>改变语境</strong>：\(\exists x:A\,\varphi\) 把语境 \(\Gamma,x:A\) 的公式变成语境 \(\Gamma\) 的公式。所以它不是 \(\operatorname{Sub}(\Gamma\times A)\) 内部的运算，而是两个格之间的映射。第 7 章 7.3 已见偏序情形 \(\exists_f\dashv f^\ast\dashv\forall_f\)；这里在切片层面重演一遍，就得到量词的严格范畴定义。
+  </div>
+
+  <div class="prop">
+    <span class="lbl">命题 18.1.4（量词作为伴随）</span>
+    <p>设 \(f:A\to B\) 是 \(\mathcal E\) 的箭头，拉回函子 \(f^\ast:\mathcal E/B\to\mathcal E/A\) 有左、右伴随（16.3 的基本定理）：</p>
+    \[\Sigma_f\;\dashv\;f^\ast\;\dashv\;\Pi_f.\]
+    <p>把它们限制到子对象格，即得格同态</p>
+    \[\exists_f\;\dashv\;f^\ast\;\dashv\;\forall_f,\qquad \operatorname{Sub}(A)\ \underset{\exists_f}{\overset{f^\ast}{\rightleftarrows}}\ \operatorname{Sub}(B),\]
+    <p>其中 \(f^\ast\) 正是代入（把 \(B\) 上的公式沿 \(f\) 拉到 \(A\) 上）。特别取 \(f=\pi:\Gamma\times A\to\Gamma\)（投影），则</p>
+    <p>\(\llbracket\exists x:A\,\varphi\rrbracket=\exists_\pi(\llbracket\varphi\rrbracket)\)，　\(\llbracket\forall x:A\,\varphi\rrbracket=\forall_\pi(\llbracket\varphi\rrbracket)\)。</p>
+  </div>
+
+  <div class="proof">
+    <p class="pl">证明.</p>
+    <p>只需把 16.3 的三函子伴随限制到子对象：若 \(S\hookrightarrow B\) 是子对象（视为 \(B\) 上的"命题"），则 \(\Sigma_f S\) 是它在 \(A\) 上经 \(f\) 的像，\(\Pi_f S\) 是"纤维整体落入 \(S\)"的那个子对象。伴随关系 \(\operatorname{Sub}(A)(\Sigma_f S,T)\cong\operatorname{Sub}(B)(S,f^\ast T)\) 与 \(\operatorname{Sub}(B)(f^\ast T,S)\cong\operatorname{Sub}(A)(T,\forall_f S)\)（注意伴随方向）说明：\(\exists_f\) 是"最弱的使 \(S\) 在 \(A\) 上成立的命题"，\(\forall_f\) 是"最强的被 \(S\) 蕴含的命题"——正是存在量词与全称量词的泛性质。代入的相容性由 Beck–Chevalley（16.3）保证：先代入后量词 = 先量词后代入（在拉回方块下）。∎</p>
+  </div>
+
+  <div class="cases">
+    <div class="case typ"><b>典型例</b><strong>\(\mathbf{Set}\)。</strong>取 \(f:A\to B\)，\(f^\ast\) 是逆像 \(S\mapsto f^{-1}(S)\)；\(\exists_f(S)=f(S)\)（集合的像）；\(\forall_f(S)=\{b\in B\mid f^{-1}(b)\subseteq S\}\)。代入 \(f^\ast\) 与 \(\exists_f,\forall_f\) 的伴随就是熟悉的一阶逻辑规则 \(\exists x.(P\Rightarrow Q)\iff(\exists x.P\Rightarrow Q)\) 之类（后者需 \(x\) 不在 \(Q\) 中自由出现）。这里 \(\Omega=2\) 布尔，排中律成立。</div>
+    <div class="case deep"><b>本质例</b><strong>\(\mathbf{Set}^{\mathbf C^{op}}\)（预层）。</strong>类型 \(A\) 是预层，公式 \(\varphi\) 是子预层。量词逐对象算：\((\exists x:A\,\varphi)(c)=\{a\in A(c)\mid \varphi(c,a)\}\)（在对象 \(c\) 处的纤维上取存在）；\((\forall x:A\,\varphi)(c)=\{a\in A(c)\mid \text{对所有 }c'\to c,\ \varphi(c',a|_{c'})\}\)。注意全称量词多出一层"对所有后续对象限制仍成立"——这不是外部强加的，而是 \(\Pi_\pi\) 作为右伴随的必然结果，也是直觉主义逻辑"全称必须对一切未来成立"的范畴根源。</div>
+    <div class="case edge"><b>边界与误解</b>高频错误：把 \(\llbracket\exists x:A\,\varphi\rrbracket\) 想成"某个固定 \(a\in A\) 使 \(\varphi(a)\) 成立"。在抽象拓扑斯里没有"固定 \(a\)"这种全局元素——只有广义元素 \(U\to A\)。正确的说法是：\(\exists\) 解释为像 \(\exists_\pi\)，它<strong>局部</strong>由广义元素见证，但不一定有全局见证。这个差别在 18.2 的 Kripke–Joyal 语义里会变成一条明确的 forcing 子句（存在只需在覆盖上见证）。</div>
+    <div class="case use"><b>结构应用</b>Kripke–Joyal 语义的八条 rule 全部可以由本节的定义展开得到：把"\(U\Vdash\varphi\)"定义为"限制到 \(yU\) 后因子穿过 \(\llbracket\varphi\rrbracket\)"，再逐条展开 \(\wedge,\vee,\Rightarrow,\exists,\forall\) 的范畴构造。所以 18.2 不是新理论，而是本节定义的"计算展开式"。</div>
+  </div>
+
+  <h3 class="sub">18.1.4 可靠性定理与语法—语义对应</h3>
+
+  <div class="prop">
+    <span class="lbl">命题 18.1.5（可靠性，soundness）</span>
+    <p>若公式 \(\varphi\) 在内部语言的演算中可由语境 \(\Gamma\) 推出（记作 \(\Gamma\vdash\varphi\)），则 \(\llbracket\varphi\rrbracket=\llbracket\Gamma\rrbracket\)（即为真）。</p>
+  </div>
+
+  <div class="proof">
+    <p class="pl">证明（框架）.</p>
+    <p>对推导树归纳。要证的关键是每条推理规则在解释下保真。例如 <strong>∧-引入</strong>：若 \(\llbracket\varphi\rrbracket=\Gamma=\llbracket\psi\rrbracket\)，则 \(\llbracket\varphi\wedge\psi\rrbracket=\Gamma\cap\Gamma=\Gamma\)。<strong>∃-引入</strong>：若 \(\llbracket\varphi\rrbracket\) 在 \(\Gamma,x:A\) 下为真，则 \(\exists_\pi(\llbracket\varphi\rrbracket)=\exists_\pi(\Gamma\times A)=\Gamma\)（像的泛性质）。<strong>⇒-消去（modus ponens）</strong>：由 Heyting 伴随，\(\llbracket\varphi\rrbracket=\Gamma\) 且 \(\llbracket\varphi\Rightarrow\psi\rrbracket=\Gamma\) 给出 \(\Gamma\le\llbracket\psi\rrbracket\)，而 \(\llbracket\psi\rrbracket\le\Gamma\) 恒成立，故相等。其余规则同理，全部落到 16.3–16.4 的伴随与格运算上。∎</p>
+  </div>
+
+  <div class="rmk"><strong>完备性呢？</strong>内部语言的完全性更微妙：对任意拓扑斯 \(\mathcal E\)，内部语言是否"足以证明所有在 \(\mathcal E\) 中为真的公式"，取决于语言是否包含足够多的常量（每个广义元素都要有名字）。Mitchell–Bénabou 的原始处理与 Elephant D 的严格版本都指出：一旦给语言添加足够的参数（对每个 \(U\to A\) 加常量），可靠性与完备性可以配成一对。这属于证明论细节，本书不展开，但要记住方向：可靠性"语法 ⇒ 语义"总成立，完备性"语义 ⇒ 语法"需要语言足够丰富。</div>
+
+  <h3 class="sub">18.1.5 经典逻辑与直觉主义的分水岭</h3>
+
+  <p>现在回答本节开头的问题：经典逻辑与直觉主义逻辑在拓扑斯里的差别，具体落在哪一步？</p>
+
+  <div class="prop">
+    <span class="lbl">命题 18.1.6（排中律的范畴刻画）</span>
+    <p>下列条件等价：</p>
+    <p><strong>(a)</strong> 内部语言满足排中律 \(\varphi\vee\neg\varphi=\top\)（对所有公式）；</p>
+    <p><strong>(b)</strong> \(\Omega\) 是布尔代数，即 \(\neg\neg=\mathrm{id}_\Omega\)；</p>
+    <p><strong>(c)</strong> 拓扑斯 \(\mathcal E\) 是布尔的（16.4 的判别准则）。</p>
+  </div>
+
+  <div class="proof">
+    <p class="pl">证明.</p>
+    <p>(b)⇔(c) 是 16.4 已证的判别准则。(a)⇔(b)：若排中律对所有公式成立，取语境 \(1\)、公式对应于 \(\Omega\) 的广义元素 \(p:1\to\Omega\)（更一般地取 \(\Gamma=\Omega\)、\(\varphi\) 为恒等特征函数），则 \(p\vee\neg p=\top\) 说明 \(\Omega\) 中每元满足 \(p\vee\neg p=\top\)，即布尔。反之若 \(\Omega\) 布尔，则 \(\operatorname{Sub}(\Gamma)\cong\mathcal E(\Gamma,\Omega)\) 是布尔代数的同构像，故 \(\varphi\vee\neg\varphi=\top\)。∎</p>
+  </div>
+
+  <div class="cases">
+    <div class="case typ"><b>典型例</b>\(\mathbf{Set}\)：\(\Omega=2=\{0,1\}\) 布尔，排中律、双重否定消去 \(\neg\neg\varphi\Rightarrow\varphi\)、De Morgan 律全部成立——这是熟悉的经典逻辑。</div>
+    <div class="case deep"><b>本质例</b>\(\mathbf{Sh}(X)\)：\(\Omega= \) 开集层 \(\mathcal O\)，\(\neg U=\mathrm{int}(X\setminus U)\)，\(\neg\neg U=\mathrm{int}(\mathrm{cl}(U))\)。取 \(U=(0,1)\cup(1,2)\subset\mathbb R\)，则 \(\neg\neg U=(0,2)\ne U\)。公式"\(x\in U\)"满足 \(\neg\neg\varphi\ne\varphi\)，排中律失败。这不是"逻辑坏掉了"，而是开集的几何本身就只有"内部／闭包"的近似，没有精确的补——<strong>拓扑空间的开集格是 Heyting 代数而非布尔代数，直觉主义逻辑正是它的内部逻辑</strong>。</div>
+    <div class="case edge"><b>边界与误解</b>别把"直觉主义逻辑"理解成"经典逻辑去掉排中律后的残缺品"。它是 Heyting 代数的<strong>完整</strong>内部逻辑，有自己的证明论（Gentzen 的 LJ 演算）、可靠性与完备性（Kripke 语义，18.2）。它比经典逻辑更一般：经典逻辑是它在布尔拓扑斯中的特例。把 \(\mathbf{Sh}(\mathbb R)\) 当模型时，"所有函数连续"（18.5 的 Brouwer 定理）在其中是<strong>定理</strong>，而在 \(\mathbf{Set}\) 中是假命题——两个模型都自洽，只是逻辑不同。</div>
+    <div class="case use"><b>结构应用</b>命题 18.1.6 是判定任意拓扑斯"逻辑是否经典"的可操作标准：只需检查 \(\Omega\) 上箭头等式 \(\neg\neg=\mathrm{id}\)。这一标准贯穿第 17 章（布尔化 \(\mathcal E_{\neg\neg}\)）、第 18.4 节（Cohen 拓扑斯布尔）与第 18.5 节（选择公理迫使布尔）。</div>
+  </div>
+
+  <div class="box walk">
+    <h4>③ 手把手：在 \(\mathbf{Set}^{\mathbf C^{op}}\) 里把一个公式算到底</h4>
+    <p>设 \(\mathbf C\) 是只有一个对象 \(*\)、只有恒等箭头的范畴（即终范畴）。则 \(\mathbf{Set}^{\mathbf C^{op}}\cong\mathbf{Set}\)。换一个：设 \(\mathbf C\) 有两个对象 \(0,1\) 和唯一非恒等箭头 \(u:0\to1\)。预层是两张 Set 图 \(F(0),F(1)\) 加一个映射 \(F(u):F(1)\to F(0)\)（注意反变）。</p>
+    <ol>
+      <li><strong>类型.</strong>取类型 \(A\) 为预层 \(A(1)=\{a\},A(0)=\{a'\}\)，\(A(u)(a)=a'\)。</li>
+      <li><strong>项.</strong>语境 \(x:A\) 下的变量 \(x\) 解释为恒等箭头 \(\mathrm{id}_A:A\to A\)。</li>
+      <li><strong>公式.</strong>取 \(\varphi(x)\equiv(x=x)\)。由定义 18.1.3(f)，\(\llbracket\varphi\rrbracket=\Delta_A:A\hookrightarrow A\times A\)。逐对象看：在对象 \(1\) 处是 \(\{(a,a)\}\subseteq\{(a,a)\}\)，即全关系；在对象 \(0\) 处同理。故 \(\llbracket x=x\rrbracket=A\times A\)，即顶层——"自反性"为真 ✓。</li>
+      <li><strong>量词.</strong>取 \(\psi\equiv\exists x:A\,\top\)。在对象 \(c\) 处，\((\exists_\pi\top)(c)=\exists_\pi(\top_{\Gamma\times A})(c)\)。因 \(\top\) 是顶子对象，其像也是顶，故 \(\psi\) 为真——"存在一个 \(x\)"在 \(\operatorname{Sub}(1)\) 里自动真（只要 \(A(c)\) 非空，此处确实非空）。</li>
+      <li><strong>记这条：</strong>在预层范畴里演算，就是把每个逻辑构造"逐对象 + 逐箭头"展开。∧∨⇒ 在每对象上按 Heyting 代数算，\(\exists\) 取像、\(\forall\) 取右伴随（多一层限制），等号取对角。18.2 的 Kripke–Joyal 语义正是这套展开的标准化表述。</li>
+    </ol>
+  </div>
+
+  <div class="phil">
+    <span class="lbl">选读：语法—语义对应的三层含义（Elephant D / Awodey）</span>
+    <p>Johnstone《Sketches of an Elephant》Part D 把"范畴逻辑"建成一门严格学科，核心是三层对应：<strong>(1)</strong> <em>语法层</em>——有一套形式语言与推理规则（极限／余极限／指数／\(\Omega\) 的规则）；<strong>(2)</strong> <em>代数层</em>——这套语法生成的自由范畴（自由拓扑斯）；<strong>(3)</strong> <em>语义层</em>——任意拓扑斯 \(\mathcal E\) 是语法的一个模型。可靠性说语法能推出的，所有模型都满足；完备性说所有模型都满足的，语法能推出（对合适的语言与类）。Awodey 把这套对应讲成"逻辑与范畴是同一结构的两种展示"：你写 \(\forall x:A.\varphi\)，范畴里在算 \(\Pi_\pi\)；你写 modus ponens，范畴里在用伴随的 counit。本章的教学取舍是：把 (1)(3) 讲透，(2) 只给直觉（第 9、10 章已做过 CCC 版本）。</p>
+  </div>
+
+  <div class="box exer">
+    <h4>④ 习题（18.1）</h4>
+    <ol>
+      <li id="ex18-1-1">验证定义 18.1.2 的项解释是良定义的：变量解释为投影、函数符号用复合、常量用 \(c\circ!_\Gamma\)。写出 \((f(g(x)),y)\) 这类复合项的解释箭头。</li>
+      <li id="ex18-1-2">证明命题 18.1.3(b)(c)：\(\llbracket\varphi\wedge\psi\rrbracket=\llbracket\varphi\rrbracket\cap\llbracket\psi\rrbracket\)、\(\llbracket\varphi\vee\psi\rrbracket=\llbracket\varphi\rrbracket\cup\llbracket\psi\rrbracket\)（提示：用 \(\Phi_\Gamma\) 保持交与并）。</li>
+      <li id="ex18-1-3">在 \(\mathbf{Set}\) 里验证 \(\exists_f\dashv f^\ast\dashv\forall_f\)：即 \(f(S)\subseteq T\iff S\subseteq f^{-1}(T)\) 与 \(f^{-1}(T)\subseteq S\iff T\subseteq\{b\mid f^{-1}(b)\subseteq S\}\)。</li>
+      <li id="ex18-1-4">用命题 18.1.6 说明：\(\mathbf{Sh}(\mathbb R)\) 中公式"\(x\in(0,1)\)"满足 \(\neg\neg\varphi\ne\varphi\)，故排中律在此拓扑斯中不成立。（提示：算 \(\mathrm{int}(\mathrm{cl}((0,1)))\)。）</li>
+      <li id="ex18-1-5">在可靠性定理的证明框架里补全 \(\vee\)-引入规则：由 \(\llbracket\varphi\rrbracket=\Gamma\) 推出 \(\llbracket\varphi\vee\psi\rrbracket=\Gamma\)。</li>
+      <li id="ex18-1-6">（Elephant D 视角）说明"完备性需要语言足够丰富"是什么意思：为什么若语言里没有 \(A\) 的某个广义元素 \(U\to A\) 对应的常量，就无法证明某个在 \(\mathcal E\) 中为真的公式？</li>
+    </ol>
+  </div>
+
+  <div class="box ans">
+    <h4>⑤ 参考答案（18.1）</h4>
+    <div class="item"><b>18.1.1</b>语境 \((x:A,y:B)\) 解释为 \(A\times B\)。项 \((f(g(x)),y)\) 的第一分量：\(g:A\to C\)、\(f:C\to D\)，故 \(f\circ g:A\to D\)，解释为 \(\pi_1;\underbrace{f\circ g}\)；第二分量 \(\pi_2:B\)。整体解释 \(\langle f\circ g\circ\pi_1,\pi_2\rangle:A\times B\to D\times B\)。归纳基础（变量＝投影）与归纳步（复合＝箭头复合）保证良定义 ✓。</div>
+    <div class="item"><b>18.1.2</b>由 16.4，\(\Phi_\Gamma:\operatorname{Sub}(\Gamma)\to\mathcal E(\Gamma,\Omega)\) 是 Heyting 代数同构，故保有限交与并。\(\chi_{\llbracket\varphi\wedge\psi\rrbracket}=\chi_\varphi\wedge\chi_\psi=\chi_{\llbracket\varphi\rrbracket\cap\llbracket\psi\rrbracket}\)，由特征函数唯一性得交；并对偶 ✓。</div>
+    <div class="item"><b>18.1.3</b>左伴随：\(f(S)\subseteq T\iff\forall s\in S\,f(s)\in T\iff S\subseteq f^{-1}(T)\) ✓。右伴随：\(f^{-1}(T)\subseteq S\iff\forall b\in T\,f^{-1}(b)\subseteq S\iff T\subseteq\{b\mid f^{-1}(b)\subseteq S\}\) ✓。这就是 \(\exists_f\dashv f^\ast\dashv\forall_f\) 在 \(\mathbf{Set}\) 上的具体形式。</div>
+    <div class="item"><b>18.1.4</b>取 \(U=(0,1)\cup(1,2)\)，则 \(\mathrm{cl}(U)=[0,2]\)，\(\neg\neg U=\mathrm{int}(\mathrm{cl}(U))=(0,2)\ne U\)。故 \(\llbracket\neg\neg\varphi\rrbracket\ne\llbracket\varphi\rrbracket\)，即 \(\neg\neg\varphi\Rightarrow\varphi\) 不真，排中律在该拓扑斯中不成立 ✓。（用单点缺口 \(1\) 被内部闭包补上这一点看得最清楚。）</div>
+    <div class="item"><b>18.1.5</b>若 \(\llbracket\varphi\rrbracket=\Gamma\)，则因 \(\llbracket\varphi\rrbracket\le\llbracket\varphi\vee\psi\rrbracket=\llbracket\varphi\rrbracket\cup\llbracket\psi\rrbracket\le\Gamma\)，夹逼得 \(\llbracket\varphi\vee\psi\rrbracket=\Gamma\) ✓。（用并的上确界性质。）</div>
+    <div class="item"><b>18.1.6</b>证明某公式为真，常需要"取某个广义元素 \(a:U\to A\) 作为见证"。若语言里没有对应 \(a\) 的常量，就无法在语法中提及这个见证，公式虽然在语义上由该广义元素见证为真，却无法在语法中导出。完备性"语义真 ⇒ 语法可证"要求语言能命名所有语义见证——这就是"语言足够丰富"的确切含义；Elephant D 通过给每个 \(U\to A\) 加常量来保证 ✓。</div>
+  </div>
+</section>
+<section class="sec" id="s18-2">
+  <div class="sec-h"><span class="sec-no">18.2</span><h2>Kripke–Joyal 语义</h2><span class="src">M Ch.VI §6</span></div>
+
+  <div class="box learn">
+    <h4>① 本节学习目标</h4>
+    <ol>
+      <li>把 18.1 的抽象解释 \(\llbracket\varphi\rrbracket\) 展开成可计算的 forcing 关系 \(U\Vdash\varphi\)，并逐条证明八条 Kripke–Joyal 子句；</li>
+      <li>弄清两条结构性质——单调性与局部性——为什么是"子对象是层"的直接后果；</li>
+      <li>看透直觉主义的来源：\(\vee\) 与 \(\exists\) 的子句里出现"覆盖"，而 \(\Rightarrow\) 与 \(\forall\) 的子句里出现"对所有后续阶段"；</li>
+      <li>把 Kripke 语义认成 KJ 语义在偏序 site、平凡拓扑下的特例；</li>
+      <li>在 \(\mathbf{Sh}(X)\) 与预层范畴里演算具体公式（单射、满射、"非负或负"），并说明经典逻辑为何在这里失效。</li>
+    </ol>
+  </div>
+
+  <div class="xref"><strong>沿用前文（不再复述）.</strong>内部语言的语法与解释（<strong>18.1</strong>）；表示化层 \(yU=\mathbf C(-,U)\)、Yoneda（<strong>第 6 章 6.3–6.5</strong>）；筛、覆盖族、site（<strong>第 14、15 章</strong>）；Kripke 语义的直觉（<strong>第 11 章 11.5、第 12 章</strong>）。</div>
+
+  <div class="box prep">
+    <h4>极简回顾（四分钟）</h4>
+    <p><strong>1. 广义元素。</strong>在 site \((\mathbf C,J)\) 上，一个对象 \(U\in\mathbf C\) 到层 \(F\) 的箭头 \(a:yU\to F\) 叫 \(F\) 在阶段 \(U\) 的截面，记作 \(a\in F(U)\)。Yoneda 保证 \(F(U)\cong\operatorname{Hom}(yU,F)\)，所以"阶段 \(U\) 上的元素"是严格概念。</p>
+    <p><strong>2. 公式是子层。</strong>18.1 里公式 \(\varphi(x)\)（\(x:A\)）解释为子对象 \(\llbracket\varphi\rrbracket\hookrightarrow A\)。对截面 \(a\in A(U)\)，问"\(a\) 在阶段 \(U\) 满足 \(\varphi\) 吗"，就是问箭头 \(a:yU\to A\) 是否因子穿过 \(\llbracket\varphi\rrbracket\)。</p>
+    <p><strong>3. 本节要跨的一步。</strong>把"因子穿过 \(\llbracket\varphi\rrbracket\)"逐条展开成关于截面与覆盖的具体条件，就得到 Kripke–Joyal（KJ）语义。它不改变 18.1 的任何定义，只是把定义"算出来"。</p>
+  </div>
+
+  <h3 class="sub">18.2.1 forcing 关系的定义与两条结构性质</h3>
+
+  <div class="defn">
+    <span class="lbl">定义 18.2.1（Kripke–Joyal forcing）</span>
+    <p>设 \(\mathcal E=\mathbf{Sh}(\mathbf C,J)\)，\(\varphi(x)\) 是类型 \(A\) 的公式，\(a\in A(U)=F(U)\) 是阶段 \(U\) 的截面。定义</p>
+    \[U\Vdash\varphi(a)\quad\Longleftrightarrow\quad \text{箭头 }a:yU\to A\text{ 因子穿过 }\llbracket\varphi\rrbracket\hookrightarrow A.\]
+    <p>等价地：\(a\in\llbracket\varphi\rrbracket(U)\subseteq A(U)\)。当语境含多个变量时同理，每个变量用同一阶段 \(U\) 的截面代入。</p>
+  </div>
+
+  <div class="prop">
+    <span class="lbl">命题 18.2.2（单调性与局部性）</span>
+    <p>forcing 满足：</p>
+    <p><strong>(单调性)</strong>若 \(U\Vdash\varphi(a)\) 且 \(f:V\to U\)，则 \(V\Vdash\varphi(a|_V)\)（其中 \(a|_V=A(f)(a)\) 是限制）。</p>
+    <p><strong>(局部性)</strong>若 \(\{U_i\to U\}\) 覆盖 \(U\)，且每个 \(U_i\Vdash\varphi(a|_{U_i})\)，则 \(U\Vdash\varphi(a)\)。</p>
+  </div>
+
+  <div class="proof">
+    <p class="pl">证明.</p>
+    <p>两条都只用到 \(\llbracket\varphi\rrbracket\hookrightarrow A\) 是<strong>子层</strong>（而不只是子预层）。单调性：由 \(a\) 因子穿过 \(\llbracket\varphi\rrbracket\)，限制 \(a|_V\) 是 \(a\circ f\)，仍穿过（拉回保持因子分解）。局部性：在每个 \(U_i\) 上 \(a|_{U_i}\) 落在子层里，这些截面在覆盖上相容（因都是同一 \(a\) 的限制），由 \(\llbracket\varphi\rrbracket\) 的层条件，存在唯一的 \(U\)-截面落在 \(\llbracket\varphi\rrbracket\) 中；由 \(a\) 的唯一性，它就是 \(a\)，故 \(a\) 穿过 \(\llbracket\varphi\rrbracket\) ✓。</p>
+  </div>
+
+  <div class="rmk"><strong>局部性那一句有多重要。</strong>它是整个直觉主义语义的心脏。它说：一个公式可以在每个局部片上都成立，从而在整个对象上成立——但"成立"必须先在局部见证。正是这一条，使 \(\exists\) 与 \(\vee\) 的子句可以只用局部见证，而不必给全局见证。若把 \(\llbracket\varphi\rrbracket\) 换成子预层（不带层条件），局部性失败，语义就不再是层的语义。</div>
+
+  <h3 class="sub">18.2.2 八条 Kripke–Joyal 子句</h3>
+
+  <div class="prop">
+    <span class="lbl">命题 18.2.3（KJ 子句表）</span>
+    <p>对 \(a\in A(U)\)，把定义 18.2.1 逐条展开，得到（\(S\Vdash\psi\) 是简写，参数 restrictions 省略时按显然方式理解）：</p>
+    <p><strong>(1) 等号：</strong>\(U\Vdash(a=b)\iff a=b\) 于 \(A(U)\)。</p>
+    <p><strong>(2) 真／假：</strong>\(U\Vdash\top\) 恒成立；\(U\Vdash\bot\iff U\cong\varnothing\)（空对象）。</p>
+    <p><strong>(3) 合取：</strong>\(U\Vdash(\varphi\wedge\psi)(a)\iff U\Vdash\varphi(a)\) 且 \(U\Vdash\psi(a)\)。</p>
+    <p><strong>(4) 析取：</strong>\(U\Vdash(\varphi\vee\psi)(a)\iff\) 存在覆盖 \(\{U_i\to U\}\)，使每个 \(i\) 上 \(U_i\Vdash\varphi(a|_{U_i})\) 或 \(U_i\Vdash\psi(a|_{U_i})\)。</p>
+    <p><strong>(5) 蕴涵：</strong>\(U\Vdash(\varphi\Rightarrow\psi)(a)\iff\) 对所有 \(f:V\to U\)，若 \(V\Vdash\varphi(a|_V)\) 则 \(V\Vdash\psi(a|_V)\)。</p>
+    <p><strong>(6) 否定：</strong>\(U\Vdash\neg\varphi(a)\iff\) 对所有 \(f:V\to U\)（\(V\ne\varnothing\)），\(V\nVdash\varphi(a|_V)\)。</p>
+    <p><strong>(7) 存在：</strong>\(U\Vdash(\exists x:B\,\varphi)(a)\iff\) 存在覆盖 \(\{U_i\to U\}\) 与截面 \(b_i\in B(U_i)\)，使 \(U_i\Vdash\varphi(a|_{U_i},b_i)\)。</p>
+    <p><strong>(8) 全称：</strong>\(U\Vdash(\forall x:B\,\varphi)(a)\iff\) 对所有 \(f:V\to U\) 与所有 \(b\in B(V)\)，\(V\Vdash\varphi(a|_V,b)\)。</p>
+  </div>
+
+  <div class="proof">
+    <p class="pl">证明（选证关键四条）.</p>
+    <p><strong>(3) 合取.</strong>\(\llbracket\varphi\wedge\psi\rrbracket=\llbracket\varphi\rrbracket\cap\llbracket\psi\rrbracket\) 是拉回（18.1.3b）。一个箭头因子穿过拉回，当且仅当它因子穿过两边——即两个条件同时成立 ✓。</p>
+    <p><strong>(4) 析取.</strong>\(\llbracket\varphi\vee\psi\rrbracket=\llbracket\varphi\rrbracket\cup\llbracket\psi\rrbracket\) 是子对象的并。箭头 \(yU\to A\) 因子穿过并，等价于它在覆盖上局部地因子穿过其中一支（并作为子对象的泛性质：它是由两支生成的并，层化后局部刻画）。故覆盖条件出现 ✓。</p>
+    <p><strong>(5) 蕴涵.</strong>由 Heyting 伴随刻画：\(W\le(\varphi\Rightarrow\psi)\iff W\wedge\varphi\le\psi\)。取 \(W=yU\) 不够灵敏，要对所有 \(f:V\to U\)（即 \(yV\to yU\)）检验：\(yV\le(\varphi\Rightarrow\psi)\iff yV\wedge\varphi\le\psi\)，而 \(yV\wedge\varphi\) 正是"\(V\Vdash\varphi\)"的部分，故得子句 ✓。</p>
+    <p><strong>(7) 存在 / (8) 全称.</strong>由 \(\exists_\pi,\forall_\pi\) 的伴随泛性质（18.1.4）：\(\exists_\pi\) 是像，箭头因子穿过像当且仅当在覆盖上局部提升为 \(\varphi\) 的见证——这正是 (7) 的覆盖 + 局部见证；\(\forall_\pi\) 作为右伴随，\(yU\le\forall_\pi(\varphi)\iff\pi^\ast yU\le\varphi\)，展开到所有 \(V\to U\) 与所有 \(b\in B(V)\) 即得 (8) ✓。∎</p>
+  </div>
+
+  <div class="cases">
+    <div class="case typ"><b>典型例</b>在 \(\mathbf{Set}\)（视为 site：单点，平凡拓扑）里，覆盖只能是恒等，所有"对所有 \(V\to U\)"退化为 \(U\) 本身，(4)(7) 的覆盖条件退化为"存在全局见证"。KJ 语义还原成通常的塔斯基语义：\(U\Vdash\exists x\,\varphi\iff\) 存在 \(a\) 使 \(\varphi(a)\)。经典逻辑是 KJ 语义的退化特例。</div>
+    <div class="case deep"><b>本质例</b><strong>Kripke 语义是 KJ 的特例。</strong>取 site 为偏序 \((P,\le)\)（视为范畴：\(p\to q\iff p\le q\)），取<strong>平凡拓扑</strong>（只有最大筛覆盖）。层＝预层＝单调族 \(p\mapsto\) 命题， forcing \(p\Vdash\varphi\) 满足：单调（\(p\Vdash\varphi,q\ge p\Rightarrow q\Vdash\varphi\)）、\(\Rightarrow\) 对所有 \(q\ge p\) 检验、\(\exists\) 在平凡拓扑下退化为"存在 \(q\ge p\) 与见证"（不同教材对 \(\exists\) 的处理略有差异）——这就是直觉主义 Kripke 语义的标准形式。KJ 语义把它推广到任意 site，让"阶段"从偏序点推广到任意对象、"后继"推广到任意箭头、"cover"推广到任意覆盖筛。</div>
+    <div class="case edge"><b>边界与误解</b>最常见错误：把 (4) 的析取子句读成"\(U\Vdash\varphi\) 或 \(U\Vdash\psi\)"（全局二选一）。那样的话排中律就会成立，直觉主义就消失了。正确的读法是：<strong>允许覆盖的不同片选择不同支</strong>。例如在 \(\mathbf{Sh}(\mathbb R)\) 里取 \(U=(-1,1)\)，公式"\(x>0\vee x\le 0\)"：在覆盖 \(\{(-1,0],(0,1)\}\) 上，第一片满足后件、第二片满足前件，故 \(U\Vdash\) 析取成立——注意没有任何一片能全局判断。这正是"局部真"比"全局真"弱的体现。</div>
+    <div class="case use"><b>结构应用</b>KJ 子句是证明"拓扑斯内部某性质成立"的标准工具。例如证明"\(\alpha:A\to B\) 是单态"：由 (5)(1) 展开为"对任意 \(V\) 与任意 \(s,t\in A(V)\)，若 \(\alpha(s)=\alpha(t)\) 则 \(s=t\)"——这正是单态的定义（Blechschmidt 讲义的标准演算）。第 18.5 节证明 Brouwer 定理时，就要把"\(f\) 连续"的 \(\epsilon\)-\(\delta\) 公式用 (8)(7) 展开，逐条验证。</div>
+  </div>
+
+  <h3 class="sub">18.2.3 在 \(\mathbf{Sh}(X)\) 里演算：单射、满射与"局部二择一"</h3>
+
+  <div class="box walk">
+    <h4>③ 手把手：用 KJ 语义读三个公式</h4>
+    <p>设 \(\mathcal E=\mathbf{Sh}(X)\)，阶段是开集 \(U\subseteq X\)，覆盖是开覆盖。</p>
+    <ol>
+      <li><strong>单射.</strong>公式 \(\forall s,t:A.\ \alpha(s)=\alpha(t)\Rightarrow s=t\)。用 (8) 展开：对任意开 \(V\subseteq U\) 与任意 \(s,t\in A(V)\)，\(V\Vdash\alpha(s)=\alpha(t)\Rightarrow s=t\)。再用 (5)：对任意 \(W\subseteq V\)，若 \(W\Vdash\alpha(s)=\alpha(t)\) 则 \(W\Vdash s=t\)。用 (1)：\(\alpha|_W(s|_W)=\alpha|_W(t|_W)\Rightarrow s|_W=t|_W\)。因 \(W\) 任意，这等价于 \(\alpha_V(s)=\alpha_V(t)\Rightarrow s=t\)，即层射 \(\alpha\) 逐开集单——正是 \(\alpha\) 是单态 ✓。</li>
+      <li><strong>满射.</strong>公式 \(\forall t:B.\ \exists s:A.\ \alpha(s)=t\)。用 (8)(7) 展开：对任意 \(V\subseteq U\) 与 \(t\in B(V)\)，存在开覆盖 \(V=\bigcup V_i\) 与 \(s_i\in A(V_i)\) 使 \(\alpha(s_i)=t|_{V_i}\)。这正是层射 \(\alpha\) 为满态（逐点满）的刻画——注意只需要局部提升，不需要全局提升，这是层范畴里"满"的正确含义 ✓。</li>
+      <li><strong>"\(x\ge 0\vee x\lt 0\)" 在实数层上.</strong>取 Dedekind 实数层 \(\mathbb R\)（18.5 细讲），开集 \(U\) 上的截面是连续实函数 \(g:U\to\mathbb R\)。问 \(U\Vdash (g\ge0\vee g\lt 0)\) 吗？由 (4)，需要开覆盖 \(U=\bigcup U_i\) 使每片满足一支。因为 \(g\) 连续，\(\{g>0\},\{g\lt 0\}\) 开，\(\{g=0\}\) 闭；在 \(g\equiv0\) 的连通分支上 \(g\ge0\) 成立，在其余处可细分。实际上可以取覆盖 \(\{g>-\epsilon\}\) 之类使每片落入一支——结论是此析取在 \(\mathbf{Sh}(X)\) 中为真，但<strong>不是</strong>因为每点可全局判定，而是因为连续性能保证局部判定。若换成不连续的截面（在 \(\mathbf{Set}\) 中的病态函数），局部判定会失败。</li>
+      <li><strong>记这条：</strong>KJ 语义把所有内部陈述翻译成"对任意阶段、任意截面，逐条 checking"。八条子句就是八种 checking 规则；\(\vee,\exists\) 允许覆盖，\(\Rightarrow,\forall,\neg\) 遍历所有后继，二者合起来正好刻画了直觉主义的"局部 + 未来"逻辑。</li>
+    </ol>
+  </div>
+
+  <div class="phil">
+    <span class="lbl">选读：名字的来历与 Low 的教学视角</span>
+    <p>"Kripke–Joyal"这个名字记着两次 invention：Kripke 为直觉主义逻辑造了偏序／可能世界语义（1960 年代），Joyal 把它搬进任意拓扑斯（1970 年代），把"可能世界"换成 site 的对象、"可达"换成箭头、"局部"换成覆盖。Z. L. Low《Logic in a Topos》强调一个教学要点：初学时常把 \(p\Vdash\varphi\) 误解成"\(\varphi\) 在 \(p\) 处有固定真值"，其实 forcing 是<strong>随阶段增长的证据关系</strong>——证据可以越往后越多（单调性），但一旦某阶段给出了 \(\varphi\) 的证据，就永远给出。这解释了为什么直觉主义逻辑里 \(\varphi\Rightarrow(\psi\Rightarrow\varphi)\) 总成立而 \((\varphi\vee\neg\varphi)\) 不一定：后者要求每个阶段都能决定是否已有 \(\varphi\) 的证据，而"局部 + 未来"的结构不保证这一点。</p>
+  </div>
+
+  <svg class="cd" viewBox="0 0 620 260" role="img" aria-label="Kripke–Joyal 语义结构图：对象阶段、覆盖与后继">
+    <rect class="node" x="40" y="30" width="150" height="44" rx="7"/>
+    <text class="nt" x="115" y="58" text-anchor="middle">阶段 U</text>
+    <rect class="nodey" x="250" y="20" width="150" height="44" rx="7"/>
+    <text class="nt" x="325" y="48" text-anchor="middle">覆盖 {Uᵢ → U}</text>
+    <rect class="node2" x="250" y="150" width="150" height="44" rx="7"/>
+    <text class="nt" x="325" y="178" text-anchor="middle">后继 V → U</text>
+    <rect class="nodeg" x="460" y="85" width="145" height="44" rx="7"/>
+    <text class="nt" x="532" y="113" text-anchor="middle">V ⊩ φ(a|V)</text>
+    <line class="ar" x1="190" y1="45" x2="246" y2="42"/>
+    <text class="lb" x="218" y="34" text-anchor="middle">∨, ∃</text>
+    <line class="arb" x1="190" y1="60" x2="246" y2="168"/>
+    <text class="hb" x="150" y="118" text-anchor="middle">⇒, ∀, ¬</text>
+    <line class="arg" x1="400" y1="42" x2="456" y2="96"/>
+    <text class="hg" x="440" y="32" text-anchor="middle">局部见证</text>
+    <line class="arp" x1="400" y1="172" x2="456" y2="120"/>
+    <text class="hp" x="440" y="192" text-anchor="middle">逐一检验</text>
+    <text class="lb" x="310" y="222" text-anchor="middle" style="font-size:12px">析取 / 存在：在覆盖上分裂　　蕴涵 / 全称 / 否定：遍历所有后继</text>
+  </svg>
+  <p class="figcap">图 18.1　KJ 语义的两种结构动作：覆盖（局部）与后继（未来）</p>
+
+  <div class="box exer">
+    <h4>④ 习题（18.2）</h4>
+    <ol>
+      <li id="ex18-2-1">证明命题 18.2.2 的单调性与局部性（提示：用 \(\llbracket\varphi\rrbracket\hookrightarrow A\) 是子层与 Yoneda）。</li>
+      <li id="ex18-2-2">用 KJ 子句 (5)(1) 证明：\(\alpha:A\to B\) 是满态当且仅当 \(1\Vdash\forall t:B.\ \exists s:A.\ \alpha(s)=t\)（在 \(\mathbf{Sh}(X)\) 中，用 18.2.3 的手把手）。</li>
+      <li id="ex18-2-3">在 \(\mathbf{Sh}(\mathbb R)\) 里取 \(U=(-1,1)\)、公式 \(x>0\vee x\le 0\)。验证：\(U\Vdash\) 该析取，但 \(U\) 本身既不满足 \(x>0\) 也不满足 \(x\le0\)——说明析取子句为何必须允许"分片选不同支"。</li>
+      <li id="ex18-2-4">说明 Kripke 语义是 KJ 语义的特例：取 site 为偏序、平凡拓扑，把八条 KJ 子句逐一特化为 Kripke 子句。</li>
+      <li id="ex18-2-5">证明子句 (6)：\(U\Vdash\neg\varphi\iff\) 对所有 \(V\to U\)，\(V\nVdash\varphi\)。（提示：\(\neg\varphi=\varphi\Rightarrow\bot\)，用子句 (5) 与 \(\bot\) 只在空对象被 force。）</li>
+      <li id="ex18-2-6">（研究问题） Kripke–Joyal 语义对几何公式（只含 \(\wedge,\vee,\exists\) 与任意并）是"几何的"：证明 \(U\Vdash\varphi\) 只依赖 \(U\) 上有限覆盖的数据，并说明这为何使几何逻辑在几何态射下稳定（预告第 19 章）。</li>
+    </ol>
+  </div>
+
+  <div class="box ans">
+    <h4>⑤ 参考答案（18.2）</h4>
+    <div class="item"><b>18.2.1</b>单调性：\(a\) 因子穿过 \(m:\llbracket\varphi\rrbracket\hookrightarrow A\)，则 \(a|_{V}=a\circ f\) 因子穿过 \(m\) 的拉回，而拉回就是 \(\llbracket\varphi\rrbracket\) 在 \(V\) 上的限制，故 \(a|_V\in\llbracket\varphi\rrbracket(V)\) ✓。局部性：\(\{a|_{U_i}\}\) 是 \(\llbracket\varphi\rrbracket\) 在覆盖上的相容族（相容因来自同一 \(a\)），由层条件存在唯一切片 \(b\in\llbracket\varphi\rrbracket(U)\) 限制为它们；又 \(b\) 作为 \(A\) 的截面等于 \(a\)（因 \(A\) 是层），故 \(a\in\llbracket\varphi\rrbracket(U)\) ✓。</div>
+    <div class="item"><b>18.2.2</b>由手把手第 2 条，公式展开为"对任意 \(V\subseteq U\)、任意 \(t\in B(V)\)，存在开覆盖 \(V=\bigcup V_i\) 与 \(s_i\in A(V_i)\) 使 \(\alpha(s_i)=t|_{V_i}\)"，这正是层射满态的逐点刻画（取 \(U=X\) 即全局陈述）✓。</div>
+    <div class="item"><b>18.2.3</b>取开覆盖 \(U=(-1,0]\cup(0,1)\)：左片恒满足 \(x\le0\)，右片恒满足 \(x>0\)，故每片满足析取的一支，由子句 (4) 得 \(U\Vdash(x>0\vee x\le0)\)。而 \(U\) 上恒等截面 \(x\mapsto x\) 既非处处 \(>0\) 也非处处 \(\le0\)，故 \(U\nVdash x>0\) 且 \(U\nVdash x\le0\)。可见析取为真却无一全局支成立——这正是子句 (4) 必须允许分片选支的原因 ✓。</div>
+    <div class="item"><b>18.2.4</b>偏序 site 上唯一覆盖是恒等（最大筛），故 (4)(7) 的覆盖只能取 \(\{U\}\) 自身；后继 \(V\to U\) 即 \(V\ge U\)。八条子句化为：\(p\Vdash\varphi\wedge\psi\iff p\Vdash\varphi\) 且 \(p\Vdash\psi\)；\(p\Vdash\varphi\vee\psi\iff p\Vdash\varphi\) 或 \(p\Vdash\psi\)（不同教材对 \(\vee\) 有"理想覆盖"变体）；\(p\Vdash\varphi\Rightarrow\psi\iff\forall q\ge p\,(q\Vdash\varphi\Rightarrow q\Vdash\psi)\)；\(p\Vdash\forall x\varphi\iff\forall q\ge p\,\forall a\in A(q)\,q\Vdash\varphi(a)\)；正是 Kripke 语义 ✓。</div>
+    <div class="item"><b>18.2.5</b>\(\neg\varphi=\varphi\Rightarrow\bot\)。由 (5)，\(U\Vdash\neg\varphi\iff\forall f:V\to U\,(V\Vdash\varphi\Rightarrow V\Vdash\bot)\)。由 (2)，\(V\Vdash\bot\iff V=\varnothing\)。故等价于"对所有非空 \(V\to U\)，\(V\nVdash\varphi\)" ✓。</div>
+    <div class="item"><b>18.2.6</b>几何公式的 forcing 只用到 \(\wedge\)（逐片交）、\(\vee\)（覆盖分裂）、\(\exists\)（覆盖 + 局部见证）与任意并——这些操作都只涉及"在某覆盖上成立"，而覆盖可取有限子覆盖（在紧致／局部紧情形）或按筛的传递性合并。故 \(U\Vdash\varphi\) 由 \(U\) 上某覆盖的数据完全决定，与更大的阶段无关；几何态射的逆像保有限极限与余极限、保覆盖，故保持这种"局部可判定性"——这是几何逻辑在几何态射下稳定的原因 ✓。（严格版见 Elephant D 与第 19 章。）</div>
+  </div>
+</section>
+<section class="sec" id="s18-3">
+  <div class="sec-h"><span class="sec-no">18.3</span><h2>层语义</h2><span class="src">M Ch.VI §7</span></div>
+
+  <div class="box learn">
+    <h4>① 本节学习目标</h4>
+    <ol>
+      <li>说清"层语义"与"Kripke–Joyal 语义"的分工：前者是代数解释（公式 → 子对象），后者是计算展开（forcing 子句），两者由定义 18.2.1 严格连接；</li>
+      <li>用层语义处理"真值随阶段变化"：闭公式的真值是 \(\operatorname{Sub}(1)\) 的元素，在 \(\mathbf{Sh}(X)\) 里就是开集；</li>
+      <li>比较预层语义与层语义：层化 \(F^{+}\) 如何把"局部可粘合"变成"真"，以及这怎样影响量词的真值；</li>
+      <li>引入布尔值模型 \(V^{(B)}\) 的思想雏形：在 \(\mathbf{Set}\) 的布尔值拓扑斯里，真值是布尔代数 \(B\) 的元素，为 18.4 的 Cohen 拓扑斯铺路；</li>
+      <li>演算"连续函数空间"里的一个真值，理解节标题的落点：层语义既是逻辑语义，也是几何局部性的代数化。</li>
+    </ol>
+  </div>
+
+  <div class="xref"><strong>沿用前文（不再复述）.</strong>KJ forcing 与八条子句（<strong>18.2</strong>）；伴生层函子 \(a\dashv i\)、\(F^{+}/F^{++}\)（<strong>15.3</strong>）；\(\operatorname{Sub}(1)\) 与全局截面（<strong>16.1、17.4</strong>）；布尔化与 \(\neg\neg\)-层（<strong>17.4</strong>）。</div>
+
+  <div class="box prep">
+    <h4>极简回顾（四分钟）</h4>
+    <p><strong>1. 两种语义的分工.</strong>18.1 给出"代数语义"：公式 \(\varphi\) 是子对象 \(\llbracket\varphi\rrbracket\hookrightarrow A\)。18.2 给出"计算语义"：\(U\Vdash\varphi(a)\iff a\in\llbracket\varphi\rrbracket(U)\)。本节把二者正式命名为<strong>层语义</strong>与 <strong>KJ 语义</strong>，并强调：它们是同一个解释的两个侧面，不是两套理论。</p>
+    <p><strong>2. 真值是 \(\operatorname{Sub}(1)\) 的元素.</strong>闭公式（无自由变量）解释为 \(1\) 的子对象。在 \(\mathbf{Sh}(X)\) 里 \(\operatorname{Sub}(1)=\mathcal O(X)\)（开集格），所以一个闭语句的"真值"是一个开集——语句在哪些开集上成立。全集 \(X\) 表示"真"，空集表示"假"，其余是"部分真"。</p>
+    <p><strong>3. 本节要跨的一步.</strong>有了"真值在开集格里"这个认识，就可以问：什么时候一个语句在层语义里取到极端值（全或空）？什么时候取中间值？布尔值模型 \(V^{(B)}\) 就是把这套推广到任意布尔代数 \(B\)——这是 Cohen 独立性证明的范畴版本。</p>
+  </div>
+
+  <h3 class="sub">18.3.1 层语义的严格表述</h3>
+
+  <div class="defn">
+    <span class="lbl">定义 18.3.1（层语义）</span>
+    <p>设 \(\mathcal E=\mathbf{Sh}(\mathbf C,J)\)。内部语言在 \(\mathcal E\) 中的<strong>层语义</strong>由赋值 \(\llbracket-\rrbracket\) 给出：类型→对象、项→箭头、公式→子对象（定义 18.1.2、18.1.3），其中"公式为真"指 \(\llbracket\varphi\rrbracket=\top\)。对闭公式 \(\sigma\)，其真值 \(\llbracket\sigma\rrbracket\in\operatorname{Sub}(1)\)；在 \(\mathbf{Sh}(X)\) 中 \(\operatorname{Sub}(1)\cong\mathcal O(X)\)，真值是一个开集。</p>
+    <p>层语义与 KJ 语义由基本等式连接：</p>
+    \[U\Vdash\varphi(a)\quad\Longleftrightarrow\quad a\in\llbracket\varphi\rrbracket(U)\quad\Longleftrightarrow\quad (yU\xrightarrow{a}A)\text{ 因子穿过 }\llbracket\varphi\rrbracket.\]
+  </div>
+
+  <div class="prop">
+    <span class="lbl">命题 18.3.2（真值的 Heyting 演算）</span>
+    <p>在 \(\mathbf{Sh}(X)\) 中，设闭公式 \(\sigma,\tau\) 的真值为开集 \(U=\llbracket\sigma\rrbracket\)、\(V=\llbracket\tau\rrbracket\)，则：</p>
+    <p>\(\llbracket\sigma\wedge\tau\rrbracket=U\cap V\)，　\(\llbracket\sigma\vee\tau\rrbracket=U\cup V\)，　\(\llbracket\sigma\Rightarrow\tau\rrbracket=\mathrm{int}((X\setminus U)\cup V)\)，　\(\llbracket\neg\sigma\rrbracket=\mathrm{int}(X\setminus U)\)。</p>
+  </div>
+
+  <div class="proof">
+    <p class="pl">证明.</p>
+    <p>这正是 16.4 中开集格 \(\mathcal O(X)\) 作为 Heyting 代数的运算公式，通过 Heyting 代数同构 \(\Phi_1:\operatorname{Sub}(1)\cong\mathcal E(1,\Omega)\cong\mathcal O(X)\) 搬运过来。伪补 \(U\Rightarrow V=\mathrm{int}((X\setminus U)\cup V)\) 是 Heyting 伴随 \(W\cap U\subseteq V\iff W\subseteq\mathrm{int}((X\setminus U)\cup V)\) 的唯一解 ✓。</p>
+  </div>
+
+  <h3 class="sub">18.3.2 预层语义 vs 层语义：层化改变什么</h3>
+
+  <div class="motiv">
+    <span class="lbl">为什么要比较？</span>
+    初学者常问："既然 KJ 子句在预层范畴上也成立，为什么非要层？"答案是：在预层上，八条子句里的"局部性"（18.2.2）不成立——一个性质在覆盖的每片成立，可能在整块上不成立，因为预层没有粘合条件。层语义正是加上"局部可粘合＝真"之后的理论。比较二者，能看清"层条件"究竟给逻辑带来了什么。
+  </div>
+
+  <div class="prop">
+    <span class="lbl">命题 18.3.3（层化对真值的影响）</span>
+    <p>设 \(F\) 是预层，\(F^{+}\) 是其伴生层（15.3）。对公式 \(\varphi\)，记 \(\llbracket\varphi\rrbracket_{\mathrm{PSh}}\) 与 \(\llbracket\varphi\rrbracket_{\mathrm{Sh}}\) 为在预层范畴与层范畴中形成的子对象，则</p>
+    \[\llbracket\varphi\rrbracket_{\mathrm{Sh}}=a\bigl(\llbracket\varphi\rrbracket_{\mathrm{PSh}}\bigr),\]
+    <p>其中 \(a\) 是伴生层函子。特别地，若 \(\varphi\) 是几何公式（只含 \(\wedge,\vee,\exists,\top,\bot\) 与任意析取），则 \(a\) 保这些运算，故真值在层化下"逐条保持"。</p>
+  </div>
+
+  <div class="proof">
+    <p class="pl">证明.</p>
+    <p>层化 \(a\) 左伴随于包含 \(i\)，把预层子对象送到层子对象。几何公式的联结词 \(\wedge,\vee,\exists\) 在预层层里逐对象／逐筛定义，而 \(a\) 作为左伴随保余极限（从而保并、像 \(\exists\)）且与有限极限相容（保 \(\wedge\)），故与这些运算交换。非几何运算如 \(\Rightarrow,\forall\) 涉及"对所有后继"，\(a\) 一般不保，故真值可能改变——这正是层语义比预层语义更"强"的地方 ✓。</p>
+  </div>
+
+  <div class="cases">
+    <div class="case typ"><b>典型例</b>在预层 \(\mathbf{Set}^{\mathbf C^{op}}\) 里，"局部常数函数"未必是全局常数。层化把它变成长成本地的常值——真值从"处处常"变成"局部常"。这就是层语义相对预层语义的加强与精确化。</div>
+    <div class="case deep"><b>本质例</b>设 \(X=[0,1]\)，预层 \(F(U)=\) 所有函数 \(U\to\mathbb R\)（不要求连续），层化 \(aF\) 是连续函数层。公式"函数取值 \(\ge0\)"的真值在 \(aF\) 上是开集 \(\{x\mid f(x)>0\}\) 的内部。若 \(f\) 在预层里病态（如 Dirichlet 函数），预层语义给出 \(f\ge0\) 的真值是某个不规则子集，层化后变成其连续近似——几何公式的真值在粘合中被"正则化"。</div>
+    <div class="case edge"><b>边界与误解</b>别以为"层化总是让更多公式变真"。层化改变的是真值的<strong>形状</strong>（从任意子集变为开集／正则开集），不一定单调增加。例如 \(\neg\neg=\mathrm{id}\) 在 \(\mathbf{Set}\) 成立，但在 \(\mathbf{Sh}(X)\) 一般失败——布尔化（17.4）反而要额外做一次层化。层化本身不带来布尔性。</div>
+    <div class="case use"><b>结构应用</b>"几何公式在层化下保持真值"这一事实，是几何态射与分类拓扑斯理论的基石：几何态射的逆像 \(f^\ast\) 保有限极限与余极限，从而保几何公式的真假。第 19 章会看到，分类拓扑斯正是"把几何理论的模型变成点"的构造，靠的就是这条稳定性。</div>
+  </div>
+
+  <h3 class="sub">18.3.3 布尔值模型的思想雏形</h3>
+
+  <p>层语义有个特别重要的特例：当 \(\operatorname{Sub}(1)\) 是布尔代数时，真值成了布尔值，逻辑变回经典。这就是 Bell《Set Theory: Boolean-Valued Models and Independence Proofs》的主题，也是 18.4 Cohen 拓扑斯的理论背景。</p>
+
+  <div class="defn">
+    <span class="lbl">定义 18.3.4（布尔值拓扑斯与布尔值模型，雏形）</span>
+    <p>若拓扑斯 \(\mathcal E\) 满足 \(\Omega\) 为布尔代数（\(\neg\neg=\mathrm{id}\)），称 \(\mathcal E\) 为<strong>布尔值拓扑斯</strong>。此时 \(\operatorname{Sub}(1)=B\) 是布尔代数，每个闭公式的真值 \(\llbracket\sigma\rrbracket\in B\)，且 \(\llbracket\sigma\rrbracket\in\{\top,\bot\}\) 当且仅当 \(\sigma\) 在 \(\mathbf{Set}\) 的经典意义下被 \(B\) 决定。集合论的布尔值模型 \(V^{(B)}\) 可看作在这样一个拓扑斯里解释 ZFC 的语言（细节见 Bell）。</p>
+  </div>
+
+  <div class="rmk"><strong>与 Cohen 的连接。</strong>Bell 的 \(\neg\neg\)-层拓扑斯 \(\mathbf{Sh}_{\neg\neg}(\mathbf C)\) 就是布尔值拓扑斯（17.4 已证 \(\mathcal E_{\neg\neg}\) 布尔）。Cohen 证明连续统假设独立性，就是在 \(\mathbf{Sh}_{\neg\neg}(\mathbb P)\)（\(\mathbb P\) 为 Cohen 偏序集）里构造一个不满足 CH 的"集合论宇宙"。18.4 细讲。</div>
+
+  <h3 class="sub">18.3.4 手把手：算一个连续函数空间的真值</h3>
+
+  <div class="box walk">
+    <h4>③ 手把手：在 \(\mathbf{Sh}([0,1])\) 里求 \(\llbracket f\text{ 在 }x\text{ 处}>0\rrbracket\)</h4>
+    <ol>
+      <li><strong>设定.</strong>取 \(X=[0,1]\)，\(\mathcal E=\mathbf{Sh}(X)\)。类型 \(A=\mathbb R\) 为连续实函数层。项 \(f\in\mathbb R(X)\) 是一个连续函数 \(f:X\to\mathbb R\)（标准实数意义）。</li>
+      <li><strong>公式.</strong>\(\varphi(y)\equiv(y>0)\)，其中 \(y:A\)。它的解释 \(\llbracket\varphi\rrbracket\hookrightarrow\mathbb R\) 是子层：在开集 \(U\) 上，\(\llbracket\varphi\rrbracket(U)=\{g:U\to\mathbb R\text{ 连续}\mid g(u)>0\ \forall u\in U\}\)。</li>
+      <li><strong>代入.</strong>把项 \(f\) 代入，\(\llbracket\varphi(f)\rrbracket\in\operatorname{Sub}(1)=\mathcal O(X)\) 是使得 \(f|_U>0\) 的最大开集 \(U_f=\{x\in X\mid f(x)>0\}\)。因 \(f\) 连续，\(U_f\) 确为开集 ✓。</li>
+      <li><strong>真值读出.</strong>\(\llbracket f>0\rrbracket=U_f\)。若 \(f\equiv c>0\) 常数，则 \(U_f=X\)（真）；若 \(f\equiv c\le0\)，则 \(U_f=\varnothing\)（假）；若 \(f(x)=x-\tfrac12\)，则 \(U_f=(1/2,1]\)——一个既非全也非空的开集，表示"部分真"。这正是层语义的精髓。</li>
+      <li><strong>记这条：</strong>层语义把公式真值变成可计算的开集。闭公式的真不是布尔二值，而是开集格 \(\mathcal O(X)\) 的元素；\(\Rightarrow,\neg\) 用内部化运算（18.3.2），\(\vee\) 用并、\(\exists\) 用局部见证。这套演算在 Cohen 拓扑斯里换成布尔代数 \(B\) 的元素，就成了力迫关系 \(p\Vdash\sigma\iff\llbracket\sigma\rrbracket\ge p\)。</li>
+    </ol>
+  </div>
+
+  <div class="phil">
+    <span class="lbl">选读：层语义是"局部性"的代数化</span>
+    <p>回看第 14–18 章的线索：层论教你"局部数据可粘合"，Grothendieck 拓扑把"局部"抽象成覆盖筛，LT 拓扑把"局部真"装进 \(\Omega\)，内部语言把"局部真"语法化，KJ 语义把"局部真"变成 forcing 子句，而层语义把"局部真"变成 \(\operatorname{Sub}(1)\) 里的真值。每一步都在把同一个几何直观翻译成更纯代数的语言。到布尔值模型时，"局部"已经变成一个布尔代数 \(B\) 的偏序结构，而 Cohen 独立性证明就是在精心挑选的 \(B\) 里让 CH 的真值落在"既非零也非一"的位置——独立性由此诞生。</p>
+  </div>
+
+  <div class="box exer">
+    <h4>④ 习题（18.3）</h4>
+    <ol>
+      <li id="ex18-3-1">验证命题 18.3.2 中 \(\llbracket\sigma\Rightarrow\tau\rrbracket=\mathrm{int}((X\setminus U)\cup V)\)：证明 \(W\cap U\subseteq V\iff W\subseteq\mathrm{int}((X\setminus U)\cup V)\)。</li>
+      <li id="ex18-3-2">在 \(\mathbf{Sh}(\mathbb R)\) 里，取 \(f(x)=x^2-1\)，求 \(\llbracket f>0\rrbracket\) 与 \(\llbracket\neg(f>0)\rrbracket\)，验证二者不互为补集。</li>
+      <li id="ex18-3-3">说明为什么"几何公式在层化下保持真值"（18.3.3），而含 \(\forall\) 或 \(\Rightarrow\) 的公式真值可能被层化改变（提示：\(a\) 保余极限但一般不保 \(\Pi_f\) 的右伴随结构）。</li>
+      <li id="ex18-3-4">在布尔值拓扑斯中证明：排中律 \(\llbracket\sigma\vee\neg\sigma\rrbracket=\top\) 对所有闭公式成立（用 \(\Omega\) 布尔）。</li>
+      <li id="ex18-3-5">（研究问题）布尔值模型 \(V^{(B)}\) 中真值在 \(B\setminus\{\bot,\top\}\) 的"中间值"如何对应力迫语言里的"\(p\Vdash\sigma\) 但 \(p\nVdash\neg\sigma\)"？用 \(\llbracket\sigma\rrbracket\ge p\) 的定义说明。</li>
+      <li id="ex18-3-6">（衔接）说明 18.3.4 手把手里 \(U_f=\{x\mid f(x)>0\}\) 为什么一定是开集，并指出若把 \(f\) 换成不连续函数，层语义的哪一步会失效。</li>
+    </ol>
+  </div>
+
+  <div class="box ans">
+    <h4>⑤ 参考答案（18.3）</h4>
+    <div class="item"><b>18.3.1</b>(\(\Rightarrow\)) \(W\cap U\subseteq V\) 意味着 \(W\subseteq(X\setminus U)\cup V\)；因 \(W\) 开，而 \(\mathrm{int}((X\setminus U)\cup V)\) 是含于 \((X\setminus U)\cup V\) 的最大开集，故 \(W\subseteq\mathrm{int}((X\setminus U)\cup V)\) ✓。(\(\Leftarrow\)) 若 \(W\subseteq\mathrm{int}((X\setminus U)\cup V)\subseteq(X\setminus U)\cup V\)，则 \(W\cap U\subseteq((X\setminus U)\cup V)\cap U=V\cap U\subseteq V\) ✓。这正是 Heyting 伴随的解，故为伪补。</div>
+    <div class="item"><b>18.3.2</b>\(f(x)=x^2-1>0\iff|x|>1\)，在 \(\mathbb R\) 上 \(\llbracket f>0\rrbracket=(-\infty,-1)\cup(1,\infty)\)。\(\llbracket\neg(f>0)\rrbracket=\mathrm{int}(\mathbb R\setminus\llbracket f>0\rrbracket)=\mathrm{int}([-1,1])=(-1,1)\)。二者并非补集（补集还含 \(\pm1\) 两点），且并集 \((-1,1)\cup(-\infty,-1)\cup(1,\infty)=\mathbb R\setminus\{\pm1\}\ne\mathbb R\)，故排中律在此失效 ✓。</div>
+    <div class="item"><b>18.3.3</b>几何联结词 \(\wedge,\vee,\exists\) 对应有限极限、余极限与像；层化 \(a\) 作为左伴随保余极限、且与有限极限相容，故与它们交换，真值保持。而 \(\forall,\Rightarrow\) 由右伴随定义，\(a\) 是左伴随一般不保右伴随结构，故层化后真值可变 ✓。例：\(\neg\neg=\mathrm{id}\) 在 \(\mathbf{Set}\) 真，层化到 \(\mathbf{Sh}(X)\) 后一般不真。</div>
+    <div class="item"><b>18.3.4</b>布尔代数中 \(b\vee\neg b=b\vee\bar b=\top\)，故 \(\llbracket\sigma\vee\neg\sigma\rrbracket=\llbracket\sigma\rrbracket\vee\overline{\llbracket\sigma\rrbracket}=\top\) ✓。</div>
+    <div class="item"><b>18.3.5</b>在力迫语义中 \(p\Vdash\sigma\iff\llbracket\sigma\rrbracket\ge p\)（\(B\) 中序）。若 \(\llbracket\sigma\rrbracket\ge p\) 但 \(\llbracket\neg\sigma\rrbracket=\overline{\llbracket\sigma\rrbracket}\not\ge p\)，即 \(p\Vdash\sigma\) 但 \(p\nVdash\neg\sigma\)；当 \(\llbracket\sigma\rrbracket\in B\setminus\{\bot,\top\}\) 时存在这样的 \(p\)（取 \(p=\llbracket\sigma\rrbracket\)），即 \(\sigma\) 取中间真值 ✓。</div>
+    <div class="item"><b>18.3.6</b>\(f\) 连续 \(\Rightarrow\{f>0\}=f^{-1}((0,\infty))\) 是开集。若 \(f\) 不连续，\(\{f>0\}\) 未必开，不能作为 \(\operatorname{Sub}(1)=\mathcal O(X)\) 的元素——层语义要求"真值必须是开集"这一步失效；只能先层化（取内部 \(f^{-1}((0,\infty))^\circ\)）才得到合法真值 ✓。</div>
+  </div>
+</section>
+<section class="sec" id="s18-4">
+  <div class="sec-h"><span class="sec-no">18.4</span><h2>Cohen 拓扑斯与力迫</h2><span class="src">M Ch.VI §2–3</span></div>
+
+  <div class="box learn">
+    <h4>① 本节学习目标</h4>
+    <ol>
+      <li>从 Cohen 偏序集 \(\mathbb P\)（有限部分函数）出发，构造稠密拓扑（\(\neg\neg\)-拓扑）上的层范畴 \(\mathbf{Sh}(\mathbb P,\neg\neg)\)，即 Cohen 拓扑斯；</li>
+      <li>证明 Cohen 拓扑斯是布尔拓扑斯且其内部满足选择公理——这为独立性证明提供"经典逻辑 + 选择"的环境；</li>
+      <li>构造一个泛的"Cohen 实数"，并证明在其中连续统假设失败（存在严格介于 \(\mathbb N\) 与 \(2^{\mathbb N}\) 之间的基数），从而说明 CH 独立于 ZFC；</li>
+      <li>建立范畴力迫与经典 Cohen 力迫的字典：条件 ↔ 阶段、稠密拓扑 ↔ \(\neg\neg\)、generic filter ↔ 泛滤子、\(p\Vdash\sigma\iff\llbracket\sigma\rrbracket\ge p\)；</li>
+      <li>用 Bell 的布尔值模型 \(V^{(B)}\) 语言复述同一构造，看清"独立性 = 两个不同布尔值模型给出相反真值"。</li>
+    </ol>
+  </div>
+
+  <div class="xref"><strong>沿用前文（不再复述）.</strong>\(\neg\neg\) 是 LT 拓扑、\(\mathcal E_{\neg\neg}\) 布尔（<strong>17.1、17.4</strong>）；布尔拓扑斯判别 \(\neg\neg=\mathrm{id}\)（<strong>16.4</strong>）；层化与稠密层（<strong>15.3、17.2</strong>）；布尔值模型雏形（<strong>18.3.3</strong>）；选择公理与布尔性（<strong>11.4</strong>）。</div>
+
+  <div class="box prep">
+    <h4>极简回顾（五分钟）</h4>
+    <p><strong>1. Cohen 的问题.</strong>连续统假设 CH 说：不存在基数严格介于 \(|\mathbb N|\) 与 \(|2^{\mathbb N}|\) 之间的集合。Gödel 证明 CH 与 ZFC 相容（构造 \(L\)）；Cohen 要证 CH 不能由 ZFC 推出，就得造一个满足 ZFC 却不满足 CH 的模型。他的工具是力迫。</p>
+    <p><strong>2. 力迫的朴素图景.</strong>向 \(\mathbf{Set}\) 里"加入"一个泛型实数 \(g\)（无限 0-1 序列），但一次只能给有限多个二进制位作承诺——这些有限承诺组成偏序集 \(\mathbb P\)。一个泛滤子 \(G\subseteq\mathbb P\) 把所有承诺拼成一个完整实数。精心设计 \(\mathbb P\)，使新模型 \(V[G]\) 里实数足够多，CH 失败。</p>
+    <p><strong>3. 范畴版本.</strong>第 18 章的全部准备就是要把这段"朴素图景"翻译成范畴：偏序集 \(\mathbb P\) 是 site，有限承诺是对象，泛滤子是某类点，"\(p\Vdash\sigma\)"是 \(\llbracket\sigma\rrbracket\ge p\)，而 \(V[G]\) 是 Cohen 拓扑斯的一个泛点。18.4 完成这次翻译。</p>
+  </div>
+
+  <h3 class="sub">18.4.1 Cohen 偏序集与稠密拓扑</h3>
+
+  <div class="defn">
+      <span class="lbl">定义 18.4.1（Cohen 偏序集）</span>
+      <p>设 \(B\) 是一个基数大于 \(|\mathbb N|\) 的集合（例如 \(B=2^{2^{\mathbb N}}\)）。定义<strong>Cohen 偏序集</strong> \(\mathbb P\) 的元素为有限部分函数</p>
+      \[p:F_p\to 2,\qquad F_p\subseteq B\times\mathbb N\ \text{有限},\]
+      <p>按"扩张"排序：\(q\le p\) 当且仅当 \(F_q\supseteq F_p\) 且 \(q|_{F_p}=p\)（\(q\) 比 \(p\) 强，承诺更多位）。把 \(\mathbb P\) 视为范畴：对象为条件 \(p\)，当 \(q\le p\)（\(q\) 更强）时存在唯一箭头 \(q\to p\)。</p>
+  </div>
+
+  <div class="rmk"><strong>为什么这个偏序集？</strong>每个 \(p\) 是一个"有限近似"：它预言了一个函数 \(B\to2^{\mathbb N}\)（把 \(b\in B\) 送到序列 \(n\mapsto p(b,n)\)）在有限多点上的取值。泛滤子把所有这些有限近似拼成完整函数 \(B\to2^{\mathbb N}\)，其转置是一个单射 \(B\hookrightarrow2^{\mathbb N}\)——若 \(B\) 比 \(\mathbb N\) 大，这就给出"比自然数多、比连续统少"的基数候选，挑战 CH。Cohen 的巧思在于：这个单射不是在 \(\mathbf{Set}\) 里预先存在的，而是被力迫"生成"的。</div>
+
+  <div class="defn">
+    <span class="lbl">定义 18.4.2（稠密拓扑／\(\neg\neg\)-拓扑）</span>
+    <p>在 \(\mathbf{Set}^{\mathbb P^{op}}\) 上定义 Grothendieck 拓扑 \(J_{\neg\neg}\)：筛 \(S\) 在 \(p\) 上覆盖，若它对任意 \(q\le p\)（更强的条件）都可细化——即存在 \(r\le q\) 与 \(s\in S\) 使 \(r\le s\)。等价地，在预层范畴里它生成的 LT 拓扑是 \(\neg\neg\)（17.1 的双重否定拓扑）。记</p>
+    \[\mathcal E_{\mathrm{Cohen}}=\mathbf{Sh}(\mathbb P,J_{\neg\neg})=\mathbf{Set}^{\mathbb P^{op}}_{\neg\neg}.\]
+  </div>
+
+  <div class="prop">
+    <span class="lbl">命题 18.4.3（Cohen 拓扑斯是布尔且满足选择）</span>
+    <p><strong>(a)</strong> \(\mathcal E_{\mathrm{Cohen}}\) 是布尔拓扑斯：\(\Omega=\Omega_{\neg\neg}\) 满足 \(\neg\neg=\mathrm{id}\)。</p>
+    <p><strong>(b)</strong> \(\mathcal E_{\mathrm{Cohen}}\) 的内部语言满足选择公理：每个满射 \(A\to B\) 在内部有截面。</p>
+  </div>
+
+  <div class="proof">
+    <p class="pl">证明.</p>
+    <p>(a) 由 17.4 的一般结论：对 \(\neg\neg\)-拓扑，\(\Omega_{\neg\neg}=\{(\text{正则对偶元素})\}\) 是布尔代数，故 \(\neg\neg=\mathrm{id}\)。（在预层拓扑斯里，\(\neg\neg\)-层化后的子对象分类子正是 \(\neg\neg\)-稳定元素的集合。）字面地：对 \(\neg\neg\)-层 \(F\)，其子对象格的伪补满足 \(\neg\neg S=S\)，故布尔 ✓。</p>
+    <p>(b) 选择公理在布尔值拓扑斯中的成立需要额外条件：底层偏序集上的 \(\neg\neg\)-层范畴满足"每个满射局部有截面"。对 Cohen 偏序集，关键在于它<strong>可分</strong>（separative）：给定 \(p\nleq q\)，存在 \(r\le p\) 与 \(q\) 不相容。可分性保证 \(\neg\neg\)-拓扑有足够多的"决策"条件，使内部的选择函数可由逐条件的选择粘合而成。这是 Bell 与 M&amp;M 的标准结论：Cohen 拓扑斯满足 AC ✓。（18.5 会讲清 AC 与布尔性的张力——此处两者共存并不矛盾，因为内部 AC 与"每个满射外部分裂"是不同陈述。）</p>
+  </div>
+
+  <h3 class="sub">18.4.2 泛 Cohen 实数与 CH 的失败</h3>
+
+  <div class="prop">
+    <span class="lbl">命题 18.4.4（CH 在 Cohen 拓扑斯中失败）</span>
+    <p>在 \(\mathcal E_{\mathrm{Cohen}}\) 中，存在一个单态 \(b\hookrightarrow\Omega^{\mathbb N}\)（即 \(b\hookrightarrow2^{\mathbb N}\)），满足 \(|\mathbb N|\lt |b|\lt |2^{\mathbb N}|\)。因此"不存在介于 \(\mathbb N\) 与 \(2^{\mathbb N}\) 之间的基数"这一陈述（CH）在 \(\mathcal E_{\mathrm{Cohen}}\) 中为假。</p>
+  </div>
+
+  <div class="proof">
+    <p class="pl">证明（构造骨架，M Ch.VI §2–3）.</p>
+    <p><strong>1. 泛函数.</strong>定义预层 \(K:\mathbb P\to\mathbf{Set}\)，\(K(p)=B\times\mathbb N\)（常值），子预层 \(A(p)=\{(b,n)\mid p(b,n)=0\}\subseteq K(p)\)。因 \(A=\neg\neg A\)（在 \(\neg\neg\)-拓扑下稳），\(A\) 是 \(\neg\neg\)-层，给出子对象 \(a:A\hookrightarrow k_{B\times\mathbb N}\)。取其特征函数 \(\chi_a:k_{B\times\mathbb N}\to\Omega_{\neg\neg}\)，转置得 \(g:k_B\to\Omega_{\neg\neg}^{k_{\mathbb N}}\)。</p>
+    <p><strong>2. \(g\) 是单态.</strong>由 \(A\) 的构造：若 \(b\ne b'\)，存在足够强的条件 \(p\) 使某 \(n\) 上 \(p(b,n)=0,p(b',n)=1\)，从而 \(\chi_a(b,n)\ne\chi_a(b',n)\)，故 \(g(b)\ne g(b')\)。层化把单态送成单态（\(a\) 左正合），故在 Cohen 拓扑斯里 \(g:B\hookrightarrow2^{\mathbb N}\) ✓。</p>
+    <p><strong>3. 严格不等号.</strong>\(|\mathbb N|\lt |B|\)：底层 \(B\) 选得比 \(\mathbb N\) 大，且 Cohen 力迫保基数（不发生塌缩）。\(|B|\lt |2^{\mathbb N}|\)：若存在满射 \(2^{\mathbb N}\to B\)，则会有条件力迫这一满射，但 Cohen 偏序集的 \(\kappa\)-cc 性质排除之（对角线论证）。故 \(b\) 严格介于两者之间，CH 失败 ✓。∎</p>
+  </div>
+
+  <div class="cases">
+    <div class="case typ"><b>典型例</b>取 \(B=2^{2^{\mathbb N}}\)（基数严格大于连续统），\(g:B\hookrightarrow2^{\mathbb N}\) 是 Cohen 拓扑斯里新"生成"的单射。这个 \(g\) 在 \(\mathbf{Set}\) 里不存在（基数不允许它单射进 \(2^{\mathbb N}\) 同时还满足那些条件），它是<strong>泛型对象</strong>——只在扩张的宇宙里存在。这正是力迫"添加新对象"的范畴体现。</div>
+    <div class="case deep"><b>本质例</b>CH 独立性为什么需要"外部造模型"？因为 CH 在 \(\mathbf{Set}\) 里可能真也可能假（取决于底模型是否满足 GCH），ZFC 无法判定。Cohen 拓扑斯给出一个满足 ZFC（含 AC）却 CH 假的模型，与 Gödel 的 \(L\)（ZFC + CH）并立，两者都是 ZFC 的模型，故 CH 独立于 ZFC。范畴论把"造模型"变成"选 site"——换一个 \(\mathbb P\) 或拓扑 \(J\)，就换一个集合论宇宙。</div>
+    <div class="case edge"><b>边界与误解</b>别把"CH 在 Cohen 拓扑斯中失败"误读成"CH 是假的"。CH 的真理是相对模型的：在 \(\mathbf{Set}\) 里它可能真，在 Cohen 拓扑斯里假，二者都满足 ZFC。独立性恰恰是说 ZFC 不足以决定它。也不要以为 Cohen 拓扑斯"违反"了 Cantor 定理——Cantor 定理（\(|A|\lt |2^A|\)）在任何拓扑斯内部成立，CH 讨论的是两个不同幂集之间的中间基数，比 Cantor 定理更强。</div>
+    <div class="case use"><b>结构应用</b>力迫不是集合论的专利。同一套"偏序集 + 稠密拓扑 + 层"的构造，在代数几何里就是 étale 拓扑（第 15 章），在拓扑学里就是 sheaf 模型（第 14 章），在可计算性里就是有效拓扑斯。Cohen 拓扑斯是这套统一图景中最著名的一例：它把"独立性证明"纳入几何／范畴的统一框架，这正是 Mac Lane &amp; Moerdijk 全书标题"Sheaves in Geometry and Logic"的深意。</div>
+  </div>
+
+  <h3 class="sub">18.4.3 范畴力迫 ↔ 经典力迫：字典</h3>
+
+  <div class="defn">
+    <span class="lbl">定义 18.4.5（力迫字典）</span>
+    <p>把经典 Cohen 力迫与范畴侧逐项对照：</p>
+    <div class="walk" style="padding:0;border:none;">
+      <table>
+        <tr><th>经典力迫</th><th>范畴／层语义</th></tr>
+        <tr><td>力迫条件 \(p\in\mathbb P\)</td><td>site \(\mathbb P\) 的对象 \(p\)（阶段 \(y p\)）</td></tr>
+        <tr><td>\(q\le p\)（更强）</td><td>箭头 \(q\to p\)（后继阶段）</td></tr>
+        <tr><td>\(p\Vdash\sigma\)</td><td>\(y p\Vdash\sigma\iff\llbracket\sigma\rrbracket\ge p\)（在布尔值 \(B\) 中）</td></tr>
+        <tr><td>稠密子集 \(D\subseteq\mathbb P\)</td><td>\(J_{\neg\neg}\)-稠密筛（对更强条件可细化）</td></tr>
+        <tr><td>泛滤子 \(G\subseteq\mathbb P\)</td><td>Cohen 拓扑斯的一个泛点（几何态射 \(\mathbf{Set}\to\mathcal E_{\mathrm{Cohen}}\)）</td></tr>
+        <tr><td>泛型扩张 \(V[G]\)</td><td>沿泛点的层语义（stalk at \(G\)）</td></tr>
+        <tr><td>布尔值模型 \(V^{(B)}\)</td><td>布尔值拓扑斯 \(\mathbf{Sh}(\mathbb P,\neg\neg)\)</td></tr>
+      </table>
+    </div>
+    <p>核心等式：\(p\Vdash\sigma\iff y p\text{ 因子穿过 }\llbracket\sigma\rrbracket\iff\llbracket\sigma\rrbracket\ge p\)（最后一步在布尔代数 \(B=\) 正则开代数中读）。</p>
+  </div>
+
+  <div class="rmk"><strong>Bell 的视角。</strong>Bell《Set Theory: Boolean-Valued Models and Independence Proofs》把整件事讲成：选一个完备布尔代数 \(B\)，在 \(V^{(B)}\) 里每个集合论语句 \(\sigma\) 有真值 \(\llbracket\sigma\rrbracket\in B\)；力迫条件 \(p\in B\setminus\{\bot\}\) 力迫 \(\sigma\) 即 \(\llbracket\sigma\rrbracket\ge p\)。Cohen 的 \(B\) 取 Cohen 偏序集的正则开代数 \(\mathrm{RO}(\mathbb P)\)。范畴侧的 \(\mathbf{Sh}(\mathbb P,\neg\neg)\) 与 \(V^{(\mathrm{RO}(\mathbb P))}\) 是同一模型的两种语言——前者几何、后者集合论。本章的价值在于把两者放在同一页上。</div>
+
+  <div class="box walk">
+    <h4>③ 手把手：一个条件如何力迫一个析取</h4>
+    <ol>
+      <li><strong>设定.</strong>设 \(p\in\mathbb P\) 是有限部分函数，\(\sigma\equiv(\exists n.\ \dot g(\check b)(n)=1)\)（"泛型实数 \(g(b)\) 有一位是 1"）。</li>
+      <li><strong>真值.</strong>在 Cohen 拓扑斯里 \(\llbracket\sigma\rrbracket=\bigvee_n\llbracket\dot g(\check b)(n)=1\bigrrbracket\)，每项对应条件集 \(\{q\mid q(b,n)=1\}\)。</li>
+      <li><strong>力迫.</strong>\(p\Vdash\sigma\iff\{q\le p\mid \exists n\,q(b,n)=1\}\) 在 \(p\) 下稠密。若 \(p\) 已在某 \(n\) 上赋值 1，则 \(p\) 自己见证；若全赋 0，则取更强 \(q\le p\) 在更大 \(n\) 上赋 1 即见证——稠密性成立，故 \(p\Vdash\sigma\) ✓。</li>
+      <li><strong>对照 KJ.</strong>这正是 KJ 子句 (7)：存在（这里 \(n\)）由覆盖／稠密集上的局部见证给出。经典力迫的"稠密见证"与层语义的"覆盖见证"是同一个概念。记这条。</li>
+    </ol>
+  </div>
+
+  <div class="phil">
+    <span class="lbl">选读：独立性证明的哲学</span>
+    <p>CH 的独立性说明：关于"无穷有多大"的某些问题，ZFC 这套公理不是完备的描述——存在多个同样合法、却给出不同答案的集合论宇宙。Cohen 的发现震撼之处在于，这些宇宙不是靠"加新公理"人为宣称的，而是能从 ZFC 内部用有限的组合数据（有限部分函数）系统构造出来的。范畴论把这种构造变成选择 site 的操作：不同的 site 给出不同的"局部／真"结构，从而给出不同的内部逻辑与集合论。这是第 17 章 LT 拓扑（改变 \(\Omega\) 就改变逻辑）在集合论层面的最高体现。</p>
+  </div>
+
+  <div class="box exer">
+    <h4>④ 习题（18.4）</h4>
+    <ol>
+      <li id="ex18-4-1">验证 \(\mathbb P\) 的偏序是自反、传递、反对称的，并说明 \(q\le p\)（\(q\) 更强）在范畴里对应箭头 \(q\to p\)。</li>
+      <li id="ex18-4-2">证明 \(\neg\neg\)-拓扑的覆盖筛定义（18.4.2）满足 Grothendieck 三条公理（恒等筛覆盖、拉回稳定、传递）。</li>
+      <li id="ex18-4-3">说明为什么 \(\mathcal E_{\mathrm{Cohen}}\) 满足 \(\neg\neg=\mathrm{id}\)（提示：\(\neg\neg\)-层化后的 \(\Omega_{\neg\neg}\) 由 \(\neg\neg\)-稳定元素组成，是布尔代数）。</li>
+      <li id="ex18-4-4">在力迫字典里验证：\(p\Vdash\sigma\iff y p\Vdash\sigma\)（即 \(y p\) 因子穿过 \(\llbracket\sigma\rrbracket\)），并说明它如何等价于 \(\llbracket\sigma\rrbracket\ge p\)。</li>
+      <li id="ex18-4-5">构造一个具体的条件 \(p\)（给出若干 \((b,n)\mapsto0/1\) 赋值），并验证命题 18.4.4 步骤 2 中它区分两个不同 \(b,b'\)。</li>
+      <li id="ex18-4-6">（研究问题）比较 Cohen 拓扑斯与 Gödel 的可构造宇宙 \(L\)：二者都满足 ZFC，但一个 CH 假、一个 CH 真。用"不同 site／不同真值结构"的语言说明这种相对性，并解释为何这不矛盾。</li>
+    </ol>
+  </div>
+
+  <div class="box ans">
+    <h4>⑤ 参考答案（18.4）</h4>
+    <div class="item"><b>18.4.1</b>自反：\(p\le p\)（同一函数）✓。传递：\(r\le q\le p\) 则 \(F_r\supseteq F_q\supseteq F_p\) 且 \(r|_{F_p}=q|_{F_p}=p\)，故 \(r\le p\) ✓。反对称：\(q\le p\le q\) 则 \(F_q=F_p\) 且取值相同，故 \(q=p\) ✓。范畴化 \(q\le p\mapsto\) 唯一箭头 \(q\to p\)，因为更强条件可"投影"到更弱条件 ✓。</div>
+    <div class="item"><b>18.4.2</b>(C1) 最大筛含所有 \(q\le p\)，显然覆盖。(C2) 拉回稳定：若 \(S\) 在 \(p\) 覆盖、\(f:q\to p\)（\(q\le p\)），则对任意 \(r\le q\le p\) 有 \(s\in S\) 与 \(r\le s\)，故拉回筛覆盖 \(q\) ✓。(C3) 传递：覆盖筛的覆盖筛仍覆盖（稠密性的传递：更强条件里再稠密仍稠密）✓。</div>
+    <div class="item"><b>18.4.3</b>\(\Omega_{\neg\neg}\) 的元素是 \(\Omega\) 中满足 \(\neg\neg u=u\) 的元素（正则元素），它们组成的子格是布尔代数（伪补 \(=\neg\) 且 \(\neg\neg=\mathrm{id}\)），故 \(\neg\neg=\mathrm{id}\) 在 \(\mathcal E_{\mathrm{Cohen}}\) 成立 ✓。</div>
+    <div class="item"><b>18.4.4</b>由定义 18.2.1，\(y p\Vdash\sigma\iff y p\) 因子穿过 \(\llbracket\sigma\rrbracket\)。对闭公式 \(\llbracket\sigma\rrbracket\in B=\mathrm{RO}(\mathbb P)\) 是一个正则开元素（可视为下集），\(y p\) 因子穿过它 \(\iff p\in\llbracket\sigma\rrbracket\iff\llbracket\sigma\rrbracket\ge p\)（下集含 \(p\) 即上确界 \(\ge p\)）✓。这就是 \(p\Vdash\sigma\) 的标准定义。</div>
+    <div class="item"><b>18.4.5</b>取 \(b\ne b'\)，令 \(p:\{(b,0)\mapsto1,(b',0)\mapsto0\}\)（定义域有限）。则 \(p(b,0)=1\ne0=p(b',0)\)，故 \(\chi_a(b,0)\ne\chi_a(b',0)\)，从而 \(g(b)\ne g(b')\) ✓。</div>
+    <div class="item"><b>18.4.6</b>CH 不是 ZFC 的定理：Cohen 拓扑斯（ZFC 模型，CH 假）与 \(L\)（ZFC 模型，CH 真）给出相反真值。用真值语言：在 Cohen 模型的布尔值 \(B\) 里 \(\llbracket\mathrm{CH}\rrbracket\ne\top\)（可取中间值），在 \(L\) 里 \(=\top\)。两个模型都满足 ZFC 却不决定 CH，故 CH 独立。不矛盾是因为 ZFC 的公理不足以固定幂集的基数结构——这正说明公理系统的"不完全" ✓。</div>
+  </div>
+</section>
+<section class="sec" id="s18-5">
+  <div class="sec-h"><span class="sec-no">18.5</span><h2>选择、布尔化、自然数与实数对象</h2><span class="src">M Ch.VI §4, §8–9</span></div>
+
+  <div class="box learn">
+    <h4>① 本节学习目标</h4>
+    <ol>
+      <li>区分<strong>外部选择公理</strong>（每个满射在 \(\mathcal E\) 中分裂）与<strong>内部选择公理</strong>（内部语言满足 \(\forall x.\exists y.\varphi\Rightarrow\exists f.\forall x.\varphi\)），并证明 Diaconescu 定理：内部 AC 迫使拓扑斯布尔；</li>
+      <li>用 \(\neg\neg\)-拓扑做布尔化 \(\mathcal E_{\neg\neg}\)，说明它如何把任意拓扑斯"压"成布尔拓扑斯，以及外部／内部选择在此的差别；</li>
+      <li>定义自然数对象（NNO），说明它在 \(\mathbf{Set}\)、预层、层拓扑斯中的样子，以及它为何是几何的；</li>
+      <li>构造 Dedekind 实数对象（有序切割的层），比较它与 Cauchy 实数的差别，并说明为何在缺可数选择时二者不同；</li>
+      <li>陈述并证明 Brouwer 定理的范畴版本：在适当的层拓扑斯（如 \(\mathbf{Sh}(\mathbb N^{\mathbb N})\) 或 Johnstone 拓扑斯）中，内部所有函数 \(\mathbb R\to\mathbb R\) 连续；理解"所有函数连续"为何与经典分析不矛盾。</li>
+    </ol>
+  </div>
+
+  <div class="xref"><strong>沿用前文（不再复述）.</strong>\(\neg\neg\) 是 LT 拓扑、布尔化 \(\mathcal E_{\neg\neg}\)、\(\Omega_j\) 布尔（<strong>17.1、17.4</strong>）；布尔判别与排中律（<strong>16.4、18.1.6</strong>）；选择公理与布尔公理的内部语言陈述（<strong>11.4</strong>）；KJ 语义八条子句（<strong>18.2</strong>）。</div>
+
+  <h3 class="sub">18.5.1 外部选择与内部选择：Diaconescu 定理</h3>
+
+  <div class="motiv">
+    <span class="lbl">这个区分为什么重要？</span>
+    "选择公理"在集合论里是单一陈述，但一旦进入拓扑斯，它分裂成两句不同的话：一句在范畴外部说（关于满射箭头），一句在内部语言里说（关于公式的量词）。二者的差别正是理解"为什么层拓扑斯不满足选择、而 Cohen 拓扑斯满足"的关键。混淆它们是初学者最常见的错误之一。
+  </div>
+
+  <div class="defn">
+    <span class="lbl">定义 18.5.1（外部 AC 与内部 AC）</span>
+    <p><strong>外部选择公理（AC<sub>ext</sub>）：</strong>拓扑斯 \(\mathcal E\) 中每个满射 \(e:A\twoheadrightarrow B\) 都有截面 \(s:B\to A\)（\(e\circ s=\mathrm{id}_B\)），即每个正则满态分裂。</p>
+    <p><strong>内部选择公理（AC<sub>int</sub>）：</strong>内部语言满足模式
+    \[\forall x:X.\ \exists y:Y.\ \varphi(x,y)\ \Longrightarrow\ \exists f:Y^X.\ \forall x:X.\ \varphi(x,f(x))\]
+    对任意公式 \(\varphi\) 成立（即"逐点存在见证"推出"存在统一的函数选择见证"）。</p>
+  </div>
+
+  <div class="prop">
+    <span class="lbl">命题 18.5.2（Diaconescu 定理的拓扑斯形式）</span>
+    <p>若拓扑斯 \(\mathcal E\) 满足内部选择公理 AC<sub>int</sub>，则 \(\mathcal E\) 是布尔拓扑斯（排中律成立）。</p>
+  </div>
+
+  <div class="proof">
+    <p class="pl">证明（内部论证）. </p>
+    <p>对任意命题 \(P\)，在内部构造两个子对象 \(U=\{x\in 2\mid x=0\vee P\}\)、\(V=\{x\in2\mid x=1\vee P\}\)（这里 \(2=\{0,1\}\subset\Omega\) 在布尔情形下；一般地用 \(\Omega\) 的二元素构造）。二者在内部非空：\(0\in U\)、\(1\in V\)。由 AC<sub>int</sub>，对"非空"这一 \(\exists\) 陈述选取函数 \(f\) 作用于无序对 \(\{U,V\}\)，得 \(f(U)\in U\)、\(f(V)\in V\)。若 \(P\) 真则 \(U=V=2\)；若 \(P\) 假则 \(U=\{0\},V=\{1\}\)，此时 \(U\ne V\)。由选择函数的值 \(f(U),f(V)\in\{0,1\}\) 是否相等可判定 \(P\)：若 \(f(U)\ne f(V)\) 则 \(U\ne V\) 故 \(\neg P\)；若 \(f(U)=f(V)\) 则推出 \(P\)（否则 \(U\ne V\) 迫使取值不同）。于是 \(P\vee\neg P\) 成立。由 \(P\) 任意，排中律成立，\(\mathcal E\) 布尔 ✓。</p>
+  </div>
+
+  <div class="cases">
+    <div class="case typ"><b>典型例</b>\(\mathbf{Set}\) 满足 AC（经典选择公理），也满足布尔性——与 Diaconescu 一致。Cohen 拓扑斯（18.4）满足 AC<sub>int</sub> 且布尔，也是一致的例子。</div>
+    <div class="case deep"><b>本质例</b>\(\mathbf{Sh}(X)\)（\(X\) 非离散）不满足 AC<sub>int</sub>，也不布尔。例如满射 \(e:\coprod_i U_i\to X\)（开覆盖的粘合）一般无全局截面——层只有局部截面，无全局截面正是不满足外部 AC 的体现。Diaconescu 说这不是偶然：只要逻辑是直觉主义的（非布尔），选择公理必然失败。</div>
+    <div class="case edge"><b>边界与误解</b>注意 Diaconescu 的方向：AC ⇒ 布尔，反之不成立（布尔拓扑斯可以不满足 AC）。也别把"层拓扑斯不满足 AC"理解成"层论有缺陷"——恰恰相反，层拓扑斯里"局部选择"总成立（覆盖上可取截面），失败的只是"全局选择"。直觉主义逻辑把这种局部性合法化，而 AC 会强行把它提升为全局，从而迫使布尔化。</div>
+    <div class="case use"><b>结构应用</b>Diaconescu 定理是"逻辑相对性"的试金石：同一条集合论陈述（AC）在不同拓扑斯里有不同真值，且它与其他陈述（排中律）的蕴含关系是定理而非约定。这正是 18.4 独立性证明的思想延伸——改变拓扑斯（site）就改变哪些公理成立。</div>
+  </div>
+
+  <h3 class="sub">18.5.2 布尔化：\(\neg\neg\)-拓扑与 \(\mathcal E_{\neg\neg}\)</h3>
+
+  <div class="prop">
+    <span class="lbl">命题 18.5.3（布尔化的泛性质）</span>
+    <p>对任意拓扑斯 \(\mathcal E\)，取 \(j=\neg\neg\)（LT 拓扑，17.1），得到子拓扑斯 \(\mathcal E_{\neg\neg}\)（\(\neg\neg\)-层），它满足：</p>
+    <p><strong>(a)</strong> \(\mathcal E_{\neg\neg}\) 是布尔拓扑斯；</p>
+    <p><strong>(b)</strong> 层化反射 \(a:\mathcal E\to\mathcal E_{\neg\neg}\)（左伴随于包含 \(i\)）把每个对象送到其"正则对偶"形式；</p>
+    <p><strong>(c)</strong> 对任意布尔拓扑斯 \(\mathcal F\) 与几何态射 \(f:\mathcal E\to\mathcal F\)（保持逻辑），\(f\) 唯一因子穿过 \(\mathcal E_{\neg\neg}\)——即 \(\mathcal E_{\neg\neg}\) 是 \(\mathcal E\) 的"布尔反射"。</p>
+  </div>
+
+  <div class="proof">
+    <p class="pl">证明（要点）.</p>
+    <p>(a) 由 17.4：\(\Omega_{\neg\neg}=\{u\in\Omega\mid\neg\neg u=u\}\) 是布尔代数，故 \(\mathcal E_{\neg\neg}\) 布尔 ✓。(b) \(a=i^\ast\) 为层化左伴随（17.2），把预层送到其 \(\neg\neg\)-层化 ✓。(c) 布尔反射的泛性质：因 \(f^\ast\) 保逻辑（保 \(\Omega\) 的 Heyting 结构），而布尔代数中 \(\neg\neg=\mathrm{id}\)，故 \(f^\ast\) 把 \(\neg\neg\)-层仍送为 \(\neg\neg\)-层，从而因子穿过 \(\mathcal E_{\neg\neg}\) ✓。</p>
+  </div>
+
+  <div class="rmk"><strong>外部 AC 在布尔化下的行为.</strong>布尔化把逻辑变经典，但不一定让外部 AC 成立：\(\mathcal E_{\neg\neg}\) 布尔，但仍可能有无截面的满射。这说明"布尔性"与"外部选择"是两个独立条件——Diaconescu 只给出 AC<sub>int</sub> ⇒ 布尔，不给出反向。Cohen 拓扑斯同时满足两者，是特殊构造的结果。</div>
+
+  <h3 class="sub">18.5.3 自然数对象（NNO）</h3>
+
+  <div class="defn">
+    <span class="lbl">定义 18.5.4（自然数对象）</span>
+    <p>拓扑斯 \(\mathcal E\) 的<strong>自然数对象</strong>是一个对象 \(N\) 连同一对箭头 \(0:1\to N\)、\(s:N\to N\)，满足 Peano 泛性质：对任意对象 \(X\) 与箭头 \(x:1\to X\)、\(f:X\to X\)，存在唯一箭头 \(u:N\to X\) 使</p>
+    \[u\circ 0=x,\qquad u\circ s=f\circ u.\]
+    <p>箭头 \(u\) 记作 \(\mathrm{iter}(x,f)\)，即"从 \(x\) 出发反复施加 \(f\)"。NNO 若存在则唯一（到唯一同构）。</p>
+  </div>
+
+  <div class="cases">
+    <div class="case typ"><b>典型例</b>\(\mathbf{Set}\) 的 NNO 就是通常的自然数集 \(\mathbb N\)，\(0\) 是零、\(s(n)=n+1\)，Peano 泛性质即数学归纳法／递归定义。</div>
+    <div class="case deep"><b>本质例</b>在预层范畴 \(\mathbf{Set}^{\mathbf C^{op}}\) 中，NNO 是<strong>常值预层</strong> \(\Delta\mathbb N\)（每个对象 \(c\) 处为 \(\mathbb N\)，每个箭头为恒等）。因为 Peano 泛性质逐对象成立，而"唯一性"强制每个箭头为恒等。类似地在 \(\mathbf{Sh}(X)\) 中 NNO 是常值层 \(\Delta\mathbb N\)——它在每个茎上都是 \(\mathbb N\)。这说明 NNO 是"几何的"：它不随对象／阶段变化。</div>
+    <div class="case edge"><b>边界与误解</b>别把 NNO 的"常值"理解成"每个拓扑斯里的自然数都一样丰富"。NNO 保证有 \(\mathbb N\)，但不保证有"所有自然数序列"的良好性质。例如"每个自然数序列最终为常数"（有限性）在某些拓扑斯中可能成立，这与 NNO 的存在不冲突。NNO 是骨架，不是血肉。</div>
+    <div class="case use"><b>结构应用</b>NNO 是定义实数对象、讨论可数选择、编码语法的基础。18.5.5 的 Dedekind 实数定义为 \(\mathbb Q\)（由 NNO 构造的有理数对象）的切割，离不开 NNO。几何态射保持 NNO，因此保持"自然数"这一结构——这是分类拓扑斯理论中"几何理论"包含算术的原因。</div>
+  </div>
+
+  <h3 class="sub">18.5.4 Dedekind 实数对象</h3>
+
+  <div class="motiv">
+    <span class="lbl">为什么实数是棘手的？</span>
+    在 \(\mathbf{Set}\) 里实数有多种等价定义（Cauchy 序列的等价类、Dedekind 切割、十进制展开……），它们在经典逻辑下等价。但在拓扑斯里，这些定义<strong>不再等价</strong>——因为等价性证明常依赖可数选择或排中律。Dedekind 定义（有序切割）有优势：它只用 \(\mathbb Q\) 上的有界有序子集，是"几何的"，在每个拓扑斯中都能定义，且行为良好。这就是本章选它做"实数对象"标准的原因。
+  </div>
+
+  <div class="defn">
+    <span class="lbl">定义 18.5.5（Dedekind 实数对象）</span>
+    <p>设 \(\mathbb Q\) 是 \(\mathcal E\) 中的有理数对象（由 NNO \(N\) 构造 \(\mathbb Z\) 再取分式域）。<strong>Dedekind 实数对象</strong> \(\mathbb R_d\) 是满足下列条件的有序对 \((L,U)\)（\(L,U\) 是 \(\mathbb Q\) 的子对象，即 \(\Omega^{\mathbb Q}\) 的元素）的层：</p>
+    <ul>
+      <li><strong>非空：</strong>\(\exists q:\mathbb Q.\ q\in L\) 且 \(\exists r:\mathbb Q.\ r\in U\)（内部存在）；</li>
+      <li><strong>分离：</strong>\(\forall q\in L,\forall r\in U.\ q\lt r\)；</li>
+      <li><strong>下游封闭：</strong>\(q\in L\wedge p\lt q\Rightarrow p\in L\)；\(r\in U\wedge r\lt s\Rightarrow s\in U\)（上游封闭）；</li>
+      <li><strong>无隙：</strong>\(\forall q:\mathbb Q.\ \big((\forall p\in L.\ p\lt q)\Rightarrow q\in L\big)\) 且对 \(U\) 的对偶条件——即 \(L\) 是 \(\mathbb Q\) 的有上界下集且含其所有上界之下界，(\(L,U\)) 恰分割 \(\mathbb Q\)。</li>
+    </ul>
+    <p>更简洁的等价写法：\(\mathbb R_d\) 是 \(\Omega^{\mathbb Q}\) 中满足"有界、非空、下游封闭、且 \(L\) 由其下界完全确定"的 \(L\) 的对象；\(U=\{r\mid\forall q\in L.\ q\lt r\}\) 由 \(L\) 自动决定。在 \(\mathbf{Sh}(X)\) 中，\(\mathbb R_d\) 的 \(U\)-截面是连续函数 \(U\to\mathbb R_{\text{std}}\)（标准实数的连续函数层）。</p>
+  </div>
+
+  <div class="prop">
+    <span class="lbl">命题 18.5.6（Cauchy 实数 vs Dedekind 实数）</span>
+    <p>设 \(\mathbb R_c\) 为 Cauchy 实数对象（Cauchy 序列列的商），\(\mathbb R_d\) 为 Dedekind 实数对象。恒有单态 \(\mathbb R_c\hookrightarrow\mathbb R_d\)。若拓扑斯满足<strong>可数选择</strong>，则该单态是同构（两定义等价）；一般拓扑斯中二者可不同。</p>
+  </div>
+
+  <div class="proof">
+    <p class="pl">证明（要点）.</p>
+    <p>每个 Cauchy 序列 \((q_n)\) 给出切割 \(L=\{q\mid\exists N.\forall n\ge N\,q\lt q_n\}\)，得映射 \(\mathbb R_c\to\mathbb R_d\)，可证为单态。反向（每个切割由 Cauchy 序列逼近）需要为每个 \(n\) 从"\(q\in L,r\in U,r-q\lt 1/n\)"的存在中选出一个逼近对——这是可数多次选择，需可数选择公理。缺它时反向失败，故二者可不同 ✓。</p>
+  </div>
+
+  <div class="cases">
+    <div class="case typ"><b>典型例</b>\(\mathbf{Set}\) 满足可数选择（甚至完全 AC），故 \(\mathbb R_c\cong\mathbb R_d\)，回到熟悉的实数。</div>
+    <div class="case deep"><b>本质例</b>M&amp;M 的 Brouwer 模型中，\(\mathbb R_d\) 是连续函数层（连续实函数），而 \(\mathbb R_c\) 是<strong>局部常值</strong>函数层——因为 Cauchy 序列由 \(\mathbb N\) 索引，而 NNO 是常值的，序列只能逐点选定，得到局部常值函数。二者不等，正是缺可数选择的表现。</div>
+    <div class="case edge"><b>边界与误解</b>别以为"Dedekind 实数一定比 Cauchy 实数大"。在没有可数选择的拓扑斯里二者不可比大小到"包含所有"的程度——它们是两个不同的完备化概念。正确的说法是 \(\mathbb R_c\hookrightarrow\mathbb R_d\) 恒成立，反向需额外公理。</div>
+    <div class="case use"><b>结构应用</b>Dedekind 实数的"几何定义"（只用 \(\mathbb Q\) 的有界有序子集的几何条件）使它能在任意拓扑斯中解释，这是 Brouwer 定理能在层拓扑斯中陈述的前提——定理针对的是 \(\mathbb R_d\)。若用 \(\mathbb R_c\)，定理形式会不同（见 MathOverflow 讨论：有效拓扑斯中 Cauchy 实数也满足连续性，但证明不同）。</div>
+  </div>
+
+  <h3 class="sub">18.5.5 Brouwer 定理：所有函数连续</h3>
+
+  <div class="motiv">
+    <span class="lbl">这个定理为什么震撼？</span>
+    在 \(\mathbf{Set}\) 里存在大量不连续的 \(\mathbb R\to\mathbb R\) 函数（如 Dirichlet 函数）。Brouwer 定理说：在<strong>适当的拓扑斯</strong>里，每个内部函数 \(\mathbb R_d\to\mathbb R_d\) 都是连续的。这不是说"所有集合论函数都连续"（那会在 \(\mathbf{Set}\) 里矛盾），而是说：在一种合法的直觉主义宇宙里，"函数"这一概念本身自带连续性——你无法构造一个不连续的函数，因为构造所需的排中律不可用。这是"逻辑决定数学内容"的最戏剧性例证。
+  </div>
+
+  <div class="prop">
+    <span class="lbl">命题 18.5.7（Brouwer 连续性定理，范畴形式）</span>
+    <p>设 \(\mathcal E=\mathbf{Sh}(\mathbb N^{\mathbb N})\)（Baire 空间上的层拓扑斯），或更一般地 M&amp;M 构造的"充分好的空间的小范畴"上的层拓扑斯。则内部陈述</p>
+    \[\forall f:\mathbb R_d^{\mathbb R_d}.\ \forall x:\mathbb R_d,\forall\epsilon:\mathbb Q_{>0}.\ \exists\delta:\mathbb Q_{>0}.\ \forall y:|y-x|\lt \delta\Rightarrow|f(y)-f(x)|\lt \epsilon\]
+    <p>在 \(\mathcal E\) 中为真——即内部每个函数 \(\mathbb R_d\to\mathbb R_d\) 连续。</p>
+  </div>
+
+  <div class="proof">
+    <p class="pl">证明（框架，Dana Scott 的证明思路）. </p>
+    <p>把 \(\mathbb R_d\) 认成连续函数层：阶段 \(U\) 上的截面是连续映射 \(U\to\mathbb R_{\text{std}}\)。内部箭头 \(f:\mathbb R_d\to\mathbb R_d\) 由层间自然变换给出。要用 KJ 语义证明连续性公式在全局阶段为真：取任意开 \(U\)、任意 \(f\) 的局部截面、任意 \(x\in\mathbb R_d(U)\)、\(\epsilon>0\)，需找覆盖 \(U=\bigcup U_i\) 与 \(\delta_i>0\) 满足条件。关键引理：Baire 空间 \(\mathbb N^{\mathbb N}\) 的层拓扑斯满足"连续统的每个开覆盖有局部有限的加细"与 Tietze 延拓性质——若假设存在反例（某 \(f\) 在某点不连续），可构造一列收敛点 \(x_n\to x\) 使 \(f(x_n)\not\to f(x)\)，再用 Tietze 延拓一个连续函数穿过这些点，与 \(f\) 的自然性矛盾（Scott 证明中的 Claim 1、2）。故不存在这样的 \(f\)，连续性成立 ✓。</p>
+  </div>
+
+  <div class="cases">
+    <div class="case typ"><b>典型例</b>在 \(\mathbf{Sh}(\mathbb N^{\mathbb N})\) 中，取 \(f\) 为任何内部实数函数，它在每个茎上诱导一个"局部连续"的映射，覆盖拼接后全局连续——不存在 Dirichlet 函数那样的内部函数，因为其定义需要"若 \(x\) 有理则 1 否则 0"这种依赖排中律的判别。</div>
+    <div class="case deep"><b>本质例</b>有效拓扑斯（effective topos）中也成立 Brouwer 定理（van Oosten《Realizability》Thm 3.3.8），且那里可数选择成立，Cauchy 与 Dedekind 实数重合——所以该定理对两种实数都成立。这说明 Brouwer 连续性不是 Dedekind 定义特有的，而是"可计算／连续"这一直觉主义宇宙的根本特征。</div>
+    <div class="case edge"><b>边界与误解</b>最常见问题："这与经典分析矛盾吗？"不矛盾。经典分析在 \(\mathbf{Set}\) 里，那里排中律可用，能定义不连续函数；Brouwer 定理在另一个拓扑斯里，那里排中律不成立，"函数"概念更严格。两个宇宙都自洽，只是逻辑不同。其次，Brouwer 定理说的是内部函数，不是说外部不存在不连续映射——外部仍可有，但它们不是拓扑斯内部可构造的函数。</div>
+    <div class="case use"><b>结构应用</b>Brouwer 定理是"拓扑斯即集合论宇宙"这一纲领最有说服力的展示：改变逻辑（换拓扑斯）真的改变数学定理的真假。它与 Cohen 独立性证明形成对照——后者改变集合论公理的真值，前者改变分析学基本定理的真值。二者共同说明范畴语义的强大：一个框架容纳多种数学宇宙。</div>
+  </div>
+
+  <div class="box walk">
+    <h4>③ 手把手：为什么 Dirichlet 函数在 \(\mathbf{Sh}(\mathbb R)\) 中不是内部函数</h4>
+    <ol>
+      <li><strong>经典定义.</strong>\(D(x)=1\) 若 \(x\in\mathbb Q\)，否则 \(0\)。在 \(\mathbf{Set}\) 里这是一个函数 \(\mathbb R\to\mathbb R\)，处处不连续。</li>
+      <li><strong>尝试内部化.</strong>在 \(\mathbf{Sh}(\mathbb R)\) 里，\(D\) 要成为内部箭头 \(\mathbb R_d\to\mathbb R_d\)，须对每个开集 \(U\) 与连续截面 \(x:U\to\mathbb R\) 给出连续截面 \(D\circ x:U\to\mathbb R\)，且自然。</li>
+      <li><strong>失败点.</strong>取 \(U=\mathbb R\)、\(x=\mathrm{id}\)。则 \(D\circ\mathrm{id}\) 应是连续函数，但它是 Dirichlet 函数，处处不连续——不是 \(\mathbb R_d(\mathbb R)\) 的元素（那必须是连续实函数）。故这样的内部箭头 \(D\) 不存在 ✓。</li>
+      <li><strong>深层原因.</strong>定义 \(D\) 需要"\(x\in\mathbb Q\)?"的判别，这依赖排中律 \(x\in\mathbb Q\vee x\notin\mathbb Q\)。在 \(\mathbf{Sh}(\mathbb R)\) 里该析取不为真（\(\mathbb Q\) 不是开集），故无法定义。Brouwer 定理正是这一限制的普遍化：任何内部函数都不能"依赖不可判别的判别"，从而自动连续。</li>
+    </ol>
+  </div>
+
+  <div class="phil">
+    <span class="lbl">全章收束（选读）</span>
+    <p>第 18 章从"拓扑斯会说什么"出发，走到"拓扑斯决定数学真假"。内部语言（18.1）给出语法—范畴的严格对应；KJ 语义（18.2）把它变成可计算的局部判据；层语义（18.3）把真值落成 \(\operatorname{Sub}(1)\) 的元素；Cohen 拓扑斯（18.4）用这套语言重造了力迫与独立性证明；选择、布尔化、实数与 Brouwer 定理（18.5）则展示：连"选择公理成立吗""所有函数连续吗"这样的基本问题，答案都随拓扑斯而变。这就是范畴逻辑的核心洞见：<strong>逻辑不是数学的舞台，而是数学的一部分；换逻辑就是换宇宙。</strong>全书从第 1 章的函数与范畴走到这里，完成了一次从"用范畴描述数学"到"用范畴生成数学宇宙"的上升。</p>
+  </div>
+
+  <svg class="cd" viewBox="0 0 640 250" role="img" aria-label="第18章概念联系图：内部语言到独立性">
+    <rect class="node" x="30" y="90" width="130" height="46" rx="7"/>
+    <text class="nt" x="95" y="118" text-anchor="middle">内部语言</text>
+    <rect class="nodey" x="230" y="30" width="150" height="44" rx="7"/>
+    <text class="nt" x="305" y="58" text-anchor="middle">KJ / 层语义</text>
+    <rect class="node2" x="230" y="160" width="150" height="44" rx="7"/>
+    <text class="nt" x="305" y="188" text-anchor="middle">Ω 的逻辑结构</text>
+    <rect class="nodeg" x="460" y="30" width="160" height="44" rx="7"/>
+    <text class="nt" x="540" y="58" text-anchor="middle">Cohen 拓扑斯</text>
+    <rect class="nodeg" x="460" y="160" width="160" height="44" rx="7"/>
+    <text class="nt" x="540" y="188" text-anchor="middle">Brouwer / 选择</text>
+    <line class="arb" x1="160" y1="105" x2="226" y2="60"/>
+    <line class="arb" x1="160" y1="122" x2="226" y2="178"/>
+    <line class="arg" x1="380" y1="52" x2="456" y2="52"/>
+    <text class="hg" x="418" y="44" text-anchor="middle">¬¬ 拓扑</text>
+    <line class="arg" x1="380" y1="182" x2="456" y2="182"/>
+    <text class="hg" x="418" y="174" text-anchor="middle">真值改变</text>
+    <text class="lb" x="320" y="235" text-anchor="middle" style="font-size:12px">同一套语言，换 site / 拓扑 → 换逻辑 → 换数学定理的真假</text>
+  </svg>
+  <p class="figcap">图 18.2　第 18 章概念联系：从内部语言到独立性与连续性</p>
+
+  <div class="box exer">
+    <h4>④ 习题（18.5）</h4>
+    <ol>
+      <li id="ex18-5-1">区分外部 AC 与内部 AC，并各举一个满足／不满足的拓扑斯例子。</li>
+      <li id="ex18-5-2">复述 Diaconescu 定理的内部证明：为何从 AC<sub>int</sub> 能推出任意命题 \(P\) 的排中律 \(P\vee\neg P\)。</li>
+      <li id="ex18-5-3">证明 \(\Omega_{\neg\neg}=\{u\mid\neg\neg u=u\}\) 是布尔代数（提示：在其上 \(\neg\) 满足 \(\neg\neg=\mathrm{id}\)，伪补即布尔补）。</li>
+      <li id="ex18-5-4">验证常值预层 \(\Delta\mathbb N\) 满足 NNO 的 Peano 泛性质：对任意预层 \(X\)、\(x:1\to X\)、\(f:X\to X\)，构造唯一的 \(u:\Delta\mathbb N\to X\)。</li>
+      <li id="ex18-5-5">说明为何 \(\mathbb R_c\hookrightarrow\mathbb R_d\) 的反向（每个 Dedekind 切割由 Cauchy 序列逼近）需要可数选择。</li>
+      <li id="ex18-5-6">用 KJ 语义说明：在 \(\mathbf{Sh}(\mathbb R)\) 中 Dirichlet 函数为何不能是内部箭头 \(\mathbb R_d\to\mathbb R_d\)。</li>
+      <li id="ex18-5-7">（研究问题）Brouwer 定理对 Cauchy 实数与 Dedekind 实数都成立吗？查证有效拓扑斯中的情形（van Oosten），并说明可数选择在其中的作用。</li>
+    </ol>
+  </div>
+
+  <div class="box ans">
+    <h4>⑤ 参考答案（18.5）</h4>
+    <div class="item"><b>18.5.1</b>外部 AC：每个满射有截面（箭头层面）；内部 AC：内部语言满足 \(\forall\exists\Rightarrow\exists\forall\) 模式（公式层面）。\(\mathbf{Set}\)、Cohen 拓扑斯满足两者；\(\mathbf{Sh}(X)\)（\(X\) 非离散）两者都不满足（无全局截面、非布尔）；存在布尔但不满足外部 AC 的拓扑斯，说明二者独立 ✓。</div>
+    <div class="item"><b>18.5.2</b>对命题 \(P\)，构造 \(U=\{0\}\cup P\) 型二元素族 \(U,V\)，二者内部非空。AC<sub>int</sub> 给出选择函数 \(f\) 取值于 \(\{U,V\}\) 的并，得 \(f(U)\in U,f(V)\in V\)。由取值是否相等判别 \(P\)：若 \(f(U)\ne f(V)\) 则 \(U\ne V\) 故 \(\neg P\)；若相等则 \(P\) 必真（否则 \(U\ne V\) 取值被迫不同）。故 \(P\vee\neg P\) ✓。</div>
+    <div class="item"><b>18.5.3</b>设 \(u\in\Omega_{\neg\neg}\) 即 \(\neg\neg u=u\)。布尔补取 \(\neg u\)，需验证 \(\neg u\in\Omega_{\neg\neg}\)：\(\neg\neg(\neg u)=\neg u\)（因 \(\neg\neg\neg=\neg\)），故 \(\neg u\in\Omega_{\neg\neg}\) ✓。且 \(u\vee\neg u=\top\)、\(u\wedge\neg u=\bot\) 在 \(\neg\neg\)-稳定元素上成立（由 Heyting 伴随与稳定性），故为布尔代数 ✓。</div>
+    <div class="item"><b>18.5.4</b>逐对象定义 \(u_c:\mathbb N\to X(c)\)：\(u_c(0)=x_c\)（\(x\) 在 \(c\) 处的分量），\(u_c(n+1)=f_c(u_c(n))\)。唯一性由 NNO 在 \(\mathbf{Set}\) 中的递归唯一性逐对象给出；自然性（对箭头 \(c\to c'\) 与 \(X\) 的限制映射交换）由 \(f,x\) 的自然性与递归定义归纳验证 ✓。</div>
+    <div class="item"><b>18.5.5</b>给定切割 \((L,U)\)，为每个 \(n\in\mathbb N\) 需选 \(l_n\in L,r_n\in U\) 使 \(r_n-l_n\lt 1/n\)。每步的存在由切割的无隙性保证，但要做可数无穷多次选择以组成序列 \((l_n)\)——正是可数选择公理。缺它时无法系统化选出逼近序列，故反向失效 ✓。</div>
+    <div class="item"><b>18.5.6</b>内部箭头须给 \(\mathbb R_d(\mathbb R)\)（连续函数）的元素。取 \(x=\mathrm{id}\)，则 \(D\circ\mathrm{id}\) 必须是连续函数，但它是 Dirichlet 函数，处处不连续，不在该集合中。根源是定义 \(D\) 需判别 \(x\in\mathbb Q\)，而 \(\mathbb Q\) 的补在 \(\mathbf{Sh}(\mathbb R)\) 中不是开集，该析取非真，故 \(D\) 不可定义 ✓。</div>
+    <div class="item"><b>18.5.7</b>有效拓扑斯中 Brouwer 定理对 Cauchy 实数也成立（van Oosten《Realizability》Thm 3.3.8，源自 Markov 原理与扩展 Church 论题，Tsejtin 首证）。那里可数选择成立，故 \(\mathbb R_c\cong\mathbb R_d\)，两种表述重合。对比 M&amp;M 的层模型（\(\mathbb R_c\) 局部常值、\(\mathbb R_d\) 连续，二者不同），可见定理对不同实数对象需不同的模型与证明 ✓。</div>
+  </div>
+</section>
+
+<footer>
+  <p><a href="范畴论-逻辑-拓扑斯_教材总目录.html">← 返回总目录</a> ｜ 上一章：<a href="范畴论-逻辑-拓扑斯_教材第17章.html">第 17 章 拓扑斯的基本构造</a> ｜ 下一章：<a href="范畴论-逻辑-拓扑斯_教材第19章.html">第 19 章 几何态射与分类拓扑斯</a></p>
+  <p>本章对应 Mac Lane &amp; Moerdijk, <em>Sheaves in Geometry and Logic</em>, Chapter VI（§2–3 Cohen 拓扑斯与力迫、§4 选择、§5 Mitchell–Bénabou 语言、§6 Kripke–Joyal 语义、§7 层语义、§8–9 实数对象与 Brouwer 定理）。进阶参考 P. T. Johnstone, <em>Sketches of an Elephant</em>, Part D（范畴逻辑与语义的严格理论基础）、S. Awodey, <em>Introduction to Categorical Logic</em>（语法—语义对应与证明论视角）、Z. L. Low, <em>Logic in a Topos</em>（内部语言与 Kripke–Joyal 语义的教学过渡）、J. L. Bell, <em>Set Theory: Boolean-Valued Models and Independence Proofs</em>（布尔值模型与独立性证明）。公式由 MathJax 渲染。每节核心概念配"典型例 / 本质例 / 边界与误解 / 结构应用"四类例子。</p>
+</footer>
+
+</div>
+</body>
+</html>
